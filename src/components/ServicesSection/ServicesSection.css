@@ -1,0 +1,27 @@
+.services-section {
+  padding: 5rem 2rem;
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  text-align: center;
+}
+
+.services-section h2 {
+  color: var(--primary-color);
+  font-size: 2.25rem;
+  margin-bottom: 2rem;
+}
+
+.services-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.service-card {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 280px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}

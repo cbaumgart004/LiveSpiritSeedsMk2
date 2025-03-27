@@ -1,0 +1,35 @@
+/* Spring (default) */
+:root {
+  --primary-color: #ff5fa2;
+  --text-color: #222;
+  --secondary-color: #f9d3e3;
+  --gradient: linear-gradient(to right, #ff5fa2, #ffc371);
+  --navbar-background: url('../assets/Logo_Spring.jpg');
+}
+
+/* Summer */
+.summer {
+  --primary-color: #ffb347;
+  --text-color: #222;
+  --secondary-color: #fff1cc;
+  --gradient: linear-gradient(to right, #ffb347, #ffcc33);
+  --navbar-background: url('../assets/Logo_Summer.jpg');
+}
+
+/* Fall */
+.fall {
+  --primary-color: #d97706;
+  --text-color: #3b2f2f;
+  --secondary-color: #fef3c7;
+  --gradient: linear-gradient(to right, #d97706, #92400e);
+  --navbar-background: url('../assets/Logo_Fall.jpg');
+}
+
+/* Winter */
+.winter {
+  --primary-color: #6cb4ee;
+  --text-color: #1e3a5f;
+  --secondary-color: #e0f7ff;
+  --gradient: linear-gradient(to right, #6cb4ee, #bcdff9);
+  --navbar-background: url('../assets/Logo_Winter.jpg');
+}
