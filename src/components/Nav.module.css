@@ -1,26 +1,138 @@
 /* Navbar container */
 .navbar {
   position: relative;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 250px;
+  z-index: 10;
+  background-image: var(--navbar-background);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+
+  /* ✨ Flex column for perfect centering */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* overflow: hidden; Keeps content inside */
+}
+
+/* Overlay wraps only right-side UI now */
+.overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* optional, if it's just a visual layer */
+}
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100vw;
+  height: 100vh;
+  background: white;
+  z-index: 999; /* 🌟 way above the navbar */
+  transform: translateY(-100%);
+  transition: transform 0.3s ease;
+  pointer-events: none;
+}
+
+.menu-overlay.show {
+  transform: translateY(0%);
+  pointer-events: all;
+}
+.hamburgerOuter {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 250px; /* match your navbar height */
+  pointer-events: none; /* allow click-through unless needed */
+  z-index: 20; /* above navbar */
+}
+
+.hamburgerWrapper {
+  position: absolute;
+  right: 5%;
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: var(--navbar-background); /* Themed image path */
+  pointer-events: all; /* enable clicking on the button */
 }
 
-/* Title (Brand Name) Styling */
+/* 🌟 Title — now naturally centered inside navbar */
 .title {
   font-family: 'Euphoria Script', cursive;
-  font-size: 48px;
+  font-size: 8rem;
   font-weight: bold;
-  color: var(--primary-color); /* Themed color */
+  color: var(--primary-color);
   text-align: center;
+
+  padding: 0.5rem 8rem;
+  background-color: rgba(255, 255, 255, 0.65);
+  border: 4px solid var(--primary-color);
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+  box-sizing: border-box;
+  max-width: 90vw;
+  width: fit-content;
+
+  /* ✨ No position/transform needed anymore */
+  position: static;
+  transform: none;
+}
+
+/* Hamburger wrapper */
+.hamburgerWrapper {
   position: absolute;
+  right: 10%;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: all;
+}
+
+.hamburger {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  transition: transform 0.3s ease;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .hamburgerWrapper {
+    right: 5%;
+  }
+
+  .hamburger {
+    width: 30px;
+    height: 30px;
+  }
+
+  .title {
+    font-size: 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hamburger {
+    width: 24px;
+    height: 24px;
+  }
+
+  .title {
+    font-size: 28px;
+  }
 }

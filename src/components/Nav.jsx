@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import styles from './Nav.module.css'
-import Hamburger from './Hamburger' // Import the fixed component
+import Hamburger from './Hamburger'
 
 function Nav() {
   const [isOpen, setIsOpen] = useState(false)
@@ -10,20 +10,19 @@ function Nav() {
   }
 
   return (
-    <nav className={styles.navbar}>
-      <div className={styles.overlay}>
+    <>
+      {/* NAVBAR */}
+      <nav className={styles.navbar}>
         <h1 className={styles.title}>SpiritSeeds Wellness</h1>
+      </nav>
 
-        {/* Single button controlling the menu */}
-        <button
-          className={styles.hamburger}
-          onClick={toggleMenu}
-          aria-label="Toggle menu"
-        >
-          <Hamburger isOpen={isOpen} />
-        </button>
+      {/* HAMBURGER OUTSIDE NAVBAR */}
+      <div className={styles.hamburgerOuter}>
+        <div className={styles.hamburgerWrapper}>
+          <Hamburger isOpen={isOpen} toggleMenu={toggleMenu} />
+        </div>
       </div>
-    </nav>
+    </>
   )
 }
 

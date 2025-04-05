@@ -1,8 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+  <style>
+    html {
+      visibility: hidden;
+    }
+  </style>
+  <script>
+    window.addEventListener('load', () => {
+      const params = new URLSearchParams(window.location.search);
+      const theme = params.get('theme') || 'spring';
+      document.body.classList.add(theme);
+      document.documentElement.classList.add('visible'); // triggers CSS fade
+    });
+  </script>
+
+  
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Euphoria Script for headings -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Euphoria+Script&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Farsan for subheadings -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Farsan&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Glacial Indifference (self-hosted or alt below) -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Assistant&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Assistant is a similar fallback -->
+
+    <link rel="icon" type="image/png" href="/favicon.png" />
     <title>SpiritSeeds Wellness</title>
 
     <!-- ✅ Preload critical JavaScript to speed up Largest Contentful Paint (LCP) -->

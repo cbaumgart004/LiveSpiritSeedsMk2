@@ -1,45 +1,66 @@
-@import url('https://fonts.googleapis.com/css2?family=Euphoria+Script&family=Farsan&display=swap');
+/* -------------------------------------------- */
+/* 🌿 Font Imports */
+/* -------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Euphoria+Script&family=Farsan&family=Assistant&display=swap');
 
-/* 🌿 Spring Theme */
+/* -------------------------------------------- */
+/* 🌞 Initial Theme Fade-in Behavior */
+/* -------------------------------------------- */
+html {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease;
+}
+
+html.visible {
+  opacity: 1;
+  visibility: visible;
+}
+/* -------------------------------------------- */
+/* 🌸 Global CSS Variables */
+/* -------------------------------------------- */
 :root {
-  --bg-color: #d8f3dc; /* Light green */
-  --text-color: #1b4332; /* Deep green */
-  --accent-color: #40916c; /* Complementary shade */
+  --font-heading: 'Euphoria Script', cursive;
+  --font-subheading: 'Farsan', cursive;
+  --font-body: 'Assistant', sans-serif;
+
+  --bg-color: #ffffff;
+  --text-color: #222;
+  --accent-color: #ccc;
 }
 
-/* ☀️ Summer Theme */
-[data-theme='summer'] {
-  --bg-color: #fef9c3; /* Soft yellow */
-  --text-color: #d97706; /* Warm orange */
-  --accent-color: #facc15; /* Golden shade */
-}
-
-/* 🍂 Autumn Theme */
-[data-theme='autumn'] {
-  --bg-color: #ffedd5; /* Peach */
-  --text-color: #b45309; /* Deep brown */
-  --accent-color: #d97706; /* Warm orange */
-}
-
-/* ❄️ Winter Theme */
-[data-theme='winter'] {
-  --bg-color: #c7d2fe; /* Cool blue */
-  --text-color: #312e81; /* Deep navy */
-  --accent-color: #60a5fa; /* Frosty blue */
-}
-
-/* Apply the variables throughout your site */
+/* -------------------------------------------- */
+/* 🌺 Base Styles */
+/* -------------------------------------------- */
 body {
+  font-family: var(--font-body);
   background-color: var(--bg-color);
   color: var(--text-color);
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
 }
 
-/* Navbar Styling */
+/* -------------------------------------------- */
+/* 🌼 Typography */
+/* -------------------------------------------- */
+.title,
+.site-title,
+h1 {
+  font-family: var(--font-heading);
+  color: var(--text-color);
+}
+
+h2,
+h3,
+.component-header {
+  font-family: var(--font-subheading);
+  color: var(--text-color);
+}
+
+/* -------------------------------------------- */
+/* 🌿 Component Styles */
+/* -------------------------------------------- */
 .navbar {
   background-color: var(--accent-color);
-}
-
-/* Title Styling */
-.title {
-  color: var(--text-color);
 }

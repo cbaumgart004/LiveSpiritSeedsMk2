@@ -1,35 +1,76 @@
-/* Spring (default) */
+/* 🌸 Spring (default) */
 :root {
-  --primary-color: #ff5fa2;
+  --primary-color: #11eb9e; /* Old: Bright pink */
   --text-color: #222;
-  --secondary-color: #f9d3e3;
+  --secondary-color: #f9d3e3; /* Light blush */
   --gradient: linear-gradient(to right, #ff5fa2, #ffc371);
+  --gradient-reverse: linear-gradient(to left, #ff5fa2, #ffc371);
   --navbar-background: url('../assets/Logo_Spring.jpg');
+  --section-bg-image: url('/src/assets/backgrounds/Spirit_Seeds_Background_Green.jpg');
+  /* Canva Colors (commented)
+  --primary-color: #11eb9e;
+  --text-color: #1a9a13;
+  --secondary-color: #3fb09f;
+  --accent-color: #a28d03;
+  --highlight-color: #5eb4c4;
+  --gradient: linear-gradient(to right, #11eb9e, #5eb4c4);
+  --gradient-reverse: linear-gradient(to left, #11eb9e, #5eb4c4);
+  */
 }
 
-/* Summer */
+/* ☀️ Summer */
 .summer {
-  --primary-color: #ffb347;
+  --primary-color: #ffb347; /* Old: Soft orange */
   --text-color: #222;
   --secondary-color: #fff1cc;
   --gradient: linear-gradient(to right, #ffb347, #ffcc33);
+  --gradient-reverse: linear-gradient(to left, #ffb347, #ffcc33);
   --navbar-background: url('../assets/Logo_Summer.jpg');
+  --section-bg-image: url('/src/assets/backgrounds/SummerWaterColor.jpg');
+  /* Canva Colors (commented)
+  --primary-color: #ea5a1d;
+  --text-color: #d1ca1f;
+  --secondary-color: #ffff4f;
+  --accent-color: #ff90ed;
+  --gradient: linear-gradient(to right, #ea5a1d, #ffff4f);
+  --gradient-reverse: linear-gradient(to left, #ea5a1d, #ffff4f);
+  */
 }
 
-/* Fall */
+/* 🍂 Fall */
 .fall {
-  --primary-color: #d97706;
+  --primary-color: #d97706; /* Old: Burnt orange */
   --text-color: #3b2f2f;
   --secondary-color: #fef3c7;
   --gradient: linear-gradient(to right, #d97706, #92400e);
+  --gradient-reverse: linear-gradient(to left, #d97706, #92400e);
   --navbar-background: url('../assets/Logo_Fall.jpg');
+  --section-bg-image: url('/src/assets/backgrounds/FallWaterColor.jpg');
+  /* Canva Colors (commented)
+  --primary-color: #920e0a;
+  --text-color: #140036;
+  --secondary-color: #d63800;
+  --accent-color: #6900a2;
+  --gradient: linear-gradient(to right, #920e0a, #d63800);
+  --gradient-reverse: linear-gradient(to left, #920e0a, #d63800);
+  */
 }
 
-/* Winter */
+/* ❄️ Winter */
 .winter {
-  --primary-color: #6cb4ee;
+  --primary-color: #6cb4ee; /* Old: Ice blue */
   --text-color: #1e3a5f;
   --secondary-color: #e0f7ff;
   --gradient: linear-gradient(to right, #6cb4ee, #bcdff9);
+  --gradient-reverse: linear-gradient(to left, #6cb4ee, #bcdff9);
   --navbar-background: url('../assets/Logo_Winter.jpg');
+  --section-bg-image: url('/src/assets/backgrounds/WinterWaterColor.jpg');
+  /* Canva Colors (commented)
+  --primary-color: #2272dd;
+  --text-color: #57668e;
+  --secondary-color: #8366fd;
+  --accent-color: #daddf5;
+  --gradient: linear-gradient(to right, #2272dd, #daddf5);
+  --gradient-reverse: linear-gradient(to left, #2272dd, #daddf5);
+  */
 }

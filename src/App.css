@@ -5,27 +5,22 @@
   text-align: center;
 }
 
-/* Logo behavior stays the same */
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+.btn {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  background: var(--gradient);
+  color: var(--button-text-color);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  font-weight: 500;
 }
 
-.logo:hover {
-  filter: drop-shadow(0 0 2em var(--primary-color, #646cffaa));
+.btn:hover {
+  background: var(--button-hover);
+  transform: translateY(-2px);
 }
-
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-/* Optional: use theme on spinning React logo text */
-.read-the-docs {
-  color: var(--text-color, #888);
-}
-
 /* Animations */
 @keyframes logo-spin {
   from {

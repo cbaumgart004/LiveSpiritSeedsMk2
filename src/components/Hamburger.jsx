@@ -1,21 +1,20 @@
-import { useState } from 'react'
 import './Hamburger.css'
 
-function Hamburger() {
-  const [isOpen, setIsOpen] = useState(false)
-
+function Hamburger({ isOpen, toggleMenu }) {
   return (
     <>
       {/* Hamburger Button */}
-      <button
+      <div
         className={`hamburger ${isOpen ? 'open' : ''}`}
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={toggleMenu}
         aria-label="Toggle menu"
+        role="button"
+        tabIndex={0}
       >
         <span></span>
         <span></span>
         <span></span>
-      </button>
+      </div>
 
       {/* Dropdown Menu */}
       <div className={`menu-overlay ${isOpen ? 'show' : ''}`}>
