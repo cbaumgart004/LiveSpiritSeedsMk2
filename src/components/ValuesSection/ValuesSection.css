@@ -1,41 +1,67 @@
 .values-section {
   padding: 5rem 2rem;
-  background-image: var(
-    --section-bg-image
-  ); /* Background image for the section */
-  color: var(--text-color);
+  background-image: var(--section-bg-image);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center top;
   text-align: center;
-}
-.parallax-content {
+  border-radius: 1rem;
   position: relative;
-  z-index: 2;
-  will-change: transform;
-  transform: translateZ(0); /* Helps trigger GPU acceleration */
+  overflow: hidden;
+}
 
-  /* Avoid transitions on scroll-bound elements */
-  transition: none;
+.values-title {
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  margin-bottom: 2rem;
+  color: var(--text-color);
+}
 
-  padding: 2rem;
-  max-width: 800px;
+.values-inline-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  font-size: 5rem;
+  font-family: var(--font-subheading);
+  color: var(--text-color);
+  max-width: 900px;
   margin: 0 auto;
+}
+.value-word,
+.value-blossom {
+  flex: 1 1 0;
   text-align: center;
-
-  /* Optional: prevent text reflow */
-  backface-visibility: hidden;
-  perspective: 1000;
 }
-.values-section h2 {
-  color: var(--primary-color);
-  font-size: 2.25rem;
-  margin-bottom: 1.5rem;
+.value-word {
+  font-style: italic;
 }
 
-.values-list {
-  list-style: none;
-  padding: 0;
-  font-size: 1.1rem;
+.value-blossom {
+  display: inline-block;
+  width: 5rem;
+  height: 5rem;
+  background-image: var(--blossom-icon);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.9;
 }
+@media (max-width: 600px) {
+  .values-inline-list {
+    flex-direction: column;
+    gap: 1rem;
+  }
 
-.values-list li {
-  margin-bottom: 1rem;
+  .value-word,
+  .value-blossom {
+    flex: none;
+    width: auto;
+  }
+
+  .value-blossom {
+    width: 5rem;
+    height: 5rem;
+  }
 }

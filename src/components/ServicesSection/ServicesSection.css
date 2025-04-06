@@ -44,7 +44,7 @@
 }
 /* Service card styling */
 .service-card {
-  background-color: white;
+  background-color: var(--bg-color);
   color: var(--text-color);
   border-radius: 16px;
   padding: 2rem;

@@ -32,7 +32,7 @@ const ServicesSection = () => {
 
   return (
     <section className="services-section">
-      <h2>SpiritSeeds Wellness Services</h2>
+      <h2>Our Services</h2>
       <div className="services-grid">
         {services.map((s, i) => (
           <div className="service-card" key={i}>

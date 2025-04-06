@@ -1,12 +1,15 @@
 /* 🌸 Spring (default) */
 :root {
   --primary-color: #11eb9e; /* Old: Bright pink */
-  --text-color: #222;
+  --text-color: #e728dd;
   --secondary-color: #f9d3e3; /* Light blush */
+  --bg-color: #e8fdf2; /* Soft mint with a bit more body */
+  --text-outline-color: #0f4c3a; /* Deep botanical green for clarity */
   --gradient: linear-gradient(to right, #ff5fa2, #ffc371);
   --gradient-reverse: linear-gradient(to left, #ff5fa2, #ffc371);
   --navbar-background: url('../assets/Logo_Spring.jpg');
   --section-bg-image: url('/src/assets/backgrounds/Spirit_Seeds_Background_Green.jpg');
+  --blossom-icon: url('/src/assets/icons/blossom-pink.png');
   /* Canva Colors (commented)
   --primary-color: #11eb9e;
   --text-color: #1a9a13;
@@ -23,10 +26,13 @@
   --primary-color: #ffb347; /* Old: Soft orange */
   --text-color: #222;
   --secondary-color: #fff1cc;
+  --bg-color: #fff4da; /* Light golden cream for warmth */
+  --text-outline-color: #8b5e00; /* Muted honey brown for grounding */
   --gradient: linear-gradient(to right, #ffb347, #ffcc33);
   --gradient-reverse: linear-gradient(to left, #ffb347, #ffcc33);
   --navbar-background: url('../assets/Logo_Summer.jpg');
   --section-bg-image: url('/src/assets/backgrounds/SummerWaterColor.jpg');
+  --blossom-icon: url('/src/assets/icons/blossom-gold.png');
   /* Canva Colors (commented)
   --primary-color: #ea5a1d;
   --text-color: #d1ca1f;
@@ -42,10 +48,14 @@
   --primary-color: #d97706; /* Old: Burnt orange */
   --text-color: #3b2f2f;
   --secondary-color: #fef3c7;
+  --bg-color: #fdf3dc; /* Warm buff, evokes dried petals and oak leaves */
+  --text-outline-color: #5c2c06; /* Dark burnt sienna for crisp contrast */
+
   --gradient: linear-gradient(to right, #d97706, #92400e);
   --gradient-reverse: linear-gradient(to left, #d97706, #92400e);
   --navbar-background: url('../assets/Logo_Fall.jpg');
   --section-bg-image: url('/src/assets/backgrounds/FallWaterColor.jpg');
+  --blossom-icon: url('/src/assets/icons/blossom-rust.png');
   /* Canva Colors (commented)
   --primary-color: #920e0a;
   --text-color: #140036;
@@ -61,10 +71,13 @@
   --primary-color: #6cb4ee; /* Old: Ice blue */
   --text-color: #1e3a5f;
   --secondary-color: #e0f7ff;
+  --bg-color: #eaf4fb; /* Soft glacier blue, still clean */
+  --text-outline-color: #0c2b3a; /* Deep navy-slate for wintry sharpness */
   --gradient: linear-gradient(to right, #6cb4ee, #bcdff9);
   --gradient-reverse: linear-gradient(to left, #6cb4ee, #bcdff9);
   --navbar-background: url('../assets/Logo_Winter.jpg');
   --section-bg-image: url('/src/assets/backgrounds/WinterWaterColor.jpg');
+  --blossom-icon: url('/src/assets/icons/blossom-blue.png');
   /* Canva Colors (commented)
   --primary-color: #2272dd;
   --text-color: #57668e;

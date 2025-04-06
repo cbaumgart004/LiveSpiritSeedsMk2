@@ -1,27 +1,16 @@
 import React from 'react'
-import { backgrounds } from '../../assets/backgrounds'
 import './ValuesSection.css'
 
 const ValuesSection = () => {
   return (
     <section className="values-section">
-      <div className="content">
-        <h2>Our Core Values</h2>
-        <ul className="values-list">
-          <li>
-            <strong>Compassion:</strong> Meeting every person with presence and
-            care.
-          </li>
-          <li>
-            <strong>Authenticity:</strong> Honoring your unique journey.
-          </li>
-          <li>
-            <strong>Balance:</strong> Integrating wellness into everyday life.
-          </li>
-          <li>
-            <strong>Community:</strong> Healing is stronger together.
-          </li>
-        </ul>
+      <h2 className="values-title">Our Core Values</h2>
+      <div className="values-inline-list">
+        <span className="value-word">Growth</span>
+        <span className="value-blossom" />
+        <span className="value-word">Acceptance</span>
+        <span className="value-blossom" />
+        <span className="value-word">Service</span>
       </div>
     </section>
   )

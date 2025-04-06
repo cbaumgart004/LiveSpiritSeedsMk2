@@ -24,7 +24,7 @@ html.visible {
   --font-subheading: 'Farsan', cursive;
   --font-body: 'Assistant', sans-serif;
 
-  --bg-color: #ffffff;
+  /* --bg-color: #ffffff; */
   --text-color: #222;
   --accent-color: #ccc;
 }
@@ -37,7 +37,7 @@ body {
   background-color: var(--bg-color);
   color: var(--text-color);
   margin: 0;
-  padding: 0;
+  padding: 2rem;
   line-height: 1.6;
 }
 

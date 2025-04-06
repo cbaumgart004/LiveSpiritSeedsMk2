@@ -25,12 +25,9 @@ const AboutSection = () => {
           opacity: Math.min(1, 1 - offsetY * 0.0015),
         }}
       >
-        <h2>About SpiritSeeds Wellness</h2>
-        <p>
-          Spirit Seeds Wellness blends traditional healing with modern
-          mindfulness. We create a safe space for transformation, rooted in
-          compassion and presence.
-        </p>
+        <h2>About Melissa Carey</h2>
+        <p>Click here to learn more about Melissa Carey.</p>
+        <button className="learn-more">Learn More</button>
       </div>
     </section>
   )
