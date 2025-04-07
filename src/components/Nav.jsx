@@ -11,16 +11,40 @@ function Nav() {
 
   return (
     <>
-      {/* NAVBAR */}
+      {/* 🌸 FIXED NAVBAR WITH CENTERED TITLE + BUTTON */}
       <nav className={styles.navbar}>
-        <h1 className={styles.title}>SpiritSeeds Wellness</h1>
+        <div className={styles.navbarTopRow}>
+          <h1 className={styles.title}>SpiritSeeds Wellness</h1>
+          <div className={styles.hamburgerWrapper}>
+            <Hamburger isOpen={isOpen} toggleMenu={toggleMenu} />
+          </div>
+        </div>
       </nav>
 
-      {/* HAMBURGER OUTSIDE NAVBAR */}
-      <div className={styles.hamburgerOuter}>
-        <div className={styles.hamburgerWrapper}>
-          <Hamburger isOpen={isOpen} toggleMenu={toggleMenu} />
-        </div>
+      {/* 🌿 FLOATING MENU DROPDOWN */}
+      <div className={`${styles.menuOverlay} ${isOpen ? styles.show : ''}`}>
+        <nav className={styles.menu}>
+          <ul>
+            <li>
+              <a href="#">Services</a>
+            </li>
+            <li>
+              <a href="#">About</a>
+            </li>
+            <li>
+              <a href="#">Values</a>
+            </li>
+            <li>
+              <a href="#">Store</a>
+            </li>
+            <li>
+              <a href="#">Signup</a>
+            </li>
+            <li>
+              <a href="#">Login</a>
+            </li>
+          </ul>
+        </nav>
       </div>
     </>
   )

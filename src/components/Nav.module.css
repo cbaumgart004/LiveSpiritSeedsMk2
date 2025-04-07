@@ -1,72 +1,35 @@
-/* Navbar container */
+/* 🌸 NAVBAR CONTAINER */
 .navbar {
-  position: relative;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 250px;
-  z-index: 10;
+  z-index: 50;
   background-image: var(--navbar-background);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   border-radius: 10px;
-  /* ✨ Flex column for perfect centering */
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  /* overflow: hidden; Keeps content inside */
+  align-items: center;
+  padding: 1rem 2rem;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
-/* Overlay wraps only right-side UI now */
-.overlay {
-  position: absolute;
-  top: 0;
-  right: 0;
+/* 🍃 FLEX ROW: TITLE + HAMBURGER */
+.navbarTopRow {
+  position: relative;
   width: 100%;
   height: 100%;
-  pointer-events: none; /* optional, if it's just a visual layer */
-}
-.menu-overlay {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 100vw;
-  height: 100vh;
-  background: white;
-  z-index: 999; /* 🌟 way above the navbar */
-  transform: translateY(-100%);
-  transition: transform 0.3s ease;
-  pointer-events: none;
-}
-
-.menu-overlay.show {
-  transform: translateY(0%);
-  pointer-events: all;
-}
-.hamburgerOuter {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 100%;
-  height: 250px; /* match your navbar height */
-  pointer-events: none; /* allow click-through unless needed */
-  z-index: 20; /* above navbar */
-}
-
-.hamburgerWrapper {
-  position: absolute;
-  right: 5%;
-  top: 50%;
-  transform: translateY(-50%);
   display: flex;
+  justify-content: center; /* centers title */
   align-items: center;
-  justify-content: center;
-  pointer-events: all; /* enable clicking on the button */
 }
 
-/* 🌟 Title — now naturally centered inside navbar */
+/* 🌼 TITLE */
 .title {
   font-family: 'Euphoria Script', cursive;
   font-size: 8rem;
@@ -76,30 +39,27 @@
   text-shadow: -1px -1px 0 var(--text-outline-color),
     1px -1px 0 var(--text-outline-color), -1px 1px 0 var(--text-outline-color),
     1px 1px 0 var(--text-outline-color);
-  padding: 0.5rem 8rem;
+  padding: 0.5rem 2rem;
   background-color: var(--bg-color);
   border: 4px solid var(--primary-color);
   border-radius: 12px;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
   box-sizing: border-box;
-  max-width: 90vw;
+  max-width: 80vw;
   width: fit-content;
-
-  /* ✨ No position/transform needed anymore */
-  position: static;
-  transform: none;
+  z-index: 55;
+  white-space: nowrap;
 }
 
-/* Hamburger wrapper */
+/* 🍔 HAMBURGER BUTTON */
 .hamburgerWrapper {
   position: absolute;
-  right: 10%;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 1.25rem;
+  right: 2rem;
+  z-index: 60;
   display: flex;
   align-items: center;
   justify-content: center;
-  pointer-events: all;
 }
 
 .hamburger {
@@ -112,19 +72,79 @@
   transition: transform 0.3s ease;
 }
 
-/* Responsive tweaks */
-@media (max-width: 768px) {
-  .hamburgerWrapper {
-    right: 5%;
-  }
+/* 🌈 DROPDOWN MENU */
+.menuOverlay {
+  position: fixed;
+  top: 100px; /* 🍯 Sits just beneath the hamburger */
+  right: 2rem;
+  background: var(--bg-color);
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+  padding: 0.75rem 0.5rem;
+  transform: scaleY(0);
+  transform-origin: top right;
+  transition: transform 0.4s ease, opacity 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+  width: max-content;
+  min-width: 180px;
+  height: auto;
+  z-index: 999;
+}
 
+.menuOverlay.show {
+  transform: scaleY(1);
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* 🍽 MENU ITEMS */
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem;
+}
+
+.menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu li {
+  margin: 0;
+}
+
+.menu a {
+  display: block;
+  padding: 1rem 1.5rem;
+  font-size: 1.15rem;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  color: var(--text-color);
+  background: var(--gradient);
+  border-radius: 8px;
+  transition: background 0.4s ease, transform 0.2s ease;
+  margin-top: 1rem;
+}
+
+.menu a:hover {
+  background: var(--gradient-reverse);
+  transform: scale(1.05);
+}
+
+/* 📱 RESPONSIVE ADJUSTMENTS */
+@media (max-width: 768px) {
   .hamburger {
     width: 30px;
     height: 30px;
   }
 
   .title {
-    font-size: 36px;
+    font-size: 3.6rem;
+    padding: 0.5rem 4rem;
   }
 }
 
@@ -135,6 +155,7 @@
   }
 
   .title {
-    font-size: 28px;
+    font-size: 2.8rem;
+    padding: 0.5rem 2rem;
   }
 }
