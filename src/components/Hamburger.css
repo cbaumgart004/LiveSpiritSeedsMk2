@@ -5,21 +5,21 @@
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  padding: 10px;
-  border-radius: 5px;
-  width: 50px;
-  height: 50px;
+  gap: clamp(3px, 0.5vw, 6px); /* Responsive gap between lines */
+  padding: clamp(6px, 1vw, 10px); /* Responsive padding */
+  border-radius: 10px;
+  width: clamp(30px, 6vw, 50px); /* ✨ Smooth scaling */
+  height: clamp(30px, 6vw, 50px);
   align-items: center;
   justify-content: center;
-  z-index: 100; /* Keeps it above the navbar background */
+  z-index: 100;
   transition: background 0.3s ease;
 }
 
 /* Hamburger lines */
 .hamburger span {
-  width: 30px;
-  height: 4px;
+  width: clamp(18px, 5vw, 30px);
+  height: clamp(2px, 0.5vw, 4px);
   background: var(--primary-color);
   transition: all 0.3s ease;
   border-radius: 2px;
@@ -31,7 +31,7 @@
 }
 
 .hamburger.open span:nth-child(1) {
-  transform: translateY(10px) rotate(45deg);
+  transform: translateY(clamp(6px, 1.2vw, 10px)) rotate(45deg);
 }
 
 .hamburger.open span:nth-child(2) {
@@ -39,5 +39,5 @@
 }
 
 .hamburger.open span:nth-child(3) {
-  transform: translateY(-10px) rotate(-45deg);
+  transform: translateY(clamp(-6px, -1.2vw, -10px)) rotate(-45deg);
 }

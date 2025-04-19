@@ -1,0 +1,132 @@
+.serviceSection {
+  margin-top: calc(var(--navbar-total-offset, 260px));
+  padding: 3.5rem 1.5rem; /* Reduced padding */
+  color: var(--text-color);
+  text-align: center;
+  background-attachment: scroll;
+  border-radius: 1rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 2rem; /* Add spacing between cards */
+}
+
+.serviceContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem; /* Slightly tighter spacing */
+  flex-wrap: wrap;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.reverse {
+  flex-direction: row-reverse;
+}
+
+.serviceImage {
+  flex: 1;
+  min-width: 260px;
+  max-width: 380px;
+  text-align: center;
+}
+
+.serviceImage img {
+  width: 100%;
+  height: auto;
+  border-radius: 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  object-fit: cover;
+}
+
+.serviceText {
+  flex: 2;
+  text-align: left;
+  padding: 0.5rem 1rem; /* Tighter padding */
+}
+
+.serviceText h2 {
+  font-size: 2.5rem;
+  color: var(--primary-color);
+  margin-bottom: 0.75rem;
+  font-family: var(--font-heading);
+}
+
+.serviceText p {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.buttonRow {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.learnMore {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-family: var(--font-body, 'Glacial Indifference', sans-serif);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  color: white;
+  background: var(--gradient);
+  background-size: 200%;
+  background-position: left;
+  transition: background-position 0.4s ease, transform 0.3s ease,
+    box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  text-decoration: none;
+}
+
+.learnMore::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(25deg);
+  animation: shimmer 2.5s infinite linear;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.learnMore:hover::before,
+.learnMore:active::before {
+  opacity: 1;
+}
+
+.learnMore:hover,
+.learnMore:active {
+  background-position: right;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) rotate(25deg);
+  }
+  100% {
+    transform: translateX(100%) rotate(25deg);
+  }
+}
+/* Gently tighten spacing between multiple service cards */
+.serviceSection + .serviceSection {
+  margin-top: 2rem; /* Adjust this value tighter or looser */
+}

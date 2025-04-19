@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { Link } from 'react-router-dom'
 import './ServicesSection.css'
 
 const ServicesSection = () => {
@@ -38,7 +38,9 @@ const ServicesSection = () => {
           <div className="service-card" key={i}>
             <h3>{s.title}</h3>
             <p>{s.description}</p>
-            <button className="learn-more">Learn More</button>
+            <Link to="/services" className="learn-more">
+              Learn More
+            </Link>
           </div>
         ))}
       </div>

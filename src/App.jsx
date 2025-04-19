@@ -1,27 +1,17 @@
-import { useEffect } from 'react'
-import Nav from './components/Nav'
-
-import AboutSection from './components/AboutSection/AboutSection'
-import ServicesSection from './components/ServicesSection/ServicesSection'
-import ValuesSection from './components/ValuesSection/ValuesSection'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Home from './pages/Home'
+import Services from './pages/Services'
+// import About, Contact, etc as you build them
 
 function App() {
-  // useEffect(() => {
-  //   const season = 'winter' // change to 'summer', 'fall', 'winter' as needed
-  //   document.body.classList.add(season)
-
-  //   return () => {
-  //     document.body.classList.remove(season)
-  //   }
-  // }, [])
-
   return (
-    <>
-      <Nav />
-      <AboutSection />
-      <ServicesSection />
-      <ValuesSection />
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/services" element={<Services />} />
+        {/* Add other pages here */}
+      </Routes>
+    </Router>
   )
 }
 

@@ -4,6 +4,7 @@
   --text-color: #e728dd;
   --secondary-color: #f9d3e3; /* Light blush */
   --bg-color: #e8fdf2; /* Soft mint with a bit more body */
+  --bg-color-light: rgba(232, 253, 242, 0.7);
   --text-outline-color: #0f4c3a; /* Deep botanical green for clarity */
   --gradient: linear-gradient(to right, #ff5fa2, #ffc371);
   --gradient-reverse: linear-gradient(to left, #ff5fa2, #ffc371);
@@ -27,6 +28,7 @@
   --text-color: #222;
   --secondary-color: #fff1cc;
   --bg-color: #fff4da; /* Light golden cream for warmth */
+  --bg-color-light: rgba(255, 244, 218, 0.5);
   --text-outline-color: #8b5e00; /* Muted honey brown for grounding */
   --gradient: linear-gradient(to right, #ffb347, #ffcc33);
   --gradient-reverse: linear-gradient(to left, #ffb347, #ffcc33);
@@ -49,6 +51,7 @@
   --text-color: #3b2f2f;
   --secondary-color: #fef3c7;
   --bg-color: #fdf3dc; /* Warm buff, evokes dried petals and oak leaves */
+  --bg-color-light: rgba(253, 243, 220, 0.5);
   --text-outline-color: #5c2c06; /* Dark burnt sienna for crisp contrast */
 
   --gradient: linear-gradient(to right, #d97706, #92400e);
@@ -72,6 +75,7 @@
   --text-color: #1e3a5f;
   --secondary-color: #e0f7ff;
   --bg-color: #eaf4fb; /* Soft glacier blue, still clean */
+  --bg-color-light: rgba(234, 244, 251, 0.5);
   --text-outline-color: #0c2b3a; /* Deep navy-slate for wintry sharpness */
   --gradient: linear-gradient(to right, #6cb4ee, #bcdff9);
   --gradient-reverse: linear-gradient(to left, #6cb4ee, #bcdff9);

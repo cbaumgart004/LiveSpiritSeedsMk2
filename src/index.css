@@ -27,6 +27,7 @@ html.visible {
   /* --bg-color: #ffffff; */
   --text-color: #222;
   --accent-color: #ccc;
+  --navbar-height: 250px;
 }
 
 /* -------------------------------------------- */
