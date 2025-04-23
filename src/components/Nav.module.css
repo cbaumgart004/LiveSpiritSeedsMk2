@@ -83,7 +83,7 @@
 /* 🌈 DROPDOWN MENU */
 .menuOverlay {
   position: fixed;
-  top: 100px;
+  top: 200px;
   right: 2rem;
   background: var(--bg-color);
   border-radius: 10px;
@@ -172,27 +172,28 @@
 /* 📱 RESPONSIVE ADJUSTMENTS */
 @media (max-width: 768px) {
   .navbarTopRow {
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: row; /* 💫 keep it horizontal */
+    justify-content: space-between; /* 🌟 spread title & hamburger */
     align-items: center;
     gap: 1rem;
   }
 
   .hamburgerWrapper {
-    position: static;
-    margin-top: 0.5rem;
+    position: relative;
+    top: 0;
+    right: 0;
+    margin-top: 0;
+    margin-left: auto; /* ✨ forces it to the right */
   }
 
   .title {
-    font-size: clamp(1.8rem, 6vw, 2.8rem); /* Lower upper bound slightly */
-    padding: 0.4rem 1.5rem; /* Tighter padding */
-    max-width: 85vw; /* A little more restrictive */
-    white-space: normal;
-    word-break: break-word;
-    text-align: center;
-  }
-  .navbar {
-    padding: 0.5rem 1rem; /* Give inner content a bit more room */
+    font-size: clamp(1.8rem, 6vw, 2.8rem);
+    padding: 0.4rem 1rem;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 70vw; /* ⬅️ Let’s make room for the hamburger */
   }
 }
 

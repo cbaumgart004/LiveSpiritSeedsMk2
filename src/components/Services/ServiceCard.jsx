@@ -19,9 +19,15 @@ const ServiceCard = ({ title, description, image, imagePosition = 'left' }) => {
             <a href="/" className={styles.learnMore}>
               Home
             </a>
-            <a href="#" className={styles.learnMore}>
+            <a
+              href="https://calendar.google.com/calendar/u/0/appointments/AcZssZ0R6Tf5T_lgzGCqhsEHP9n-oeqicp35cuiakc4=?gv=true"
+              className={styles.learnMore}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Book Now
-            </a>{' '}
+            </a>
+            {''}
             {/* Will update link later */}
           </div>
         </div>

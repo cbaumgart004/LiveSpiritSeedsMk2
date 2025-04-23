@@ -1,7 +1,7 @@
 /* -------------------------------------------- */
 /* 🌿 Font Imports */
 /* -------------------------------------------- */
-@import url('https://fonts.googleapis.com/css2?family=Euphoria+Script&family=Farsan&family=Assistant&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Euphoria+Script&family=Farsan&family=Glacial+Indifference&display=swap');
 
 /* -------------------------------------------- */
 /* 🌞 Initial Theme Fade-in Behavior */
@@ -22,7 +22,7 @@ html.visible {
 :root {
   --font-heading: 'Euphoria Script', cursive;
   --font-subheading: 'Farsan', cursive;
-  --font-body: 'Assistant', sans-serif;
+  --font-body: 'Glacial Indifference', sans-serif;
 
   /* --bg-color: #ffffff; */
   --text-color: #222;
@@ -64,4 +64,10 @@ h3,
 /* -------------------------------------------- */
 .navbar {
   background-color: var(--accent-color);
+}
+p {
+  font-size: 1.25rem; /* or try 1.2rem for a little drama */
+  font-family: var(--font-body);
+  line-height: 1.75;
+  margin-bottom: 1.5rem;
 }
