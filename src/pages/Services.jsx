@@ -54,7 +54,7 @@ const Services = () => {
         />
         <ServiceCard
           title="Thai Herbal Compress"
-          description="This add-on can be added to any session. Thai Herbal Compresses are balls of herbs wrapped in muslin and heated then applied to the body along acupressure points to promote healing."
+          description="This add-on can be added to any session. Thai Herbal Compresses are balls of herbs wrapped in muslin and heated then applied to the body along acupressure points to promote healing.  If you would like to add a Thai Herbal Compress to your session, please let me know when you book.  $20"
           image={compressImg}
           alt="Warm Herbal Compress Therapy"
           imagePosition="left"
