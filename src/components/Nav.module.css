@@ -80,7 +80,7 @@
 /* 🌈 DROPDOWN MENU */
 .menuOverlay {
   position: fixed;
-  top: 200px;
+  top: 100px;
   right: 2rem;
   background: var(--bg-color);
   border-radius: 10px;
