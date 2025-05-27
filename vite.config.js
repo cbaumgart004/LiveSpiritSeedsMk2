@@ -15,7 +15,11 @@ export default defineConfig(({ command }) => {
               ext: '.br',
               threshold: 0,
             }),
-            viteCompression({ algorithm: 'gzip', ext: '.gz', threshold: 0 }),
+            viteCompression({
+              algorithm: 'gzip',
+              ext: '.gz',
+              threshold: 0,
+            }),
           ]
         : []),
     ],
@@ -27,9 +31,12 @@ export default defineConfig(({ command }) => {
     },
     server: {
       port: 5173,
+      host: true, // 🧭 allows mobile/LAN access (e.g. 192.168.1.x)
       strictPort: false,
       headers: isProduction
-        ? { 'Cache-Control': 'public, max-age=31536000, immutable' }
+        ? {
+            'Cache-Control': 'public, max-age=31536000, immutable',
+          }
         : {
             'Cache-Control': 'no-cache, no-store, must-revalidate',
             Pragma: 'no-cache',
