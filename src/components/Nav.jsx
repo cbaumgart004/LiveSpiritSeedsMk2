@@ -24,7 +24,7 @@ function Nav() {
       {/* 🌸 FIXED NAVBAR WITH CENTERED TITLE + BUTTON */}
       <nav className={`${styles.navbar} ${scrolled ? styles.scrolled : ''}`}>
         <div className={styles.navbarTopRow}>
-          <h1 className={styles.title}>SpiritSeeds Wellness</h1>
+          <h1 className={styles.title}>Spirit Seeds Wellness</h1>
           <div className={styles.hamburgerWrapper}>
             <Hamburger isOpen={isOpen} toggleMenu={toggleMenu} />
           </div>
