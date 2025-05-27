@@ -42,6 +42,11 @@ body {
   line-height: 1.6;
 }
 
+@media (max-width: 768px) {
+  body {
+    padding: 0 1rem; /* ⬅️ No top/bottom padding, gentle side padding */
+  }
+}
 /* -------------------------------------------- */
 /* 🌼 Typography */
 /* -------------------------------------------- */

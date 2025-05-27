@@ -37,6 +37,11 @@ function Nav() {
         <nav className={styles.menu}>
           <ul>
             <li>
+              <Link to="/" onClick={() => setIsOpen(false)}>
+                Home
+              </Link>
+            </li>
+            <li>
               <Link to="/services" onClick={() => setIsOpen(false)}>
                 Services
               </Link>

@@ -1,19 +1,16 @@
 /* 🌸 NAVBAR CONTAINER */
 .navbar {
   position: fixed;
-  top: 2rem; /* ⬅️ simulates margin-top */
-  left: 50%; /* ⬅️ centers it */
-  bottom: 2rem; /* ⬅️ simulates margin-bottom */
-  transform: translateX(-50%); /* ⬅️ centers it */
-  width: calc(100% - 4rem); /* ⬅️ simulates 2rem margin on left & right */
-  background-blend-mode: normal; /* ensures shimmer doesn’t blend too much */
+  top: 0;
+  left: 0;
+  width: 100%;
   height: 250px;
   z-index: 50;
   background-image: var(--navbar-background);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  border-radius: 10px;
+  border-radius: 0 0 10px 10px; /* ⬅️ just round the bottom, not the top */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -171,34 +168,52 @@
 
 /* 📱 RESPONSIVE ADJUSTMENTS */
 @media (max-width: 768px) {
+  .navbar {
+    top: 0;
+    left: 0;
+    bottom: auto;
+    transform: none;
+    width: 100%;
+    height: 120px; /* 💡 much more comfortable */
+    border-radius: 0;
+    padding: 0.5rem 1rem;
+  }
+
   .navbarTopRow {
-    flex-direction: row; /* 💫 keep it horizontal */
+    flex-direction: row;
     justify-content: center;
+    align-items: center;
+    height: 100%;
     gap: 1rem;
   }
 
   .hamburgerWrapper {
-    position: relative;
-    top: 0;
-    right: 0;
-    margin-top: 0;
-    margin-left: auto; /* ✨ forces it to the right */
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    margin: 0;
   }
 
   .title {
-    font-size: clamp(1.4rem, 5vw, 2.4rem); /* ⬅️ shrink more smoothly */
+    font-size: clamp(1.2rem, 5vw, 2.2rem);
+    text-align: center;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+    max-width: 90vw;
     padding: 0.4rem 1rem;
-    text-align: left;
-    white-space: nowrap;
-    max-width: 70vw;
-    overflow: visible; /* 🔄 no longer truncating */
-    text-overflow: unset; /* 🔄 no ellipsis */
+    margin: 0 auto;
   }
 }
 
 @media (max-width: 480px) {
+  .navbar {
+    height: 100px; /* 💫 even smaller for very short screens */
+    padding: 0.25rem 0.5rem;
+  }
+
   .title {
-    font-size: clamp(1.8rem, 8vw, 2.8rem);
-    padding: 0.5rem 2rem;
+    font-size: clamp(1rem, 5vw, 2rem);
+    padding: 0.3rem 0.5rem;
   }
 }
