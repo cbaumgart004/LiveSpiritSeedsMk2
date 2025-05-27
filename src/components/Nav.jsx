@@ -36,22 +36,13 @@ function Nav() {
         <nav className={styles.menu}>
           <ul>
             <li>
-              <a href="#">Services</a>
+              <a href="/services">Services</a>
             </li>
             <li>
               <a href="#">About</a>
             </li>
             <li>
               <a href="#">Values</a>
-            </li>
-            <li>
-              <a href="#">Store</a>
-            </li>
-            <li>
-              <a href="#">Signup</a>
-            </li>
-            <li>
-              <a href="#">Login</a>
             </li>
           </ul>
         </nav>
