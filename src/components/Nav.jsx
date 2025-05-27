@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom' // 🧭 Import Link
 import styles from './Nav.module.css'
 import Hamburger from './Hamburger'
 
@@ -36,13 +37,19 @@ function Nav() {
         <nav className={styles.menu}>
           <ul>
             <li>
-              <a href="/services">Services</a>
+              <Link to="/services" onClick={() => setIsOpen(false)}>
+                Services
+              </Link>
             </li>
             <li>
-              <a href="#">About</a>
+              <Link to="/" onClick={() => setIsOpen(false)}>
+                About
+              </Link>
             </li>
             <li>
-              <a href="#">Values</a>
+              <Link to="/" onClick={() => setIsOpen(false)}>
+                Values
+              </Link>
             </li>
           </ul>
         </nav>
