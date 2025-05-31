@@ -29,6 +29,17 @@ html.visible {
   --accent-color: #ccc;
   --navbar-height: 250px;
 }
+@media (max-width: 768px) {
+  :root {
+    --navbar-height: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --navbar-height: 100px;
+  }
+}
 
 /* -------------------------------------------- */
 /* 🌺 Base Styles */
