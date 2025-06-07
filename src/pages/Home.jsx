@@ -1,3 +1,5 @@
+//src/pages/Home.jsx
+
 import React from 'react'
 import Nav from '../components/Nav'
 import AboutSection from '../components/AboutSection/AboutSection'

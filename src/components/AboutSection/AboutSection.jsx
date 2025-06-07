@@ -1,4 +1,9 @@
+//src/components/AboutSection/AboutSection.jsx
+
 import React from 'react'
+
+import { Link } from 'react-router-dom'
+
 import './AboutSection.css'
 import melissaImage from '../../assets/SpiritSeedsLogo.jpg'
 
@@ -20,7 +25,9 @@ const AboutSection = () => {
             that address multiple layers of health and well-being. To learn more
             about Melissa, click the button below.
           </p>
-          <button className="learn-more">Learn More</button>
+          <Link to="/about" className="learn-more">
+            Learn More
+          </Link>
         </div>
       </div>
     </section>
