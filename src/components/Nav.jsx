@@ -47,7 +47,7 @@ function Nav() {
               </Link>
             </li>
             <li>
-              <Link to="/" onClick={() => setIsOpen(false)}>
+              <Link to="/about" onClick={() => setIsOpen(false)}>
                 About
               </Link>
             </li>
