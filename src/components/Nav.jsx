@@ -26,6 +26,7 @@ function Nav() {
       <nav className={`${styles.navbar} ${scrolled ? styles.scrolled : ''}`}>
         <div className={styles.navbarTopRow}>
           <h1 className={styles.title}>Spirit Seeds Wellness</h1>
+
           <div className={styles.hamburgerWrapper}>
             <Hamburger isOpen={isOpen} toggleMenu={toggleMenu} />
           </div>
@@ -39,6 +40,11 @@ function Nav() {
             <li>
               <Link to="/" onClick={() => setIsOpen(false)}>
                 Home
+              </Link>
+            </li>
+            <li>
+              <Link to="/upcoming" onClick={() => setIsOpen(false)}>
+                Upcoming
               </Link>
             </li>
             <li>

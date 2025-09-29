@@ -1,0 +1,74 @@
+@import '@/components/Home/AboutSection/AboutSection.css';
+
+/* 🧱 Section spacing */
+.section-container-first {
+  margin-top: calc(var(--navbar-height) + 10px);
+}
+
+/* 🪄 Full-width background container */
+.upcoming-section {
+  width: 100%;
+  background-image: var(--section-bg-image);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding: 4rem 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+/* 📦 Centered content box */
+.upcoming-box {
+  width: 100%;
+  max-width: 1000px;
+  background-color: var(--bg-color-light);
+  border: 4px solid var(--primary-color);
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+  padding: 2rem;
+  text-align: center;
+}
+
+/* 🌿 Title */
+
+/* 🖼️ Image container */
+.upcoming-image {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto 2rem;
+}
+
+/* 🖼️ Actual image */
+.upcoming-image img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+.btn {
+  margin: 5px;
+  color: var(--text-color);
+}
+/* 📱 Mobile stack */
+@media (max-width: 768px) {
+  .upcoming-box {
+    padding: 0rem 1rem;
+  }
+  .upcoming-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .upcoming-buttons .btn {
+    width: 100%;
+    max-width: 300px;
+    white-space: nowrap;
+  }
+
+  .upcoming-image {
+    max-width: 100%;
+  }
+}

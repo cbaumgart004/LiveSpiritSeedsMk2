@@ -1,3 +1,5 @@
+/*index.css
+
 /* -------------------------------------------- */
 /* 🌿 Font Imports */
 /* -------------------------------------------- */
@@ -49,7 +51,7 @@ body {
   background-color: var(--bg-color);
   color: var(--text-color);
   margin: 0;
-  padding: 2rem;
+  padding: 1rem;
   line-height: 1.6;
 }
 
@@ -68,7 +70,15 @@ h1 {
   color: var(--text-color);
 }
 
-h2,
+h2 {
+  font-size: 5rem;
+  color: var(--primary-color);
+  margin-bottom: 0.75rem;
+  font-family: var(--font-heading);
+  text-shadow: -1px -1px 0 var(--text-outline-color),
+    1px -1px 0 var(--text-outline-color), -1px 1px 0 var(--text-outline-color),
+    1px 1px 0 var(--text-outline-color); /* ✨ Outline effect for contrast */
+}
 h3,
 .component-header {
   font-family: var(--font-subheading);

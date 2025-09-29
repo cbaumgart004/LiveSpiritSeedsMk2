@@ -1,17 +1,20 @@
 //src/pages/Home.jsx
 
 import React from 'react'
-import Nav from '../components/Nav'
-import AboutSection from '../components/AboutSection/AboutSection'
-import ServicesSection from '../components/ServicesSection/ServicesSection'
-import ValuesSection from '../components/ValuesSection/ValuesSection'
+import Nav from '@/components/Nav'
+import UpcomingEventsSection from '@/components/Home/UpcomingEvents'
+import AboutSection from '@/components/Home/AboutSection/AboutSection.jsx'
+import ServicesSection from '@/components/ServicesSection/ServicesSection'
+import ValuesSection from '@/components/ValuesSection/ValuesSection'
 
 const Home = () => {
   return (
     <>
       <Nav />
-      <AboutSection />
+      <UpcomingEventsSection />
       <ServicesSection />
+      <AboutSection />
+
       <ValuesSection />
     </>
   )

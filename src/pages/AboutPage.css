@@ -1,4 +1,4 @@
-@import '../components/AboutSection/AboutSection.css';
+@import '@/components/Home/AboutSection/AboutSection.css';
 
 /* Optional enhancements for About page layout */
 .about-box {

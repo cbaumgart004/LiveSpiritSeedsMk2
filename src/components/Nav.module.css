@@ -58,7 +58,7 @@
 /* 🍔 HAMBURGER BUTTON WRAPPER */
 .hamburgerWrapper {
   position: absolute;
-  top: 1.25rem;
+  top: 3.25rem;
   right: 2rem;
   z-index: 60;
   display: flex;
@@ -80,7 +80,7 @@
 /* 🌈 DROPDOWN MENU */
 .menuOverlay {
   position: fixed;
-  top: 100px;
+  top: 9rem;
   right: 2rem;
   background: var(--bg-color);
   border-radius: 10px;
@@ -193,7 +193,10 @@
     right: 1rem;
     margin: 0;
   }
-
+  .menuOverlay {
+    top: 6.5rem;
+    right: 1rem;
+  }
   .title {
     font-size: clamp(1.2rem, 5vw, 2.2rem);
     text-align: center;
@@ -216,4 +219,9 @@
     font-size: clamp(1rem, 5vw, 2rem);
     padding: 0.3rem 0.5rem;
   }
+}
+.menuOverlay {
+  top: 4rem;
+  right: 1rem;
+  min-width: 100px;
 }

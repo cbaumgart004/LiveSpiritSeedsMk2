@@ -1,0 +1,210 @@
+/* -------------------------------------------- */
+/* 🌿 Component Utility Styles */
+/* -------------------------------------------- */
+#root {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-family: var(--font-body);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  color: white;
+  background: var(--gradient);
+  background-size: 200%;
+  background-position: left;
+  transition: background-position 0.4s ease, transform 0.3s ease,
+    box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  text-decoration: none;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(25deg);
+  animation: shimmer 2.5s infinite linear;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.btn:hover::before,
+.btn:active::before {
+  opacity: 1;
+}
+
+.btn:hover,
+.btn:active {
+  background-position: right;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card {
+  background-color: var(--bg-color-light);
+  color: var(--text-color);
+  border: 4px solid var(--primary-color);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  z-index: 0;
+  text-align: center;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+.card h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.card p {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* -------------------------------------------- */
+/* 🔄 Reverse Layout Logic */
+/* <div className="section-container reverse"> */
+/* -------------------------------------------- */
+.reverse {
+  flex-direction: row-reverse;
+}
+
+.reverse .section-container {
+  transform: scaleX(-1);
+}
+
+.reverse .section-container > * {
+  transform: scaleX(-1);
+}
+
+/* -------------------------------------------- */
+/* 📐 Grid Utility Class */
+/* -------------------------------------------- */
+.grid {
+  display: grid;
+  gap: 2.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* -------------------------------------------- */
+/* ✨ Shimmer Container Section */
+/* -------------------------------------------- */
+.section-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5rem;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  flex-direction: row;
+  background-image: var(--section-bg-image);
+  min-height: 400px;
+  padding: 2rem 2rem;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-attachment: scroll;
+  color: var(--text-color);
+  text-align: center;
+  border-radius: 1rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+/* Only apply margin-top when explicitly requested */
+.section-container-first {
+  margin-top: calc(var(--navbar-height) + 10px);
+}
+
+.section-container::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  animation: shimmer 3s infinite linear;
+}
+
+.section-container:hover::before,
+.section-container:active::before {
+  opacity: 1;
+}
+/* -------------------------------------------- */
+/* 📦 Info Box (Semantic alternative to .card) */
+/* -------------------------------------------- */
+.info-box {
+  background-color: var(--bg-color-light);
+  border: 4px solid var(--primary-color);
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+  padding: 1rem 1rem;
+  box-sizing: border-box;
+  width: 100%;
+  text-align: left;
+  flex-grow: 2;
+  max-width: 1300px;
+}
+/* -------------------------------------------- */
+/* 🔠 Keyframes */
+/* -------------------------------------------- */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) rotate(25deg);
+  }
+  100% {
+    transform: translateX(100%) rotate(25deg);
+  }
+}
+
+@media (max-width: 600px) {
+  .section-container {
+    padding: 2rem;
+    margin-top: var(--navbar-height);
+  }
+
+  .card {
+    padding: 1.25rem;
+  }
+}

@@ -8,7 +8,7 @@
   <script>
     window.addEventListener('load', () => {
       const params = new URLSearchParams(window.location.search);
-      const theme = params.get('theme') || 'spring';
+      const theme = params.get('theme') || 'summer';
       document.body.classList.add(theme);
       document.documentElement.classList.add('visible'); // triggers CSS fade
     });

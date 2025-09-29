@@ -30,8 +30,8 @@
   --bg-color: #fff4da; /* Light golden cream for warmth */
   --bg-color-light: rgba(255, 244, 218, 0.5);
   --text-outline-color: #8b5e00; /* Muted honey brown for grounding */
-  --gradient: linear-gradient(to right, #ffb347, #ffcc33);
-  --gradient-reverse: linear-gradient(to left, #ffb347, #ffcc33);
+  --gradient: linear-gradient(to right, #e9b87d 0%, #e9c1ff 100%);
+  --gradient-reverse: linear-gradient(to left, #e9b87d 0%, #e9c1ff 100%);
   --navbar-background: url('../assets/Logo_Summer.jpg');
   --section-bg-image: url('/src/assets/backgrounds/SummerWaterColor.jpg');
   --blossom-icon: url('/src/assets/icons/blossom-gold.png');
