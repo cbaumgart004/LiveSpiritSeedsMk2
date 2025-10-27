@@ -1,11 +1,7 @@
-/*
-/components/Home/AboutSection/AboutSection.css
-*/
-
 .about-section {
   background-image: var(--section-bg-image);
   min-height: 400px;
-  padding: 5rem 2rem;
+  padding: 4rem 2rem;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center top;
@@ -27,11 +23,11 @@
 
 .about-container {
   display: flex;
-  align-items: center; /* ⬅️ vertically center */
+  align-items: center;
   justify-content: center;
-  gap: 5rem; /* ⬅️ increased space between image and box */
+  gap: 5rem;
   flex-wrap: wrap;
-  max-width: 1300px; /* slightly roomier container */
+  max-width: 1300px;
   margin: 0 auto;
   flex-direction: row;
 }
@@ -61,7 +57,7 @@
   width: 100%;
   text-align: left;
   flex-grow: 2;
-  max-width: 850px; /* ⬅️ increased width for spaciousness */
+  max-width: 850px;
 }
 
 .about-box h2 {
@@ -102,8 +98,45 @@
   }
 }
 
-@media (max-width: 480px) {
+/* 🔧 Mobile tweaks */
+@media (max-width: 768px) {
+  .about-section {
+    padding: 2rem 1rem;
+  }
+
+  .about-container {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
   .about-image {
-    display: none;
+    display: block;
+    max-width: 90%;
+    margin: 0 auto;
+  }
+
+  .about-box {
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .about-section h2 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-section {
+    padding: 1.5rem 1rem;
+  }
+
+  .about-box {
+    padding: 1rem;
+  }
+
+  .about-section h2 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
   }
 }

@@ -26,7 +26,7 @@ const AboutSection = () => {
             about Melissa, click the button below.
           </p>
           <Link to="/about" className="btn">
-            Learn More
+            <span className="btn-content">Learn More</span>
           </Link>
         </div>
       </div>

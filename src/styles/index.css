@@ -1,0 +1,77 @@
+/* Font imports */
+@import url('https://fonts.googleapis.com/css2?family=Euphoria+Script&family=Farsan&family=Glacial+Indifference&display=swap');
+
+/* Theme fade-in */
+html {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease;
+}
+
+html.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Base styles */
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-color); /* ⚠️ Make sure this is defined */
+  color: var(--text-color);
+  margin: 0;
+  padding: 1rem;
+  line-height: 1.6;
+}
+
+/* -------------------------------------------- */
+/* 📄 Page Wrapper Utility (Global Layout Rule) */
+/* -------------------------------------------- */
+.page-wrapper {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 0 1rem;
+  }
+}
+
+/* Typography */
+.title,
+.site-title,
+h1 {
+  font-family: var(--font-heading);
+  color: var(--text-color);
+}
+
+h2 {
+  font-size: 5rem;
+  color: var(--primary-color);
+  margin-bottom: 0.75rem;
+  font-family: var(--font-heading);
+  text-shadow: -1px -1px 0 var(--text-outline-color),
+    1px -1px 0 var(--text-outline-color), -1px 1px 0 var(--text-outline-color),
+    1px 1px 0 var(--text-outline-color);
+}
+
+h3,
+.component-header {
+  font-family: var(--font-subheading);
+  color: var(--text-color);
+}
+
+/* Components */
+.navbar {
+  background-color: var(--accent-color);
+}
+
+p {
+  font-size: 1.25rem;
+  font-family: var(--font-body);
+  line-height: 1.75;
+  margin-bottom: 1.5rem;
+}

@@ -63,8 +63,8 @@
   }
 
   .upcoming-buttons .btn {
-    width: 100%;
-    max-width: 300px;
+    width: auto;
+    max-width: 90%;
     white-space: nowrap;
   }
 

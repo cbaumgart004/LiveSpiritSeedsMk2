@@ -4,9 +4,16 @@ import Services from './pages/Services'
 import About from './pages/About'
 import Upcoming from './pages/Upcoming'
 import ScrollToTop from './components/ScrollToTop'
+import { useEffect } from 'react'
+import { setupButtonClickFlash } from './utils/buttonFlashHandler'
+
 // import About, Contact, etc as you build them
 
 function App() {
+  useEffect(() => {
+    setupButtonClickFlash()
+  }, [])
+
   return (
     <Router>
       <ScrollToTop /> {/* 💫 Always scroll to top on route change */}

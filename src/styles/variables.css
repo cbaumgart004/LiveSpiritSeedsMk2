@@ -1,0 +1,17 @@
+:root {
+  --font-heading: 'Euphoria Script', cursive;
+  --font-subheading: 'Farsan', cursive;
+  --font-body: 'Glacial Indifference', sans-serif;
+
+  --navbar-height: 250px;
+}
+@media (max-width: 768px) {
+  :root {
+    --navbar-height: 120px;
+  }
+}
+@media (max-width: 480px) {
+  :root {
+    --navbar-height: 100px;
+  }
+}

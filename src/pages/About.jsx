@@ -9,12 +9,12 @@ const About = () => {
   return (
     <>
       <Nav />
-      <section className="about-section">
-        <div className="about-container">
+      <section className="section-container-first">
+        <div className="section-container">
           <div className="about-image">
             <img src={melissaImage} alt="Melissa Carey" />
           </div>
-          <div className="about-box">
+          <div className="info-box">
             <h2>Meet Melissa Carey</h2>
             <p>
               Melissa Carey, the owner and founder of Spirit Seeds Wellness, is
@@ -58,11 +58,11 @@ const About = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Book Service
+                <span className="btn-content">Book Now</span>
               </a>
 
               <Link to="/" className="btn">
-                Home
+                <span className="btn-content">Home</span>
               </Link>
             </div>
           </div>
