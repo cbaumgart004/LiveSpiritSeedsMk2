@@ -126,7 +126,7 @@ const Services = () => {
 
         <ServiceCard
           title="Abhyanga Ayurvedic Massage"
-          description="Abhyanga is an Ayurvedic treatment focusing on balancing the energy of the body. We will do tongue and pulse diagnosis and mix a personal oil with essential oils, or infused oils for a full body treatment.  Book a 75 minute session now, $130."
+          description="Abhyanga is an Ayurvedic treatment focusing on balancing the energy of the body. We will do tongue and pulse diagnosis and mix a personal oil with essential oils, or infused oils for a full body treatment.  Book a 75 minute session now, $125."
           image={abhyangaImg}
           alt="Abhyanga Ayurvedic Massage with Herbal Oils"
           imagePosition="right"
@@ -144,7 +144,7 @@ const Services = () => {
 
         <ServiceCard
           title="Chi Ne Sang Abdominal Detox"
-          description="Abdominal detox bodywork based on Chinese meridian theory, works the fascia and pressure points of the belly to aid in full function of the organs and connective tissues of the back and spine.  Book a 75 minute session now, $130."
+          description="Abdominal detox bodywork based on Chinese meridian theory, works the fascia and pressure points of the belly to aid in full function of the organs and connective tissues of the back and spine.  Book a 75 minute session now, $135."
           image={chiNeSangImg}
           alt="Chi Ne Sang Abdominal Detox Therapy"
           imagePosition="left"
