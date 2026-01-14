@@ -19,7 +19,7 @@ body {
   background-color: var(--bg-color); /* ⚠️ Make sure this is defined */
   color: var(--text-color);
   margin: 0;
-  padding: 1rem;
+  padding: 0;
   line-height: 1.6;
 }
 
@@ -27,16 +27,18 @@ body {
 /* 📄 Page Wrapper Utility (Global Layout Rule) */
 /* -------------------------------------------- */
 .page-wrapper {
-  max-width: 1300px;
+  max-width: 100%;
+  width: 100%;
+  padding: 0 1rem; /* 1rem from the viewport edge */
   margin: 0 auto;
-  padding: 0 1rem;
+
   box-sizing: border-box;
   overflow-x: hidden;
 }
 
 @media (max-width: 768px) {
   body {
-    padding: 0 1rem;
+    padding: 1rem;
   }
 }
 

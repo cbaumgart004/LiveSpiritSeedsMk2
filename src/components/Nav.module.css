@@ -99,6 +99,7 @@
 
 .menuOverlay.show {
   transform: scaleY(1);
+  top: 10rem;
   opacity: 1;
   pointer-events: all;
 }

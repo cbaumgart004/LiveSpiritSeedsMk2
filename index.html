@@ -1,55 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-  <style>
-    html {
-      visibility: hidden;
-    }
-  </style>
-  <script>
-    window.addEventListener('load', () => {
-      const params = new URLSearchParams(window.location.search);
-      const theme = params.get('theme') || 'fall';
-      document.body.classList.add(theme);
-      document.documentElement.classList.add('visible'); // triggers CSS fade
-    });
-  </script>
-
-  
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Euphoria Script for headings -->
+
+    <!-- Prevent flash before theme applies -->
+    <style>
+      html {
+        visibility: hidden;
+      }
+      html.visible {
+        visibility: visible;
+      }
+    </style>
+
+    <!-- Google Fonts -->
     <link
       href="https://fonts.googleapis.com/css2?family=Euphoria+Script&display=swap"
       rel="stylesheet"
     />
-
-    <!-- Farsan for subheadings -->
     <link
       href="https://fonts.googleapis.com/css2?family=Farsan&display=swap"
       rel="stylesheet"
     />
-
-    <!-- Glacial Indifference (self-hosted or alt below) -->
     <link
       href="https://fonts.googleapis.com/css2?family=Assistant&display=swap"
       rel="stylesheet"
     />
-    <!-- Assistant is a similar fallback -->
 
+    <!-- Favicon -->
     <link rel="icon" type="image/png" href="/favicon.png" />
+
     <title>SpiritSeeds Wellness</title>
 
-    <!-- ✅ Preload critical JavaScript to speed up Largest Contentful Paint (LCP) -->
+    <!-- Preload entry script -->
     <link rel="preload" as="script" href="/src/main.jsx" />
 
-    <!-- ✅ Ensure proper caching -->
+    <!-- Caching -->
     <meta
       http-equiv="Cache-Control"
       content="public, max-age=31536000, immutable"
     />
   </head>
+
   <body>
     <div id="root"></div>
+
+    <!-- Vite entry point -->
     <script type="module" src="/src/main.jsx"></script>
+    
   </body>
 </html>

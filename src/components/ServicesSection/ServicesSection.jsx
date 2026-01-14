@@ -1,6 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import '@/styles/components.css'
+import '@/styles/animations.css'
+import './ServicesSection.css' // local layout + grid tweaks
 
 const ServicesSection = () => {
   const services = [
@@ -33,14 +35,18 @@ const ServicesSection = () => {
   return (
     <section className="section-container">
       <h2>Our Services</h2>
-      <div className="grid">
+
+      <div className="serviceGrid">
         {services.map((s, i) => (
-          <div className="card" key={i}>
+          <div className="card shimmer-on-load" key={i}>
             <h3>{s.title}</h3>
             <p>{s.description}</p>
-            <Link to="/services" className="btn">
-              Learn More
-            </Link>
+
+            <div className="button-row">
+              <Link to="/services" className="btn">
+                Learn More
+              </Link>
+            </div>
           </div>
         ))}
       </div>

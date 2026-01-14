@@ -1,14 +1,144 @@
 /* -------------------------------------------- */
-/* 🌿 Component Utility Styles */
+/* 🌿 Core Layout */
 /* -------------------------------------------- */
+
 #root {
   margin: 0 auto;
   text-align: center;
 }
 
+.first-section {
+  margin-top: calc(var(--navbar-height) + 1rem);
+}
+
 /* -------------------------------------------- */
-/* 🔘 Universal Button Styles with Click Feedback */
+/* 💠 Section Container */
 /* -------------------------------------------- */
+
+.section-container {
+  position: relative;
+  isolation: isolate; /* keeps ::before behind content, not behind the page */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 3rem;
+
+  box-sizing: border-box;
+  padding: 1rem; /* your breathing room */
+  margin: 2rem auto;
+
+  width: 100%;
+
+  margin-inline: auto;
+  padding-inline: clamp(
+    1rem,
+    3vw,
+    3rem
+  ); /* responsive side gutter without calc hacks */
+
+  color: var(--text-color);
+  text-align: left;
+  border-radius: 1rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  overflow: visible;
+
+  background-image: var(--section-bg-image);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Default: image left / text right */
+.section-container {
+  flex-direction: row;
+}
+
+/* Reverse layout */
+.section-container.reverse {
+  flex-direction: row-reverse;
+
+  /* IMPORTANT: let ::before own the background so it can flip cleanly */
+  background-image: none;
+}
+
+.section-container.reverse::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+
+  background-image: var(--section-bg-image);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  transform: scaleX(-1);
+
+  z-index: -1; /* safe now because isolation:isolate keeps it inside the container */
+  pointer-events: none;
+}
+
+/* -------------------------------------------- */
+/* 🧱 Card */
+/* -------------------------------------------- */
+
+.card {
+  background-color: var(--bg-color-light);
+  color: var(--text-color);
+  border: 3px solid var(--primary-color);
+  border-radius: 12px;
+  padding: 2rem;
+  flex: 1 1 50%;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+.card h2,
+.card h3 {
+  font-family: var(--font-subheading);
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  text-shadow: -1px -1px 0 var(--text-outline-color),
+    1px -1px 0 var(--text-outline-color), -1px 1px 0 var(--text-outline-color),
+    1px 1px 0 var(--text-outline-color);
+}
+
+.card p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* -------------------------------------------- */
+/* 🖼️ Image Column */
+/* -------------------------------------------- */
+
+.media {
+  flex: 1 1 45%;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.media img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  object-fit: cover;
+}
+
+/* -------------------------------------------- */
+/* 🔘 Button */
+/* -------------------------------------------- */
+
 .btn {
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
@@ -19,13 +149,22 @@
   color: white;
   background: var(--gradient);
   background-size: 200%;
-  background-position: left;
   transition: background-position 0.4s ease, transform 0.2s ease,
     box-shadow 0.2s ease;
   position: relative;
   overflow: hidden;
   text-decoration: none;
 }
+
+.btn:hover {
+  background: var(--gradient-reverse);
+  transform: scale(1.05);
+}
+
+.btn:active {
+  animation: button-press-grow 0.25s ease forwards;
+}
+
 .button-row {
   display: flex;
   gap: 1.5rem;
@@ -33,115 +172,14 @@
   justify-content: center;
   flex-wrap: wrap;
 }
-/* 💎 Content layer to prevent shimmer overlaying text */
-.btn-content {
-  position: relative;
-  z-index: 2;
-}
-
-/* ✨ Background shimmer */
-.btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 200%;
-  height: 100%;
-  background: linear-gradient(
-    120deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.4) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  transform: rotate(25deg);
-  animation: shimmer 2.5s infinite linear;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 1;
-}
-.btn:hover::before {
-  opacity: 1;
-}
-
-/* 🫳 Tap down effect for fast feedback */
-.btn:active {
-  transform: scale(0.97);
-  filter: brightness(0.95);
-}
-
-/* 🌊 Ripple glow pulse */
-.btn::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 10px;
-  height: 10px;
-  background: var(--primary-color);
-  border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  opacity: 0.5;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.btn.flash::after {
-  animation: ripple-effect 0.5s ease-out forwards;
-}
-
-/* -------------------------------------------- */
-/* 🧱 Card Component */
-/* -------------------------------------------- */
-.card {
-  background-color: var(--bg-color-light);
-  color: var(--text-color);
-  border: 4px solid var(--primary-color);
-  border-radius: 16px;
-  padding: 2rem;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  position: relative;
-  z-index: 0;
-  text-align: center;
-  overflow: hidden;
-}
-
-.card:hover {
-  transform: translateY(-6px) scale(1.02);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
-}
-
-.card h3 {
-  font-size: 1.25rem;
-  margin-bottom: 0.75rem;
-}
-
-.card p {
-  font-size: 1rem;
-  line-height: 1.6;
-}
-
-/* -------------------------------------------- */
-/* 🔄 Reverse Layout Utility */
-/* -------------------------------------------- */
-.reverse {
-  flex-direction: row-reverse;
-}
-
-.reverse .section-container {
-  transform: scaleX(-1);
-}
-
-.reverse .section-container > * {
-  transform: scaleX(-1);
-}
 
 /* -------------------------------------------- */
 /* 📐 Grid Utility */
 /* -------------------------------------------- */
+
 .grid {
   display: grid;
-  gap: 2.5rem;
+
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   justify-content: center;
   width: 100%;
@@ -151,139 +189,57 @@
 }
 
 /* -------------------------------------------- */
-/* ✨ Section Container (Shimmer Background) */
+/* 📱 Responsive */
 /* -------------------------------------------- */
-.section-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5rem;
-  flex-wrap: wrap;
-  flex-direction: row;
-  margin: 0 auto;
-  padding: 2rem 2rem;
-  min-height: 400px;
-  background-image: var(--section-bg-image);
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center top;
-  background-attachment: scroll;
-  color: var(--text-color);
-  text-align: center;
-  border-radius: 1rem;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-  position: relative;
-  overflow: hidden;
-  margin-bottom: 2rem;
-}
 
-.section-container-first {
-  margin-top: calc(var(--navbar-height) + 1rem);
-}
+@media (max-width: 768px) {
+  h2 {
+    font-size: clamp(2rem, 7vw, 3rem);
+    line-height: 1.1;
+    text-align: center;
+  }
 
-.section-container::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.2) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  z-index: 1;
-  opacity: 0;
-  pointer-events: none;
-  animation: shimmer 3s infinite linear;
-}
+  .section-container {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.5rem 0.5rem; /* trimmed */
+    margin: 0.5rem auto; /* trimmed */
+    gap: 0.5rem; /* less giant gap between image and card */
+  }
 
-.section-container:hover::before,
-.section-container:active::before {
-  opacity: 1;
+  /* Override reverse: still column, not reversed */
+  .section-container.reverse {
+    flex-direction: column;
+  }
+
+  /* Ensure order: image first, text second */
+  .media {
+    order: 1;
+  }
+
+  .section-container > .card {
+    order: 2;
+  }
+
+  .media,
+  .section-container > .card {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+
+  /* disable mirrored watercolor on mobile */
+  .section-container.reverse::before {
+    transform: none;
+  }
 }
 
 /* -------------------------------------------- */
-/* 🧾 Info Box Utility */
+/* ♿ Reduced Motion */
 /* -------------------------------------------- */
-.info-box {
-  background-color: var(--bg-color-light);
-  border: 4px solid var(--primary-color);
-  border-radius: 12px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
-  padding: 1rem 1rem;
-  box-sizing: border-box;
-  width: 100%;
-  text-align: left;
-  flex-grow: 2;
-  max-width: 1300px;
-}
 
-/* -------------------------------------------- */
-/* ✨ Keyframes */
-/* -------------------------------------------- */
-@keyframes shimmer {
-  0% {
-    transform: translateX(-100%) rotate(25deg);
-  }
-  100% {
-    transform: translateX(100%) rotate(25deg);
-  }
-}
-
-/* 🧨 Flash animation */
-@keyframes btn-flash {
-  0% {
-    transform: scale(1);
-    box-shadow: none;
-    background: var(--gradient);
-    outline: none;
-  }
-  30% {
-    transform: scale(1.1);
-    background: var(--gradient-reverse);
-    box-shadow: 0 0 10px var(--primary-color);
-    outline: 3px solid var(--primary-color);
-    outline-offset: 2px;
-  }
-  100% {
-    transform: scale(1);
-    background: var(--gradient);
-    box-shadow: none;
-    outline: none;
-  }
-}
-
-.btn.flash {
-  animation: btn-flash 0.6s ease forwards;
-}
-
-/* 🌊 Ripple pulse keyframes */
-@keyframes ripple-effect {
-  to {
-    transform: translate(-50%, -50%) scale(15);
-    opacity: 0;
-  }
-}
-
-/* ✨ Shimmer keyframes */
-@keyframes shimmer {
-  0% {
-    transform: translateX(-100%) rotate(25deg);
-  }
-  100% {
-    transform: translateX(100%) rotate(25deg);
-  }
-}
-
-/* ♿ Motion accessibility support */
 @media (prefers-reduced-motion: reduce) {
   .btn,
-  .btn::before,
-  .btn.flash,
-  .btn::after {
+  .card {
     transition: none !important;
     animation: none !important;
   }

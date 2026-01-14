@@ -26,9 +26,6 @@
 }
 
 /* When open, morph into 'X' */
-.hamburger.open {
-  background: transparent;
-}
 
 .hamburger.open span:nth-child(1) {
   transform: translateY(clamp(6px, 1.2vw, 10px)) rotate(45deg);

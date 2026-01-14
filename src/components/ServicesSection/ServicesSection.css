@@ -1,140 +1,33 @@
-.services-section {
-  margin-top: calc(var(--navbar-height) + 10px);
-  position: relative;
-  padding: 5rem 2rem;
+/* -------------------------------------------- */
+/* 🌿 Home Page – Our Services Section */
+/* -------------------------------------------- */
+
+/* Layout container uses global section-container as base */
+.section-container {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 3rem;
   text-align: center;
-  border-radius: 1rem;
-  color: var(--text-color);
-  z-index: 1;
-  overflow: hidden;
 }
 
-.services-section::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: var(--section-bg-image);
-  background-size: cover;
-  background-position: center top;
-  background-repeat: no-repeat;
-  transform: scaleX(-1); /* ✨ Mirror only the background */
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.95; /* Optional: soften the background */
+/* Add offset for topmost section */
+.first-section {
+  margin-top: calc(var(--navbar-height) + 1rem);
 }
 
-.services-section > * {
-  position: relative;
-  z-index: 1;
-}
-
-/* Grid layout */
-.services-grid {
+/* Responsive grid for the service cards */
+.serviceGrid {
   display: grid;
-  gap: 2.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  justify-content: center;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
 }
-.services-section h2 {
-  color: var(--primary-color);
-  font-size: 5rem;
-  margin-bottom: 1.25rem;
-  font-family: var(--font-heading);
-}
-/* Service card styling */
-.service-card {
-  background-color: var(--bg-color-light);
-  color: var(--text-color);
-  border-radius: 16px;
-  padding: 2rem;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  position: relative;
-  z-index: 0;
-  text-align: center;
-  overflow: hidden;
-}
 
-.service-card h3 {
-  font-size: 1.25rem;
-  margin-bottom: 0.75rem;
-}
-
-.service-card p {
-  font-size: 1rem;
-  line-height: 1.6;
-}
-
-/* Elegant hover */
-.service-card:hover {
-  transform: translateY(-6px) scale(1.02);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
-}
-
-/* Learn more button */
-.learn-more {
-  margin-top: 1.5rem;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  font-family: var(--font-body, 'Glacial Indifference', sans-serif);
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  color: white;
-  background: var(--gradient);
-  background-size: 200%;
-  background-position: left;
-  transition: background-position 0.4s ease, transform 0.3s ease,
-    box-shadow 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
-}
-
-/* Shimmer overlay inside the button */
-.learn-more::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    120deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.4) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  transform: rotate(25deg);
-  animation: shimmer 2.5s infinite linear;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 2;
-}
-
-/* Show shimmer on hover/click */
-.learn-more:hover::before,
-.learn-more:active::before {
-  opacity: 1;
-}
-
-/* Add button lift effect */
-.learn-more:hover,
-.learn-more:active {
-  background-position: right;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-/* Keyframes for shimmer */
-@keyframes shimmer {
-  0% {
-    transform: translateX(-100%) rotate(25deg);
-  }
-  100% {
-    transform: translateX(100%) rotate(25deg);
+/* Optional tighter spacing on smaller viewports */
+@media (max-width: 768px) {
+  .serviceGrid {
+    grid-template-columns: 1fr;
   }
 }
