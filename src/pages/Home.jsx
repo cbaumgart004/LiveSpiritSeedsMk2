@@ -2,7 +2,7 @@
 
 import React from 'react'
 import Nav from '@/components/Nav'
-import UpcomingEventsSection from '@/components/Home/UpcomingEvents'
+import UpcomingEventsSection from '@/components/Home/UpcomingEvents.jsx'
 import AboutSection from '@/components/Home/AboutSection/AboutSection.jsx'
 import ServicesSection from '@/components/ServicesSection/ServicesSection'
 import ValuesSection from '@/components/ValuesSection/ValuesSection'

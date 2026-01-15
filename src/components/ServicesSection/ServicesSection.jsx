@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import '@/styles/components.css'
+import '@/styles/layout.css'
 import '@/styles/animations.css'
 import './ServicesSection.css' // local layout + grid tweaks
 
