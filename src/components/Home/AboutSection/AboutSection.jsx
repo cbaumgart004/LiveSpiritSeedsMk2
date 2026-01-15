@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import '@/styles/components.css'
+
 import melissaImage from '@/assets/SpiritSeedsLogo.jpg'
 
 const AboutSection = () => {

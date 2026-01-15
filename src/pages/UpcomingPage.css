@@ -1,5 +1,3 @@
-@import '@/components/Home/AboutSection/AboutSection.css';
-
 /* 🧱 Section spacing */
 .section-container-first {
   margin-top: calc(var(--navbar-height) + 10px);

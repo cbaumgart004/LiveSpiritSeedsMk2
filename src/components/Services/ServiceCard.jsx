@@ -1,10 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-
 import styles from './ServiceCard.module.css'
 import '@/styles/components.css'
+import '@/styles/layout.css'
 import '@/styles/animations.css'
-
 const ServiceCard = ({
   title,
   description,

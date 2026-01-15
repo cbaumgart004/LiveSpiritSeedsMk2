@@ -1,0 +1,164 @@
+/*//src.styles/layout.css*/
+
+/* -------------------------------------------- */
+/* 🌿 Core Layout */
+/* -------------------------------------------- */
+
+#root {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.first-section {
+  margin-top: calc(var(--navbar-height) + 1rem);
+}
+
+/* -------------------------------------------- */
+/* 💠 Section Container */
+/* -------------------------------------------- */
+
+.section-container {
+  position: relative;
+  isolation: isolate; /* keeps ::before behind content, not behind the page */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 3rem;
+  flex-direction: row;
+  box-sizing: border-box;
+  padding: 1rem; /* your breathing room */
+  margin: 2rem auto;
+
+  width: 100%;
+
+  margin-inline: auto;
+  padding-inline: clamp(
+    1rem,
+    3vw,
+    3rem
+  ); /* responsive side gutter without calc hacks */
+
+  color: var(--text-color);
+  text-align: left;
+  border-radius: 1rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  overflow: visible;
+
+  background-image: var(--section-bg-image);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Reverse layout */
+.section-container.reverse {
+  flex-direction: row-reverse;
+
+  /* IMPORTANT: let ::before own the background so it can flip cleanly */
+  background-image: none;
+}
+
+.section-container.reverse::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+
+  background-image: var(--section-bg-image);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  transform: scaleX(-1);
+
+  z-index: -1; /* safe now because isolation:isolate keeps it inside the container */
+  pointer-events: none;
+}
+
+/* -------------------------------------------- */
+/* 🖼️ Image Column */
+/* -------------------------------------------- */
+
+.media {
+  flex: 1 1 45%;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.media img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  object-fit: cover;
+}
+
+/* -------------------------------------------- */
+/* 📐 Grid Utility */
+/* -------------------------------------------- */
+
+.grid {
+  display: grid;
+
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (max-width: 768px) {
+  h2 {
+    font-size: clamp(2rem, 7vw, 3rem);
+    line-height: 1.1;
+    text-align: center;
+  }
+
+  .section-container {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.5rem 0.5rem; /* trimmed */
+    margin: 0.5rem auto; /* trimmed */
+    gap: 0.5rem; /* less giant gap between image and card */
+  }
+
+  /* Override reverse: still column, not reversed */
+  .section-container.reverse {
+    flex-direction: column;
+  }
+
+  /* Ensure order: image first, text second */
+  .media {
+    order: 1;
+  }
+
+  .section-container > .card {
+    order: 2;
+  }
+
+  .media,
+  .section-container > .card {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+
+  /* disable mirrored watercolor on mobile */
+  .section-container.reverse::before {
+    transform: none;
+  }
+}
+
+/* -------------------------------------------- */
+/* ♿ Reduced Motion */
+/* -------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .card {
+    transition: none !important;
+    animation: none !important;
+  }
+}
