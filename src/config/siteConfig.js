@@ -3,7 +3,7 @@
 // 🟣 GLOBAL THEME
 // Accepts: "fall", "winter", "spring", "summer"
 // (Further themes can be added in your CSS as needed)
-export const SITE_THEME = 'winter'
+export const SITE_THEME = 'spring'
 
 // 🟡 FEATURE FLAGS
 // Global availability toggle for Thai Compress
