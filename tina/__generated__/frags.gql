@@ -20,10 +20,20 @@ fragment PageParts on Page {
       body
       image
       imageSide
+      buttons {
+        __typename
+        label
+        url
+      }
     }
     ... on PageBlocksStackedSection {
       title
       body
+      buttons {
+        __typename
+        label
+        url
+      }
     }
     ... on PageBlocksServiceCard {
       title
@@ -33,7 +43,8 @@ fragment PageParts on Page {
       bookingOptions {
         __typename
         label
-        url
+        bookUrl
+        note
       }
     }
     ... on PageBlocksValuesSection {

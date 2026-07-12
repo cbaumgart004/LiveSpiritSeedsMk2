@@ -3,6 +3,21 @@ import { defineConfig } from 'tinacms'
 const SEASONS = ['spring', 'summer', 'fall', 'winter']
 const SIDES = ['left', 'right']
 
+// Reusable list of call-to-action buttons.
+const buttonsField = {
+  type: 'object' as const,
+  name: 'buttons',
+  label: 'Buttons',
+  list: true,
+  ui: {
+    itemProps: (item: { label?: string }) => ({ label: item?.label || 'Button' }),
+  },
+  fields: [
+    { type: 'string' as const, name: 'label', label: 'Label' },
+    { type: 'string' as const, name: 'url', label: 'URL' },
+  ],
+}
+
 // --- Block templates (the palette Melissa adds/reorders on a page) ---
 // Each maps to a CSS primitive from ADR 0001.
 
@@ -15,6 +30,7 @@ const splitSection = {
     { type: 'rich-text', name: 'body', label: 'Body' },
     { type: 'image', name: 'image', label: 'Image' },
     { type: 'string', name: 'imageSide', label: 'Image Side', options: SIDES },
+    buttonsField,
   ],
 }
 
@@ -25,6 +41,7 @@ const stackedSection = {
   fields: [
     { type: 'string', name: 'title', label: 'Title' },
     { type: 'rich-text', name: 'body', label: 'Body' },
+    buttonsField,
   ],
 }
 
@@ -45,7 +62,8 @@ const serviceCard = {
       ui: { itemProps: (item: { label?: string }) => ({ label: item?.label || 'Booking option' }) },
       fields: [
         { type: 'string', name: 'label', label: 'Label' },
-        { type: 'string', name: 'url', label: 'Booking URL' },
+        { type: 'string', name: 'bookUrl', label: 'Booking URL' },
+        { type: 'string', name: 'note', label: 'Note' },
       ],
     },
   ],
@@ -68,17 +86,7 @@ const eventSection = {
     { type: 'string', name: 'title', label: 'Title' },
     { type: 'rich-text', name: 'body', label: 'Body' },
     { type: 'image', name: 'images', label: 'Images', list: true },
-    {
-      type: 'object',
-      name: 'buttons',
-      label: 'Buttons',
-      list: true,
-      ui: { itemProps: (item: { label?: string }) => ({ label: item?.label || 'Button' }) },
-      fields: [
-        { type: 'string', name: 'label', label: 'Label' },
-        { type: 'string', name: 'url', label: 'URL' },
-      ],
-    },
+    buttonsField,
   ],
 }
 
@@ -93,7 +101,7 @@ export default defineConfig({
   },
   media: {
     tina: {
-      mediaRoot: 'uploads', // uploaded images land in public/uploads
+      mediaRoot: 'uploads', // uploaded images land in public/uploads (repo-based, free)
       publicFolder: 'public',
     },
   },

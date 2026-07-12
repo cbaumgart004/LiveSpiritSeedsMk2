@@ -11,6 +11,19 @@ function sectionClass(base, block, isFirst) {
   return `${base}${reverse}${first}`
 }
 
+function Buttons({ items }) {
+  if (!items?.length) return null
+  return (
+    <div className="button-row">
+      {items.map((btn, i) => (
+        <a key={i} className="btn" href={btn.url}>
+          {btn.label}
+        </a>
+      ))}
+    </div>
+  )
+}
+
 function SplitSection({ block, isFirst }) {
   return (
     <section className={sectionClass('section section--split', block, isFirst)}>
@@ -26,6 +39,7 @@ function SplitSection({ block, isFirst }) {
         <div data-tina-field={tinaField(block, 'body')}>
           <TinaMarkdown content={block.body} />
         </div>
+        <Buttons items={block.buttons} />
       </div>
     </section>
   )
@@ -40,11 +54,13 @@ function StackedSection({ block, isFirst }) {
       <div className="panel" data-tina-field={tinaField(block, 'body')}>
         <TinaMarkdown content={block.body} />
       </div>
+      <Buttons items={block.buttons} />
     </section>
   )
 }
 
 function ServiceCardBlock({ block, isFirst }) {
+  const options = block.bookingOptions || []
   return (
     <section className={sectionClass('section section--split', block, isFirst)}>
       {block.image && (
@@ -59,20 +75,23 @@ function ServiceCardBlock({ block, isFirst }) {
         <div data-tina-field={tinaField(block, 'description')}>
           <TinaMarkdown content={block.description} />
         </div>
-        {block.bookingOptions?.length > 0 && (
-          <div className="button-row">
-            {block.bookingOptions.map((opt, i) => (
-              <a
-                key={i}
-                className="btn"
-                href={opt.url}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {opt.label}
-              </a>
-            ))}
-          </div>
+        {options.length > 0 && (
+          <>
+            <div className="button-row">
+              {options.map((opt, i) => (
+                <a key={i} className="btn" href={opt.bookUrl}>
+                  {opt.label}
+                </a>
+              ))}
+            </div>
+            {options
+              .filter((opt) => opt.note)
+              .map((opt, i) => (
+                <p key={i} style={{ fontSize: '0.85rem' }}>
+                  {opt.note}
+                </p>
+              ))}
+          </>
         )}
       </div>
     </section>
@@ -97,15 +116,7 @@ function EventSection({ block, isFirst }) {
               </div>
             )
         )}
-        {block.buttons?.length > 0 && (
-          <div className="button-row">
-            {block.buttons.map((btn, i) => (
-              <a key={i} className="btn" href={btn.url}>
-                {btn.label}
-              </a>
-            ))}
-          </div>
-        )}
+        <Buttons items={block.buttons} />
       </div>
     </section>
   )

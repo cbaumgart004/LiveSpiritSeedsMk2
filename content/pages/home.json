@@ -25,6 +25,7 @@
     {
       "_template": "splitSection",
       "title": "About",
+      "image": "/uploads/SpiritSeedsLogo.jpg",
       "imageSide": "right",
       "body": {
         "type": "root",
@@ -39,7 +40,8 @@
             ]
           }
         ]
-      }
+      },
+      "buttons": [{ "label": "Learn More", "url": "/about" }]
     },
     {
       "_template": "valuesSection",

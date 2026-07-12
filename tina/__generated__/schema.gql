@@ -134,21 +134,34 @@ type SettingsConnection implements Connection {
   edges: [SettingsConnectionEdges]
 }
 
+type PageBlocksSplitSectionButtons {
+  label: String
+  url: String
+}
+
 type PageBlocksSplitSection {
   title: String
   body: JSON
   image: String
   imageSide: String
+  buttons: [PageBlocksSplitSectionButtons]
+}
+
+type PageBlocksStackedSectionButtons {
+  label: String
+  url: String
 }
 
 type PageBlocksStackedSection {
   title: String
   body: JSON
+  buttons: [PageBlocksStackedSectionButtons]
 }
 
 type PageBlocksServiceCardBookingOptions {
   label: String
-  url: String
+  bookUrl: String
+  note: String
 }
 
 type PageBlocksServiceCard {
@@ -210,21 +223,34 @@ input RichTextFilter {
   exists: Boolean
 }
 
+input PageBlocksSplitSectionButtonsFilter {
+  label: StringFilter
+  url: StringFilter
+}
+
 input PageBlocksSplitSectionFilter {
   title: StringFilter
   body: RichTextFilter
   image: ImageFilter
   imageSide: StringFilter
+  buttons: PageBlocksSplitSectionButtonsFilter
+}
+
+input PageBlocksStackedSectionButtonsFilter {
+  label: StringFilter
+  url: StringFilter
 }
 
 input PageBlocksStackedSectionFilter {
   title: StringFilter
   body: RichTextFilter
+  buttons: PageBlocksStackedSectionButtonsFilter
 }
 
 input PageBlocksServiceCardBookingOptionsFilter {
   label: StringFilter
-  url: StringFilter
+  bookUrl: StringFilter
+  note: StringFilter
 }
 
 input PageBlocksServiceCardFilter {
@@ -310,21 +336,34 @@ input SettingsMutation {
   contactEmail: String
 }
 
+input PageBlocksSplitSectionButtonsMutation {
+  label: String
+  url: String
+}
+
 input PageBlocksSplitSectionMutation {
   title: String
   body: JSON
   image: String
   imageSide: String
+  buttons: [PageBlocksSplitSectionButtonsMutation]
+}
+
+input PageBlocksStackedSectionButtonsMutation {
+  label: String
+  url: String
 }
 
 input PageBlocksStackedSectionMutation {
   title: String
   body: JSON
+  buttons: [PageBlocksStackedSectionButtonsMutation]
 }
 
 input PageBlocksServiceCardBookingOptionsMutation {
   label: String
-  url: String
+  bookUrl: String
+  note: String
 }
 
 input PageBlocksServiceCardMutation {

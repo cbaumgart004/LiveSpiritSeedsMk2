@@ -1,8 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import DynamicPage from './pages/DynamicPage'
-import Services from './pages/Services'
-import About from './pages/About'
-import Upcoming from './pages/Upcoming'
 import ScrollToTop from './components/ScrollToTop'
 import { useEffect } from 'react'
 import { setupButtonClickFlash } from './utils/buttonFlashHandler'
@@ -23,10 +20,7 @@ function App() {
       <ScrollToTop /> {/* 💫 Always scroll to top on route change */}
       <Routes>
         <Route path="/" element={<DynamicPage />} />
-        {/* Static pages — being migrated to CMS-driven pages next */}
-        <Route path="/services" element={<Services />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/upcoming" element={<Upcoming />} />
+        <Route path="/:slug" element={<DynamicPage />} />
       </Routes>
     </Router>
   )

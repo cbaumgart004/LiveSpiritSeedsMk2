@@ -27,47 +27,64 @@ hardcoded in components and driven by a small config file.
 ## 3. Layout
 
 ```
+content/               CMS content (git-backed, editable in /admin) — see ADR 0002
+  settings/index.json  Site Settings (theme, siteTitle, tagline, logo, contact)
+  pages/*.json         One file per page; filename = route slug; holds blocks[]
+tina/
+  config.ts            TinaCMS schema (Settings + Page collections, block palette)
+  __generated__/       Generated GraphQL client + types (committed)
 src/
-  main.jsx              App bootstrap: CSS imports + theme class + render
-  App.jsx              Router + routes; wires global button-flash effect
-  config/siteConfig.js CONTROL PANEL: SITE_THEME + feature flags
-  pages/               One component per route (Home, Services, About, Upcoming)
-  components/          Reusable UI; some grouped by feature (Home/, Services/,
-                       ServicesSection/, ValuesSection/) + Nav, Hamburger, ScrollToTop
+  main.jsx              App bootstrap: CSS imports + default theme class + render
+  App.jsx              Router (dynamic /:slug) + theme load + button-flash effect
+  config/siteConfig.js Fallback default theme (SITE_THEME) applied before CMS loads
+  cms/site.js          Data helpers over the Tina client (settings, pages, theme)
+  pages/DynamicPage.jsx Loads a Page by slug, renders its blocks, enables useTina
+  components/
+    cms/Blocks.jsx     Renders blocks[] into the CSS primitives (§6)
+    Nav.jsx            Nav generated from the CMS page list; Hamburger, ScrollToTop
+    ValuesSection/     Reused by the values block
   styles/              Layered global CSS (see §6)
   utils/               buttonFlashHandler.js — global click-flash effect
-  assets/              Seasonal logos/backgrounds, service photos, event imagery
-public/                Static passthrough (favicon)
+  assets/              Seasonal logos/backgrounds (referenced by CSS themes)
+public/
+  uploads/             CMS-uploaded images (repo-based media); favicon
 ```
 
 ## 4. Routes
 
-Defined in `src/App.jsx`:
+Routing is **dynamic** (`src/App.jsx`): content, not code, defines the pages.
 
-| Path         | Page component        |
-|--------------|-----------------------|
-| `/`          | `pages/Home.jsx`      |
-| `/services`  | `pages/Services.jsx`  |
-| `/about`     | `pages/About.jsx`     |
-| `/upcoming`  | `pages/Upcoming.jsx`  |
+| Path      | Renders                                                        |
+|-----------|---------------------------------------------------------------|
+| `/`       | `DynamicPage` → `content/pages/home.json`                     |
+| `/:slug`  | `DynamicPage` → `content/pages/<slug>.json` (404 panel if missing) |
 
-`<ScrollToTop>` is rendered above `<Routes>` and resets scroll position on every route change.
+Adding a page = adding a content file (via `/admin`); it appears in the nav automatically.
+`<ScrollToTop>` resets scroll on every route change.
 
 ## 5. Domain model
 
-There isn't a runtime data model — it's a brochure site. The closest thing to "state" is
-build-time configuration in `src/config/siteConfig.js`:
+Content is **data**, managed via TinaCMS (git-backed) — see [ADR 0002]. Two collections:
 
-- `SITE_THEME` — one of `spring` | `summer` | `fall` | `winter`. Selects the seasonal look.
-- Feature flags (e.g. `THAI_COMPRESS_AVAILABLE`) — gate whether certain offerings/content show.
+- **Settings** (`content/settings/index.json`) — `theme` (`spring`/`summer`/`fall`/`winter`),
+  `siteTitle`, `tagline`, `logo`, `contactEmail`.
+- **Page** (`content/pages/*.json`) — `title`, `navLabel`, `order`, `showInNav`, and an ordered
+  `blocks[]`. Block types (the editor palette): `splitSection`, `stackedSection`, `serviceCard`,
+  `valuesSection`, `eventSection` — each renders through a §6 CSS primitive.
 
-Prefer adding new toggles here over hardcoding availability inside components.
+(`siteConfig.js` now only holds the fallback default theme applied before the CMS loads.)
 
 ## 6. Subsystems
 
-**Seasonal theming.** `SITE_THEME` (a single constant in `siteConfig.js`) is added as a class
-on `<body>` in `main.jsx`. The CSS themes in `src/styles/themes.css` key off that class, and
-seasonal assets (logos/backgrounds) are chosen accordingly. Change the season in one place.
+**Content / CMS.** Pages render from git-backed content files through TinaCMS. `DynamicPage`
+queries a page by slug via the generated client and passes `blocks[]` to `Blocks.jsx`, which
+maps each block type to a CSS primitive. `useTina` enables on-page editing at `/admin`; uploaded
+images are repo-based (in `public/uploads`, compressed by a push-time GitHub Action). Governed by
+[ADR 0002](./docs/adr/0002-tinacms-content-management.md).
+
+**Seasonal theming.** The season lives in the **Settings** doc and is applied as a `<body>` class
+by `App.jsx` after the CMS loads (`main.jsx` applies `SITE_THEME` first as a no-flash default).
+The CSS themes in `src/styles/themes.css` key off that class.
 
 **Global CSS layers.** Loaded in this order in `main.jsx` — order matters for cascade:
 `variables.css` → `themes.css` → `index.css` (base elements) → `layout.css` (shared layout)

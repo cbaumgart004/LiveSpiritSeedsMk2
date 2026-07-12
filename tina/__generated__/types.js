@@ -29,10 +29,20 @@ export const PagePartsFragmentDoc = gql`
       body
       image
       imageSide
+      buttons {
+        __typename
+        label
+        url
+      }
     }
     ... on PageBlocksStackedSection {
       title
       body
+      buttons {
+        __typename
+        label
+        url
+      }
     }
     ... on PageBlocksServiceCard {
       title
@@ -42,7 +52,8 @@ export const PagePartsFragmentDoc = gql`
       bookingOptions {
         __typename
         label
-        url
+        bookUrl
+        note
       }
     }
     ... on PageBlocksValuesSection {

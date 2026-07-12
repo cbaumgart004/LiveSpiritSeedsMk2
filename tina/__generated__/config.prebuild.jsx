@@ -2,6 +2,19 @@
 import { defineConfig } from "tinacms";
 var SEASONS = ["spring", "summer", "fall", "winter"];
 var SIDES = ["left", "right"];
+var buttonsField = {
+  type: "object",
+  name: "buttons",
+  label: "Buttons",
+  list: true,
+  ui: {
+    itemProps: (item) => ({ label: item?.label || "Button" })
+  },
+  fields: [
+    { type: "string", name: "label", label: "Label" },
+    { type: "string", name: "url", label: "URL" }
+  ]
+};
 var splitSection = {
   name: "splitSection",
   label: "Split Section (image + text)",
@@ -10,7 +23,8 @@ var splitSection = {
     { type: "string", name: "title", label: "Title" },
     { type: "rich-text", name: "body", label: "Body" },
     { type: "image", name: "image", label: "Image" },
-    { type: "string", name: "imageSide", label: "Image Side", options: SIDES }
+    { type: "string", name: "imageSide", label: "Image Side", options: SIDES },
+    buttonsField
   ]
 };
 var stackedSection = {
@@ -19,7 +33,8 @@ var stackedSection = {
   ui: { itemProps: (item) => ({ label: item?.title || "Stacked Section" }) },
   fields: [
     { type: "string", name: "title", label: "Title" },
-    { type: "rich-text", name: "body", label: "Body" }
+    { type: "rich-text", name: "body", label: "Body" },
+    buttonsField
   ]
 };
 var serviceCard = {
@@ -39,7 +54,8 @@ var serviceCard = {
       ui: { itemProps: (item) => ({ label: item?.label || "Booking option" }) },
       fields: [
         { type: "string", name: "label", label: "Label" },
-        { type: "string", name: "url", label: "Booking URL" }
+        { type: "string", name: "bookUrl", label: "Booking URL" },
+        { type: "string", name: "note", label: "Note" }
       ]
     }
   ]
@@ -60,17 +76,7 @@ var eventSection = {
     { type: "string", name: "title", label: "Title" },
     { type: "rich-text", name: "body", label: "Body" },
     { type: "image", name: "images", label: "Images", list: true },
-    {
-      type: "object",
-      name: "buttons",
-      label: "Buttons",
-      list: true,
-      ui: { itemProps: (item) => ({ label: item?.label || "Button" }) },
-      fields: [
-        { type: "string", name: "label", label: "Label" },
-        { type: "string", name: "url", label: "URL" }
-      ]
-    }
+    buttonsField
   ]
 };
 var config_default = defineConfig({
@@ -86,7 +92,7 @@ var config_default = defineConfig({
   media: {
     tina: {
       mediaRoot: "uploads",
-      // uploaded images land in public/uploads
+      // uploaded images land in public/uploads (repo-based, free)
       publicFolder: "public"
     }
   },
