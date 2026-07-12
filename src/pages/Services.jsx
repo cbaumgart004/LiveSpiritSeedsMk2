@@ -1,6 +1,5 @@
 // src/pages/Services.jsx
 
-import React from 'react'
 import Nav from '../components/Nav'
 import { ServiceCard } from '../components/Services'
 import { THAI_COMPRESS_AVAILABLE } from '../config/siteConfig.js'

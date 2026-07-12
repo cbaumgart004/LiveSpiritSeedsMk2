@@ -1,4 +1,3 @@
-import React from 'react'
 import styles from './ValuesSection.module.css'
 
 const ValuesSection = () => {
