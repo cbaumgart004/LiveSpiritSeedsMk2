@@ -169,6 +169,13 @@ diagnosable from files + two shell commands. Spend tokens here, not on browser a
    | `/admin` 404s in production (fine locally) | `build` skips `tinacms build` | §2 / §6 |
    | Stale/blank admin, wrong data | committed `public/admin` shadowing the dev build | gitignore it (§2) |
    | Field can't be edited even in sidebar | schema issue in `tina/config.ts` | fix the collection/field |
+   | **Fields (esp. new/nested ones) vanish from content after an editor saves** | the admin tab was loaded **before** a schema change; Tina saves rewrite the *whole* document from the in-browser form, dropping fields that form doesn't know about | **hard-refresh `/admin` after every schema change, before editing.** Restart `tinacms dev` too so the generated client/admin match `config.ts` |
+
+   > ⚠️ **The save-clobber trap (cost us real time):** Tina writes the entire document on save, not a
+   > patch. Editing schema and content in parallel — or leaving an old `/admin` tab open across a
+   > `config.ts` change — means the next save serializes a stale shape and silently strips the newer
+   > fields (and can add junk empty list items). Sequence: change schema → restart dev → hard-refresh
+   > `/admin` → *then* edit. Deep nesting (list-of-objects inside list-of-objects) is the most fragile.
 
 3. **Files that matter (read only these):** `tina/config.ts` (schema), the page loader
    (`useTina` wiring), the block renderer (`tinaField` + `TinaMarkdown`). Content shape:

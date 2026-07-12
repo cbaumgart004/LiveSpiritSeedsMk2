@@ -122,7 +122,8 @@ function slugify(text) {
 // links to — in priority order — this session's explicit add-on URL, the
 // referenced service's own booking URL, or an on-page anchor to its card.
 function AddOnButton({ addOn, services }) {
-  const ref = services?.[addOn.service?.trim().toLowerCase()]
+  if (!addOn.service?.trim()) return null
+  const ref = services?.[addOn.service.trim().toLowerCase()]
   if (!ref || ref.status === 'coming-soon') {
     return (
       <span className="btn btn--disabled" aria-disabled="true">
