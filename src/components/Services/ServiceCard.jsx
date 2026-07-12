@@ -1,9 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styles from './ServiceCard.module.css'
-import '@/styles/components.css'
-import '@/styles/layout.css'
-import '@/styles/animations.css'
+
 const ServiceCard = ({
   title,
   description,
@@ -74,9 +72,7 @@ const ServiceCard = ({
                               : option.secondary.url
                           }
                           className={`btn ${
-                            option.secondary.comingSoon
-                              ? styles.disabledBtn
-                              : ''
+                            option.secondary.comingSoon ? 'btn--disabled' : ''
                           }`}
                           onClick={(e) => {
                             if (option.secondary.comingSoon) e.preventDefault()

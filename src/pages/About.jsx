@@ -9,7 +9,7 @@ const About = () => {
   return (
     <>
       <Nav />
-      <section className="section-container first-section">
+      <section className="section section--split first-section">
         <div className="media">
           <img src={melissaImage} alt="Melissa Carey" />
         </div>

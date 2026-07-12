@@ -7,7 +7,7 @@ const AboutSection = () => {
   return (
     // Add "reverse" here when you want image on the RIGHT and text on the LEFT
     // Remove "reverse" when you want image on the LEFT and text on the RIGHT
-    <section className="section-container reverse">
+    <section className="section section--split section--reverse">
       <div className="media">
         <img src={melissaImage} alt="Melissa Carey" />
       </div>

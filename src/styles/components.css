@@ -1,42 +1,49 @@
 /* -------------------------------------------- */
-/* 🧱 Card */
+/* 🧱 Panel + Card primitives (see ADR 0001)     */
+/* Panel = static bordered content box.          */
+/* Card  = panel + interactive hover lift.        */
 /* -------------------------------------------- */
 
+.panel,
 .card {
   background-color: var(--bg-color-light);
   color: var(--text-color);
-  border: 3px solid var(--primary-color);
-  border-radius: 12px;
-  padding: 2rem;
-  flex: 1 1 50%;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: var(--panel-border) solid var(--primary-color);
+  border-radius: var(--radius-2);
+  box-shadow: var(--shadow-2);
+  padding: var(--space-4);
   position: relative;
   z-index: 1;
 }
 
-.card:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+.card {
+  flex: 1 1 50%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: var(--shadow-3);
+}
+
+.panel h2,
+.panel h3,
 .card h2,
 .card h3 {
   font-family: var(--font-subheading);
   color: var(--primary-color);
   margin-bottom: 1rem;
-  text-shadow: -1px -1px 0 var(--text-outline-color),
-    1px -1px 0 var(--text-outline-color), -1px 1px 0 var(--text-outline-color),
-    1px 1px 0 var(--text-outline-color);
+  text-shadow: var(--outline-shadow);
 }
 
+.panel p,
 .card p {
   font-size: 1.1rem;
   line-height: 1.6;
 }
 
 /* -------------------------------------------- */
-/* 🔘 Button */
+/* 🔘 Button primitive                          */
 /* -------------------------------------------- */
 
 .btn {
@@ -44,7 +51,7 @@
   font-size: 1rem;
   font-family: var(--font-body);
   border: none;
-  border-radius: 10px;
+  border-radius: var(--radius-1);
   cursor: pointer;
   color: white;
   background: var(--gradient);
@@ -63,6 +70,39 @@
 
 .btn:active {
   animation: button-press-grow 0.25s ease forwards;
+}
+
+/* Optional shimmer sweep (replaces the old .learnMore) */
+.btn--shimmer::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(25deg);
+  animation: shimmer 2.5s infinite linear;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.btn--shimmer:hover::before,
+.btn--shimmer:active::before {
+  opacity: 1;
+}
+
+/* Disabled state (e.g. coming-soon offerings) */
+.btn--disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+  filter: grayscale(30%);
 }
 
 .button-row {

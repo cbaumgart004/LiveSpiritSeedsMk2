@@ -1,24 +1,25 @@
-// src/pages/About.jsx
+// src/pages/Upcoming.jsx
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Nav from '../components/Nav'
-import './UpcomingPage.css'
+import styles from './Upcoming.module.css'
 import Bali_1 from '../assets/upcomingEvents/bali/Bali_1.svg'
 import Bali_2 from '../assets/upcomingEvents/bali/Bali_2.svg'
+
 const Upcoming = () => {
   return (
     <>
       <Nav />
-      <section className="section-container-first upcoming-section">
-        <div className="upcoming-box info-box">
+      <section className="section first-section">
+        <div className="panel">
           <h2>2026 Bali Retreat!</h2>
-          <div className="upcoming-image">
+          <div className={styles.image}>
             <img src={Bali_1} alt="Bali Retreat About" />
           </div>
-          <div className="upcoming-image">
+          <div className={styles.image}>
             <img src={Bali_2} alt="Bali Retreat Details" />
           </div>
-          <div className="upcoming-buttons">
+          <div className="button-row">
             <a
               href="mailto:melissacarey@spiritseedswellness.com"
               className="btn"

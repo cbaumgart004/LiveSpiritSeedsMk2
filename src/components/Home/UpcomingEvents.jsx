@@ -6,7 +6,7 @@ import upcomingEventsImage from '@/assets/UpcomingEvents.jpg'
 const UpcomingEvents = () => {
   return (
     // Add "reverse" when you want image on the RIGHT, text on the LEFT
-    <section className="section-container first-section reverse">
+    <section className="section section--split section--reverse first-section">
       {/* Image column */}
       <div className="media">
         <img src={upcomingEventsImage} alt="Upcoming Events" />

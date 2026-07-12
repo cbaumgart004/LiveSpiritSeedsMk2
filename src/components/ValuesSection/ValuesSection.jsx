@@ -1,16 +1,16 @@
 import React from 'react'
-import './ValuesSection.css'
+import styles from './ValuesSection.module.css'
 
 const ValuesSection = () => {
   return (
-    <section className="values-section">
-      <h2 className="values-title">Our Core Values</h2>
-      <div className="values-inline-list">
-        <span className="value-word">Growth</span>
-        <span className="value-blossom" />
-        <span className="value-word">Acceptance</span>
-        <span className="value-blossom" />
-        <span className="value-word">Service</span>
+    <section className={`section section--stack ${styles.band}`}>
+      <h2 className={styles.title}>Our Core Values</h2>
+      <div className={styles.inlineList}>
+        <span className={styles.word}>Growth</span>
+        <span className={styles.blossom} />
+        <span className={styles.word}>Acceptance</span>
+        <span className={styles.blossom} />
+        <span className={styles.word}>Service</span>
       </div>
     </section>
   )

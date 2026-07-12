@@ -20,6 +20,14 @@
   --shadow-1: 0 6px 18px rgba(0, 0, 0, 0.1);
   --shadow-2: 0 8px 24px rgba(0, 0, 0, 0.08);
   --shadow-3: 0 12px 32px rgba(0, 0, 0, 0.12);
+
+  /* panel border width (see ADR 0001) */
+  --panel-border: 4px;
+
+  /* reusable 4-way text outline; resolves --text-outline-color per theme at use time */
+  --outline-shadow: -1px -1px 0 var(--text-outline-color),
+    1px -1px 0 var(--text-outline-color), -1px 1px 0 var(--text-outline-color),
+    1px 1px 0 var(--text-outline-color);
 }
 @media (max-width: 768px) {
   :root {

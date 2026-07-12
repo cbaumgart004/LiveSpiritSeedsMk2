@@ -2,27 +2,7 @@
 /* ✨ Unified Animation Effects */
 /* -------------------------------------------- */
 
-/* 🌈 Card shimmer (runs once on load) */
-@keyframes card-shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-/* 🌀 Button hover gradient sweep */
-@keyframes button-hover-sweep {
-  0% {
-    background-position: left;
-  }
-  100% {
-    background-position: right;
-  }
-}
-
-/* 💥 Button click grow pulse */
+/* 💥 Button click grow pulse (.btn:active) */
 @keyframes button-press-grow {
   0% {
     transform: scale(1);
@@ -35,7 +15,17 @@
   }
 }
 
-/* ♿ Respect reduced motion */
+/* 🌈 Diagonal shimmer sweep (.btn--shimmer::before) */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) rotate(25deg);
+  }
+  100% {
+    transform: translateX(100%) rotate(25deg);
+  }
+}
+
+/* ♿ Respect reduced motion (single source of truth) */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation: none !important;

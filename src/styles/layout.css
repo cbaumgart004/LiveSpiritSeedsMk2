@@ -1,4 +1,4 @@
-/*//src.styles/layout.css*/
+/* src/styles/layout.css */
 
 /* -------------------------------------------- */
 /* 🌿 Core Layout */
@@ -9,74 +9,77 @@
   text-align: center;
 }
 
+/* Top offset so content clears the fixed navbar */
 .first-section {
   margin-top: calc(var(--navbar-height) + 1rem);
 }
 
 /* -------------------------------------------- */
-/* 💠 Section Container */
+/* 💠 Section primitive (see ADR 0001)          */
+/* A full-width, themed-background band. Layout  */
+/* is chosen with a modifier: --split / --stack. */
 /* -------------------------------------------- */
 
-.section-container {
+.section {
   position: relative;
   isolation: isolate; /* keeps ::before behind content, not behind the page */
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: nowrap;
-  gap: 3rem;
-  flex-direction: row;
   box-sizing: border-box;
-  padding: 1rem; /* your breathing room */
-  margin: 2rem auto;
-
   width: 100%;
-
   margin-inline: auto;
-  padding-inline: clamp(
-    1rem,
-    3vw,
-    3rem
-  ); /* responsive side gutter without calc hacks */
-
+  margin-block: var(--space-4);
+  padding: var(--space-2);
+  padding-inline: clamp(1rem, 3vw, 3rem);
   color: var(--text-color);
-  text-align: left;
-  border-radius: 1rem;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius-2);
+  box-shadow: var(--shadow-1);
   overflow: visible;
-
-  background-image: var(--section-bg-image);
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
 }
 
-/* Reverse layout */
-.section-container.reverse {
-  flex-direction: row-reverse;
-
-  /* IMPORTANT: let ::before own the background so it can flip cleanly */
-  background-image: none;
-}
-
-.section-container.reverse::before {
+/* The themed watercolor lives on ::before so --reverse can mirror it cleanly */
+.section::before {
   content: '';
   position: absolute;
   inset: 0;
+  z-index: -1;
   border-radius: inherit;
-
   background-image: var(--section-bg-image);
-  background-repeat: no-repeat;
   background-size: cover;
+  background-repeat: no-repeat;
   background-position: center;
-  transform: scaleX(-1);
-
-  z-index: -1; /* safe now because isolation:isolate keeps it inside the container */
   pointer-events: none;
 }
 
+/* Split: image column beside a panel/card, in a row */
+.section--split {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-6);
+  text-align: left;
+}
+
+/* Stack: single centered column (e.g. a grid of cards) */
+.section--stack {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-6);
+  text-align: center;
+}
+
+/* Reverse: flip a split section, mirroring the watercolor with it */
+.section--split.section--reverse {
+  flex-direction: row-reverse;
+}
+
+.section--reverse::before {
+  transform: scaleX(-1);
+}
+
 /* -------------------------------------------- */
-/* 🖼️ Image Column */
+/* 🖼️ Image Column                              */
 /* -------------------------------------------- */
 
 .media {
@@ -90,18 +93,17 @@
 .media img {
   width: 100%;
   height: auto;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: var(--radius-2);
+  box-shadow: var(--shadow-2);
   object-fit: cover;
 }
 
 /* -------------------------------------------- */
-/* 📐 Grid Utility */
+/* 📐 Grid Utility                              */
 /* -------------------------------------------- */
 
 .grid {
   display: grid;
-
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   justify-content: center;
   width: 100%;
@@ -117,48 +119,33 @@
     text-align: center;
   }
 
-  .section-container {
+  /* Split sections stack vertically on mobile, image first */
+  .section--split {
     flex-direction: column;
     text-align: center;
-    padding: 1.5rem 0.5rem; /* trimmed */
-    margin: 0.5rem auto; /* trimmed */
-    gap: 0.5rem; /* less giant gap between image and card */
+    padding: 1.5rem 0.5rem;
+    margin: 0.5rem auto;
+    gap: var(--space-1);
   }
 
-  /* Override reverse: still column, not reversed */
-  .section-container.reverse {
-    flex-direction: column;
-  }
-
-  /* Ensure order: image first, text second */
   .media {
     order: 1;
   }
 
-  .section-container > .card {
+  .section > .card,
+  .section > .panel {
     order: 2;
   }
 
   .media,
-  .section-container > .card {
+  .section > .card,
+  .section > .panel {
     flex: 1 1 100%;
     max-width: 100%;
   }
 
-  /* disable mirrored watercolor on mobile */
-  .section-container.reverse::before {
+  /* No mirrored watercolor on mobile */
+  .section--reverse::before {
     transform: none;
-  }
-}
-
-/* -------------------------------------------- */
-/* ♿ Reduced Motion */
-/* -------------------------------------------- */
-
-@media (prefers-reduced-motion: reduce) {
-  .btn,
-  .card {
-    transition: none !important;
-    animation: none !important;
   }
 }
