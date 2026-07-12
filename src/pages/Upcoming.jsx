@@ -2,8 +2,8 @@
 import { Link } from 'react-router-dom'
 import Nav from '../components/Nav'
 import styles from './Upcoming.module.css'
-import Bali_1 from '../assets/upcomingEvents/bali/Bali_1.svg'
-import Bali_2 from '../assets/upcomingEvents/bali/Bali_2.svg'
+import Bali_1 from '../assets/upcomingEvents/bali/Bali_1.jpg'
+import Bali_2 from '../assets/upcomingEvents/bali/Bali_2.jpg'
 
 const Upcoming = () => {
   return (

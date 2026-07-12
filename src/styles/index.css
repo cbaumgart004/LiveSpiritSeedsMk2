@@ -13,6 +13,12 @@ html.visible {
   visibility: visible;
 }
 
+/* Content images fade in as they arrive (fill-mode both ends at opacity 1,
+   so a failed/disabled animation still leaves images fully visible) */
+img {
+  animation: img-fade-in 0.5s ease both;
+}
+
 /* Base styles */
 body {
   font-family: var(--font-body);
