@@ -9,12 +9,28 @@
   border-radius: var(--radius-2);
   box-shadow: var(--shadow-1);
   position: relative;
+  isolation: isolate;
   overflow: hidden;
   margin-bottom: var(--space-4);
+}
+
+/* Watercolor lives on ::before so it can be mirrored on alternating sections */
+.serviceSection::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
   background-image: var(--section-bg-image);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+/* Alternate the watercolor left/right down the page */
+.serviceSection:nth-of-type(even)::before {
+  transform: scaleX(-1);
 }
 
 /* Tighten spacing between stacked service sections */

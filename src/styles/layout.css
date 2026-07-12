@@ -71,12 +71,14 @@
   text-align: center;
 }
 
-/* Reverse: flip a split section, mirroring the watercolor with it */
+/* Reverse: flip the content (image/text) side */
 .section--split.section--reverse {
   flex-direction: row-reverse;
 }
 
-.section--reverse::before {
+/* Alternate the watercolor background left/right down every page.
+   Positional (not tied to --reverse) so the rhythm is consistent everywhere. */
+.section:nth-of-type(even)::before {
   transform: scaleX(-1);
 }
 
@@ -144,10 +146,5 @@
   .section > .panel {
     flex: 1 1 100%;
     max-width: 100%;
-  }
-
-  /* No mirrored watercolor on mobile */
-  .section--reverse::before {
-    transform: none;
   }
 }

@@ -55,11 +55,17 @@ Tokens are the single source of truth for every spacing/radius/shadow value.
 
 | Primitive | Canonical spec | Modifiers |
 |-----------|----------------|-----------|
-| `.section` | full-width themed band: `background-image: var(--section-bg-image)` cover/center; `border-radius: var(--radius-2)`; padding from `--space-*` | `--split` (row: image ∣ panel), `--stack` (column, centered), `--reverse` (mirror via `::before` pseudo — **not** the `scaleX(-1)`-on-all-children hack) |
+| `.section` | full-width themed band: watercolor painted on a `::before` layer (cover/center); `border-radius: var(--radius-2)`; padding from `--space-*` | `--split` (row: image ∣ panel), `--stack` (column, centered), `--reverse` (flip the **content** side only) |
 | `.panel` | `background: var(--bg-color-light)`; `border: 4px solid var(--primary-color)`; `border-radius: var(--radius-2)`; `box-shadow: var(--shadow-2)`; `padding: var(--space-4)` | — |
 | `.card` | `.panel` **plus** interactive hover lift (`translateY(-4px) scale(1.02)`) | — |
 | `.btn` | single global definition (gradient, hover→`--gradient-reverse`, active grow) | `--shimmer` (optional sweep, replaces `.learnMore`), `--disabled` |
 | `.button-row` | the one canonical button row | — |
+
+**Background alternation.** The watercolor lives on a `::before` layer for every section
+(both the `.section` primitive and the Services-page `.serviceSection` module) and is mirrored
+on even sections via `:nth-of-type(even)::before { transform: scaleX(-1) }`. This gives a
+consistent left/right background rhythm down every page, independent of `--reverse` (which now
+only flips the content/image side). The old `scaleX(-1)`-on-all-children mirror hack is gone.
 
 Reconciliations frozen by this ADR (drift resolved toward the majority / the token):
 - Panel border = **4px** (3 of 4 existing panels used 4px).
