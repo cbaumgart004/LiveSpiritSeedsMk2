@@ -186,6 +186,8 @@ export type DocumentNode = Settings | Page | Folder;
 export type Settings = Node & Document & {
   __typename?: 'Settings';
   siteTitle?: Maybe<Scalars['String']['output']>;
+  tagline?: Maybe<Scalars['String']['output']>;
+  logo?: Maybe<Scalars['String']['output']>;
   theme?: Maybe<Scalars['String']['output']>;
   contactEmail?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
@@ -200,8 +202,17 @@ export type StringFilter = {
   in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
+export type ImageFilter = {
+  startsWith?: InputMaybe<Scalars['String']['input']>;
+  eq?: InputMaybe<Scalars['String']['input']>;
+  exists?: InputMaybe<Scalars['Boolean']['input']>;
+  in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
 export type SettingsFilter = {
   siteTitle?: InputMaybe<StringFilter>;
+  tagline?: InputMaybe<StringFilter>;
+  logo?: InputMaybe<ImageFilter>;
   theme?: InputMaybe<StringFilter>;
   contactEmail?: InputMaybe<StringFilter>;
 };
@@ -301,13 +312,6 @@ export type RichTextFilter = {
   startsWith?: InputMaybe<Scalars['String']['input']>;
   eq?: InputMaybe<Scalars['String']['input']>;
   exists?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type ImageFilter = {
-  startsWith?: InputMaybe<Scalars['String']['input']>;
-  eq?: InputMaybe<Scalars['String']['input']>;
-  exists?: InputMaybe<Scalars['Boolean']['input']>;
-  in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 export type PageBlocksSplitSectionFilter = {
@@ -464,6 +468,8 @@ export type DocumentMutation = {
 
 export type SettingsMutation = {
   siteTitle?: InputMaybe<Scalars['String']['input']>;
+  tagline?: InputMaybe<Scalars['String']['input']>;
+  logo?: InputMaybe<Scalars['String']['input']>;
   theme?: InputMaybe<Scalars['String']['input']>;
   contactEmail?: InputMaybe<Scalars['String']['input']>;
 };
@@ -526,7 +532,7 @@ export type PageMutation = {
   blocks?: InputMaybe<Array<InputMaybe<PageBlocksMutation>>>;
 };
 
-export type SettingsPartsFragment = { __typename: 'Settings', siteTitle?: string | null, theme?: string | null, contactEmail?: string | null };
+export type SettingsPartsFragment = { __typename: 'Settings', siteTitle?: string | null, tagline?: string | null, logo?: string | null, theme?: string | null, contactEmail?: string | null };
 
 export type PagePartsFragment = { __typename: 'Page', title: string, navLabel?: string | null, order?: number | null, showInNav?: boolean | null, blocks?: Array<{ __typename: 'PageBlocksSplitSection', title?: string | null, body?: any | null, image?: string | null, imageSide?: string | null } | { __typename: 'PageBlocksStackedSection', title?: string | null, body?: any | null } | { __typename: 'PageBlocksServiceCard', title?: string | null, description?: any | null, image?: string | null, imageSide?: string | null, bookingOptions?: Array<{ __typename: 'PageBlocksServiceCardBookingOptions', label?: string | null, url?: string | null } | null> | null } | { __typename: 'PageBlocksValuesSection', title?: string | null, words?: Array<string | null> | null } | { __typename: 'PageBlocksEventSection', title?: string | null, body?: any | null, images?: Array<string | null> | null, buttons?: Array<{ __typename: 'PageBlocksEventSectionButtons', label?: string | null, url?: string | null } | null> | null } | null> | null };
 
@@ -535,7 +541,7 @@ export type SettingsQueryVariables = Exact<{
 }>;
 
 
-export type SettingsQuery = { __typename?: 'Query', settings: { __typename: 'Settings', id: string, siteTitle?: string | null, theme?: string | null, contactEmail?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
+export type SettingsQuery = { __typename?: 'Query', settings: { __typename: 'Settings', id: string, siteTitle?: string | null, tagline?: string | null, logo?: string | null, theme?: string | null, contactEmail?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
 
 export type SettingsConnectionQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']['input']>;
@@ -547,7 +553,7 @@ export type SettingsConnectionQueryVariables = Exact<{
 }>;
 
 
-export type SettingsConnectionQuery = { __typename?: 'Query', settingsConnection: { __typename?: 'SettingsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'SettingsConnectionEdges', cursor: string, node?: { __typename: 'Settings', id: string, siteTitle?: string | null, theme?: string | null, contactEmail?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
+export type SettingsConnectionQuery = { __typename?: 'Query', settingsConnection: { __typename?: 'SettingsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'SettingsConnectionEdges', cursor: string, node?: { __typename: 'Settings', id: string, siteTitle?: string | null, tagline?: string | null, logo?: string | null, theme?: string | null, contactEmail?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
 
 export type PageQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
@@ -572,6 +578,8 @@ export const SettingsPartsFragmentDoc = gql`
     fragment SettingsParts on Settings {
   __typename
   siteTitle
+  tagline
+  logo
   theme
   contactEmail
 }

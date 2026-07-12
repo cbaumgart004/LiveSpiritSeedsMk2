@@ -9,6 +9,8 @@ export const SettingsPartsFragmentDoc = gql`
     fragment SettingsParts on Settings {
   __typename
   siteTitle
+  tagline
+  logo
   theme
   contactEmail
 }

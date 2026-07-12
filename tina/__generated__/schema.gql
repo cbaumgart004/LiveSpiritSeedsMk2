@@ -92,6 +92,8 @@ union DocumentNode = Settings | Page | Folder
 
 type Settings implements Node & Document {
   siteTitle: String
+  tagline: String
+  logo: String
   theme: String
   contactEmail: String
   id: ID!
@@ -106,8 +108,17 @@ input StringFilter {
   in: [String]
 }
 
+input ImageFilter {
+  startsWith: String
+  eq: String
+  exists: Boolean
+  in: [String]
+}
+
 input SettingsFilter {
   siteTitle: StringFilter
+  tagline: StringFilter
+  logo: ImageFilter
   theme: StringFilter
   contactEmail: StringFilter
 }
@@ -197,13 +208,6 @@ input RichTextFilter {
   startsWith: String
   eq: String
   exists: Boolean
-}
-
-input ImageFilter {
-  startsWith: String
-  eq: String
-  exists: Boolean
-  in: [String]
 }
 
 input PageBlocksSplitSectionFilter {
@@ -300,6 +304,8 @@ input DocumentMutation {
 
 input SettingsMutation {
   siteTitle: String
+  tagline: String
+  logo: String
   theme: String
   contactEmail: String
 }

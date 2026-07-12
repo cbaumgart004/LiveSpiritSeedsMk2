@@ -110,6 +110,8 @@ export default defineConfig({
         },
         fields: [
           { type: 'string', name: 'siteTitle', label: 'Site Title' },
+          { type: 'string', name: 'tagline', label: 'Tagline' },
+          { type: 'image', name: 'logo', label: 'Logo' },
           { type: 'string', name: 'theme', label: 'Seasonal Theme', options: SEASONS },
           { type: 'string', name: 'contactEmail', label: 'Contact Email' },
         ],
