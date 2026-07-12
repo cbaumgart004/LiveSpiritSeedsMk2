@@ -29,10 +29,12 @@ export const PagePartsFragmentDoc = gql`
       body
       image
       imageSide
+      imageSize
       buttons {
         __typename
         label
         url
+        status
       }
     }
     ... on PageBlocksStackedSection {
@@ -42,6 +44,7 @@ export const PagePartsFragmentDoc = gql`
         __typename
         label
         url
+        status
       }
     }
     ... on PageBlocksServiceCard {
@@ -49,11 +52,24 @@ export const PagePartsFragmentDoc = gql`
       description
       image
       imageSide
+      imageSize
+      offersThaiCompress
       bookingOptions {
         __typename
         label
         bookUrl
+        compressUrl
         note
+      }
+    }
+    ... on PageBlocksCardGrid {
+      title
+      cards {
+        __typename
+        title
+        description
+        buttonLabel
+        buttonUrl
       }
     }
     ... on PageBlocksValuesSection {
@@ -68,6 +84,7 @@ export const PagePartsFragmentDoc = gql`
         __typename
         label
         url
+        status
       }
     }
   }

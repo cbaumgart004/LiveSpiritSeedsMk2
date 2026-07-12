@@ -70,7 +70,8 @@ Content is **data**, managed via TinaCMS (git-backed) — see [ADR 0002]. Two co
   `siteTitle`, `tagline`, `logo`, `contactEmail`.
 - **Page** (`content/pages/*.json`) — `title`, `navLabel`, `order`, `showInNav`, and an ordered
   `blocks[]`. Block types (the editor palette): `splitSection`, `stackedSection`, `serviceCard`,
-  `valuesSection`, `eventSection` — each renders through a §6 CSS primitive.
+  `cardGrid` (heading + grid of mini-cards, e.g. home "Our Services"), `valuesSection`,
+  `eventSection` — each renders through a §6 CSS primitive.
 
 (`siteConfig.js` now only holds the fallback default theme applied before the CMS loads.)
 
@@ -82,9 +83,21 @@ maps each block type to a CSS primitive. `useTina` enables on-page editing at `/
 images are repo-based (in `public/uploads`, compressed by a push-time GitHub Action). Governed by
 [ADR 0002](./docs/adr/0002-tinacms-content-management.md).
 
-**Seasonal theming.** The season lives in the **Settings** doc and is applied as a `<body>` class
-by `App.jsx` after the CMS loads (`main.jsx` applies `SITE_THEME` first as a no-flash default).
-The CSS themes in `src/styles/themes.css` key off that class.
+Block-renderer behaviors (`Blocks.jsx`): image sides **auto-alternate** left/right by position
+(`imageSide: 'auto'`, recomputed on drag-reorder; `left`/`right` pin a side); per-card **image
+size** via `imageSize` (`sm`/`md`/`lg` → `.media--*`); rich-text bodies render via `TinaMarkdown`
+and are stored on disk as **markdown strings, not AST objects** (see the playbook §4); buttons
+carry a `status` (`active`/`coming-soon`) — coming-soon renders non-clickable, prefixed
+"Coming Soon - ". `serviceCard`s can set `offersThaiCompress` to show a per-session Thai Herbal
+Compress button (active link when `THAI_COMPRESS_AVAILABLE` in `siteConfig.js` is on + a
+`compressUrl` is set, else a disabled "Coming Soon"). Reusable setup + gotchas: [TinaCMS Vite playbook](./docs/tinacms-vite-playbook.md).
+
+**Seasonal theming.** The season lives in the **Settings** doc. To avoid a theme flash, `main.jsx`
+imports `content/settings/index.json` at build time and applies its `theme` as a `<body>` class
+**before first paint** (the page is `visibility: hidden` until then — see `index.html`);
+`siteConfig.js`'s `SITE_THEME` is only a fallback for a missing/invalid value. `App.jsx` re-applies
+the theme from the CMS on load (same value on first render; updates during live editing). The CSS
+themes in `src/styles/themes.css` key off that class.
 
 **Global CSS layers.** Loaded in this order in `main.jsx` — order matters for cascade:
 `variables.css` → `themes.css` → `index.css` (base elements) → `layout.css` (shared layout)
@@ -119,6 +132,9 @@ ADRs live in `docs/adr/`; domain vocabulary in [`CONTEXT.md`](./CONTEXT.md).
 
 - [ADR 0001 — Hybrid CSS architecture with a single-primitive design system](./docs/adr/0001-hybrid-css-architecture.md)
 - [ADR 0002 — TinaCMS (git-backed) for owner-editable content](./docs/adr/0002-tinacms-content-management.md)
+
+Reusable how-to (portable across repos): [TinaCMS on a Vite + React SPA — Playbook](./docs/tinacms-vite-playbook.md)
+— setup recipe, the on-page editing wiring, and a cheap-diagnosis checklist (§7) for editing bugs.
 
 In progress (`feature/admin-cms` branch): making content owner-editable via TinaCMS — pages will
 render from git-backed content files instead of hardcoded JSX, with on-page editing at `/admin`.

@@ -11,6 +11,7 @@ import Blocks from '../components/cms/Blocks'
 export default function DynamicPage() {
   const { slug } = useParams()
   const relativePath = `${slug || 'home'}.json`
+  // Keep the full response ({ data, query, variables }) — useTina needs all three.
   const [res, setRes] = useState(null)
   const [notFound, setNotFound] = useState(false)
 
@@ -51,16 +52,19 @@ export default function DynamicPage() {
     )
   }
 
-  return <PageView data={res.data} query={res.query} variables={res.variables} />
+  return <PageView payload={res} />
 }
 
-// Separate component so useTina (a hook) is called unconditionally.
-function PageView({ data, query, variables }) {
-  const tina = useTina({ query, variables, data })
+// Separate component so useTina (a hook) runs unconditionally, after the
+// loading/not-found guards above. useTina hydrates the block objects with the
+// editing metadata that tinaField(...) reads, and live-updates them while
+// editing in /admin.
+function PageView({ payload }) {
+  const { data } = useTina(payload)
   return (
     <>
       <Nav />
-      <Blocks blocks={tina.data?.page?.blocks} />
+      <Blocks blocks={data?.page?.blocks} />
     </>
   )
 }

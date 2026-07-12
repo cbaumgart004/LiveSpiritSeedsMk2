@@ -8,42 +8,17 @@
       "_template": "splitSection",
       "title": "Meet Melissa Carey",
       "image": "/uploads/Warrior.jpg",
-      "imageSide": "right",
-      "body": {
-        "type": "root",
-        "children": [
-          {
-            "type": "p",
-            "children": [
-              {
-                "type": "text",
-                "text": "Melissa Carey, the owner and founder of Spirit Seeds Wellness, is an intuitive healer and trauma informed yoga teacher. With over two decades of experience, she blends holistic wellness practices, including thai massage therapy and crystal bowls sound healing, to create transformative healing experiences."
-              }
-            ]
-          },
-          {
-            "type": "p",
-            "children": [
-              {
-                "type": "text",
-                "text": "Holding a Bachelor's in Traditional Eastern Arts, Melissa studied Yoga, Religious Studies, Music, and Ayurveda at Naropa University. An artist and musician, she discovered the power of sound healing and acutonics in her own journey toward healing and personal growth."
-              }
-            ]
-          },
-          {
-            "type": "p",
-            "children": [
-              {
-                "type": "text",
-                "text": "Today, Melissa provides one-on-one trauma-informed massage therapy and facilitates group healing sessions, partnering with local organizations to support those healing CPTSD and navigating grief work."
-              }
-            ]
-          }
-        ]
-      },
+      "imageSide": "auto",
+      "body": "Melissa Carey, the owner and founder of Spirit Seeds Wellness, is an intuitive healer and trauma informed yoga teacher. With over two decades of experience, she blends holistic wellness practices, including thai massage therapy and crystal bowls sound healing, to create transformative healing experiences.\n\nHolding a Bachelor's in Traditional Eastern Arts, Melissa studied Yoga, Religious Studies, Music, and Ayurveda at Naropa University. An artist and musician, she discovered the power of sound healing and acutonics in her own journey toward healing and personal growth.\n\nToday, Melissa provides one-on-one trauma-informed massage therapy and facilitates group healing sessions, partnering with local organizations to support those healing CPTSD and navigating grief work.",
       "buttons": [
-        { "label": "Book a Service", "url": "/services" },
-        { "label": "Home", "url": "/" }
+        {
+          "label": "Book a Service",
+          "url": "/services"
+        },
+        {
+          "label": "Home",
+          "url": "/"
+        }
       ]
     }
   ]

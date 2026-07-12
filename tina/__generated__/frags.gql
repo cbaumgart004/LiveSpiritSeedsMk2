@@ -20,10 +20,12 @@ fragment PageParts on Page {
       body
       image
       imageSide
+      imageSize
       buttons {
         __typename
         label
         url
+        status
       }
     }
     ... on PageBlocksStackedSection {
@@ -33,6 +35,7 @@ fragment PageParts on Page {
         __typename
         label
         url
+        status
       }
     }
     ... on PageBlocksServiceCard {
@@ -40,11 +43,24 @@ fragment PageParts on Page {
       description
       image
       imageSide
+      imageSize
+      offersThaiCompress
       bookingOptions {
         __typename
         label
         bookUrl
+        compressUrl
         note
+      }
+    }
+    ... on PageBlocksCardGrid {
+      title
+      cards {
+        __typename
+        title
+        description
+        buttonLabel
+        buttonUrl
       }
     }
     ... on PageBlocksValuesSection {
@@ -59,6 +75,7 @@ fragment PageParts on Page {
         __typename
         label
         url
+        status
       }
     }
   }

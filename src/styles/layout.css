@@ -102,6 +102,15 @@
   object-fit: cover;
 }
 
+/* Editor-controlled image size (Tina "Image Size" field). Base .media is ~45%. */
+.media--sm {
+  flex-basis: 30%;
+}
+
+.media--lg {
+  flex-basis: 60%;
+}
+
 /* -------------------------------------------- */
 /* 📐 Grid Utility                              */
 /* -------------------------------------------- */
@@ -109,6 +118,7 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-4);
   justify-content: center;
   width: 100%;
   max-width: 1200px;

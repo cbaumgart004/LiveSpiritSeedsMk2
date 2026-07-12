@@ -137,6 +137,7 @@ type SettingsConnection implements Connection {
 type PageBlocksSplitSectionButtons {
   label: String
   url: String
+  status: String
 }
 
 type PageBlocksSplitSection {
@@ -144,12 +145,14 @@ type PageBlocksSplitSection {
   body: JSON
   image: String
   imageSide: String
+  imageSize: String
   buttons: [PageBlocksSplitSectionButtons]
 }
 
 type PageBlocksStackedSectionButtons {
   label: String
   url: String
+  status: String
 }
 
 type PageBlocksStackedSection {
@@ -161,6 +164,7 @@ type PageBlocksStackedSection {
 type PageBlocksServiceCardBookingOptions {
   label: String
   bookUrl: String
+  compressUrl: String
   note: String
 }
 
@@ -169,7 +173,21 @@ type PageBlocksServiceCard {
   description: JSON
   image: String
   imageSide: String
+  imageSize: String
+  offersThaiCompress: Boolean
   bookingOptions: [PageBlocksServiceCardBookingOptions]
+}
+
+type PageBlocksCardGridCards {
+  title: String
+  description: String
+  buttonLabel: String
+  buttonUrl: String
+}
+
+type PageBlocksCardGrid {
+  title: String
+  cards: [PageBlocksCardGridCards]
 }
 
 type PageBlocksValuesSection {
@@ -180,6 +198,7 @@ type PageBlocksValuesSection {
 type PageBlocksEventSectionButtons {
   label: String
   url: String
+  status: String
 }
 
 type PageBlocksEventSection {
@@ -189,7 +208,7 @@ type PageBlocksEventSection {
   buttons: [PageBlocksEventSectionButtons]
 }
 
-union PageBlocks = PageBlocksSplitSection | PageBlocksStackedSection | PageBlocksServiceCard | PageBlocksValuesSection | PageBlocksEventSection
+union PageBlocks = PageBlocksSplitSection | PageBlocksStackedSection | PageBlocksServiceCard | PageBlocksCardGrid | PageBlocksValuesSection | PageBlocksEventSection
 
 type Page implements Node & Document {
   title: String!
@@ -226,6 +245,7 @@ input RichTextFilter {
 input PageBlocksSplitSectionButtonsFilter {
   label: StringFilter
   url: StringFilter
+  status: StringFilter
 }
 
 input PageBlocksSplitSectionFilter {
@@ -233,12 +253,14 @@ input PageBlocksSplitSectionFilter {
   body: RichTextFilter
   image: ImageFilter
   imageSide: StringFilter
+  imageSize: StringFilter
   buttons: PageBlocksSplitSectionButtonsFilter
 }
 
 input PageBlocksStackedSectionButtonsFilter {
   label: StringFilter
   url: StringFilter
+  status: StringFilter
 }
 
 input PageBlocksStackedSectionFilter {
@@ -250,6 +272,7 @@ input PageBlocksStackedSectionFilter {
 input PageBlocksServiceCardBookingOptionsFilter {
   label: StringFilter
   bookUrl: StringFilter
+  compressUrl: StringFilter
   note: StringFilter
 }
 
@@ -258,7 +281,21 @@ input PageBlocksServiceCardFilter {
   description: RichTextFilter
   image: ImageFilter
   imageSide: StringFilter
+  imageSize: StringFilter
+  offersThaiCompress: BooleanFilter
   bookingOptions: PageBlocksServiceCardBookingOptionsFilter
+}
+
+input PageBlocksCardGridCardsFilter {
+  title: StringFilter
+  description: StringFilter
+  buttonLabel: StringFilter
+  buttonUrl: StringFilter
+}
+
+input PageBlocksCardGridFilter {
+  title: StringFilter
+  cards: PageBlocksCardGridCardsFilter
 }
 
 input PageBlocksValuesSectionFilter {
@@ -269,6 +306,7 @@ input PageBlocksValuesSectionFilter {
 input PageBlocksEventSectionButtonsFilter {
   label: StringFilter
   url: StringFilter
+  status: StringFilter
 }
 
 input PageBlocksEventSectionFilter {
@@ -282,6 +320,7 @@ input PageBlocksFilter {
   splitSection: PageBlocksSplitSectionFilter
   stackedSection: PageBlocksStackedSectionFilter
   serviceCard: PageBlocksServiceCardFilter
+  cardGrid: PageBlocksCardGridFilter
   valuesSection: PageBlocksValuesSectionFilter
   eventSection: PageBlocksEventSectionFilter
 }
@@ -339,6 +378,7 @@ input SettingsMutation {
 input PageBlocksSplitSectionButtonsMutation {
   label: String
   url: String
+  status: String
 }
 
 input PageBlocksSplitSectionMutation {
@@ -346,12 +386,14 @@ input PageBlocksSplitSectionMutation {
   body: JSON
   image: String
   imageSide: String
+  imageSize: String
   buttons: [PageBlocksSplitSectionButtonsMutation]
 }
 
 input PageBlocksStackedSectionButtonsMutation {
   label: String
   url: String
+  status: String
 }
 
 input PageBlocksStackedSectionMutation {
@@ -363,6 +405,7 @@ input PageBlocksStackedSectionMutation {
 input PageBlocksServiceCardBookingOptionsMutation {
   label: String
   bookUrl: String
+  compressUrl: String
   note: String
 }
 
@@ -371,7 +414,21 @@ input PageBlocksServiceCardMutation {
   description: JSON
   image: String
   imageSide: String
+  imageSize: String
+  offersThaiCompress: Boolean
   bookingOptions: [PageBlocksServiceCardBookingOptionsMutation]
+}
+
+input PageBlocksCardGridCardsMutation {
+  title: String
+  description: String
+  buttonLabel: String
+  buttonUrl: String
+}
+
+input PageBlocksCardGridMutation {
+  title: String
+  cards: [PageBlocksCardGridCardsMutation]
 }
 
 input PageBlocksValuesSectionMutation {
@@ -382,6 +439,7 @@ input PageBlocksValuesSectionMutation {
 input PageBlocksEventSectionButtonsMutation {
   label: String
   url: String
+  status: String
 }
 
 input PageBlocksEventSectionMutation {
@@ -395,6 +453,7 @@ input PageBlocksMutation {
   splitSection: PageBlocksSplitSectionMutation
   stackedSection: PageBlocksStackedSectionMutation
   serviceCard: PageBlocksServiceCardMutation
+  cardGrid: PageBlocksCardGridMutation
   valuesSection: PageBlocksValuesSectionMutation
   eventSection: PageBlocksEventSectionMutation
 }

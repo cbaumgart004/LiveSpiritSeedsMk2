@@ -1,7 +1,6 @@
 // tina/config.ts
 import { defineConfig } from "tinacms";
 var SEASONS = ["spring", "summer", "fall", "winter"];
-var SIDES = ["left", "right"];
 var buttonsField = {
   type: "object",
   name: "buttons",
@@ -11,41 +10,79 @@ var buttonsField = {
     itemProps: (item) => ({ label: item?.label || "Button" })
   },
   fields: [
-    { type: "string", name: "label", label: "Label" },
-    { type: "string", name: "url", label: "URL" }
+    { type: "string", name: "label", label: "Button Text" },
+    { type: "string", name: "url", label: "Button Link" },
+    {
+      type: "string",
+      name: "status",
+      label: "Status",
+      options: [
+        { value: "active", label: "Active" },
+        { value: "coming-soon", label: "Coming Soon" }
+      ]
+    }
+  ]
+};
+var imagePlacementField = {
+  type: "string",
+  name: "imageSide",
+  label: "Image Placement",
+  description: "Auto alternates sides down the page. Pick Left or Right to pin it.",
+  options: [
+    { value: "auto", label: "Auto (alternate)" },
+    { value: "left", label: "Left" },
+    { value: "right", label: "Right" }
+  ]
+};
+var imageSizeField = {
+  type: "string",
+  name: "imageSize",
+  label: "Image Size",
+  options: [
+    { value: "sm", label: "Small" },
+    { value: "md", label: "Medium (default)" },
+    { value: "lg", label: "Large" }
   ]
 };
 var splitSection = {
   name: "splitSection",
-  label: "Split Section (image + text)",
-  ui: { itemProps: (item) => ({ label: item?.title || "Split Section" }) },
+  label: "Image + Text",
+  ui: { itemProps: (item) => ({ label: item?.title || "Image + Text" }) },
   fields: [
-    { type: "string", name: "title", label: "Title" },
-    { type: "rich-text", name: "body", label: "Body" },
+    { type: "string", name: "title", label: "Heading" },
+    { type: "rich-text", name: "body", label: "Body Text" },
     { type: "image", name: "image", label: "Image" },
-    { type: "string", name: "imageSide", label: "Image Side", options: SIDES },
+    imagePlacementField,
+    imageSizeField,
     buttonsField
   ]
 };
 var stackedSection = {
   name: "stackedSection",
-  label: "Stacked Section (centered)",
-  ui: { itemProps: (item) => ({ label: item?.title || "Stacked Section" }) },
+  label: "Text Block (centered)",
+  ui: { itemProps: (item) => ({ label: item?.title || "Text Block" }) },
   fields: [
-    { type: "string", name: "title", label: "Title" },
-    { type: "rich-text", name: "body", label: "Body" },
+    { type: "string", name: "title", label: "Heading" },
+    { type: "rich-text", name: "body", label: "Body Text" },
     buttonsField
   ]
 };
 var serviceCard = {
   name: "serviceCard",
-  label: "Service Card",
+  label: "Service / Offering Card",
   ui: { itemProps: (item) => ({ label: item?.title || "Service Card" }) },
   fields: [
-    { type: "string", name: "title", label: "Title" },
-    { type: "rich-text", name: "description", label: "Description" },
+    { type: "string", name: "title", label: "Heading" },
+    { type: "rich-text", name: "description", label: "Body Text" },
     { type: "image", name: "image", label: "Image" },
-    { type: "string", name: "imageSide", label: "Image Side", options: SIDES },
+    imagePlacementField,
+    imageSizeField,
+    {
+      type: "boolean",
+      name: "offersThaiCompress",
+      label: "Offers Thai Herbal Compress add-on",
+      description: 'Show a Thai Herbal Compress button on each session below. Availability is toggled site-wide by THAI_COMPRESS_AVAILABLE in siteConfig.js (until on, it shows "Coming Soon").'
+    },
     {
       type: "object",
       name: "bookingOptions",
@@ -53,8 +90,14 @@ var serviceCard = {
       list: true,
       ui: { itemProps: (item) => ({ label: item?.label || "Booking option" }) },
       fields: [
-        { type: "string", name: "label", label: "Label" },
+        { type: "string", name: "label", label: "Session Label (button text)" },
         { type: "string", name: "bookUrl", label: "Booking URL" },
+        {
+          type: "string",
+          name: "compressUrl",
+          label: "Thai Compress Booking URL",
+          description: 'Used for the "Book w/ Thai Compress" button when the add-on is available.'
+        },
         { type: "string", name: "note", label: "Note" }
       ]
     }
@@ -62,19 +105,41 @@ var serviceCard = {
 };
 var valuesSection = {
   name: "valuesSection",
-  label: "Values",
+  label: "Values List",
+  ui: { itemProps: (item) => ({ label: item?.title || "Values List" }) },
   fields: [
-    { type: "string", name: "title", label: "Title" },
+    { type: "string", name: "title", label: "Heading" },
     { type: "string", name: "words", label: "Values", list: true }
+  ]
+};
+var cardGrid = {
+  name: "cardGrid",
+  label: "Card Grid",
+  ui: { itemProps: (item) => ({ label: item?.title || "Card Grid" }) },
+  fields: [
+    { type: "string", name: "title", label: "Heading" },
+    {
+      type: "object",
+      name: "cards",
+      label: "Cards",
+      list: true,
+      ui: { itemProps: (item) => ({ label: item?.title || "Card" }) },
+      fields: [
+        { type: "string", name: "title", label: "Card Title" },
+        { type: "string", name: "description", label: "Card Text" },
+        { type: "string", name: "buttonLabel", label: "Button Text" },
+        { type: "string", name: "buttonUrl", label: "Button Link" }
+      ]
+    }
   ]
 };
 var eventSection = {
   name: "eventSection",
-  label: "Event / Upcoming",
+  label: "Event / Announcement",
   ui: { itemProps: (item) => ({ label: item?.title || "Event" }) },
   fields: [
-    { type: "string", name: "title", label: "Title" },
-    { type: "rich-text", name: "body", label: "Body" },
+    { type: "string", name: "title", label: "Heading" },
+    { type: "rich-text", name: "body", label: "Body Text" },
     { type: "image", name: "images", label: "Images", list: true },
     buttonsField
   ]
@@ -141,6 +206,7 @@ var config_default = defineConfig({
               splitSection,
               stackedSection,
               serviceCard,
+              cardGrid,
               valuesSection,
               eventSection
             ]
