@@ -4,7 +4,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 250px;
+  height: var(--navbar-height);
   z-index: 50;
   background-image: var(--navbar-background);
   background-size: cover;
@@ -32,18 +32,16 @@
 
 /* 🌼 TITLE */
 .title {
-  font-family: 'Euphoria Script', cursive;
+  font-family: var(--font-heading);
   font-size: clamp(2.4rem, 5vw + 1rem, 8rem);
   font-weight: bold;
   color: var(--primary-color);
   text-align: center;
-  text-shadow: -1px -1px 0 var(--text-outline-color),
-    1px -1px 0 var(--text-outline-color), -1px 1px 0 var(--text-outline-color),
-    1px 1px 0 var(--text-outline-color);
+  text-shadow: var(--outline-shadow);
   padding: 0.5rem 2rem;
   background-color: var(--bg-color-light);
-  border: 4px solid var(--primary-color);
-  border-radius: 12px;
+  border: var(--panel-border) solid var(--primary-color);
+  border-radius: var(--radius-2);
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
   box-sizing: border-box;
   max-width: 90vw;
@@ -64,17 +62,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-/* Responsive Hamburger Button */
-.hamburger {
-  background: none;
-  border: none;
-  cursor: pointer;
-  width: clamp(24px, 5vw, 40px);
-  height: clamp(24px, 5vw, 40px);
-  padding: 0;
-  transition: transform 0.3s ease;
 }
 
 /* 🌈 DROPDOWN MENU */
@@ -220,9 +207,4 @@
     font-size: clamp(1rem, 5vw, 2rem);
     padding: 0.3rem 0.5rem;
   }
-}
-.menuOverlay {
-  top: 4rem;
-  right: 1rem;
-  min-width: 100px;
 }

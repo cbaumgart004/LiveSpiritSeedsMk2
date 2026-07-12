@@ -1,6 +1,5 @@
 //src/pages/Home.jsx
 
-import React from 'react'
 import Nav from '@/components/Nav'
 import UpcomingEventsSection from '@/components/Home/UpcomingEvents.jsx'
 import AboutSection from '@/components/Home/AboutSection/AboutSection.jsx'

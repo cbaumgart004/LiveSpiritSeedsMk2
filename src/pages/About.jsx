@@ -1,5 +1,4 @@
 // src/pages/About.jsx
-import React from 'react'
 import { Link } from 'react-router-dom'
 import Nav from '../components/Nav'
 
@@ -9,7 +8,7 @@ const About = () => {
   return (
     <>
       <Nav />
-      <section className="section-container first-section">
+      <section className="section section--split first-section">
         <div className="media">
           <img src={melissaImage} alt="Melissa Carey" />
         </div>
@@ -22,12 +21,12 @@ const About = () => {
             including thai massage therapy and crystal bowls sound healing, to
             create transformative healing experiences. Offering an intuitive
             combination of sound bowl healing, yin yoga, and holistic healing
-            massage, Melissa fiercely believes in the body's innate wisdom to
+            massage, Melissa fiercely believes in the body&apos;s innate wisdom to
             heal, and her life’s work is to guide others toward wholeness,
             resilience, and growth.
           </p>
           <p>
-            Holding a Bachelor's in Traditional Eastern Arts, Melissa studied
+            Holding a Bachelor&apos;s in Traditional Eastern Arts, Melissa studied
             Yoga, Religious Studies, Music, and Ayurveda at Naropa University,
             and exploring the best holistic healing centers with leading experts
             in trauma-informed yoga, partner yoga, and sound healing. An artist

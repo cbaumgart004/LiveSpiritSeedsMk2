@@ -1,0 +1,20 @@
+/* Component-unique bits for the Upcoming page.
+   Band = global .section, box = global .panel, buttons = global .button-row. */
+.image {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto 2rem;
+}
+
+.image img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .image {
+    max-width: 100%;
+  }
+}

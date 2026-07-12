@@ -9,8 +9,8 @@
   --gradient: linear-gradient(to right, #ff5fa2, #ffc371);
   --gradient-reverse: linear-gradient(to left, #ff5fa2, #ffc371);
   --navbar-background: url('../assets/Logo_Spring.jpg');
-  --section-bg-image: url('/src/assets/backgrounds/Spirit_Seeds_Background_Green.jpg');
-  --blossom-icon: url('/src/assets/icons/blossom-pink.png');
+  --section-bg-image: url('../assets/backgrounds/Spirit_Seeds_Background_Green.jpg');
+  --blossom-icon: url('../assets/icons/blossom-pink.png');
   /* Canva Colors (commented)
   --primary-color: #11eb9e;
   --text-color: #1a9a13;
@@ -33,8 +33,8 @@
   --gradient: linear-gradient(to right, #e9b87d 0%, #e9c1ff 100%);
   --gradient-reverse: linear-gradient(to left, #e9b87d 0%, #e9c1ff 100%);
   --navbar-background: url('../assets/Logo_Summer.jpg');
-  --section-bg-image: url('/src/assets/backgrounds/SummerWaterColor.jpg');
-  --blossom-icon: url('/src/assets/icons/blossom-gold.png');
+  --section-bg-image: url('../assets/backgrounds/SummerWaterColor.jpg');
+  --blossom-icon: url('../assets/icons/blossom-gold.png');
   /* Canva Colors (commented)
   --primary-color: #ea5a1d;
   --text-color: #d1ca1f;
@@ -57,8 +57,8 @@
   --gradient: linear-gradient(to right, #d97706, #92400e);
   --gradient-reverse: linear-gradient(to left, #d97706, #92400e);
   --navbar-background: url('../assets/Logo_Fall.jpg');
-  --section-bg-image: url('/src/assets/backgrounds/FallWaterColor.jpg');
-  --blossom-icon: url('/src/assets/icons/blossom-rust.png');
+  --section-bg-image: url('../assets/backgrounds/FallWaterColor.jpg');
+  --blossom-icon: url('../assets/icons/blossom-rust.png');
   /* Canva Colors (commented)
   --primary-color: #920e0a;
   --text-color: #140036;
@@ -80,8 +80,8 @@
   --gradient: linear-gradient(to right, #6cb4ee, #bcdff9);
   --gradient-reverse: linear-gradient(to left, #6cb4ee, #bcdff9);
   --navbar-background: url('../assets/Logo_Winter.jpg');
-  --section-bg-image: url('/src/assets/backgrounds/WinterWaterColor.jpg');
-  --blossom-icon: url('/src/assets/icons/blossom-blue.png');
+  --section-bg-image: url('../assets/backgrounds/WinterWaterColor.jpg');
+  --blossom-icon: url('../assets/icons/blossom-blue.png');
   /* Canva Colors (commented)
   --primary-color: #2272dd;
   --text-color: #57668e;

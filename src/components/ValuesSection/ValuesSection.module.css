@@ -1,0 +1,59 @@
+/* Component-unique: the inline "values" list.
+   The themed band comes from the global .section primitive (ADR 0001). */
+.band {
+  padding-block: var(--space-6);
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  margin-bottom: var(--space-4);
+  color: var(--text-color);
+}
+
+.inlineList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  font-size: 5rem;
+  font-family: var(--font-subheading);
+  color: var(--text-color);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.word,
+.blossom {
+  flex: 1 1 0;
+  text-align: center;
+}
+
+.word {
+  font-style: italic;
+}
+
+.blossom {
+  display: inline-block;
+  width: 5rem;
+  height: 5rem;
+  background-image: var(--blossom-icon);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.9;
+}
+
+@media (max-width: 600px) {
+  .inlineList {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .word,
+  .blossom {
+    flex: none;
+    width: auto;
+  }
+}

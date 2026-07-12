@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import './Hamburger.css'
 
 function Hamburger({ isOpen, toggleMenu }) {
@@ -14,6 +15,11 @@ function Hamburger({ isOpen, toggleMenu }) {
       <span></span>
     </div>
   )
+}
+
+Hamburger.propTypes = {
+  isOpen: PropTypes.bool,
+  toggleMenu: PropTypes.func,
 }
 
 export default Hamburger

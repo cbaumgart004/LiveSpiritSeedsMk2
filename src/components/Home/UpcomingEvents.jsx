@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 
 import upcomingEventsImage from '@/assets/UpcomingEvents.jpg'
@@ -6,7 +5,7 @@ import upcomingEventsImage from '@/assets/UpcomingEvents.jpg'
 const UpcomingEvents = () => {
   return (
     // Add "reverse" when you want image on the RIGHT, text on the LEFT
-    <section className="section-container first-section reverse">
+    <section className="section section--split section--reverse first-section">
       {/* Image column */}
       <div className="media">
         <img src={upcomingEventsImage} alt="Upcoming Events" />
@@ -14,10 +13,10 @@ const UpcomingEvents = () => {
 
       {/* Text column */}
       <div className="card">
-        <h2>Check Out What's New!</h2>
+        <h2>Check Out What&apos;s New!</h2>
         <p>
           From live yoga classes and workshops to teacher trainings, retreats,
-          and more — there's always something exciting on the horizon at Spirit
+          and more — there&apos;s always something exciting on the horizon at Spirit
           Seeds. Tap below to explore our latest offerings and sign up.
         </p>
 

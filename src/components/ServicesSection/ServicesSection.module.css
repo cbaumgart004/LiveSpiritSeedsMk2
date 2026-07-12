@@ -1,0 +1,16 @@
+/* Component-unique: the responsive grid of service cards.
+   Section band + card styling come from the global primitives (ADR 0001). */
+.serviceGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-4);
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .serviceGrid {
+    grid-template-columns: 1fr;
+  }
+}

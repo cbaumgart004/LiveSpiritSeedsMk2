@@ -13,6 +13,12 @@ html.visible {
   visibility: visible;
 }
 
+/* Content images fade in as they arrive (fill-mode both ends at opacity 1,
+   so a failed/disabled animation still leaves images fully visible) */
+img {
+  animation: img-fade-in 0.5s ease both;
+}
+
 /* Base styles */
 body {
   font-family: var(--font-body);
@@ -55,20 +61,13 @@ h2 {
   color: var(--primary-color);
   margin-bottom: 0.75rem;
   font-family: var(--font-heading);
-  text-shadow: -1px -1px 0 var(--text-outline-color),
-    1px -1px 0 var(--text-outline-color), -1px 1px 0 var(--text-outline-color),
-    1px 1px 0 var(--text-outline-color);
+  text-shadow: var(--outline-shadow);
 }
 
 h3,
 .component-header {
   font-family: var(--font-subheading);
   color: var(--text-color);
-}
-
-/* Components */
-.navbar {
-  background-color: var(--accent-color);
 }
 
 p {
