@@ -9,7 +9,9 @@
   text-align: center;
 }
 
-/* Top offset so content clears the fixed navbar */
+/* Top offset so content clears the fixed navbar.
+   Scoped to .section (0,2,0) so it beats .section's own margin-block. */
+.section.first-section,
 .first-section {
   margin-top: calc(var(--navbar-height) + 1rem);
 }
