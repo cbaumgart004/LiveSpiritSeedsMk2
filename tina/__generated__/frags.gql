@@ -1,0 +1,52 @@
+fragment SettingsParts on Settings {
+  __typename
+  siteTitle
+  theme
+  contactEmail
+}
+
+fragment PageParts on Page {
+  __typename
+  title
+  navLabel
+  order
+  showInNav
+  blocks {
+    __typename
+    ... on PageBlocksSplitSection {
+      title
+      body
+      image
+      imageSide
+    }
+    ... on PageBlocksStackedSection {
+      title
+      body
+    }
+    ... on PageBlocksServiceCard {
+      title
+      description
+      image
+      imageSide
+      bookingOptions {
+        __typename
+        label
+        url
+      }
+    }
+    ... on PageBlocksValuesSection {
+      title
+      words
+    }
+    ... on PageBlocksEventSection {
+      title
+      body
+      images
+      buttons {
+        __typename
+        label
+        url
+      }
+    }
+  }
+}

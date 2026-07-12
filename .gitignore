@@ -12,6 +12,12 @@ dist
 dist-ssr
 *.local
 
+# Env / secrets (TinaCloud credentials live here in Phase 4)
+.env
+
+# TinaCMS generated admin build (regenerated on dev/build)
+/public/admin
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

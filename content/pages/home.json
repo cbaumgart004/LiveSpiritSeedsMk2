@@ -1,0 +1,50 @@
+{
+  "title": "Home",
+  "navLabel": "Home",
+  "order": 1,
+  "showInNav": true,
+  "blocks": [
+    {
+      "_template": "stackedSection",
+      "title": "Welcome to Spirit Seeds Wellness",
+      "body": {
+        "type": "root",
+        "children": [
+          {
+            "type": "p",
+            "children": [
+              {
+                "type": "text",
+                "text": "Holistic healing in Lafayette, Colorado — trauma-informed massage, sound healing, Ayurveda, and yin yoga."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "_template": "splitSection",
+      "title": "About",
+      "imageSide": "right",
+      "body": {
+        "type": "root",
+        "children": [
+          {
+            "type": "p",
+            "children": [
+              {
+                "type": "text",
+                "text": "Spirit Seeds Wellness provides holistic healing for individuals healing CPTSD and seeking relief from emotional, physical, and spiritual pain. Melissa Carey offers rituals that address multiple layers of health and well-being."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "_template": "valuesSection",
+      "title": "Our Core Values",
+      "words": ["Growth", "Acceptance", "Service"]
+    }
+  ]
+}

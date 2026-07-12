@@ -101,6 +101,7 @@ from `App`'s `useEffect` to attach a global visual flash on button clicks.
 ADRs live in `docs/adr/`; domain vocabulary in [`CONTEXT.md`](./CONTEXT.md).
 
 - [ADR 0001 — Hybrid CSS architecture with a single-primitive design system](./docs/adr/0001-hybrid-css-architecture.md)
+- [ADR 0002 — TinaCMS (git-backed) for owner-editable content](./docs/adr/0002-tinacms-content-management.md)
 
-Backlog / not yet decided: admin portal + hosted DB (Railway) to make offerings and events
-content-managed instead of hand-edited in JSX.
+In progress (`feature/admin-cms` branch): making content owner-editable via TinaCMS — pages will
+render from git-backed content files instead of hardcoded JSX, with on-page editing at `/admin`.
