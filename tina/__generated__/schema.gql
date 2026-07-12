@@ -147,6 +147,7 @@ type PageBlocksSplitSection {
   imageSide: String
   imageSize: String
   buttons: [PageBlocksSplitSectionButtons]
+  showHomeButton: Boolean
 }
 
 type PageBlocksStackedSectionButtons {
@@ -159,13 +160,19 @@ type PageBlocksStackedSection {
   title: String
   body: JSON
   buttons: [PageBlocksStackedSectionButtons]
+  showHomeButton: Boolean
+}
+
+type PageBlocksServiceCardBookingOptionsAddOns {
+  service: String
+  bookUrl: String
 }
 
 type PageBlocksServiceCardBookingOptions {
   label: String
   bookUrl: String
-  compressUrl: String
   note: String
+  addOns: [PageBlocksServiceCardBookingOptionsAddOns]
 }
 
 type PageBlocksServiceCard {
@@ -174,8 +181,9 @@ type PageBlocksServiceCard {
   image: String
   imageSide: String
   imageSize: String
-  offersThaiCompress: Boolean
+  status: String
   bookingOptions: [PageBlocksServiceCardBookingOptions]
+  showHomeButton: Boolean
 }
 
 type PageBlocksCardGridCards {
@@ -188,11 +196,13 @@ type PageBlocksCardGridCards {
 type PageBlocksCardGrid {
   title: String
   cards: [PageBlocksCardGridCards]
+  showHomeButton: Boolean
 }
 
 type PageBlocksValuesSection {
   title: String
   words: [String]
+  showHomeButton: Boolean
 }
 
 type PageBlocksEventSectionButtons {
@@ -206,6 +216,7 @@ type PageBlocksEventSection {
   body: JSON
   images: [String]
   buttons: [PageBlocksEventSectionButtons]
+  showHomeButton: Boolean
 }
 
 union PageBlocks = PageBlocksSplitSection | PageBlocksStackedSection | PageBlocksServiceCard | PageBlocksCardGrid | PageBlocksValuesSection | PageBlocksEventSection
@@ -255,6 +266,7 @@ input PageBlocksSplitSectionFilter {
   imageSide: StringFilter
   imageSize: StringFilter
   buttons: PageBlocksSplitSectionButtonsFilter
+  showHomeButton: BooleanFilter
 }
 
 input PageBlocksStackedSectionButtonsFilter {
@@ -267,13 +279,19 @@ input PageBlocksStackedSectionFilter {
   title: StringFilter
   body: RichTextFilter
   buttons: PageBlocksStackedSectionButtonsFilter
+  showHomeButton: BooleanFilter
+}
+
+input PageBlocksServiceCardBookingOptionsAddOnsFilter {
+  service: StringFilter
+  bookUrl: StringFilter
 }
 
 input PageBlocksServiceCardBookingOptionsFilter {
   label: StringFilter
   bookUrl: StringFilter
-  compressUrl: StringFilter
   note: StringFilter
+  addOns: PageBlocksServiceCardBookingOptionsAddOnsFilter
 }
 
 input PageBlocksServiceCardFilter {
@@ -282,8 +300,9 @@ input PageBlocksServiceCardFilter {
   image: ImageFilter
   imageSide: StringFilter
   imageSize: StringFilter
-  offersThaiCompress: BooleanFilter
+  status: StringFilter
   bookingOptions: PageBlocksServiceCardBookingOptionsFilter
+  showHomeButton: BooleanFilter
 }
 
 input PageBlocksCardGridCardsFilter {
@@ -296,11 +315,13 @@ input PageBlocksCardGridCardsFilter {
 input PageBlocksCardGridFilter {
   title: StringFilter
   cards: PageBlocksCardGridCardsFilter
+  showHomeButton: BooleanFilter
 }
 
 input PageBlocksValuesSectionFilter {
   title: StringFilter
   words: StringFilter
+  showHomeButton: BooleanFilter
 }
 
 input PageBlocksEventSectionButtonsFilter {
@@ -314,6 +335,7 @@ input PageBlocksEventSectionFilter {
   body: RichTextFilter
   images: ImageFilter
   buttons: PageBlocksEventSectionButtonsFilter
+  showHomeButton: BooleanFilter
 }
 
 input PageBlocksFilter {
@@ -388,6 +410,7 @@ input PageBlocksSplitSectionMutation {
   imageSide: String
   imageSize: String
   buttons: [PageBlocksSplitSectionButtonsMutation]
+  showHomeButton: Boolean
 }
 
 input PageBlocksStackedSectionButtonsMutation {
@@ -400,13 +423,19 @@ input PageBlocksStackedSectionMutation {
   title: String
   body: JSON
   buttons: [PageBlocksStackedSectionButtonsMutation]
+  showHomeButton: Boolean
+}
+
+input PageBlocksServiceCardBookingOptionsAddOnsMutation {
+  service: String
+  bookUrl: String
 }
 
 input PageBlocksServiceCardBookingOptionsMutation {
   label: String
   bookUrl: String
-  compressUrl: String
   note: String
+  addOns: [PageBlocksServiceCardBookingOptionsAddOnsMutation]
 }
 
 input PageBlocksServiceCardMutation {
@@ -415,8 +444,9 @@ input PageBlocksServiceCardMutation {
   image: String
   imageSide: String
   imageSize: String
-  offersThaiCompress: Boolean
+  status: String
   bookingOptions: [PageBlocksServiceCardBookingOptionsMutation]
+  showHomeButton: Boolean
 }
 
 input PageBlocksCardGridCardsMutation {
@@ -429,11 +459,13 @@ input PageBlocksCardGridCardsMutation {
 input PageBlocksCardGridMutation {
   title: String
   cards: [PageBlocksCardGridCardsMutation]
+  showHomeButton: Boolean
 }
 
 input PageBlocksValuesSectionMutation {
   title: String
   words: [String]
+  showHomeButton: Boolean
 }
 
 input PageBlocksEventSectionButtonsMutation {
@@ -447,6 +479,7 @@ input PageBlocksEventSectionMutation {
   body: JSON
   images: [String]
   buttons: [PageBlocksEventSectionButtonsMutation]
+  showHomeButton: Boolean
 }
 
 input PageBlocksMutation {

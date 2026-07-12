@@ -6,7 +6,6 @@
 import { tinaField } from 'tinacms/dist/react'
 import { TinaMarkdown } from 'tinacms/dist/rich-text'
 import ValuesSection from '../ValuesSection/ValuesSection'
-import { THAI_COMPRESS_AVAILABLE } from '../../config/siteConfig'
 
 // Which side the image sits on. 'left'/'right' are explicit overrides from the
 // editor; anything else ('auto' or empty) alternates by position so images
@@ -69,6 +68,19 @@ function Buttons({ block }) {
   )
 }
 
+// Optional "Home" button (links to the home page). On by default: renders
+// unless the editor explicitly turned it off (showHomeButton === false).
+function HomeButton({ block }) {
+  if (block.showHomeButton === false) return null
+  return (
+    <div className="button-row">
+      <a className="btn" href="/">
+        Home
+      </a>
+    </div>
+  )
+}
+
 function SplitSection({ block, isFirst, side }) {
   return (
     <section className={sectionClass('section section--split', side, isFirst)}>
@@ -77,6 +89,7 @@ function SplitSection({ block, isFirst, side }) {
         {block.title && <h2 data-tina-field={tinaField(block, 'title')}>{block.title}</h2>}
         <Body block={block} name="body" />
         <Buttons block={block} />
+        <HomeButton block={block} />
       </div>
     </section>
   )
@@ -90,51 +103,80 @@ function StackedSection({ block, isFirst }) {
         <Body block={block} name="body" />
       </div>
       <Buttons block={block} />
+      <HomeButton block={block} />
     </section>
   )
 }
 
-function ServiceCardBlock({ block, isFirst, side }) {
-  const options = block.bookingOptions || []
+// Stable anchor id for a service card, so add-on buttons can link to it.
+function slugify(text) {
+  return String(text || '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+}
+
+// One add-on booking button, connected to the referenced service. Disabled
+// "Coming Soon" while that service is coming-soon (or missing); otherwise it
+// links to — in priority order — this session's explicit add-on URL, the
+// referenced service's own booking URL, or an on-page anchor to its card.
+function AddOnButton({ addOn, services }) {
+  const ref = services?.[addOn.service?.trim().toLowerCase()]
+  if (!ref || ref.status === 'coming-soon') {
+    return (
+      <span className="btn btn--disabled" aria-disabled="true">
+        {addOn.service} - Coming Soon
+      </span>
+    )
+  }
+  const href = addOn.bookUrl || ref.bookUrl || (ref.slug ? `#${ref.slug}` : '#')
   return (
-    <section className={sectionClass('section section--split', side, isFirst)}>
+    <a className="btn" href={href}>
+      Book w/ {addOn.service}
+    </a>
+  )
+}
+
+function ServiceCardBlock({ block, isFirst, side, services }) {
+  const options = block.bookingOptions || []
+  const comingSoon = block.status === 'coming-soon'
+  return (
+    <section id={slugify(block.title)} className={sectionClass('section section--split', side, isFirst)}>
       <Media block={block} alt={block.title} size={block.imageSize} />
       <div className="panel">
-        {block.title && <h2 data-tina-field={tinaField(block, 'title')}>{block.title}</h2>}
+        {block.title && (
+          <h2 data-tina-field={tinaField(block, 'title')}>
+            {block.title}
+            {comingSoon && <span className="status-badge">Coming Soon</span>}
+          </h2>
+        )}
         <Body block={block} name="description" />
-        {options.length > 0 && (
-          <>
-            {options.map((opt, i) => (
-              <div key={i}>
-                <div className="button-row">
+        {/* Each session gets its own row: the base booking button plus one
+            "Book w/ <add-on>" button per add-on offered on that session. */}
+        {options.map((opt, i) => (
+          <div key={i}>
+            <div className="button-row">
+              {comingSoon ? (
+                // A Coming Soon service can't be booked yet.
+                <span className="btn btn--disabled" aria-disabled="true">
+                  {opt.label} - Coming Soon
+                </span>
+              ) : (
+                <>
                   <a className="btn" href={opt.bookUrl}>
                     {opt.label}
                   </a>
-                  {/* Thai Compress add-on button, only on services that offer it.
-                      Active when THAI_COMPRESS_AVAILABLE (siteConfig) and a URL is
-                      set; otherwise a disabled "Coming Soon" button. */}
-                  {block.offersThaiCompress &&
-                    (THAI_COMPRESS_AVAILABLE && opt.compressUrl ? (
-                      <a className="btn" href={opt.compressUrl}>
-                        Book w/ Thai Compress
-                      </a>
-                    ) : (
-                      <span className="btn btn--disabled" aria-disabled="true">
-                        Thai Compress - Coming Soon
-                      </span>
-                    ))}
-                </div>
-                {opt.note && <p style={{ fontSize: '0.85rem' }}>{opt.note}</p>}
-              </div>
-            ))}
-            {block.offersThaiCompress && (
-              <p style={{ fontSize: '0.85rem', fontStyle: 'italic' }}>
-                Thai Herbal Compress can be added to this service
-                {THAI_COMPRESS_AVAILABLE ? '.' : ' (coming soon).'}
-              </p>
-            )}
-          </>
-        )}
+                  {(opt.addOns || []).map((addOn, j) => (
+                    <AddOnButton key={j} addOn={addOn} services={services} />
+                  ))}
+                </>
+              )}
+            </div>
+            {opt.note && <p style={{ fontSize: '0.85rem' }}>{opt.note}</p>}
+          </div>
+        ))}
+        <HomeButton block={block} />
       </div>
     </section>
   )
@@ -160,6 +202,7 @@ function CardGrid({ block, isFirst }) {
           </div>
         ))}
       </div>
+      <HomeButton block={block} />
     </section>
   )
 }
@@ -181,18 +224,31 @@ function EventSection({ block, isFirst }) {
           )}
         </div>
         <Buttons block={block} />
+        <HomeButton block={block} />
       </div>
     </section>
   )
 }
 
 export default function Blocks({ blocks }) {
+  const list = blocks || []
+  // Map of service Heading -> { status, slug, bookUrl }, so an add-on button on
+  // one service can reflect the availability of — and link to — the (other)
+  // service it references.
+  const services = {}
+  list.forEach((b) => {
+    if (b.__typename === 'PageBlocksServiceCard' && b.title) {
+      const bookUrl = (b.bookingOptions || []).map((o) => o.bookUrl).find(Boolean) || ''
+      services[b.title.trim().toLowerCase()] = { status: b.status, slug: slugify(b.title), bookUrl }
+    }
+  })
+
   // Counts image-bearing sections so resolveSide can alternate them independently
   // of any interleaved text-only blocks.
   let mediaIndex = 0
   return (
     <>
-      {(blocks || []).map((block, i) => {
+      {list.map((block, i) => {
         const isFirst = i === 0
         switch (block.__typename) {
           case 'PageBlocksSplitSection':
@@ -201,14 +257,25 @@ export default function Blocks({ blocks }) {
             )
           case 'PageBlocksServiceCard':
             return (
-              <ServiceCardBlock key={i} block={block} isFirst={isFirst} side={resolveSide(block, mediaIndex++)} />
+              <ServiceCardBlock
+                key={i}
+                block={block}
+                isFirst={isFirst}
+                side={resolveSide(block, mediaIndex++)}
+                services={services}
+              />
             )
           case 'PageBlocksStackedSection':
             return <StackedSection key={i} block={block} isFirst={isFirst} />
           case 'PageBlocksCardGrid':
             return <CardGrid key={i} block={block} isFirst={isFirst} />
           case 'PageBlocksValuesSection':
-            return <ValuesSection key={i} title={block.title} words={block.words || []} />
+            return (
+              <div key={i}>
+                <ValuesSection title={block.title} words={block.words || []} />
+                <HomeButton block={block} />
+              </div>
+            )
           case 'PageBlocksEventSection':
             return <EventSection key={i} block={block} isFirst={isFirst} />
           default:

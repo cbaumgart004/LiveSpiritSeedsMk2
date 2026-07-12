@@ -245,6 +245,7 @@ export type PageBlocksSplitSection = {
   imageSide?: Maybe<Scalars['String']['output']>;
   imageSize?: Maybe<Scalars['String']['output']>;
   buttons?: Maybe<Array<Maybe<PageBlocksSplitSectionButtons>>>;
+  showHomeButton?: Maybe<Scalars['Boolean']['output']>;
 };
 
 export type PageBlocksStackedSectionButtons = {
@@ -259,14 +260,21 @@ export type PageBlocksStackedSection = {
   title?: Maybe<Scalars['String']['output']>;
   body?: Maybe<Scalars['JSON']['output']>;
   buttons?: Maybe<Array<Maybe<PageBlocksStackedSectionButtons>>>;
+  showHomeButton?: Maybe<Scalars['Boolean']['output']>;
+};
+
+export type PageBlocksServiceCardBookingOptionsAddOns = {
+  __typename?: 'PageBlocksServiceCardBookingOptionsAddOns';
+  service?: Maybe<Scalars['String']['output']>;
+  bookUrl?: Maybe<Scalars['String']['output']>;
 };
 
 export type PageBlocksServiceCardBookingOptions = {
   __typename?: 'PageBlocksServiceCardBookingOptions';
   label?: Maybe<Scalars['String']['output']>;
   bookUrl?: Maybe<Scalars['String']['output']>;
-  compressUrl?: Maybe<Scalars['String']['output']>;
   note?: Maybe<Scalars['String']['output']>;
+  addOns?: Maybe<Array<Maybe<PageBlocksServiceCardBookingOptionsAddOns>>>;
 };
 
 export type PageBlocksServiceCard = {
@@ -276,8 +284,9 @@ export type PageBlocksServiceCard = {
   image?: Maybe<Scalars['String']['output']>;
   imageSide?: Maybe<Scalars['String']['output']>;
   imageSize?: Maybe<Scalars['String']['output']>;
-  offersThaiCompress?: Maybe<Scalars['Boolean']['output']>;
+  status?: Maybe<Scalars['String']['output']>;
   bookingOptions?: Maybe<Array<Maybe<PageBlocksServiceCardBookingOptions>>>;
+  showHomeButton?: Maybe<Scalars['Boolean']['output']>;
 };
 
 export type PageBlocksCardGridCards = {
@@ -292,12 +301,14 @@ export type PageBlocksCardGrid = {
   __typename?: 'PageBlocksCardGrid';
   title?: Maybe<Scalars['String']['output']>;
   cards?: Maybe<Array<Maybe<PageBlocksCardGridCards>>>;
+  showHomeButton?: Maybe<Scalars['Boolean']['output']>;
 };
 
 export type PageBlocksValuesSection = {
   __typename?: 'PageBlocksValuesSection';
   title?: Maybe<Scalars['String']['output']>;
   words?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  showHomeButton?: Maybe<Scalars['Boolean']['output']>;
 };
 
 export type PageBlocksEventSectionButtons = {
@@ -313,6 +324,7 @@ export type PageBlocksEventSection = {
   body?: Maybe<Scalars['JSON']['output']>;
   images?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   buttons?: Maybe<Array<Maybe<PageBlocksEventSectionButtons>>>;
+  showHomeButton?: Maybe<Scalars['Boolean']['output']>;
 };
 
 export type PageBlocks = PageBlocksSplitSection | PageBlocksStackedSection | PageBlocksServiceCard | PageBlocksCardGrid | PageBlocksValuesSection | PageBlocksEventSection;
@@ -363,6 +375,7 @@ export type PageBlocksSplitSectionFilter = {
   imageSide?: InputMaybe<StringFilter>;
   imageSize?: InputMaybe<StringFilter>;
   buttons?: InputMaybe<PageBlocksSplitSectionButtonsFilter>;
+  showHomeButton?: InputMaybe<BooleanFilter>;
 };
 
 export type PageBlocksStackedSectionButtonsFilter = {
@@ -375,13 +388,19 @@ export type PageBlocksStackedSectionFilter = {
   title?: InputMaybe<StringFilter>;
   body?: InputMaybe<RichTextFilter>;
   buttons?: InputMaybe<PageBlocksStackedSectionButtonsFilter>;
+  showHomeButton?: InputMaybe<BooleanFilter>;
+};
+
+export type PageBlocksServiceCardBookingOptionsAddOnsFilter = {
+  service?: InputMaybe<StringFilter>;
+  bookUrl?: InputMaybe<StringFilter>;
 };
 
 export type PageBlocksServiceCardBookingOptionsFilter = {
   label?: InputMaybe<StringFilter>;
   bookUrl?: InputMaybe<StringFilter>;
-  compressUrl?: InputMaybe<StringFilter>;
   note?: InputMaybe<StringFilter>;
+  addOns?: InputMaybe<PageBlocksServiceCardBookingOptionsAddOnsFilter>;
 };
 
 export type PageBlocksServiceCardFilter = {
@@ -390,8 +409,9 @@ export type PageBlocksServiceCardFilter = {
   image?: InputMaybe<ImageFilter>;
   imageSide?: InputMaybe<StringFilter>;
   imageSize?: InputMaybe<StringFilter>;
-  offersThaiCompress?: InputMaybe<BooleanFilter>;
+  status?: InputMaybe<StringFilter>;
   bookingOptions?: InputMaybe<PageBlocksServiceCardBookingOptionsFilter>;
+  showHomeButton?: InputMaybe<BooleanFilter>;
 };
 
 export type PageBlocksCardGridCardsFilter = {
@@ -404,11 +424,13 @@ export type PageBlocksCardGridCardsFilter = {
 export type PageBlocksCardGridFilter = {
   title?: InputMaybe<StringFilter>;
   cards?: InputMaybe<PageBlocksCardGridCardsFilter>;
+  showHomeButton?: InputMaybe<BooleanFilter>;
 };
 
 export type PageBlocksValuesSectionFilter = {
   title?: InputMaybe<StringFilter>;
   words?: InputMaybe<StringFilter>;
+  showHomeButton?: InputMaybe<BooleanFilter>;
 };
 
 export type PageBlocksEventSectionButtonsFilter = {
@@ -422,6 +444,7 @@ export type PageBlocksEventSectionFilter = {
   body?: InputMaybe<RichTextFilter>;
   images?: InputMaybe<ImageFilter>;
   buttons?: InputMaybe<PageBlocksEventSectionButtonsFilter>;
+  showHomeButton?: InputMaybe<BooleanFilter>;
 };
 
 export type PageBlocksFilter = {
@@ -556,6 +579,7 @@ export type PageBlocksSplitSectionMutation = {
   imageSide?: InputMaybe<Scalars['String']['input']>;
   imageSize?: InputMaybe<Scalars['String']['input']>;
   buttons?: InputMaybe<Array<InputMaybe<PageBlocksSplitSectionButtonsMutation>>>;
+  showHomeButton?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type PageBlocksStackedSectionButtonsMutation = {
@@ -568,13 +592,19 @@ export type PageBlocksStackedSectionMutation = {
   title?: InputMaybe<Scalars['String']['input']>;
   body?: InputMaybe<Scalars['JSON']['input']>;
   buttons?: InputMaybe<Array<InputMaybe<PageBlocksStackedSectionButtonsMutation>>>;
+  showHomeButton?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type PageBlocksServiceCardBookingOptionsAddOnsMutation = {
+  service?: InputMaybe<Scalars['String']['input']>;
+  bookUrl?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type PageBlocksServiceCardBookingOptionsMutation = {
   label?: InputMaybe<Scalars['String']['input']>;
   bookUrl?: InputMaybe<Scalars['String']['input']>;
-  compressUrl?: InputMaybe<Scalars['String']['input']>;
   note?: InputMaybe<Scalars['String']['input']>;
+  addOns?: InputMaybe<Array<InputMaybe<PageBlocksServiceCardBookingOptionsAddOnsMutation>>>;
 };
 
 export type PageBlocksServiceCardMutation = {
@@ -583,8 +613,9 @@ export type PageBlocksServiceCardMutation = {
   image?: InputMaybe<Scalars['String']['input']>;
   imageSide?: InputMaybe<Scalars['String']['input']>;
   imageSize?: InputMaybe<Scalars['String']['input']>;
-  offersThaiCompress?: InputMaybe<Scalars['Boolean']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
   bookingOptions?: InputMaybe<Array<InputMaybe<PageBlocksServiceCardBookingOptionsMutation>>>;
+  showHomeButton?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type PageBlocksCardGridCardsMutation = {
@@ -597,11 +628,13 @@ export type PageBlocksCardGridCardsMutation = {
 export type PageBlocksCardGridMutation = {
   title?: InputMaybe<Scalars['String']['input']>;
   cards?: InputMaybe<Array<InputMaybe<PageBlocksCardGridCardsMutation>>>;
+  showHomeButton?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type PageBlocksValuesSectionMutation = {
   title?: InputMaybe<Scalars['String']['input']>;
   words?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  showHomeButton?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type PageBlocksEventSectionButtonsMutation = {
@@ -615,6 +648,7 @@ export type PageBlocksEventSectionMutation = {
   body?: InputMaybe<Scalars['JSON']['input']>;
   images?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   buttons?: InputMaybe<Array<InputMaybe<PageBlocksEventSectionButtonsMutation>>>;
+  showHomeButton?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type PageBlocksMutation = {
@@ -636,7 +670,7 @@ export type PageMutation = {
 
 export type SettingsPartsFragment = { __typename: 'Settings', siteTitle?: string | null, tagline?: string | null, logo?: string | null, theme?: string | null, contactEmail?: string | null };
 
-export type PagePartsFragment = { __typename: 'Page', title: string, navLabel?: string | null, order?: number | null, showInNav?: boolean | null, blocks?: Array<{ __typename: 'PageBlocksSplitSection', title?: string | null, body?: any | null, image?: string | null, imageSide?: string | null, imageSize?: string | null, buttons?: Array<{ __typename: 'PageBlocksSplitSectionButtons', label?: string | null, url?: string | null, status?: string | null } | null> | null } | { __typename: 'PageBlocksStackedSection', title?: string | null, body?: any | null, buttons?: Array<{ __typename: 'PageBlocksStackedSectionButtons', label?: string | null, url?: string | null, status?: string | null } | null> | null } | { __typename: 'PageBlocksServiceCard', title?: string | null, description?: any | null, image?: string | null, imageSide?: string | null, imageSize?: string | null, offersThaiCompress?: boolean | null, bookingOptions?: Array<{ __typename: 'PageBlocksServiceCardBookingOptions', label?: string | null, bookUrl?: string | null, compressUrl?: string | null, note?: string | null } | null> | null } | { __typename: 'PageBlocksCardGrid', title?: string | null, cards?: Array<{ __typename: 'PageBlocksCardGridCards', title?: string | null, description?: string | null, buttonLabel?: string | null, buttonUrl?: string | null } | null> | null } | { __typename: 'PageBlocksValuesSection', title?: string | null, words?: Array<string | null> | null } | { __typename: 'PageBlocksEventSection', title?: string | null, body?: any | null, images?: Array<string | null> | null, buttons?: Array<{ __typename: 'PageBlocksEventSectionButtons', label?: string | null, url?: string | null, status?: string | null } | null> | null } | null> | null };
+export type PagePartsFragment = { __typename: 'Page', title: string, navLabel?: string | null, order?: number | null, showInNav?: boolean | null, blocks?: Array<{ __typename: 'PageBlocksSplitSection', title?: string | null, body?: any | null, image?: string | null, imageSide?: string | null, imageSize?: string | null, showHomeButton?: boolean | null, buttons?: Array<{ __typename: 'PageBlocksSplitSectionButtons', label?: string | null, url?: string | null, status?: string | null } | null> | null } | { __typename: 'PageBlocksStackedSection', title?: string | null, body?: any | null, showHomeButton?: boolean | null, buttons?: Array<{ __typename: 'PageBlocksStackedSectionButtons', label?: string | null, url?: string | null, status?: string | null } | null> | null } | { __typename: 'PageBlocksServiceCard', title?: string | null, description?: any | null, image?: string | null, imageSide?: string | null, imageSize?: string | null, status?: string | null, showHomeButton?: boolean | null, bookingOptions?: Array<{ __typename: 'PageBlocksServiceCardBookingOptions', label?: string | null, bookUrl?: string | null, note?: string | null, addOns?: Array<{ __typename: 'PageBlocksServiceCardBookingOptionsAddOns', service?: string | null, bookUrl?: string | null } | null> | null } | null> | null } | { __typename: 'PageBlocksCardGrid', title?: string | null, showHomeButton?: boolean | null, cards?: Array<{ __typename: 'PageBlocksCardGridCards', title?: string | null, description?: string | null, buttonLabel?: string | null, buttonUrl?: string | null } | null> | null } | { __typename: 'PageBlocksValuesSection', title?: string | null, words?: Array<string | null> | null, showHomeButton?: boolean | null } | { __typename: 'PageBlocksEventSection', title?: string | null, body?: any | null, images?: Array<string | null> | null, showHomeButton?: boolean | null, buttons?: Array<{ __typename: 'PageBlocksEventSectionButtons', label?: string | null, url?: string | null, status?: string | null } | null> | null } | null> | null };
 
 export type SettingsQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
@@ -662,7 +696,7 @@ export type PageQueryVariables = Exact<{
 }>;
 
 
-export type PageQuery = { __typename?: 'Query', page: { __typename: 'Page', id: string, title: string, navLabel?: string | null, order?: number | null, showInNav?: boolean | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, blocks?: Array<{ __typename: 'PageBlocksSplitSection', title?: string | null, body?: any | null, image?: string | null, imageSide?: string | null, imageSize?: string | null, buttons?: Array<{ __typename: 'PageBlocksSplitSectionButtons', label?: string | null, url?: string | null, status?: string | null } | null> | null } | { __typename: 'PageBlocksStackedSection', title?: string | null, body?: any | null, buttons?: Array<{ __typename: 'PageBlocksStackedSectionButtons', label?: string | null, url?: string | null, status?: string | null } | null> | null } | { __typename: 'PageBlocksServiceCard', title?: string | null, description?: any | null, image?: string | null, imageSide?: string | null, imageSize?: string | null, offersThaiCompress?: boolean | null, bookingOptions?: Array<{ __typename: 'PageBlocksServiceCardBookingOptions', label?: string | null, bookUrl?: string | null, compressUrl?: string | null, note?: string | null } | null> | null } | { __typename: 'PageBlocksCardGrid', title?: string | null, cards?: Array<{ __typename: 'PageBlocksCardGridCards', title?: string | null, description?: string | null, buttonLabel?: string | null, buttonUrl?: string | null } | null> | null } | { __typename: 'PageBlocksValuesSection', title?: string | null, words?: Array<string | null> | null } | { __typename: 'PageBlocksEventSection', title?: string | null, body?: any | null, images?: Array<string | null> | null, buttons?: Array<{ __typename: 'PageBlocksEventSectionButtons', label?: string | null, url?: string | null, status?: string | null } | null> | null } | null> | null } };
+export type PageQuery = { __typename?: 'Query', page: { __typename: 'Page', id: string, title: string, navLabel?: string | null, order?: number | null, showInNav?: boolean | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, blocks?: Array<{ __typename: 'PageBlocksSplitSection', title?: string | null, body?: any | null, image?: string | null, imageSide?: string | null, imageSize?: string | null, showHomeButton?: boolean | null, buttons?: Array<{ __typename: 'PageBlocksSplitSectionButtons', label?: string | null, url?: string | null, status?: string | null } | null> | null } | { __typename: 'PageBlocksStackedSection', title?: string | null, body?: any | null, showHomeButton?: boolean | null, buttons?: Array<{ __typename: 'PageBlocksStackedSectionButtons', label?: string | null, url?: string | null, status?: string | null } | null> | null } | { __typename: 'PageBlocksServiceCard', title?: string | null, description?: any | null, image?: string | null, imageSide?: string | null, imageSize?: string | null, status?: string | null, showHomeButton?: boolean | null, bookingOptions?: Array<{ __typename: 'PageBlocksServiceCardBookingOptions', label?: string | null, bookUrl?: string | null, note?: string | null, addOns?: Array<{ __typename: 'PageBlocksServiceCardBookingOptionsAddOns', service?: string | null, bookUrl?: string | null } | null> | null } | null> | null } | { __typename: 'PageBlocksCardGrid', title?: string | null, showHomeButton?: boolean | null, cards?: Array<{ __typename: 'PageBlocksCardGridCards', title?: string | null, description?: string | null, buttonLabel?: string | null, buttonUrl?: string | null } | null> | null } | { __typename: 'PageBlocksValuesSection', title?: string | null, words?: Array<string | null> | null, showHomeButton?: boolean | null } | { __typename: 'PageBlocksEventSection', title?: string | null, body?: any | null, images?: Array<string | null> | null, showHomeButton?: boolean | null, buttons?: Array<{ __typename: 'PageBlocksEventSectionButtons', label?: string | null, url?: string | null, status?: string | null } | null> | null } | null> | null } };
 
 export type PageConnectionQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']['input']>;
@@ -674,7 +708,7 @@ export type PageConnectionQueryVariables = Exact<{
 }>;
 
 
-export type PageConnectionQuery = { __typename?: 'Query', pageConnection: { __typename?: 'PageConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'PageConnectionEdges', cursor: string, node?: { __typename: 'Page', id: string, title: string, navLabel?: string | null, order?: number | null, showInNav?: boolean | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, blocks?: Array<{ __typename: 'PageBlocksSplitSection', title?: string | null, body?: any | null, image?: string | null, imageSide?: string | null, imageSize?: string | null, buttons?: Array<{ __typename: 'PageBlocksSplitSectionButtons', label?: string | null, url?: string | null, status?: string | null } | null> | null } | { __typename: 'PageBlocksStackedSection', title?: string | null, body?: any | null, buttons?: Array<{ __typename: 'PageBlocksStackedSectionButtons', label?: string | null, url?: string | null, status?: string | null } | null> | null } | { __typename: 'PageBlocksServiceCard', title?: string | null, description?: any | null, image?: string | null, imageSide?: string | null, imageSize?: string | null, offersThaiCompress?: boolean | null, bookingOptions?: Array<{ __typename: 'PageBlocksServiceCardBookingOptions', label?: string | null, bookUrl?: string | null, compressUrl?: string | null, note?: string | null } | null> | null } | { __typename: 'PageBlocksCardGrid', title?: string | null, cards?: Array<{ __typename: 'PageBlocksCardGridCards', title?: string | null, description?: string | null, buttonLabel?: string | null, buttonUrl?: string | null } | null> | null } | { __typename: 'PageBlocksValuesSection', title?: string | null, words?: Array<string | null> | null } | { __typename: 'PageBlocksEventSection', title?: string | null, body?: any | null, images?: Array<string | null> | null, buttons?: Array<{ __typename: 'PageBlocksEventSectionButtons', label?: string | null, url?: string | null, status?: string | null } | null> | null } | null> | null } | null } | null> | null } };
+export type PageConnectionQuery = { __typename?: 'Query', pageConnection: { __typename?: 'PageConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'PageConnectionEdges', cursor: string, node?: { __typename: 'Page', id: string, title: string, navLabel?: string | null, order?: number | null, showInNav?: boolean | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, blocks?: Array<{ __typename: 'PageBlocksSplitSection', title?: string | null, body?: any | null, image?: string | null, imageSide?: string | null, imageSize?: string | null, showHomeButton?: boolean | null, buttons?: Array<{ __typename: 'PageBlocksSplitSectionButtons', label?: string | null, url?: string | null, status?: string | null } | null> | null } | { __typename: 'PageBlocksStackedSection', title?: string | null, body?: any | null, showHomeButton?: boolean | null, buttons?: Array<{ __typename: 'PageBlocksStackedSectionButtons', label?: string | null, url?: string | null, status?: string | null } | null> | null } | { __typename: 'PageBlocksServiceCard', title?: string | null, description?: any | null, image?: string | null, imageSide?: string | null, imageSize?: string | null, status?: string | null, showHomeButton?: boolean | null, bookingOptions?: Array<{ __typename: 'PageBlocksServiceCardBookingOptions', label?: string | null, bookUrl?: string | null, note?: string | null, addOns?: Array<{ __typename: 'PageBlocksServiceCardBookingOptionsAddOns', service?: string | null, bookUrl?: string | null } | null> | null } | null> | null } | { __typename: 'PageBlocksCardGrid', title?: string | null, showHomeButton?: boolean | null, cards?: Array<{ __typename: 'PageBlocksCardGridCards', title?: string | null, description?: string | null, buttonLabel?: string | null, buttonUrl?: string | null } | null> | null } | { __typename: 'PageBlocksValuesSection', title?: string | null, words?: Array<string | null> | null, showHomeButton?: boolean | null } | { __typename: 'PageBlocksEventSection', title?: string | null, body?: any | null, images?: Array<string | null> | null, showHomeButton?: boolean | null, buttons?: Array<{ __typename: 'PageBlocksEventSectionButtons', label?: string | null, url?: string | null, status?: string | null } | null> | null } | null> | null } | null } | null> | null } };
 
 export const SettingsPartsFragmentDoc = gql`
     fragment SettingsParts on Settings {
@@ -707,6 +741,7 @@ export const PagePartsFragmentDoc = gql`
         url
         status
       }
+      showHomeButton
     }
     ... on PageBlocksStackedSection {
       title
@@ -717,6 +752,7 @@ export const PagePartsFragmentDoc = gql`
         url
         status
       }
+      showHomeButton
     }
     ... on PageBlocksServiceCard {
       title
@@ -724,14 +760,19 @@ export const PagePartsFragmentDoc = gql`
       image
       imageSide
       imageSize
-      offersThaiCompress
+      status
       bookingOptions {
         __typename
         label
         bookUrl
-        compressUrl
         note
+        addOns {
+          __typename
+          service
+          bookUrl
+        }
       }
+      showHomeButton
     }
     ... on PageBlocksCardGrid {
       title
@@ -742,10 +783,12 @@ export const PagePartsFragmentDoc = gql`
         buttonLabel
         buttonUrl
       }
+      showHomeButton
     }
     ... on PageBlocksValuesSection {
       title
       words
+      showHomeButton
     }
     ... on PageBlocksEventSection {
       title
@@ -757,6 +800,7 @@ export const PagePartsFragmentDoc = gql`
         url
         status
       }
+      showHomeButton
     }
   }
 }

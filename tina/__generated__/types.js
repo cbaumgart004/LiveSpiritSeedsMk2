@@ -36,6 +36,7 @@ export const PagePartsFragmentDoc = gql`
         url
         status
       }
+      showHomeButton
     }
     ... on PageBlocksStackedSection {
       title
@@ -46,6 +47,7 @@ export const PagePartsFragmentDoc = gql`
         url
         status
       }
+      showHomeButton
     }
     ... on PageBlocksServiceCard {
       title
@@ -53,14 +55,19 @@ export const PagePartsFragmentDoc = gql`
       image
       imageSide
       imageSize
-      offersThaiCompress
+      status
       bookingOptions {
         __typename
         label
         bookUrl
-        compressUrl
         note
+        addOns {
+          __typename
+          service
+          bookUrl
+        }
       }
+      showHomeButton
     }
     ... on PageBlocksCardGrid {
       title
@@ -71,10 +78,12 @@ export const PagePartsFragmentDoc = gql`
         buttonLabel
         buttonUrl
       }
+      showHomeButton
     }
     ... on PageBlocksValuesSection {
       title
       words
+      showHomeButton
     }
     ... on PageBlocksEventSection {
       title
@@ -86,6 +95,7 @@ export const PagePartsFragmentDoc = gql`
         url
         status
       }
+      showHomeButton
     }
   }
 }

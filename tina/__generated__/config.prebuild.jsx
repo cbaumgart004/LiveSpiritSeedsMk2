@@ -44,6 +44,45 @@ var imageSizeField = {
     { value: "lg", label: "Large" }
   ]
 };
+var homeButtonField = {
+  type: "boolean",
+  name: "showHomeButton",
+  label: 'Show "Home" button',
+  description: "Adds a Home button (links to the home page). On by default; turn off to hide.",
+  ui: { defaultValue: true }
+};
+var addOnsField = {
+  type: "object",
+  name: "addOns",
+  label: "Add-ons for this session",
+  list: true,
+  ui: { itemProps: (item) => ({ label: item?.service || "Add-on" }) },
+  fields: [
+    {
+      type: "string",
+      name: "service",
+      label: "Add-on Service",
+      description: "Type the exact Heading of another Service card. Its button shows Available or Coming Soon based on THAT service\u2019s Status.",
+      ui: {
+        // Block save unless the typed name matches a Service card Heading on
+        // this page (case/space-insensitive), so add-ons can't silently miss.
+        validate: (value, allValues) => {
+          if (!value) return void 0;
+          const headings = (allValues?.blocks || []).filter((b) => b?._template === "serviceCard" && b?.title).map((b) => String(b.title).trim().toLowerCase());
+          if (!headings.includes(value.trim().toLowerCase())) {
+            return `No Service card titled "${value}" on this page \u2014 it must match a Service Heading exactly.`;
+          }
+          return void 0;
+        }
+      }
+    },
+    {
+      type: "string",
+      name: "bookUrl",
+      label: "Booking URL (this session + add-on, used when the add-on is available)"
+    }
+  ]
+};
 var splitSection = {
   name: "splitSection",
   label: "Image + Text",
@@ -54,7 +93,8 @@ var splitSection = {
     { type: "image", name: "image", label: "Image" },
     imagePlacementField,
     imageSizeField,
-    buttonsField
+    buttonsField,
+    homeButtonField
   ]
 };
 var stackedSection = {
@@ -64,7 +104,8 @@ var stackedSection = {
   fields: [
     { type: "string", name: "title", label: "Heading" },
     { type: "rich-text", name: "body", label: "Body Text" },
-    buttonsField
+    buttonsField,
+    homeButtonField
   ]
 };
 var serviceCard = {
@@ -78,10 +119,15 @@ var serviceCard = {
     imagePlacementField,
     imageSizeField,
     {
-      type: "boolean",
-      name: "offersThaiCompress",
-      label: "Offers Thai Herbal Compress add-on",
-      description: 'Show a Thai Herbal Compress button on each session below. Availability is toggled site-wide by THAI_COMPRESS_AVAILABLE in siteConfig.js (until on, it shows "Coming Soon").'
+      type: "string",
+      name: "status",
+      label: "Status",
+      description: "Coming Soon disables this service\u2019s booking buttons and shows a badge.",
+      options: [
+        { value: "available", label: "Available" },
+        { value: "coming-soon", label: "Coming Soon" }
+      ],
+      ui: { defaultValue: "available" }
     },
     {
       type: "object",
@@ -92,15 +138,11 @@ var serviceCard = {
       fields: [
         { type: "string", name: "label", label: "Session Label (button text)" },
         { type: "string", name: "bookUrl", label: "Booking URL" },
-        {
-          type: "string",
-          name: "compressUrl",
-          label: "Thai Compress Booking URL",
-          description: 'Used for the "Book w/ Thai Compress" button when the add-on is available.'
-        },
-        { type: "string", name: "note", label: "Note" }
+        { type: "string", name: "note", label: "Note" },
+        addOnsField
       ]
-    }
+    },
+    homeButtonField
   ]
 };
 var valuesSection = {
@@ -109,7 +151,8 @@ var valuesSection = {
   ui: { itemProps: (item) => ({ label: item?.title || "Values List" }) },
   fields: [
     { type: "string", name: "title", label: "Heading" },
-    { type: "string", name: "words", label: "Values", list: true }
+    { type: "string", name: "words", label: "Values", list: true },
+    homeButtonField
   ]
 };
 var cardGrid = {
@@ -130,7 +173,8 @@ var cardGrid = {
         { type: "string", name: "buttonLabel", label: "Button Text" },
         { type: "string", name: "buttonUrl", label: "Button Link" }
       ]
-    }
+    },
+    homeButtonField
   ]
 };
 var eventSection = {
@@ -141,7 +185,8 @@ var eventSection = {
     { type: "string", name: "title", label: "Heading" },
     { type: "rich-text", name: "body", label: "Body Text" },
     { type: "image", name: "images", label: "Images", list: true },
-    buttonsField
+    buttonsField,
+    homeButtonField
   ]
 };
 var config_default = defineConfig({

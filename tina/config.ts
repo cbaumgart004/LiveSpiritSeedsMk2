@@ -53,6 +53,58 @@ const imageSizeField = {
   ],
 }
 
+// Optional "Home" button at the bottom of a block (links to the home page).
+// Defaults ON for new blocks; the renderer shows it unless explicitly turned off.
+const homeButtonField = {
+  type: 'boolean' as const,
+  name: 'showHomeButton',
+  label: 'Show "Home" button',
+  description: 'Adds a Home button (links to the home page). On by default; turn off to hide.',
+  ui: { defaultValue: true },
+}
+
+// Bookable add-ons for a single session. Each names another service (its button
+// reflects THAT service's status) and the booking URL for this session + add-on.
+// Nested under bookingOptions so every session (90/120/180 min) can offer its own.
+const addOnsField = {
+  type: 'object' as const,
+  name: 'addOns',
+  label: 'Add-ons for this session',
+  list: true,
+  ui: { itemProps: (item: { service?: string }) => ({ label: item?.service || 'Add-on' }) },
+  fields: [
+    {
+      type: 'string' as const,
+      name: 'service',
+      label: 'Add-on Service',
+      description:
+        'Type the exact Heading of another Service card. Its button shows Available or Coming Soon based on THAT service’s Status.',
+      ui: {
+        // Block save unless the typed name matches a Service card Heading on
+        // this page (case/space-insensitive), so add-ons can't silently miss.
+        validate: (
+          value?: string,
+          allValues?: { blocks?: Array<{ _template?: string; title?: string }> }
+        ) => {
+          if (!value) return undefined
+          const headings = (allValues?.blocks || [])
+            .filter((b) => b?._template === 'serviceCard' && b?.title)
+            .map((b) => String(b.title).trim().toLowerCase())
+          if (!headings.includes(value.trim().toLowerCase())) {
+            return `No Service card titled "${value}" on this page — it must match a Service Heading exactly.`
+          }
+          return undefined
+        },
+      },
+    },
+    {
+      type: 'string' as const,
+      name: 'bookUrl',
+      label: 'Booking URL (this session + add-on, used when the add-on is available)',
+    },
+  ],
+}
+
 // --- Block templates (the palette Melissa adds/reorders on a page) ---
 // Each maps to a CSS primitive from ADR 0001.
 
@@ -67,6 +119,7 @@ const splitSection = {
     imagePlacementField,
     imageSizeField,
     buttonsField,
+    homeButtonField,
   ],
 }
 
@@ -78,6 +131,7 @@ const stackedSection = {
     { type: 'string', name: 'title', label: 'Heading' },
     { type: 'rich-text', name: 'body', label: 'Body Text' },
     buttonsField,
+    homeButtonField,
   ],
 }
 
@@ -92,11 +146,15 @@ const serviceCard = {
     imagePlacementField,
     imageSizeField,
     {
-      type: 'boolean',
-      name: 'offersThaiCompress',
-      label: 'Offers Thai Herbal Compress add-on',
-      description:
-        'Show a Thai Herbal Compress button on each session below. Availability is toggled site-wide by THAI_COMPRESS_AVAILABLE in siteConfig.js (until on, it shows "Coming Soon").',
+      type: 'string',
+      name: 'status',
+      label: 'Status',
+      description: 'Coming Soon disables this service’s booking buttons and shows a badge.',
+      options: [
+        { value: 'available', label: 'Available' },
+        { value: 'coming-soon', label: 'Coming Soon' },
+      ],
+      ui: { defaultValue: 'available' },
     },
     {
       type: 'object',
@@ -107,15 +165,11 @@ const serviceCard = {
       fields: [
         { type: 'string', name: 'label', label: 'Session Label (button text)' },
         { type: 'string', name: 'bookUrl', label: 'Booking URL' },
-        {
-          type: 'string',
-          name: 'compressUrl',
-          label: 'Thai Compress Booking URL',
-          description: 'Used for the "Book w/ Thai Compress" button when the add-on is available.',
-        },
         { type: 'string', name: 'note', label: 'Note' },
+        addOnsField,
       ],
     },
+    homeButtonField,
   ],
 }
 
@@ -126,6 +180,7 @@ const valuesSection = {
   fields: [
     { type: 'string', name: 'title', label: 'Heading' },
     { type: 'string', name: 'words', label: 'Values', list: true },
+    homeButtonField,
   ],
 }
 
@@ -150,6 +205,7 @@ const cardGrid = {
         { type: 'string', name: 'buttonUrl', label: 'Button Link' },
       ],
     },
+    homeButtonField,
   ],
 }
 
@@ -162,6 +218,7 @@ const eventSection = {
     { type: 'rich-text', name: 'body', label: 'Body Text' },
     { type: 'image', name: 'images', label: 'Images', list: true },
     buttonsField,
+    homeButtonField,
   ],
 }
 

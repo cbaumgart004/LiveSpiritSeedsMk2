@@ -88,9 +88,12 @@ Block-renderer behaviors (`Blocks.jsx`): image sides **auto-alternate** left/rig
 size** via `imageSize` (`sm`/`md`/`lg` → `.media--*`); rich-text bodies render via `TinaMarkdown`
 and are stored on disk as **markdown strings, not AST objects** (see the playbook §4); buttons
 carry a `status` (`active`/`coming-soon`) — coming-soon renders non-clickable, prefixed
-"Coming Soon - ". `serviceCard`s can set `offersThaiCompress` to show a per-session Thai Herbal
-Compress button (active link when `THAI_COMPRESS_AVAILABLE` in `siteConfig.js` is on + a
-`compressUrl` is set, else a disabled "Coming Soon"). Reusable setup + gotchas: [TinaCMS Vite playbook](./docs/tinacms-vite-playbook.md).
+"Coming Soon - ". `serviceCard`s have their own `status` (`available`/`coming-soon`: coming-soon
+shows a badge and disables booking). Each **booking option** (session) can list `addOns[]`, so every
+session gets its own "Book w/ &lt;add-on&gt;" button; an add-on names another service (by Heading,
+validated on save) and its button's availability is **derived from that referenced service's
+`status`** (owner-editable in `/admin`; no code flag). Every block has a `showHomeButton` toggle
+(default on) that renders a "Home" button. Reusable setup + gotchas: [TinaCMS Vite playbook](./docs/tinacms-vite-playbook.md).
 
 **Seasonal theming.** The season lives in the **Settings** doc. To avoid a theme flash, `main.jsx`
 imports `content/settings/index.json` at build time and applies its `theme` as a `<body>` class
@@ -119,8 +122,9 @@ from `App`'s `useEffect` to attach a global visual flash on button clicks.
 
 ## 7. Conventions & gotchas
 
-- **One control panel:** season and feature availability live in `siteConfig.js`, not scattered
-  in components.
+- **Content, not code, drives availability:** season (Settings doc) and service/add-on status
+  (per `serviceCard`) are owner-editable in `/admin`. `siteConfig.js` now holds only the
+  `SITE_THEME` fallback.
 - **Two styling systems coexist:** global CSS + CSS Modules. Match the component you're editing.
 - **CSS load order is load-bearing** — see §6 before reorganizing style imports.
 - No tests, no TypeScript, no state management library. Keep it simple.

@@ -27,6 +27,7 @@ fragment PageParts on Page {
         url
         status
       }
+      showHomeButton
     }
     ... on PageBlocksStackedSection {
       title
@@ -37,6 +38,7 @@ fragment PageParts on Page {
         url
         status
       }
+      showHomeButton
     }
     ... on PageBlocksServiceCard {
       title
@@ -44,14 +46,19 @@ fragment PageParts on Page {
       image
       imageSide
       imageSize
-      offersThaiCompress
+      status
       bookingOptions {
         __typename
         label
         bookUrl
-        compressUrl
         note
+        addOns {
+          __typename
+          service
+          bookUrl
+        }
       }
+      showHomeButton
     }
     ... on PageBlocksCardGrid {
       title
@@ -62,10 +69,12 @@ fragment PageParts on Page {
         buttonLabel
         buttonUrl
       }
+      showHomeButton
     }
     ... on PageBlocksValuesSection {
       title
       words
+      showHomeButton
     }
     ... on PageBlocksEventSection {
       title
@@ -77,6 +86,7 @@ fragment PageParts on Page {
         url
         status
       }
+      showHomeButton
     }
   }
 }
