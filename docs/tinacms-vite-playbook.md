@@ -144,6 +144,13 @@ import { TinaMarkdown } from 'tinacms/dist/rich-text'
 
 Until then, everything works locally in local mode — build and demo offline first.
 
+> ⚠️ **`TINA_BRANCH` is per-environment, not global.** TinaCloud serves content **per git branch**
+> (the client URL ends in `/github/<branch>`). On Vercel, set `TINA_BRANCH` **separately** for each
+> environment: `main` for Production, but the **actual PR branch** (e.g. `feature/admin-cms`) for
+> Preview deploys — otherwise a preview builds against the wrong branch's content and pages can come
+> up empty or 404. (Also: setting the env vars alone changes nothing until `build` runs `tinacms
+> build`; a bare `vite build` ignores them and leaves the client on `localhost:4001` — see §2.)
+
 ---
 
 ## 7. Diagnosing editing issues cheaply (AI onboarding checklist)
@@ -167,6 +174,8 @@ diagnosable from files + two shell commands. Spend tokens here, not on browser a
    | `[object Object]` on the page (GraphQL `text` field literally returns it) | rich-text stored on disk as an AST object, not a markdown string | §4 |
    | "Objects are not valid as a React child" crash | rich-text AST rendered as a raw child (missing `TinaMarkdown`) | §4 |
    | `/admin` 404s in production (fine locally) | `build` skips `tinacms build` | §2 / §6 |
+   | Deploy shows the app's "Page not found" on **every** page (creds set, `/admin` may also 404) | `build` is a bare `vite build`, so the committed client still points at `localhost:4001` and every content query fails in prod | §6 (switch `build` to `tinacms build -c "vite build"`) |
+   | Preview deploy pages empty/404 but Production is fine (or vice-versa) | `TINA_BRANCH` set to the wrong branch for that Vercel environment | §6 (per-environment `TINA_BRANCH`) |
    | Stale/blank admin, wrong data | committed `public/admin` shadowing the dev build | gitignore it (§2) |
    | Field can't be edited even in sidebar | schema issue in `tina/config.ts` | fix the collection/field |
    | **Fields (esp. new/nested ones) vanish from content after an editor saves** | the admin tab was loaded **before** a schema change; Tina saves rewrite the *whole* document from the in-browser form, dropping fields that form doesn't know about | **hard-refresh `/admin` after every schema change, before editing.** Restart `tinacms dev` too so the generated client/admin match `config.ts` |
