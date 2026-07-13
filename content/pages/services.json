@@ -149,11 +149,6 @@
         }
       ],
       "_template": "service"
-    },
-    {
-      "title": "Test",
-      "description": "",
-      "_template": "service"
     }
   ]
 }
