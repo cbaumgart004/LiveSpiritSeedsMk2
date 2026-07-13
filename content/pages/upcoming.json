@@ -1,0 +1,28 @@
+{
+  "title": "Upcoming",
+  "navLabel": "Upcoming",
+  "order": 3,
+  "showInNav": true,
+  "blocks": [
+    {
+      "_template": "contentSection",
+      "layout": "event",
+      "title": "2026 Bali Retreat!",
+      "body": "Join us for a transformative retreat in Bali. Reach out to Melissa for dates, pricing, and how to reserve your spot.",
+      "images": [
+        "/uploads/Bali_1.jpg",
+        "/uploads/Bali_2.jpg"
+      ],
+      "buttons": [
+        {
+          "label": "Contact Melissa",
+          "url": "mailto:melissacarey@spiritseedswellness.com"
+        },
+        {
+          "label": "Home",
+          "url": "/"
+        }
+      ]
+    }
+  ]
+}

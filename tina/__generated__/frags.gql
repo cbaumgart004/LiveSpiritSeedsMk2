@@ -1,0 +1,73 @@
+fragment SettingsParts on Settings {
+  __typename
+  siteTitle
+  tagline
+  logo
+  theme
+  contactEmail
+}
+
+fragment PageParts on Page {
+  __typename
+  title
+  navLabel
+  order
+  showInNav
+  blocks {
+    __typename
+    ... on PageBlocksContentSection {
+      layout
+      title
+      body
+      image
+      imageSide
+      imageWidth
+      images
+      cards {
+        __typename
+        title
+        description
+        buttonLabel
+        buttonUrl
+      }
+      words
+      spacing
+      buttons {
+        __typename
+        label
+        url
+        status
+        service
+      }
+      showHomeButton
+    }
+    ... on PageBlocksService {
+      title
+      description
+      image
+      imageSide
+      imageWidth
+      status
+      bookingOptions {
+        __typename
+        label
+        bookUrl
+        note
+        addOns {
+          __typename
+          service
+          bookUrl
+        }
+      }
+      spacing
+      buttons {
+        __typename
+        label
+        url
+        status
+        service
+      }
+      showHomeButton
+    }
+  }
+}

@@ -1,14 +1,9 @@
 // src/config/siteConfig.js
 
-// 🟣 GLOBAL THEME
-// Accepts: "fall", "winter", "spring", "summer"
-// (Further themes can be added in your CSS as needed)
+// 🟣 GLOBAL THEME (fallback only)
+// The live theme comes from the CMS Settings doc; this is applied by main.jsx
+// only if that value is missing/invalid. Accepts: "fall","winter","spring","summer".
 export const SITE_THEME = 'spring'
 
-// 🟡 FEATURE FLAGS
-// Global availability toggle for Thai Compress
-export const THAI_COMPRESS_AVAILABLE = false
-
-// You can add more flags later:
-// export const GIFT_CARD_ENABLED = true;
-// export const HOLIDAY_MODE = false;
+// Note: service + add-on availability (e.g. Thai Herbal Compress) is now
+// owner-editable via each Service card's Status in /admin — no code flag.

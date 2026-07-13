@@ -1,0 +1,101 @@
+{
+  "title": "Home",
+  "navLabel": "Home",
+  "order": 1,
+  "showInNav": true,
+  "blocks": [
+    {
+      "_template": "contentSection",
+      "layout": "centered",
+      "title": "Welcome to Spirit Seeds Wellness",
+      "body": "Holistic healing in Lafayette, Colorado — trauma-informed massage, sound healing, Ayurveda, and yin yoga.",
+      "showHomeButton": false
+    },
+    {
+      "_template": "contentSection",
+      "layout": "imageText",
+      "title": "Check Out What's New!",
+      "image": "/uploads/UpcomingEvents.jpg",
+      "imageSide": "auto",
+      "body": "From live yoga classes and workshops to teacher trainings, retreats, and more — there's always something exciting on the horizon at Spirit Seeds. Tap below to explore our latest offerings and sign up.",
+      "buttons": [
+        {
+          "label": "View Events",
+          "url": "/upcoming",
+          "status": "active"
+        }
+      ],
+      "showHomeButton": false
+    },
+    {
+      "_template": "contentSection",
+      "layout": "cardGrid",
+      "title": "Our Services",
+      "cards": [
+        {
+          "title": "Integrative Healing",
+          "description": "Rejuvenate body and mind with relaxing touch.",
+          "buttonLabel": "Learn More",
+          "buttonUrl": "/services"
+        },
+        {
+          "title": "Sound Healing",
+          "description": "Align your energy with sacred sound frequencies.",
+          "buttonLabel": "Learn More",
+          "buttonUrl": "/services"
+        },
+        {
+          "title": "Private Yoga Sessions",
+          "description": "Build strength and serenity through movement.",
+          "buttonLabel": "Learn More",
+          "buttonUrl": "/services"
+        },
+        {
+          "title": "Live Yoga Classes",
+          "description": "Join a local class and practice with us.",
+          "buttonLabel": "Learn More",
+          "buttonUrl": "/upcoming"
+        },
+        {
+          "title": "Practice Online",
+          "description": "Practice at your own pace with these online tools.",
+          "buttonLabel": "Learn More",
+          "buttonUrl": "/services"
+        },
+        {
+          "title": "Follow Us on Social Media",
+          "description": "Stay connected and inspired with our community.",
+          "buttonLabel": "Learn More",
+          "buttonUrl": "/services"
+        }
+      ],
+      "showHomeButton": false
+    },
+    {
+      "_template": "contentSection",
+      "layout": "imageText",
+      "title": "About",
+      "image": "/uploads/SpiritSeedsLogo.jpg",
+      "imageSide": "auto",
+      "body": "Spirit Seeds Wellness provides holistic healing for individuals healing CPTSD and seeking relief from emotional, physical, and spiritual pain. Melissa Carey offers rituals that address multiple layers of health and well-being.",
+      "buttons": [
+        {
+          "label": "Learn More",
+          "url": "/about"
+        }
+      ],
+      "showHomeButton": false
+    },
+    {
+      "_template": "contentSection",
+      "layout": "values",
+      "title": "Our Core Values",
+      "words": [
+        "Growth",
+        "Acceptance",
+        "Service"
+      ],
+      "showHomeButton": false
+    }
+  ]
+}

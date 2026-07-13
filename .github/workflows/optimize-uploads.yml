@@ -1,0 +1,35 @@
+name: Optimize uploaded images
+
+# When Melissa uploads an image in TinaCMS it commits to public/uploads.
+# This compresses it (capping dimensions / re-encoding) and commits the smaller
+# version before deploy. Pushes made with GITHUB_TOKEN don't retrigger workflows,
+# so there is no loop.
+on:
+  push:
+    paths:
+      - 'public/uploads/**'
+
+permissions:
+  contents: write
+
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: node scripts/optimize-uploads.mjs
+      - name: Commit optimized images
+        run: |
+          if [ -n "$(git status --porcelain public/uploads)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add public/uploads
+            git commit -m "chore: compress uploaded images"
+            git push
+          else
+            echo "No image changes to commit."
+          fi

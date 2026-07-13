@@ -105,6 +105,21 @@
   filter: grayscale(30%);
 }
 
+/* "Coming Soon" pill shown next to a service heading */
+.status-badge {
+  display: inline-block;
+  margin-left: 0.6rem;
+  padding: 0.15rem 0.6rem;
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  vertical-align: middle;
+  border-radius: 999px;
+  background: var(--primary-color);
+  color: var(--bg-color);
+}
+
 .button-row {
   display: flex;
   gap: 1.5rem;
