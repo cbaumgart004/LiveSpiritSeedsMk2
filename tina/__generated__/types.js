@@ -24,37 +24,38 @@ export const PagePartsFragmentDoc = gql`
   showInNav
   blocks {
     __typename
-    ... on PageBlocksSplitSection {
+    ... on PageBlocksContentSection {
+      layout
       title
       body
       image
       imageSide
-      imageSize
+      imageWidth
+      images
+      cards {
+        __typename
+        title
+        description
+        buttonLabel
+        buttonUrl
+      }
+      words
+      spacing
       buttons {
         __typename
         label
         url
         status
+        service
       }
       showHomeButton
     }
-    ... on PageBlocksStackedSection {
-      title
-      body
-      buttons {
-        __typename
-        label
-        url
-        status
-      }
-      showHomeButton
-    }
-    ... on PageBlocksServiceCard {
+    ... on PageBlocksService {
       title
       description
       image
       imageSide
-      imageSize
+      imageWidth
       status
       bookingOptions {
         __typename
@@ -67,33 +68,13 @@ export const PagePartsFragmentDoc = gql`
           bookUrl
         }
       }
-      showHomeButton
-    }
-    ... on PageBlocksCardGrid {
-      title
-      cards {
-        __typename
-        title
-        description
-        buttonLabel
-        buttonUrl
-      }
-      showHomeButton
-    }
-    ... on PageBlocksValuesSection {
-      title
-      words
-      showHomeButton
-    }
-    ... on PageBlocksEventSection {
-      title
-      body
-      images
+      spacing
       buttons {
         __typename
         label
         url
         status
+        service
       }
       showHomeButton
     }

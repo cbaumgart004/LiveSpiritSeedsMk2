@@ -183,3 +183,47 @@ diagnosable from files + two shell commands. Spend tokens here, not on browser a
 
 4. **Reasoning shortcut:** "sidebar works but on-page doesn't" is *always* an app-wiring problem
    (§3), never a Tina/schema problem. Don't reindex, reinstall, or rebuild to chase it.
+
+---
+
+## 8. Keeping the block palette owner-friendly (design patterns)
+
+The palette is the owner's whole mental model. A pile of near-identical templates ("Image + Text",
+"Text Block", "Card Grid", "Event"…) makes "add a component" a guessing game. Patterns that fixed
+that here, all achievable with **plain schema fields** — no custom UI:
+
+- **Few types + a Layout selector, not many types.** Collapse the visual variants into **one**
+  template with a `layout` string field whose options are the looks (`Image + Text`, `Centered`,
+  `Card Grid`, …). The renderer switches on `block.layout`. One "Content Section" the owner
+  reaches for, plus a purpose-built "Service" for anything bookable — two choices, not six.
+  Trade-off: all fields for every layout show in the sidebar (Tina has no built-in
+  show-field-when); guide with each field's `description` ("Used by the Event layout").
+
+- **One button model, optionally tied to a service.** Give every block the same reusable
+  `buttons` list. Each button is a plain link with a manual `status` (`active`/`coming-soon`) —
+  **or** it names a `service` on the page and inherits *that* service's status. Derive the
+  disabled/href state in the renderer from a `Heading → {status, slug, bookUrl}` map you build once
+  from the Service blocks. Validate the typed service name in the field's `ui.validate` against the
+  page's Service headings so a typo can't silently ship a dead button. This is strictly more
+  flexible than per-type bespoke buttons and it's the *same* mechanism booking add-ons already use.
+
+- **"Resize" with a value, not a drag handle.** TinaCMS has **no native drag-to-resize**; building
+  handles means custom field components you maintain against upgrades. A numeric/select field gets
+  ~all the value for ~none of the cost: e.g. image width as a **percent** (`imageWidth`, 20–70) and
+  block spacing as a **compact/normal/airy** select. Apply width via a **CSS custom property**
+  (`style={{ '--media-basis': pct }}`, CSS `flex-basis: var(--media-basis, 45%)`) rather than an
+  inline `flex-basis`, so the mobile stylesheet can still force full-width stacking.
+
+- **Make "add a page/block" land on something, not a blank slate.** Collection `ui.defaultItem`
+  pre-fills a new document (nav on, an opening block); template `ui.defaultItem` sets sane block
+  defaults (`spacing: 'normal'`, `imageSide: 'auto'`, `showHomeButton: true`). The editor starts
+  from a working example instead of decoding an empty form.
+
+- **"Preview the type" is mostly already built.** `/admin` on-page contextual editing renders each
+  block live as you edit — that *is* the preview. A thumbnail in the add-block menu is custom UI and
+  usually not worth it; documenting the layouts (like this section) covers the gap.
+
+> After any of these schema changes: **restart `tinacms dev` and hard-refresh `/admin`** before
+> editing, or the save-clobber trap (§7) strips your new fields on the next save. Consolidating
+> templates also means **migrating existing content files** (rename `_template`, map old size
+> buckets to the new field) — do it in one script, then re-index.

@@ -5,7 +5,8 @@
   "showInNav": true,
   "blocks": [
     {
-      "_template": "eventSection",
+      "_template": "contentSection",
+      "layout": "event",
       "title": "2026 Bali Retreat!",
       "body": "Join us for a transformative retreat in Bali. Reach out to Melissa for dates, pricing, and how to reserve your spot.",
       "images": [

@@ -5,13 +5,15 @@
   "showInNav": true,
   "blocks": [
     {
-      "_template": "stackedSection",
+      "_template": "contentSection",
+      "layout": "centered",
       "title": "Welcome to Spirit Seeds Wellness",
       "body": "Holistic healing in Lafayette, Colorado — trauma-informed massage, sound healing, Ayurveda, and yin yoga.",
       "showHomeButton": false
     },
     {
-      "_template": "splitSection",
+      "_template": "contentSection",
+      "layout": "imageText",
       "title": "Check Out What's New!",
       "image": "/uploads/UpcomingEvents.jpg",
       "imageSide": "auto",
@@ -26,7 +28,8 @@
       "showHomeButton": false
     },
     {
-      "_template": "cardGrid",
+      "_template": "contentSection",
+      "layout": "cardGrid",
       "title": "Our Services",
       "cards": [
         {
@@ -69,7 +72,8 @@
       "showHomeButton": false
     },
     {
-      "_template": "splitSection",
+      "_template": "contentSection",
+      "layout": "imageText",
       "title": "About",
       "image": "/uploads/SpiritSeedsLogo.jpg",
       "imageSide": "auto",
@@ -83,7 +87,8 @@
       "showHomeButton": false
     },
     {
-      "_template": "valuesSection",
+      "_template": "contentSection",
+      "layout": "values",
       "title": "Our Core Values",
       "words": [
         "Growth",

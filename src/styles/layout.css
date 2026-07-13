@@ -87,7 +87,10 @@
 /* -------------------------------------------- */
 
 .media {
-  flex: 1 1 45%;
+  /* Width is editor-controlled via the --media-basis custom property (Tina
+     "Image Width %" field). Falls back to 45% (balanced) when unset. Uses a var
+     rather than an inline flex-basis so the mobile rule can force full width. */
+  flex: 1 1 var(--media-basis, 45%);
   max-width: 100%;
   display: flex;
   justify-content: center;
@@ -102,13 +105,24 @@
   object-fit: cover;
 }
 
-/* Editor-controlled image size (Tina "Image Size" field). Base .media is ~45%. */
+/* Legacy image-size buckets (superseded by the --media-basis % field; kept as a
+   harmless fallback for any not-yet-re-saved content). */
 .media--sm {
   flex-basis: 30%;
 }
 
 .media--lg {
   flex-basis: 60%;
+}
+
+/* Editor-controlled vertical spacing (Tina "Vertical Spacing" field). Adjusts
+   the band's block margin around the default .section margin-block. */
+.section--compact {
+  margin-block: var(--space-2);
+}
+
+.section--airy {
+  margin-block: var(--space-6, 4rem);
 }
 
 /* -------------------------------------------- */

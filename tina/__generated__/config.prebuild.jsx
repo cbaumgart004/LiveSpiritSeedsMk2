@@ -1,13 +1,18 @@
 // tina/config.ts
 import { defineConfig } from "tinacms";
 var SEASONS = ["spring", "summer", "fall", "winter"];
+function serviceHeadings(allValues) {
+  return (allValues?.blocks || []).filter((b) => (b?._template === "service" || b?._template === "serviceCard") && b?.title).map((b) => String(b.title).trim().toLowerCase());
+}
 var buttonsField = {
   type: "object",
   name: "buttons",
   label: "Buttons",
   list: true,
   ui: {
-    itemProps: (item) => ({ label: item?.label || "Button" })
+    itemProps: (item) => ({
+      label: item?.label || item?.service || "Button"
+    })
   },
   fields: [
     { type: "string", name: "label", label: "Button Text" },
@@ -16,10 +21,26 @@ var buttonsField = {
       type: "string",
       name: "status",
       label: "Status",
+      description: "Ignored when a Linked Service is set (status comes from that service).",
       options: [
         { value: "active", label: "Active" },
         { value: "coming-soon", label: "Coming Soon" }
       ]
+    },
+    {
+      type: "string",
+      name: "service",
+      label: "Linked Service (optional)",
+      description: "Type the exact Heading of a Service card on this page to tie this button to it. The button then shows Available or Coming Soon based on THAT service\u2019s status.",
+      ui: {
+        validate: (value, allValues) => {
+          if (!value) return void 0;
+          if (!serviceHeadings(allValues).includes(value.trim().toLowerCase())) {
+            return `No Service titled "${value}" on this page \u2014 it must match a Service Heading exactly.`;
+          }
+          return void 0;
+        }
+      }
     }
   ]
 };
@@ -34,14 +55,21 @@ var imagePlacementField = {
     { value: "right", label: "Right" }
   ]
 };
-var imageSizeField = {
+var imageWidthField = {
+  type: "number",
+  name: "imageWidth",
+  label: "Image Width (%)",
+  description: "How wide the image is vs. the text, 20\u201370. Blank = 45 (balanced)."
+};
+var spacingField = {
   type: "string",
-  name: "imageSize",
-  label: "Image Size",
+  name: "spacing",
+  label: "Vertical Spacing",
+  description: "How much space above and below this component.",
   options: [
-    { value: "sm", label: "Small" },
-    { value: "md", label: "Medium (default)" },
-    { value: "lg", label: "Large" }
+    { value: "compact", label: "Compact" },
+    { value: "normal", label: "Normal (default)" },
+    { value: "airy", label: "Airy" }
   ]
 };
 var homeButtonField = {
@@ -64,13 +92,11 @@ var addOnsField = {
       label: "Add-on Service",
       description: "Type the exact Heading of another Service card. Its button shows Available or Coming Soon based on THAT service\u2019s Status.",
       ui: {
-        // Block save unless the typed name matches a Service card Heading on
-        // this page (case/space-insensitive), so add-ons can't silently miss.
+        // Block save unless the typed name matches a Service Heading on this page.
         validate: (value, allValues) => {
           if (!value) return void 0;
-          const headings = (allValues?.blocks || []).filter((b) => b?._template === "serviceCard" && b?.title).map((b) => String(b.title).trim().toLowerCase());
-          if (!headings.includes(value.trim().toLowerCase())) {
-            return `No Service card titled "${value}" on this page \u2014 it must match a Service Heading exactly.`;
+          if (!serviceHeadings(allValues).includes(value.trim().toLowerCase())) {
+            return `No Service titled "${value}" on this page \u2014 it must match a Service Heading exactly.`;
           }
           return void 0;
         }
@@ -83,41 +109,91 @@ var addOnsField = {
     }
   ]
 };
-var splitSection = {
-  name: "splitSection",
-  label: "Image + Text",
-  ui: { itemProps: (item) => ({ label: item?.title || "Image + Text" }) },
+var contentSection = {
+  name: "contentSection",
+  label: "Content Section",
+  ui: {
+    itemProps: (item) => ({
+      label: item?.title ? `${item.title}` : `Content (${item?.layout || "image + text"})`
+    }),
+    defaultItem: { layout: "imageText", imageSide: "auto", spacing: "normal", showHomeButton: true }
+  },
   fields: [
+    {
+      type: "string",
+      name: "layout",
+      label: "Layout",
+      description: "How this section looks. Pick one; only the matching fields below are used.",
+      options: [
+        { value: "imageText", label: "Image + Text" },
+        { value: "centered", label: "Centered Text" },
+        { value: "cardGrid", label: "Card Grid" },
+        { value: "values", label: "Values List" },
+        { value: "event", label: "Event / Announcement" }
+      ],
+      ui: { defaultValue: "imageText" }
+    },
     { type: "string", name: "title", label: "Heading" },
-    { type: "rich-text", name: "body", label: "Body Text" },
-    { type: "image", name: "image", label: "Image" },
+    {
+      type: "rich-text",
+      name: "body",
+      label: "Body Text",
+      description: "Used by Image + Text, Centered Text, and Event layouts."
+    },
+    {
+      type: "image",
+      name: "image",
+      label: "Image",
+      description: "Image + Text layout."
+    },
     imagePlacementField,
-    imageSizeField,
+    imageWidthField,
+    {
+      type: "image",
+      name: "images",
+      label: "Images",
+      list: true,
+      description: "Event layout (one or more images)."
+    },
+    {
+      type: "object",
+      name: "cards",
+      label: "Cards",
+      description: "Card Grid layout.",
+      list: true,
+      ui: { itemProps: (item) => ({ label: item?.title || "Card" }) },
+      fields: [
+        { type: "string", name: "title", label: "Card Title" },
+        { type: "string", name: "description", label: "Card Text" },
+        { type: "string", name: "buttonLabel", label: "Button Text" },
+        { type: "string", name: "buttonUrl", label: "Button Link" }
+      ]
+    },
+    {
+      type: "string",
+      name: "words",
+      label: "Values",
+      list: true,
+      description: "Values List layout."
+    },
+    spacingField,
     buttonsField,
     homeButtonField
   ]
 };
-var stackedSection = {
-  name: "stackedSection",
-  label: "Text Block (centered)",
-  ui: { itemProps: (item) => ({ label: item?.title || "Text Block" }) },
-  fields: [
-    { type: "string", name: "title", label: "Heading" },
-    { type: "rich-text", name: "body", label: "Body Text" },
-    buttonsField,
-    homeButtonField
-  ]
-};
-var serviceCard = {
-  name: "serviceCard",
-  label: "Service / Offering Card",
-  ui: { itemProps: (item) => ({ label: item?.title || "Service Card" }) },
+var service = {
+  name: "service",
+  label: "Service / Offering",
+  ui: {
+    itemProps: (item) => ({ label: item?.title || "Service" }),
+    defaultItem: { imageSide: "auto", spacing: "normal", status: "available", showHomeButton: true }
+  },
   fields: [
     { type: "string", name: "title", label: "Heading" },
     { type: "rich-text", name: "description", label: "Body Text" },
     { type: "image", name: "image", label: "Image" },
     imagePlacementField,
-    imageSizeField,
+    imageWidthField,
     {
       type: "string",
       name: "status",
@@ -142,49 +218,7 @@ var serviceCard = {
         addOnsField
       ]
     },
-    homeButtonField
-  ]
-};
-var valuesSection = {
-  name: "valuesSection",
-  label: "Values List",
-  ui: { itemProps: (item) => ({ label: item?.title || "Values List" }) },
-  fields: [
-    { type: "string", name: "title", label: "Heading" },
-    { type: "string", name: "words", label: "Values", list: true },
-    homeButtonField
-  ]
-};
-var cardGrid = {
-  name: "cardGrid",
-  label: "Card Grid",
-  ui: { itemProps: (item) => ({ label: item?.title || "Card Grid" }) },
-  fields: [
-    { type: "string", name: "title", label: "Heading" },
-    {
-      type: "object",
-      name: "cards",
-      label: "Cards",
-      list: true,
-      ui: { itemProps: (item) => ({ label: item?.title || "Card" }) },
-      fields: [
-        { type: "string", name: "title", label: "Card Title" },
-        { type: "string", name: "description", label: "Card Text" },
-        { type: "string", name: "buttonLabel", label: "Button Text" },
-        { type: "string", name: "buttonUrl", label: "Button Link" }
-      ]
-    },
-    homeButtonField
-  ]
-};
-var eventSection = {
-  name: "eventSection",
-  label: "Event / Announcement",
-  ui: { itemProps: (item) => ({ label: item?.title || "Event" }) },
-  fields: [
-    { type: "string", name: "title", label: "Heading" },
-    { type: "rich-text", name: "body", label: "Body Text" },
-    { type: "image", name: "images", label: "Images", list: true },
+    spacingField,
     buttonsField,
     homeButtonField
   ]
@@ -231,6 +265,15 @@ var config_default = defineConfig({
         path: "content/pages",
         format: "json",
         ui: {
+          // Sensible starting point for a brand-new page: it shows in the nav and
+          // opens with one Content Section so the editor isn't a blank slate.
+          defaultItem: () => ({
+            showInNav: true,
+            order: 99,
+            blocks: [
+              { _template: "contentSection", layout: "centered", title: "New Section", showHomeButton: true }
+            ]
+          }),
           // Route used for on-page ("contextual") editing.
           router: ({ document }) => {
             const slug = document._sys.filename;
@@ -247,14 +290,7 @@ var config_default = defineConfig({
             name: "blocks",
             label: "Blocks",
             list: true,
-            templates: [
-              splitSection,
-              stackedSection,
-              serviceCard,
-              cardGrid,
-              valuesSection,
-              eventSection
-            ]
+            templates: [contentSection, service]
           }
         ]
       }

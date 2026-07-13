@@ -69,9 +69,18 @@ Content is **data**, managed via TinaCMS (git-backed) — see [ADR 0002]. Two co
 - **Settings** (`content/settings/index.json`) — `theme` (`spring`/`summer`/`fall`/`winter`),
   `siteTitle`, `tagline`, `logo`, `contactEmail`.
 - **Page** (`content/pages/*.json`) — `title`, `navLabel`, `order`, `showInNav`, and an ordered
-  `blocks[]`. Block types (the editor palette): `splitSection`, `stackedSection`, `serviceCard`,
-  `cardGrid` (heading + grid of mini-cards, e.g. home "Our Services"), `valuesSection`,
-  `eventSection` — each renders through a §6 CSS primitive.
+  `blocks[]`. The palette is **two** block types:
+  - **`contentSection`** — a general section with a `layout` picker choosing the look:
+    `imageText` (image beside text), `centered` (centered text), `cardGrid` (heading + grid of
+    mini-cards, e.g. home "Our Services"), `values` (values list), `event` (announcement + images).
+  - **`service`** — a bookable offering: `status` (`available`/`coming-soon`), `bookingOptions[]`
+    (each with `addOns[]`), plus the shared fields below.
+
+  Both types share: `imageSide`, `imageWidth` (% of the row, 20–70), `spacing`
+  (`compact`/`normal`/`airy`), a unified `buttons[]` list, and `showHomeButton`. Each renders
+  through a §6 CSS primitive. (Legacy note: files created before this consolidation used six
+  templates — `splitSection`/`stackedSection`/`serviceCard`/`cardGrid`/`valuesSection`/
+  `eventSection` — migrated 1:1 into the two above.)
 
 (`siteConfig.js` now only holds the fallback default theme applied before the CMS loads.)
 
@@ -83,17 +92,24 @@ maps each block type to a CSS primitive. `useTina` enables on-page editing at `/
 images are repo-based (in `public/uploads`, compressed by a push-time GitHub Action). Governed by
 [ADR 0002](./docs/adr/0002-tinacms-content-management.md).
 
-Block-renderer behaviors (`Blocks.jsx`): image sides **auto-alternate** left/right by position
-(`imageSide: 'auto'`, recomputed on drag-reorder; `left`/`right` pin a side); per-card **image
-size** via `imageSize` (`sm`/`md`/`lg` → `.media--*`); rich-text bodies render via `TinaMarkdown`
-and are stored on disk as **markdown strings, not AST objects** (see the playbook §4); buttons
-carry a `status` (`active`/`coming-soon`) — coming-soon renders non-clickable, prefixed
-"Coming Soon - ". `serviceCard`s have their own `status` (`available`/`coming-soon`: coming-soon
-shows a badge and disables booking). Each **booking option** (session) can list `addOns[]`, so every
-session gets its own "Book w/ &lt;add-on&gt;" button; an add-on names another service (by Heading,
-validated on save) and its button's availability is **derived from that referenced service's
-`status`** (owner-editable in `/admin`; no code flag). Every block has a `showHomeButton` toggle
-(default on) that renders a "Home" button. Reusable setup + gotchas: [TinaCMS Vite playbook](./docs/tinacms-vite-playbook.md).
+Block-renderer behaviors (`Blocks.jsx`): a `contentSection` dispatches on its `layout`; a `service`
+renders the bookable card. Image sides **auto-alternate** left/right by position (`imageSide:
+'auto'`, recomputed on drag-reorder; `left`/`right` pin a side) for the image-bearing looks
+(`imageText` + `service`); **image width** is a percent (`imageWidth`, 20–70) applied via the
+`--media-basis` CSS custom property so mobile can still force full-width; **vertical spacing**
+(`spacing`) maps to `.section--compact`/`.section--airy`. Rich-text bodies render via `TinaMarkdown`
+and are stored on disk as **markdown strings, not AST objects** (see the playbook §4).
+
+**Unified buttons.** Every block shares one `buttons[]` list. A button is a plain link with a manual
+`status` (`active`/`coming-soon` — coming-soon renders non-clickable, prefixed "Coming Soon - "),
+**or** it names a `service` on the page and inherits *that* service's availability/link (the same
+`Heading → {status, slug, bookUrl}` map used by booking add-ons; typed name validated on save).
+`service` blocks additionally carry their own `status` (coming-soon shows a badge and disables
+booking) and `bookingOptions[]`; each **booking option** (session) can list `addOns[]`, so every
+session gets its own "Book w/ &lt;add-on&gt;" button derived from the referenced service's status
+(owner-editable in `/admin`; no code flag). Every block has a `showHomeButton` toggle (default on).
+New pages/blocks start from `ui.defaultItem` presets rather than a blank form. Reusable setup +
+gotchas, including the block-model design patterns: [TinaCMS Vite playbook](./docs/tinacms-vite-playbook.md) (§8).
 
 **Seasonal theming.** The season lives in the **Settings** doc. To avoid a theme flash, `main.jsx`
 imports `content/settings/index.json` at build time and applies its `theme` as a `<body>` class
@@ -122,9 +138,9 @@ from `App`'s `useEffect` to attach a global visual flash on button clicks.
 
 ## 7. Conventions & gotchas
 
-- **Content, not code, drives availability:** season (Settings doc) and service/add-on status
-  (per `serviceCard`) are owner-editable in `/admin`. `siteConfig.js` now holds only the
-  `SITE_THEME` fallback.
+- **Content, not code, drives availability:** season (Settings doc) and service/add-on/button
+  status (per `service` block, referenced by name) are owner-editable in `/admin`. `siteConfig.js`
+  now holds only the `SITE_THEME` fallback.
 - **Two styling systems coexist:** global CSS + CSS Modules. Match the component you're editing.
 - **CSS load order is load-bearing** — see §6 before reorganizing style imports.
 - No tests, no TypeScript, no state management library. Keep it simple.

@@ -5,7 +5,8 @@
   "showInNav": true,
   "blocks": [
     {
-      "_template": "splitSection",
+      "_template": "contentSection",
+      "layout": "imageText",
       "title": "Meet Melissa Carey",
       "image": "/uploads/Warrior.jpg",
       "imageSide": "auto",

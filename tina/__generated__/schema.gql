@@ -134,92 +134,68 @@ type SettingsConnection implements Connection {
   edges: [SettingsConnectionEdges]
 }
 
-type PageBlocksSplitSectionButtons {
-  label: String
-  url: String
-  status: String
-}
-
-type PageBlocksSplitSection {
-  title: String
-  body: JSON
-  image: String
-  imageSide: String
-  imageSize: String
-  buttons: [PageBlocksSplitSectionButtons]
-  showHomeButton: Boolean
-}
-
-type PageBlocksStackedSectionButtons {
-  label: String
-  url: String
-  status: String
-}
-
-type PageBlocksStackedSection {
-  title: String
-  body: JSON
-  buttons: [PageBlocksStackedSectionButtons]
-  showHomeButton: Boolean
-}
-
-type PageBlocksServiceCardBookingOptionsAddOns {
-  service: String
-  bookUrl: String
-}
-
-type PageBlocksServiceCardBookingOptions {
-  label: String
-  bookUrl: String
-  note: String
-  addOns: [PageBlocksServiceCardBookingOptionsAddOns]
-}
-
-type PageBlocksServiceCard {
-  title: String
-  description: JSON
-  image: String
-  imageSide: String
-  imageSize: String
-  status: String
-  bookingOptions: [PageBlocksServiceCardBookingOptions]
-  showHomeButton: Boolean
-}
-
-type PageBlocksCardGridCards {
+type PageBlocksContentSectionCards {
   title: String
   description: String
   buttonLabel: String
   buttonUrl: String
 }
 
-type PageBlocksCardGrid {
-  title: String
-  cards: [PageBlocksCardGridCards]
-  showHomeButton: Boolean
-}
-
-type PageBlocksValuesSection {
-  title: String
-  words: [String]
-  showHomeButton: Boolean
-}
-
-type PageBlocksEventSectionButtons {
+type PageBlocksContentSectionButtons {
   label: String
   url: String
   status: String
+  service: String
 }
 
-type PageBlocksEventSection {
+type PageBlocksContentSection {
+  layout: String
   title: String
   body: JSON
+  image: String
+  imageSide: String
+  imageWidth: Float
   images: [String]
-  buttons: [PageBlocksEventSectionButtons]
+  cards: [PageBlocksContentSectionCards]
+  words: [String]
+  spacing: String
+  buttons: [PageBlocksContentSectionButtons]
   showHomeButton: Boolean
 }
 
-union PageBlocks = PageBlocksSplitSection | PageBlocksStackedSection | PageBlocksServiceCard | PageBlocksCardGrid | PageBlocksValuesSection | PageBlocksEventSection
+type PageBlocksServiceBookingOptionsAddOns {
+  service: String
+  bookUrl: String
+}
+
+type PageBlocksServiceBookingOptions {
+  label: String
+  bookUrl: String
+  note: String
+  addOns: [PageBlocksServiceBookingOptionsAddOns]
+}
+
+type PageBlocksServiceButtons {
+  label: String
+  url: String
+  status: String
+  service: String
+}
+
+type PageBlocksService {
+  title: String
+  description: JSON
+  image: String
+  imageSide: String
+  imageWidth: Float
+  status: String
+  bookingOptions: [PageBlocksServiceBookingOptions]
+  spacing: String
+  buttons: [PageBlocksServiceButtons]
+  showHomeButton: Boolean
+}
+
+union PageBlocks = PageBlocksContentSection | PageBlocksService
 
 type Page implements Node & Document {
   title: String!
@@ -253,98 +229,70 @@ input RichTextFilter {
   exists: Boolean
 }
 
-input PageBlocksSplitSectionButtonsFilter {
-  label: StringFilter
-  url: StringFilter
-  status: StringFilter
-}
-
-input PageBlocksSplitSectionFilter {
-  title: StringFilter
-  body: RichTextFilter
-  image: ImageFilter
-  imageSide: StringFilter
-  imageSize: StringFilter
-  buttons: PageBlocksSplitSectionButtonsFilter
-  showHomeButton: BooleanFilter
-}
-
-input PageBlocksStackedSectionButtonsFilter {
-  label: StringFilter
-  url: StringFilter
-  status: StringFilter
-}
-
-input PageBlocksStackedSectionFilter {
-  title: StringFilter
-  body: RichTextFilter
-  buttons: PageBlocksStackedSectionButtonsFilter
-  showHomeButton: BooleanFilter
-}
-
-input PageBlocksServiceCardBookingOptionsAddOnsFilter {
-  service: StringFilter
-  bookUrl: StringFilter
-}
-
-input PageBlocksServiceCardBookingOptionsFilter {
-  label: StringFilter
-  bookUrl: StringFilter
-  note: StringFilter
-  addOns: PageBlocksServiceCardBookingOptionsAddOnsFilter
-}
-
-input PageBlocksServiceCardFilter {
-  title: StringFilter
-  description: RichTextFilter
-  image: ImageFilter
-  imageSide: StringFilter
-  imageSize: StringFilter
-  status: StringFilter
-  bookingOptions: PageBlocksServiceCardBookingOptionsFilter
-  showHomeButton: BooleanFilter
-}
-
-input PageBlocksCardGridCardsFilter {
+input PageBlocksContentSectionCardsFilter {
   title: StringFilter
   description: StringFilter
   buttonLabel: StringFilter
   buttonUrl: StringFilter
 }
 
-input PageBlocksCardGridFilter {
-  title: StringFilter
-  cards: PageBlocksCardGridCardsFilter
-  showHomeButton: BooleanFilter
-}
-
-input PageBlocksValuesSectionFilter {
-  title: StringFilter
-  words: StringFilter
-  showHomeButton: BooleanFilter
-}
-
-input PageBlocksEventSectionButtonsFilter {
+input PageBlocksContentSectionButtonsFilter {
   label: StringFilter
   url: StringFilter
   status: StringFilter
+  service: StringFilter
 }
 
-input PageBlocksEventSectionFilter {
+input PageBlocksContentSectionFilter {
+  layout: StringFilter
   title: StringFilter
   body: RichTextFilter
+  image: ImageFilter
+  imageSide: StringFilter
+  imageWidth: NumberFilter
   images: ImageFilter
-  buttons: PageBlocksEventSectionButtonsFilter
+  cards: PageBlocksContentSectionCardsFilter
+  words: StringFilter
+  spacing: StringFilter
+  buttons: PageBlocksContentSectionButtonsFilter
+  showHomeButton: BooleanFilter
+}
+
+input PageBlocksServiceBookingOptionsAddOnsFilter {
+  service: StringFilter
+  bookUrl: StringFilter
+}
+
+input PageBlocksServiceBookingOptionsFilter {
+  label: StringFilter
+  bookUrl: StringFilter
+  note: StringFilter
+  addOns: PageBlocksServiceBookingOptionsAddOnsFilter
+}
+
+input PageBlocksServiceButtonsFilter {
+  label: StringFilter
+  url: StringFilter
+  status: StringFilter
+  service: StringFilter
+}
+
+input PageBlocksServiceFilter {
+  title: StringFilter
+  description: RichTextFilter
+  image: ImageFilter
+  imageSide: StringFilter
+  imageWidth: NumberFilter
+  status: StringFilter
+  bookingOptions: PageBlocksServiceBookingOptionsFilter
+  spacing: StringFilter
+  buttons: PageBlocksServiceButtonsFilter
   showHomeButton: BooleanFilter
 }
 
 input PageBlocksFilter {
-  splitSection: PageBlocksSplitSectionFilter
-  stackedSection: PageBlocksStackedSectionFilter
-  serviceCard: PageBlocksServiceCardFilter
-  cardGrid: PageBlocksCardGridFilter
-  valuesSection: PageBlocksValuesSectionFilter
-  eventSection: PageBlocksEventSectionFilter
+  contentSection: PageBlocksContentSectionFilter
+  service: PageBlocksServiceFilter
 }
 
 input PageFilter {
@@ -397,98 +345,70 @@ input SettingsMutation {
   contactEmail: String
 }
 
-input PageBlocksSplitSectionButtonsMutation {
-  label: String
-  url: String
-  status: String
-}
-
-input PageBlocksSplitSectionMutation {
-  title: String
-  body: JSON
-  image: String
-  imageSide: String
-  imageSize: String
-  buttons: [PageBlocksSplitSectionButtonsMutation]
-  showHomeButton: Boolean
-}
-
-input PageBlocksStackedSectionButtonsMutation {
-  label: String
-  url: String
-  status: String
-}
-
-input PageBlocksStackedSectionMutation {
-  title: String
-  body: JSON
-  buttons: [PageBlocksStackedSectionButtonsMutation]
-  showHomeButton: Boolean
-}
-
-input PageBlocksServiceCardBookingOptionsAddOnsMutation {
-  service: String
-  bookUrl: String
-}
-
-input PageBlocksServiceCardBookingOptionsMutation {
-  label: String
-  bookUrl: String
-  note: String
-  addOns: [PageBlocksServiceCardBookingOptionsAddOnsMutation]
-}
-
-input PageBlocksServiceCardMutation {
-  title: String
-  description: JSON
-  image: String
-  imageSide: String
-  imageSize: String
-  status: String
-  bookingOptions: [PageBlocksServiceCardBookingOptionsMutation]
-  showHomeButton: Boolean
-}
-
-input PageBlocksCardGridCardsMutation {
+input PageBlocksContentSectionCardsMutation {
   title: String
   description: String
   buttonLabel: String
   buttonUrl: String
 }
 
-input PageBlocksCardGridMutation {
-  title: String
-  cards: [PageBlocksCardGridCardsMutation]
-  showHomeButton: Boolean
-}
-
-input PageBlocksValuesSectionMutation {
-  title: String
-  words: [String]
-  showHomeButton: Boolean
-}
-
-input PageBlocksEventSectionButtonsMutation {
+input PageBlocksContentSectionButtonsMutation {
   label: String
   url: String
   status: String
+  service: String
 }
 
-input PageBlocksEventSectionMutation {
+input PageBlocksContentSectionMutation {
+  layout: String
   title: String
   body: JSON
+  image: String
+  imageSide: String
+  imageWidth: Float
   images: [String]
-  buttons: [PageBlocksEventSectionButtonsMutation]
+  cards: [PageBlocksContentSectionCardsMutation]
+  words: [String]
+  spacing: String
+  buttons: [PageBlocksContentSectionButtonsMutation]
+  showHomeButton: Boolean
+}
+
+input PageBlocksServiceBookingOptionsAddOnsMutation {
+  service: String
+  bookUrl: String
+}
+
+input PageBlocksServiceBookingOptionsMutation {
+  label: String
+  bookUrl: String
+  note: String
+  addOns: [PageBlocksServiceBookingOptionsAddOnsMutation]
+}
+
+input PageBlocksServiceButtonsMutation {
+  label: String
+  url: String
+  status: String
+  service: String
+}
+
+input PageBlocksServiceMutation {
+  title: String
+  description: JSON
+  image: String
+  imageSide: String
+  imageWidth: Float
+  status: String
+  bookingOptions: [PageBlocksServiceBookingOptionsMutation]
+  spacing: String
+  buttons: [PageBlocksServiceButtonsMutation]
   showHomeButton: Boolean
 }
 
 input PageBlocksMutation {
-  splitSection: PageBlocksSplitSectionMutation
-  stackedSection: PageBlocksStackedSectionMutation
-  serviceCard: PageBlocksServiceCardMutation
-  cardGrid: PageBlocksCardGridMutation
-  valuesSection: PageBlocksValuesSectionMutation
-  eventSection: PageBlocksEventSectionMutation
+  contentSection: PageBlocksContentSectionMutation
+  service: PageBlocksServiceMutation
 }
 
 input PageMutation {
