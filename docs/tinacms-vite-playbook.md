@@ -141,6 +141,12 @@ import { TinaMarkdown } from 'tinacms/dist/rich-text'
 2. Put `TINA_CLIENT_ID` / `TINA_TOKEN` in the host's env (Vercel) and local `.env`.
 3. Switch `build` to `tinacms build -c "vite build"` so `/admin` ships and the client talks to
    TinaCloud. Editors log in at `/admin`; edits commit to the branch → redeploy (~1 min).
+4. **Allowlist every origin in TinaCloud → Site URLs.** TinaCloud gates which origins may call it —
+   both `/admin` login *and* browser content reads. Add the custom domain **and** the Vercel
+   deploys (`https://*.vercel.app` covers all previews) **and** `http://localhost:5173`. An origin
+   that's missing has its content reads blocked, so that deploy shows the app's "Page not found" on
+   every page even though the build succeeded (classic tell: custom domain works, `*.vercel.app`
+   preview doesn't).
 
 Until then, everything works locally in local mode — build and demo offline first.
 
@@ -176,6 +182,7 @@ diagnosable from files + two shell commands. Spend tokens here, not on browser a
    | `/admin` 404s in production (fine locally) | `build` skips `tinacms build` | §2 / §6 |
    | Deploy shows the app's "Page not found" on **every** page (creds set, `/admin` may also 404) | `build` is a bare `vite build`, so the committed client still points at `localhost:4001` and every content query fails in prod | §6 (switch `build` to `tinacms build -c "vite build"`) |
    | Preview deploy pages empty/404 but Production is fine (or vice-versa) | `TINA_BRANCH` set to the wrong branch for that Vercel environment | §6 (per-environment `TINA_BRANCH`) |
+   | One origin shows "Page not found" everywhere while the custom domain works (build succeeded, creds fine) | that origin (e.g. `*.vercel.app` preview) isn't in TinaCloud's **Site URLs** allowlist, so content reads are blocked | §6 (add the origin in TinaCloud → Site URLs) |
    | Stale/blank admin, wrong data | committed `public/admin` shadowing the dev build | gitignore it (§2) |
    | Field can't be edited even in sidebar | schema issue in `tina/config.ts` | fix the collection/field |
    | **Fields (esp. new/nested ones) vanish from content after an editor saves** | the admin tab was loaded **before** a schema change; Tina saves rewrite the *whole* document from the in-browser form, dropping fields that form doesn't know about | **hard-refresh `/admin` after every schema change, before editing.** Restart `tinacms dev` too so the generated client/admin match `config.ts` |
