@@ -5,10 +5,9 @@
   "showInNav": true,
   "blocks": [
     {
-      "_template": "contentSection",
       "layout": "event",
       "title": "2026 Bali Retreat!",
-      "body": "Join us for a transformative retreat in Bali. Reach out to Melissa for dates, pricing, and how to reserve your spot.",
+      "body": "Join us for a transformative retreat in Bali. Reach out to Melissa for dates, pricing, and how to reserve your spot.\n",
       "images": [
         "/uploads/Bali_1.jpg",
         "/uploads/Bali_2.jpg"
@@ -22,7 +21,18 @@
           "label": "Home",
           "url": "/"
         }
-      ]
+      ],
+      "_template": "contentSection"
+    },
+    {
+      "layout": "imageText",
+      "title": "Sound Bath and Kaiut Class at CURA",
+      "body": "",
+      "image": "/uploads/726-Kaiut-Extended-Session-Sound-Healing-3.pdf.png",
+      "imageSide": "auto",
+      "spacing": "normal",
+      "showHomeButton": true,
+      "_template": "contentSection"
     }
   ]
 }
