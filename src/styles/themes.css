@@ -25,7 +25,7 @@
 /* ☀️ Summer */
 .summer {
   --primary-color: #ffb347; /* Old: Soft orange */
-  --text-color: #222;
+  --text-color: #3a2a18; /* Espresso Warm — warm near-black tuned to the summer palette */
   --secondary-color: #fff1cc;
   --bg-color: #fff4da; /* Light golden cream for warmth */
   --bg-color-light: rgba(255, 244, 218, 0.5);
