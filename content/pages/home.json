@@ -5,19 +5,19 @@
   "showInNav": true,
   "blocks": [
     {
-      "_template": "contentSection",
       "layout": "centered",
       "title": "Welcome to Spirit Seeds Wellness",
-      "body": "Holistic healing in Lafayette, Colorado — trauma-informed massage, sound healing, Ayurveda, and yin yoga.",
-      "showHomeButton": false
+      "body": "Holistic healing in Lafayette, Colorado — trauma-informed massage, sound healing, Ayurveda, and yin yoga.\n",
+      "spacing": "compact",
+      "showHomeButton": false,
+      "_template": "contentSection"
     },
     {
-      "_template": "contentSection",
       "layout": "imageText",
       "title": "Check Out What's New!",
+      "body": "From live yoga classes and workshops to teacher trainings, retreats, and more — there's always something exciting on the horizon at Spirit Seeds. Tap below to explore our latest offerings and sign up.\n",
       "image": "/uploads/UpcomingEvents.jpg",
       "imageSide": "auto",
-      "body": "From live yoga classes and workshops to teacher trainings, retreats, and more — there's always something exciting on the horizon at Spirit Seeds. Tap below to explore our latest offerings and sign up.",
       "buttons": [
         {
           "label": "View Events",
@@ -25,12 +25,13 @@
           "status": "active"
         }
       ],
-      "showHomeButton": false
+      "showHomeButton": false,
+      "_template": "contentSection"
     },
     {
-      "_template": "contentSection",
       "layout": "cardGrid",
       "title": "Our Services",
+      "body": "",
       "cards": [
         {
           "title": "Integrative Healing",
@@ -69,33 +70,35 @@
           "buttonUrl": "/services"
         }
       ],
-      "showHomeButton": false
+      "showHomeButton": false,
+      "_template": "contentSection"
     },
     {
-      "_template": "contentSection",
       "layout": "imageText",
       "title": "About",
+      "body": "Spirit Seeds Wellness provides holistic healing for individuals healing CPTSD and seeking relief from emotional, physical, and spiritual pain. Melissa Carey offers rituals that address multiple layers of health and well-being.\n",
       "image": "/uploads/SpiritSeedsLogo.jpg",
       "imageSide": "auto",
-      "body": "Spirit Seeds Wellness provides holistic healing for individuals healing CPTSD and seeking relief from emotional, physical, and spiritual pain. Melissa Carey offers rituals that address multiple layers of health and well-being.",
       "buttons": [
         {
           "label": "Learn More",
           "url": "/about"
         }
       ],
-      "showHomeButton": false
+      "showHomeButton": false,
+      "_template": "contentSection"
     },
     {
-      "_template": "contentSection",
       "layout": "values",
       "title": "Our Core Values",
+      "body": "",
       "words": [
         "Growth",
         "Acceptance",
         "Service"
       ],
-      "showHomeButton": false
+      "showHomeButton": false,
+      "_template": "contentSection"
     }
   ]
 }
