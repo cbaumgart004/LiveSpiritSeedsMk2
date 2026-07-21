@@ -2,6 +2,16 @@ import { defineConfig } from 'tinacms'
 
 const SEASONS = ['spring', 'summer', 'fall', 'winter']
 
+// UI styles are a second, independent axis from the season. The season owns the
+// COLOR palette; the UI style owns the STRUCTURE + type feel (borders, radius,
+// shadows, display font). Every style reuses the current season's colors, so
+// changing the look never changes the palette. See DESIGN.md §5–§6.
+const UI_STYLES = [
+  { value: 'watercolor', label: 'Watercolor (original)' },
+  { value: 'layered', label: 'Layered (bold parallax)' },
+  { value: 'refined', label: 'Refined (sharp & quiet)' },
+]
+
 // Names of the Service cards on the current page, lower-cased. Used by the
 // "link to a service" validators below so a button/add-on can't silently point
 // at a service that doesn't exist. Works on both the new `service` template and
@@ -308,6 +318,15 @@ export default defineConfig({
           { type: 'string', name: 'tagline', label: 'Tagline' },
           { type: 'image', name: 'logo', label: 'Logo' },
           { type: 'string', name: 'theme', label: 'Seasonal Theme', options: SEASONS },
+          {
+            type: 'string',
+            name: 'uiStyle',
+            label: 'UI Style',
+            description:
+              'The overall look & feel. Independent of the season — the seasonal colors carry over into every style.',
+            options: UI_STYLES,
+            ui: { defaultValue: 'watercolor' },
+          },
           { type: 'string', name: 'contactEmail', label: 'Contact Email' },
         ],
       },

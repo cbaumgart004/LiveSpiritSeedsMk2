@@ -42,9 +42,11 @@ src/
   components/
     cms/Blocks.jsx     Renders blocks[] into the CSS primitives (§6)
     Nav.jsx            Nav generated from the CMS page list; Hamburger, ScrollToTop
+    PreviewBar.jsx     Non-destructive style/season preview toolbar (§6 Preview mode)
     ValuesSection/     Reused by the values block
   styles/              Layered global CSS (see §6)
   utils/               buttonFlashHandler.js — global click-flash effect
+                       preview.js — non-destructive style/season preview state (§6)
   assets/              Seasonal logos/backgrounds (referenced by CSS themes)
 public/
   uploads/             CMS-uploaded images (repo-based media); favicon
@@ -67,7 +69,8 @@ Adding a page = adding a content file (via `/admin`); it appears in the nav auto
 Content is **data**, managed via TinaCMS (git-backed) — see [ADR 0002]. Two collections:
 
 - **Settings** (`content/settings/index.json`) — `theme` (`spring`/`summer`/`fall`/`winter`),
-  `siteTitle`, `tagline`, `logo`, `contactEmail`.
+  `uiStyle` (`watercolor`/`layered`/`refined` — see §6 UX styles), `siteTitle`, `tagline`,
+  `logo`, `contactEmail`.
 - **Page** (`content/pages/*.json`) — `title`, `navLabel`, `order`, `showInNav`, and an ordered
   `blocks[]`. The palette is **two** block types:
   - **`contentSection`** — a general section with a `layout` picker choosing the look:
@@ -82,7 +85,8 @@ Content is **data**, managed via TinaCMS (git-backed) — see [ADR 0002]. Two co
   templates — `splitSection`/`stackedSection`/`serviceCard`/`cardGrid`/`valuesSection`/
   `eventSection` — migrated 1:1 into the two above.)
 
-(`siteConfig.js` now only holds the fallback default theme applied before the CMS loads.)
+(`siteConfig.js` now only holds the fallback default season (`SITE_THEME`) and UI style
+(`SITE_UI_STYLE`) applied before the CMS loads.)
 
 ## 6. Subsystems
 
@@ -118,10 +122,43 @@ imports `content/settings/index.json` at build time and applies its `theme` as a
 the theme from the CMS on load (same value on first render; updates during live editing). The CSS
 themes in `src/styles/themes.css` key off that class.
 
+**UX styles.** A second `<body>` class axis, **orthogonal to the season**. The season owns the
+**color** tokens; the UX style owns **structure + type + scroll motion** (display font, borders,
+radius, shadows, layering, and scroll behaviour) via `src/styles/ui-styles.css` (`body.style-<x>`),
+so switching the look never changes the palette — every style consumes the current season's colors.
+Body text is **Merriweather Sans** in every style. Three looks:
+- `watercolor` — the **original** (Euphoria Script + Farsan display, painterly bands, thick
+  borders). The untouched baseline, so it has *no* overrides here; also the default and the
+  fallback for any missing/invalid value.
+- `layered` — bold parallax: **Bricolage Grotesque** display, overlapping "petal" bands with a
+  crisp defined shadow, the watercolor kept but drifting on scroll (depth), content rising in as it
+  enters view. Sharp.
+- `refined` — quiet & sharp: **Marcellus** display, flat crisp bands (no wash), hairline rules,
+  tight radii, a gentle fade-up reveal.
+
+Owner-selectable in `/admin` (Settings → **UI Style**). Applied like the season: `main.jsx` bakes
+`style-<uiStyle>` onto `<body>` from the build-time Settings import (no flash); `App.jsx` re-applies
+it from the CMS on load via `applyUiStyle` (`cms/site.js`) for live editing. Fonts are imported once
+in `index.css`. **Motion safety:** reveal/parallax live inside a
+`@supports (animation-timeline: view())` + `prefers-reduced-motion: no-preference` guard and animate
+the `translate` property (so they compose with `.card:hover`), meaning browsers without CSS
+scroll-driven animations — and anyone preferring reduced motion — get the static, fully-visible
+layout with no invisible content.
+
+**Preview mode.** A non-destructive way to try a UX style + season on the live content *before*
+publishing — the owner's "preview before going live" for styles (content edits are already previewed
+on-page in `/admin` via `useTina`). Opened by URL (`?preview`, or `?style=refined&season=winter`),
+so ordinary visitors never see it. `utils/preview.js` seeds the choice from those params, holds it in
+`sessionStorage` (survives navigation between pages), and **never writes to the CMS**; `App.jsx`
+applies any override *after* the saved defaults so it wins, and renders `components/PreviewBar.jsx` —
+a tap-friendly bottom toolbar (Style + Season chips) sized for mobile. Exiting restores the saved
+defaults and strips the params. The owner then sets the winner as the real default in `/admin`.
+
 **Global CSS layers.** Loaded in this order in `main.jsx` — order matters for cascade:
 `variables.css` → `themes.css` → `index.css` (base elements) → `layout.css` (shared layout)
-→ `components.css` (buttons/cards) → `animations.css` (keyframes). Individual components may
-additionally use **CSS Modules** (`*.module.css`).
+→ `components.css` (buttons/cards) → `ui-styles.css` (UI-style axis; overrides the primitives)
+→ `animations.css` (keyframes). Individual components may additionally use **CSS Modules**
+(`*.module.css`).
 
 > **Styling architecture is governed by [ADR 0001](./docs/adr/0001-hybrid-css-architecture.md):**
 > hybrid model — global layer owns tokens/theme/base + a fixed set of **primitives**
@@ -138,9 +175,11 @@ from `App`'s `useEffect` to attach a global visual flash on button clicks.
 
 ## 7. Conventions & gotchas
 
-- **Content, not code, drives availability:** season (Settings doc) and service/add-on/button
-  status (per `service` block, referenced by name) are owner-editable in `/admin`. `siteConfig.js`
-  now holds only the `SITE_THEME` fallback.
+- **Content, not code, drives availability:** season, UI style (both Settings doc) and
+  service/add-on/button status (per `service` block, referenced by name) are owner-editable in
+  `/admin`. `siteConfig.js` now holds only the `SITE_THEME` + `SITE_UI_STYLE` fallbacks.
+- **Season and UI style are two independent axes:** season = color, UI style = structure/type.
+  A UI style must never set a color token, so any season works under any look (see §6).
 - **Two styling systems coexist:** global CSS + CSS Modules. Match the component you're editing.
 - **CSS load order is load-bearing** — see §6 before reorganizing style imports.
 - No tests, no TypeScript, no state management library. Keep it simple.
