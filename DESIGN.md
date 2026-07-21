@@ -50,7 +50,14 @@ src/
   assets/              Seasonal logos/backgrounds (referenced by CSS themes)
 public/
   uploads/             CMS-uploaded images (repo-based media); favicon
+marketplace/           SEPARATE package — the online store (not part of the SPA)
 ```
+
+> **`marketplace/` is an independent app, not part of the brochure site.** It's a
+> Next.js + Supabase + Stripe store with its own `package.json`, build, and deploy
+> (own subdomain), sharing nothing at runtime with the Vite SPA above. Owner admin at
+> `/admin` (categories, image upload, inline images, price, tags, search). Deliberately
+> **not linked from the SPA navbar** yet. Full setup + architecture: [`marketplace/README.md`](./marketplace/README.md).
 
 ## 4. Routes
 
