@@ -1,0 +1,5 @@
+@import 'tailwindcss';
+
+/* Brand palette + UX-style tokens + primitives ported from the brochure site.
+   Loaded after Tailwind so it can style the base `body`. */
+@import './brand.css';

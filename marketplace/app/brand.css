@@ -1,0 +1,148 @@
+/* ==============================================================
+   Brand theme — ported from the brochure site so the store matches
+   the current SEASON + UX STYLE. Applied via <body class="{season}
+   style-{style}"> (see lib/brand.ts). A product page may re-scope
+   these on a wrapper div to override per entry.
+
+   Palettes mirror styles/themes.css; style-* mirror styles/ui-styles.css.
+   The brochure's scroll/parallax/section-background effects are
+   intentionally omitted — this is a different (Tailwind) layout.
+   ============================================================== */
+
+:root {
+  --font-heading: 'Euphoria Script', cursive;
+  --font-subheading: 'Farsan', cursive;
+  --font-body: 'Merriweather Sans', sans-serif;
+
+  --radius-1: 10px;
+  --radius-2: 12px;
+  --shadow-1: 0 6px 18px rgba(0, 0, 0, 0.1);
+  --shadow-2: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-3: 0 12px 32px rgba(0, 0, 0, 0.12);
+  --panel-border: 4px;
+
+  /* 🌸 Spring (default palette) */
+  --primary-color: #11eb9e;
+  --text-color: #5eb4c4;
+  --secondary-color: #f9d3e3;
+  --bg-color: #e8fdf2;
+  --bg-color-light: rgba(232, 253, 242, 0.7);
+  --gradient: linear-gradient(to right, #ff5fa2, #ffc371);
+  --gradient-reverse: linear-gradient(to left, #ff5fa2, #ffc371);
+}
+
+/* ☀️ Summer */
+.summer {
+  --primary-color: #ffb347;
+  --text-color: #3a2a18;
+  --secondary-color: #fff1cc;
+  --bg-color: #fff4da;
+  --bg-color-light: rgba(255, 244, 218, 0.5);
+  --gradient: linear-gradient(to right, #e9b87d 0%, #e9c1ff 100%);
+  --gradient-reverse: linear-gradient(to left, #e9b87d 0%, #e9c1ff 100%);
+}
+
+/* 🍂 Fall */
+.fall {
+  --primary-color: #d97706;
+  --text-color: #3b2f2f;
+  --secondary-color: #fef3c7;
+  --bg-color: #fdf3dc;
+  --bg-color-light: rgba(253, 243, 220, 0.5);
+  --gradient: linear-gradient(to right, #d97706, #92400e);
+  --gradient-reverse: linear-gradient(to left, #d97706, #92400e);
+}
+
+/* ❄️ Winter */
+.winter {
+  --primary-color: #6cb4ee;
+  --text-color: #1e3a5f;
+  --secondary-color: #e0f7ff;
+  --bg-color: #eaf4fb;
+  --bg-color-light: rgba(234, 244, 251, 0.5);
+  --gradient: linear-gradient(to right, #6cb4ee, #bcdff9);
+  --gradient-reverse: linear-gradient(to left, #6cb4ee, #bcdff9);
+}
+
+/* --- UX styles (structure + display type). watercolor = the defaults above. --- */
+.style-layered {
+  --font-heading: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-subheading: 'Bricolage Grotesque', system-ui, sans-serif;
+  --radius-1: 8px;
+  --radius-2: 10px;
+  --panel-border: 2px;
+  --shadow-1: 0 12px 30px rgba(40, 28, 14, 0.18);
+  --shadow-2: 0 16px 38px rgba(40, 28, 14, 0.16);
+  --shadow-3: 0 24px 52px rgba(40, 28, 14, 0.24);
+}
+.style-refined {
+  --font-heading: 'Marcellus', Georgia, serif;
+  --font-subheading: 'Marcellus', Georgia, serif;
+  --radius-1: 3px;
+  --radius-2: 4px;
+  --panel-border: 1px;
+  --shadow-1: 0 2px 6px rgba(40, 28, 14, 0.05);
+  --shadow-2: 0 10px 26px rgba(40, 28, 14, 0.07);
+  --shadow-3: 0 16px 36px rgba(40, 28, 14, 0.1);
+}
+
+/* --- Base surface + type driven by the brand tokens --- */
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-body);
+}
+
+/* --- Reusable brand primitives (mirror the brochure's .btn / .card) --- */
+.brand-heading {
+  font-family: var(--font-heading);
+  color: var(--primary-color);
+  line-height: 1.1;
+}
+.brand-subheading {
+  font-family: var(--font-subheading);
+  color: var(--text-color);
+}
+
+.brand-btn {
+  background: var(--gradient);
+  background-size: 200%;
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-1);
+  cursor: pointer;
+  transition: background-position 0.4s ease, transform 0.2s ease;
+}
+.brand-btn:hover {
+  background: var(--gradient-reverse);
+  transform: scale(1.03);
+}
+.brand-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+  transform: none;
+}
+
+.brand-card {
+  background-color: var(--bg-color-light);
+  border: var(--panel-border) solid var(--primary-color);
+  border-radius: var(--radius-2);
+  box-shadow: var(--shadow-2);
+  color: var(--text-color);
+}
+
+.brand-surface {
+  background-color: var(--bg-color-light);
+  border-color: color-mix(in srgb, var(--primary-color) 30%, transparent);
+}
+
+.brand-chip {
+  background: color-mix(in srgb, var(--primary-color) 14%, transparent);
+  color: var(--text-color);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 30%, transparent);
+}
+.brand-chip--active {
+  background: var(--primary-color);
+  color: var(--bg-color);
+  border-color: var(--primary-color);
+}
