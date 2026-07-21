@@ -1,5 +1,34 @@
 // tina/config.ts
 import { defineConfig } from "tinacms";
+import React from "react";
+var PreviewLinkField = () => React.createElement(
+  "div",
+  { style: { padding: "4px 0 8px" } },
+  React.createElement(
+    "a",
+    {
+      href: "/?preview",
+      target: "_blank",
+      rel: "noreferrer",
+      style: {
+        display: "inline-block",
+        padding: "8px 14px",
+        background: "#2296fe",
+        color: "#fff",
+        borderRadius: "6px",
+        textDecoration: "none",
+        fontSize: "14px",
+        fontWeight: 600
+      }
+    },
+    "Open live preview \u2197"
+  ),
+  React.createElement(
+    "p",
+    { style: { margin: "6px 0 0", fontSize: "12px", color: "#64748b" } },
+    "Opens the site in a new tab where you can toggle styles & seasons live without saving."
+  )
+);
 var SEASONS = ["spring", "summer", "fall", "winter"];
 var UI_STYLES = [
   { value: "watercolor", label: "Watercolor (original)" },
@@ -268,6 +297,13 @@ var config_default = defineConfig({
             description: "The overall look & feel. Independent of the season \u2014 the seasonal colors carry over into every style.",
             options: UI_STYLES,
             ui: { defaultValue: "watercolor" }
+          },
+          {
+            type: "string",
+            name: "previewLink",
+            label: "Preview",
+            // Data-less: the custom component renders a link and never saves.
+            ui: { component: PreviewLinkField }
           },
           { type: "string", name: "contactEmail", label: "Contact Email" }
         ]

@@ -1,4 +1,39 @@
 import { defineConfig } from 'tinacms'
+import React from 'react'
+
+// A decorative (data-less) settings field: a button that opens the live site in
+// a new tab with Preview mode on (?preview), so the owner can try styles/seasons
+// side-by-side with the admin without saving. It never calls onChange, so it
+// stores no value. See DESIGN.md §6 (Preview mode).
+const PreviewLinkField = () =>
+  React.createElement(
+    'div',
+    { style: { padding: '4px 0 8px' } },
+    React.createElement(
+      'a',
+      {
+        href: '/?preview',
+        target: '_blank',
+        rel: 'noreferrer',
+        style: {
+          display: 'inline-block',
+          padding: '8px 14px',
+          background: '#2296fe',
+          color: '#fff',
+          borderRadius: '6px',
+          textDecoration: 'none',
+          fontSize: '14px',
+          fontWeight: 600,
+        },
+      },
+      'Open live preview ↗'
+    ),
+    React.createElement(
+      'p',
+      { style: { margin: '6px 0 0', fontSize: '12px', color: '#64748b' } },
+      'Opens the site in a new tab where you can toggle styles & seasons live without saving.'
+    )
+  )
 
 const SEASONS = ['spring', 'summer', 'fall', 'winter']
 
@@ -326,6 +361,13 @@ export default defineConfig({
               'The overall look & feel. Independent of the season — the seasonal colors carry over into every style.',
             options: UI_STYLES,
             ui: { defaultValue: 'watercolor' },
+          },
+          {
+            type: 'string',
+            name: 'previewLink',
+            label: 'Preview',
+            // Data-less: the custom component renders a link and never saves.
+            ui: { component: PreviewLinkField },
           },
           { type: 'string', name: 'contactEmail', label: 'Contact Email' },
         ],
