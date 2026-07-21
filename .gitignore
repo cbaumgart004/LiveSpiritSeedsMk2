@@ -29,3 +29,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Generated Claude context (repomix index + git state)
+.claude/context/repo-map.md
+.claude/context/recent-changes.md
