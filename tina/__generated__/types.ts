@@ -190,6 +190,7 @@ export type Settings = Node & Document & {
   logo?: Maybe<Scalars['String']['output']>;
   theme?: Maybe<Scalars['String']['output']>;
   uiStyle?: Maybe<Scalars['String']['output']>;
+  previewLink?: Maybe<Scalars['String']['output']>;
   contactEmail?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
   _sys: SystemInfo;
@@ -216,6 +217,7 @@ export type SettingsFilter = {
   logo?: InputMaybe<ImageFilter>;
   theme?: InputMaybe<StringFilter>;
   uiStyle?: InputMaybe<StringFilter>;
+  previewLink?: InputMaybe<StringFilter>;
   contactEmail?: InputMaybe<StringFilter>;
 };
 
@@ -509,6 +511,7 @@ export type SettingsMutation = {
   logo?: InputMaybe<Scalars['String']['input']>;
   theme?: InputMaybe<Scalars['String']['input']>;
   uiStyle?: InputMaybe<Scalars['String']['input']>;
+  previewLink?: InputMaybe<Scalars['String']['input']>;
   contactEmail?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -586,7 +589,7 @@ export type PageMutation = {
   blocks?: InputMaybe<Array<InputMaybe<PageBlocksMutation>>>;
 };
 
-export type SettingsPartsFragment = { __typename: 'Settings', siteTitle?: string | null, tagline?: string | null, logo?: string | null, theme?: string | null, uiStyle?: string | null, contactEmail?: string | null };
+export type SettingsPartsFragment = { __typename: 'Settings', siteTitle?: string | null, tagline?: string | null, logo?: string | null, theme?: string | null, uiStyle?: string | null, previewLink?: string | null, contactEmail?: string | null };
 
 export type PagePartsFragment = { __typename: 'Page', title: string, navLabel?: string | null, order?: number | null, showInNav?: boolean | null, blocks?: Array<{ __typename: 'PageBlocksContentSection', layout?: string | null, title?: string | null, body?: any | null, image?: string | null, imageSide?: string | null, imageWidth?: number | null, images?: Array<string | null> | null, words?: Array<string | null> | null, spacing?: string | null, showHomeButton?: boolean | null, cards?: Array<{ __typename: 'PageBlocksContentSectionCards', title?: string | null, description?: string | null, buttonLabel?: string | null, buttonUrl?: string | null } | null> | null, buttons?: Array<{ __typename: 'PageBlocksContentSectionButtons', label?: string | null, url?: string | null, status?: string | null, service?: string | null } | null> | null } | { __typename: 'PageBlocksService', title?: string | null, description?: any | null, image?: string | null, imageSide?: string | null, imageWidth?: number | null, status?: string | null, spacing?: string | null, showHomeButton?: boolean | null, bookingOptions?: Array<{ __typename: 'PageBlocksServiceBookingOptions', label?: string | null, bookUrl?: string | null, note?: string | null, addOns?: Array<{ __typename: 'PageBlocksServiceBookingOptionsAddOns', service?: string | null, bookUrl?: string | null } | null> | null } | null> | null, buttons?: Array<{ __typename: 'PageBlocksServiceButtons', label?: string | null, url?: string | null, status?: string | null, service?: string | null } | null> | null } | null> | null };
 
@@ -595,7 +598,7 @@ export type SettingsQueryVariables = Exact<{
 }>;
 
 
-export type SettingsQuery = { __typename?: 'Query', settings: { __typename: 'Settings', id: string, siteTitle?: string | null, tagline?: string | null, logo?: string | null, theme?: string | null, uiStyle?: string | null, contactEmail?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
+export type SettingsQuery = { __typename?: 'Query', settings: { __typename: 'Settings', id: string, siteTitle?: string | null, tagline?: string | null, logo?: string | null, theme?: string | null, uiStyle?: string | null, previewLink?: string | null, contactEmail?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
 
 export type SettingsConnectionQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']['input']>;
@@ -607,7 +610,7 @@ export type SettingsConnectionQueryVariables = Exact<{
 }>;
 
 
-export type SettingsConnectionQuery = { __typename?: 'Query', settingsConnection: { __typename?: 'SettingsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'SettingsConnectionEdges', cursor: string, node?: { __typename: 'Settings', id: string, siteTitle?: string | null, tagline?: string | null, logo?: string | null, theme?: string | null, uiStyle?: string | null, contactEmail?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
+export type SettingsConnectionQuery = { __typename?: 'Query', settingsConnection: { __typename?: 'SettingsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'SettingsConnectionEdges', cursor: string, node?: { __typename: 'Settings', id: string, siteTitle?: string | null, tagline?: string | null, logo?: string | null, theme?: string | null, uiStyle?: string | null, previewLink?: string | null, contactEmail?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
 
 export type PageQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
@@ -636,6 +639,7 @@ export const SettingsPartsFragmentDoc = gql`
   logo
   theme
   uiStyle
+  previewLink
   contactEmail
 }
     `;

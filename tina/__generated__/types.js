@@ -13,6 +13,7 @@ export const SettingsPartsFragmentDoc = gql`
   logo
   theme
   uiStyle
+  previewLink
   contactEmail
 }
     `;

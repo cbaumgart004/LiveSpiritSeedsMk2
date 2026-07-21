@@ -5,6 +5,7 @@ fragment SettingsParts on Settings {
   logo
   theme
   uiStyle
+  previewLink
   contactEmail
 }
 
