@@ -1,0 +1,125 @@
+/* Preview toolbar. Deliberately a neutral dark "tool" chrome — NOT part of the
+   site's seasonal design — so it reads legibly over any style/season and never
+   gets mistaken for site content. Fixed to the bottom; wraps on mobile. */
+.bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  padding: 0.5rem;
+  pointer-events: none; /* let clicks through the gutter; the pill re-enables */
+}
+
+.inner {
+  pointer-events: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem 0.6rem;
+  max-width: 100%;
+  padding: 0.5rem 0.75rem;
+  background: rgba(28, 24, 20, 0.94);
+  color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  font-family: var(--font-body);
+  backdrop-filter: blur(6px);
+}
+
+.badge {
+  font-weight: 700;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: #ffb347;
+  color: #3a2a18;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+}
+
+.group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.groupLabel {
+  font-size: 0.68rem;
+  opacity: 0.65;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-right: 0.1rem;
+}
+
+.chip {
+  font-family: inherit;
+  font-size: 0.8rem;
+  line-height: 1;
+  padding: 0.45rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.chip:hover {
+  border-color: rgba(255, 255, 255, 0.6);
+}
+.chip:focus-visible {
+  outline: 2px solid #ffb347;
+  outline-offset: 2px;
+}
+.active {
+  background: #fff;
+  color: #1c1814;
+  border-color: #fff;
+  font-weight: 600;
+}
+
+.note {
+  font-size: 0.68rem;
+  opacity: 0.6;
+}
+
+.exit {
+  font-family: inherit;
+  font-size: 0.75rem;
+  padding: 0.45rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+}
+.exit:hover {
+  border-color: rgba(255, 255, 255, 0.6);
+}
+.exit:focus-visible {
+  outline: 2px solid #ffb347;
+  outline-offset: 2px;
+}
+
+/* Phones: tighten, drop the non-essential note, keep taps comfortable */
+@media (max-width: 600px) {
+  .bar {
+    padding: 0.4rem;
+  }
+  .inner {
+    gap: 0.35rem 0.45rem;
+    padding: 0.45rem 0.55rem;
+    border-radius: 10px;
+  }
+  .note {
+    display: none;
+  }
+  .groupLabel {
+    width: 100%;
+    margin-bottom: 0.1rem;
+  }
+}

@@ -95,6 +95,7 @@ type Settings implements Node & Document {
   tagline: String
   logo: String
   theme: String
+  uiStyle: String
   contactEmail: String
   id: ID!
   _sys: SystemInfo!
@@ -120,6 +121,7 @@ input SettingsFilter {
   tagline: StringFilter
   logo: ImageFilter
   theme: StringFilter
+  uiStyle: StringFilter
   contactEmail: StringFilter
 }
 
@@ -342,6 +344,7 @@ input SettingsMutation {
   tagline: String
   logo: String
   theme: String
+  uiStyle: String
   contactEmail: String
 }
 

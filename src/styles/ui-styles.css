@@ -1,0 +1,207 @@
+/* ============================================================== */
+/* 🎭 UX styles — a second <body> axis, orthogonal to the season.  */
+/* ============================================================== */
+/* Season classes (spring/summer/fall/winter) own the COLOR tokens */
+/* (--primary-color, --bg-color, --gradient, --section-bg-image…). */
+/* These classes own STRUCTURE + TYPE + MOTION: display font,       */
+/* borders, radius, shadows, layering, and scroll behaviour. Every  */
+/* rule reads color through the season tokens, so the palette       */
+/* persists across every look. Loaded after components.css so it    */
+/* overrides the primitives; selectors are `body.style-*` to beat   */
+/* :root / element base rules without touching the season classes.  */
+/* Owner-selectable in /admin (Settings → UI Style). See DESIGN.md  */
+/* §6. Body face is Merriweather Sans in every style.               */
+/*                                                                  */
+/* MOTION SAFETY: reveal animations set opacity:0 ONLY inside a     */
+/* `@supports (animation-timeline: view())` + reduced-motion guard, */
+/* so browsers without scroll-driven animations (and anyone who     */
+/* prefers reduced motion) always get the static, fully-visible     */
+/* layout. Reveals animate the `translate` property (not transform) */
+/* so they compose with `.card:hover`'s transform instead of        */
+/* clobbering it.                                                   */
+/* -------------------------------------------------------------- */
+
+/* Shared reveal keyframes (used by both new styles) */
+@keyframes ui-rise {
+  from {
+    opacity: 0;
+    translate: 0 30px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+@keyframes ui-rise-subtle {
+  from {
+    opacity: 0;
+    translate: 0 14px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+/* Depth parallax: the watercolor drifts against the scroll. Animates
+   background-position (not transform) so the even-section scaleX(-1)
+   mirror in layout.css stays intact. */
+@keyframes ui-bg-drift {
+  from {
+    background-position: center 32%;
+  }
+  to {
+    background-position: center 68%;
+  }
+}
+
+/* -------------------------------------------------------------- */
+/* 🎨 Watercolor — the original brand look.                        */
+/* Baseline = variables.css / themes.css; no overrides needed.     */
+/* `body.style-watercolor` intentionally matches nothing here so   */
+/* the site falls back to the untouched original (also the default */
+/* and the fallback for any missing/invalid value).                */
+/* -------------------------------------------------------------- */
+
+/* -------------------------------------------------------------- */
+/* 🧱 Layered — bold parallax, overlapping "petal" bands, sharp.   */
+/* Keeps the watercolor wash (with depth parallax); stacks the      */
+/* bands with a crisp defined shadow; content rises in on scroll.   */
+/* Display face: Bricolage Grotesque.                               */
+/* -------------------------------------------------------------- */
+body.style-layered {
+  --font-heading: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-subheading: 'Bricolage Grotesque', system-ui, sans-serif;
+  --radius-1: 8px;
+  --radius-2: 10px; /* a touch sharper than the 12px default */
+  --panel-border: 2px;
+  --shadow-1: 0 12px 30px rgba(40, 28, 14, 0.18); /* crisp, defined layering */
+  --shadow-2: 0 16px 38px rgba(40, 28, 14, 0.16);
+  --shadow-3: 0 24px 52px rgba(40, 28, 14, 0.24);
+  --outline-shadow: none; /* Bricolage carries itself — no script outline */
+}
+
+/* Bricolage is a display sans: tighten and weight the headings */
+body.style-layered h2 {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: clamp(2.4rem, 5vw, 4.25rem);
+  letter-spacing: -0.015em;
+  line-height: 1.02;
+}
+body.style-layered .panel h2,
+body.style-layered .panel h3,
+body.style-layered .card h2,
+body.style-layered .card h3,
+body.style-layered h3 {
+  font-weight: 700;
+  letter-spacing: -0.005em;
+}
+
+/* Overlapping, stacked bands. Each subsequent band slides up over the
+   previous one; the crisp shadow sells the depth. First section is
+   untouched (it clears the navbar). */
+body.style-layered .section + .section {
+  margin-top: calc(-1 * var(--space-3));
+}
+body.style-layered .section {
+  box-shadow: var(--shadow-1);
+}
+/* On phones the bands stack full-width; drop the overlap so nothing collides. */
+@media (max-width: 768px) {
+  body.style-layered .section + .section {
+    margin-top: var(--space-2);
+  }
+}
+
+/* Motion: content rises in, watercolor parallaxes. Scoped out of the
+   hero (.first-section) so nothing starts invisible above the fold. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    body.style-layered .section:not(.first-section) > h2,
+    body.style-layered .section:not(.first-section) .panel,
+    body.style-layered .section:not(.first-section) .card,
+    body.style-layered .section:not(.first-section) .media {
+      animation: ui-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 2% entry 42%;
+    }
+    body.style-layered .section::before {
+      animation: ui-bg-drift linear both;
+      animation-timeline: view();
+      animation-range: cover;
+    }
+  }
+}
+
+/* -------------------------------------------------------------- */
+/* 🪷 Refined — quiet, sharp edges, subtle reveal.                 */
+/* Flat crisp bands (no watercolor wash), hairline rules, tight     */
+/* radii; content fades up gently. Display face: Marcellus.         */
+/* -------------------------------------------------------------- */
+body.style-refined {
+  --font-heading: 'Marcellus', Georgia, serif;
+  --font-subheading: 'Marcellus', Georgia, serif;
+  --radius-1: 3px;
+  --radius-2: 4px; /* sharp corners */
+  --panel-border: 1px;
+  --shadow-1: 0 2px 6px rgba(40, 28, 14, 0.05);
+  --shadow-2: 0 10px 26px rgba(40, 28, 14, 0.07);
+  --shadow-3: 0 16px 36px rgba(40, 28, 14, 0.1);
+  --outline-shadow: none;
+}
+
+/* Elegant Marcellus headings */
+body.style-refined h2 {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: clamp(2.3rem, 4.6vw, 3.8rem);
+  letter-spacing: 0.01em;
+  line-height: 1.08;
+}
+body.style-refined .panel h2,
+body.style-refined .panel h3,
+body.style-refined .card h2,
+body.style-refined .card h3,
+body.style-refined h3 {
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+/* Flat, crisp bands — drop the painterly wash and heavy shadow, add a
+   hairline top rule for a sharp, quiet rhythm. */
+body.style-refined .section {
+  box-shadow: none;
+  background: var(--bg-color-light);
+  border-top: 1px solid color-mix(in srgb, var(--primary-color) 28%, transparent);
+  border-radius: 0;
+}
+body.style-refined .section::before {
+  display: none;
+}
+
+/* Whisper-thin panels — lean on the hairline + light, not thick borders */
+body.style-refined .panel,
+body.style-refined .card {
+  border-color: color-mix(in srgb, var(--primary-color) 35%, transparent);
+}
+
+/* Quiet, tracked buttons */
+body.style-refined .btn {
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  font-size: 0.8rem;
+}
+
+/* Motion: a gentle fade-up only, matching the calm tone. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    body.style-refined .section:not(.first-section) > h2,
+    body.style-refined .section:not(.first-section) .panel,
+    body.style-refined .section:not(.first-section) .card,
+    body.style-refined .section:not(.first-section) .media {
+      animation: ui-rise-subtle linear both;
+      animation-timeline: view();
+      animation-range: entry 2% entry 32%;
+    }
+  }
+}

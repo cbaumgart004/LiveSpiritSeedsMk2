@@ -1,7 +1,8 @@
 // Small data helpers over the generated TinaCMS client.
 import { client } from '../../tina/__generated__/client'
 
-const SEASONS = ['spring', 'summer', 'fall', 'winter']
+export const SEASONS = ['spring', 'summer', 'fall', 'winter']
+export const UI_STYLES = ['watercolor', 'layered', 'refined']
 
 // Load the single Site Settings document.
 export async function loadSettings() {
@@ -33,4 +34,13 @@ export function applyTheme(theme) {
   if (!SEASONS.includes(theme)) return
   document.body.classList.remove(...SEASONS)
   document.body.classList.add(theme)
+}
+
+// Apply the UI style (from Settings) to <body> as a `style-<x>` class. This is
+// the second, color-independent axis (see DESIGN.md §6). Invalid/missing values
+// are ignored so the build-time default applied in main.jsx stays in place.
+export function applyUiStyle(uiStyle) {
+  if (!UI_STYLES.includes(uiStyle)) return
+  document.body.classList.remove(...UI_STYLES.map((s) => `style-${s}`))
+  document.body.classList.add(`style-${uiStyle}`)
 }

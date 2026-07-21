@@ -1,6 +1,11 @@
 // tina/config.ts
 import { defineConfig } from "tinacms";
 var SEASONS = ["spring", "summer", "fall", "winter"];
+var UI_STYLES = [
+  { value: "watercolor", label: "Watercolor (original)" },
+  { value: "layered", label: "Layered (bold parallax)" },
+  { value: "refined", label: "Refined (sharp & quiet)" }
+];
 function serviceHeadings(allValues) {
   return (allValues?.blocks || []).filter((b) => (b?._template === "service" || b?._template === "serviceCard") && b?.title).map((b) => String(b.title).trim().toLowerCase());
 }
@@ -256,6 +261,14 @@ var config_default = defineConfig({
           { type: "string", name: "tagline", label: "Tagline" },
           { type: "image", name: "logo", label: "Logo" },
           { type: "string", name: "theme", label: "Seasonal Theme", options: SEASONS },
+          {
+            type: "string",
+            name: "uiStyle",
+            label: "UI Style",
+            description: "The overall look & feel. Independent of the season \u2014 the seasonal colors carry over into every style.",
+            options: UI_STYLES,
+            ui: { defaultValue: "watercolor" }
+          },
           { type: "string", name: "contactEmail", label: "Contact Email" }
         ]
       },
