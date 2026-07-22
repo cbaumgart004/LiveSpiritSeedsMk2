@@ -20,6 +20,7 @@
 // "lasting healing" artwork. Don't change it back.
 import artUrl from '../assets/tagline-art.webp'
 import flowerUrl from '../assets/tagline-flower.webp'
+import bowlsUrl from '../assets/tagline-bowls.webp'
 import taglineText from '../assets/tagline-text.svg?raw'
 
 export const TAGLINE_COPY =
@@ -33,6 +34,10 @@ export default function TaglineArt() {
           wrapper carries opacity<1 — the late decode did not always trigger a
           repaint, so the hero rendered as a bare photo with no artwork. */}
       <img className="tagline__wash" src={artUrl} alt="" decoding="sync" fetchPriority="high" />
+      {/* The singing-bowl photo is a separate layer rather than being baked into
+          the wash, so it can be placed independently — currently offset to the
+          lower right instead of sitting dead centre over the lettering. */}
+      <img className="tagline__bowls" src={bowlsUrl} alt="" decoding="sync" />
       <img className="tagline__flower" src={flowerUrl} alt="" decoding="sync" />
       <div className="tagline__ink" dangerouslySetInnerHTML={{ __html: taglineText }} />
       <p className="visually-hidden">{TAGLINE_COPY}</p>

@@ -165,10 +165,23 @@
 }
 
 .tagline__wash,
+.tagline__bowls,
 .tagline__flower,
 .tagline__ink {
   position: absolute;
   inset: 0;
+}
+
+/* The bowl photo, offset into the lower-right corner rather than centred over
+   the lettering. Kept out of the wash bitmap so this stays a CSS decision. */
+.tagline__bowls {
+  inset: auto 2% 3% auto;
+  width: 29%;
+  height: auto;
+  max-height: 44%;
+  object-fit: cover;
+  border-radius: var(--radius-2);
+  box-shadow: var(--shadow-2);
 }
 
 .tagline__wash {
@@ -208,15 +221,17 @@
    --tagline-blend, set per block by the Tina "Tagline Blend %" field. */
 
 .splash--over {
-  min-height: clamp(420px, 68vh, 780px);
+  min-height: clamp(460px, 80vh, 880px);
   place-items: center;
   padding-block: clamp(1.5rem, 4vw, 3.5rem);
 }
 
-/* Keep her head and hands in frame: bias the crop above centre rather than
-   letting `cover` cut the top off. */
+/* Show the whole photograph. `cover` cropped it — even biased upward it cut the
+   frame — so this mode uses `contain` and lets the seasonal band show at the
+   sides rather than losing any of the shot. */
 .splash--over .splash__media img {
-  object-position: center 30%;
+  object-fit: contain;
+  object-position: center;
 }
 
 /* Do NOT add an edge-feather mask here. Two attempts failed for different
@@ -226,10 +241,15 @@
    (blue top-right, peach brushstrokes at the edges), which is exactly what a
    centre-weighted mask fades away, leaving only the lettering. The painted
    washes already fall off at their own edges, which is the blend. */
+/* Sized in vh, not %, on purpose. The photo is shown uncropped (`contain`), so
+   its rendered width is driven by the BAND HEIGHT (width = height x its aspect),
+   not by the page width. A percentage-width overlay therefore overhangs the
+   photo on any short viewport and buries it. Tracking vh keeps the artwork
+   just inside the photograph at any window size. */
 .splash--over .splash__overlay {
   position: relative;
   z-index: 2;
-  width: min(100%, 1100px);
+  width: min(88vw, 84vh);
   opacity: var(--tagline-blend, 0.9);
 }
 
