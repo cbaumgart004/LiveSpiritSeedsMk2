@@ -434,7 +434,16 @@ const embed = {
 }
 
 export default defineConfig({
-  branch: process.env.TINA_BRANCH || 'main',
+  // Which git branch TinaCloud serves content from. Preview deploys build from
+  // a feature branch, so fall back to the branch Vercel is building
+  // (VERCEL_GIT_COMMIT_REF) before defaulting to main — otherwise a preview
+  // builds this branch's CODE against main's CONTENT, and every query fails on
+  // fields main's indexed schema doesn't have yet.
+  //
+  // NOTE: this only picks the branch. TinaCloud must also have INDEXED it —
+  // open the branch once in the TinaCloud dashboard, or the build errors with
+  // the branch unknown. See DESIGN.md §6 (Content / CMS).
+  branch: process.env.TINA_BRANCH || process.env.VERCEL_GIT_COMMIT_REF || 'main',
   // Local dev works without these; TinaCloud fills them in for production (Phase 4).
   clientId: process.env.TINA_CLIENT_ID || null,
   token: process.env.TINA_TOKEN || null,

@@ -112,6 +112,16 @@ maps each block type to a CSS primitive. `useTina` enables on-page editing at `/
 images are repo-based (in `public/uploads`, compressed by a push-time GitHub Action). Governed by
 [ADR 0002](./docs/adr/0002-tinacms-content-management.md).
 
+> **Deploys depend on TinaCloud, per branch.** `npm run build` is `tinacms build`, which regenerates
+> `tina/__generated__/client.ts` — the committed copy points at `http://localhost:4001/graphql` (the
+> local dev server) and is *always* overwritten at build time, so never treat it as the real endpoint.
+> The build needs `TINA_CLIENT_ID` + `TINA_TOKEN`, and serves content for the branch in
+> `tina/config.ts` (`TINA_BRANCH` → `VERCEL_GIT_COMMIT_REF` → `main`). **A preview deploy of a feature
+> branch therefore fails until that branch has been indexed in the TinaCloud dashboard** — the code is
+> the branch's but the content query goes to TinaCloud, and an unknown branch (or one whose indexed
+> schema predates a new field) errors. Note also that the SPA queries TinaCloud **at runtime**, so the
+> live site has a runtime dependency on it; there is no static content fallback yet.
+
 Block-renderer behaviors (`Blocks.jsx`): a `contentSection` dispatches on its `layout`; a `service`
 renders the bookable card; an `embed` renders a third-party widget (see **Live embeds** below).
 Image sides **auto-alternate** left/right by position (`imageSide:
