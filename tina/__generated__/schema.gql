@@ -163,7 +163,8 @@ type PageBlocksContentSection {
   eyebrow: String
   body: JSON
   image: String
-  withTagline: Boolean
+  taglinePlacement: String
+  taglineBlend: Float
   overlayAlign: String
   imageSide: String
   imageWidth: Float
@@ -274,7 +275,8 @@ input PageBlocksContentSectionFilter {
   eyebrow: StringFilter
   body: RichTextFilter
   image: ImageFilter
-  withTagline: BooleanFilter
+  taglinePlacement: StringFilter
+  taglineBlend: NumberFilter
   overlayAlign: StringFilter
   imageSide: StringFilter
   imageWidth: NumberFilter
@@ -411,7 +413,8 @@ input PageBlocksContentSectionMutation {
   eyebrow: String
   body: JSON
   image: String
-  withTagline: Boolean
+  taglinePlacement: String
+  taglineBlend: Float
   overlayAlign: String
   imageSide: String
   imageWidth: Float

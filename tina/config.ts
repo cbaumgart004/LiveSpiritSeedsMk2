@@ -253,11 +253,24 @@ const contentSection = {
       description: 'Image + Text layout, and the background photo for the Splash layout.',
     },
     {
-      type: 'boolean',
-      name: 'withTagline',
-      label: 'Show Tagline Artwork Beside the Photo',
+      type: 'string',
+      name: 'taglinePlacement',
+      label: 'Tagline Artwork',
       description:
-        'Splash layout only. Puts the "Your Integrative Healer / You are Resilient" artwork next to the photo as a two-up banner. The heading, eyebrow, body and buttons are not shown in this mode — the artwork carries the words.',
+        'Splash layout only. Where to put the "Your Integrative Healer / You are Resilient" artwork. In both Beside and Over, the artwork carries the words, so the heading, eyebrow and body are not shown — only the buttons.',
+      options: [
+        { value: 'none', label: 'Don’t show it' },
+        { value: 'beside', label: 'Beside the photo (two-up banner)' },
+        { value: 'over', label: 'Over the photo (blended)' },
+      ],
+      ui: { defaultValue: 'none' },
+    },
+    {
+      type: 'number',
+      name: 'taglineBlend',
+      label: 'Tagline Blend %',
+      description:
+        'Only used by "Over the photo". How strongly the artwork sits on the photo, 10–100. Lower lets more of the photo through. Defaults to 88.',
     },
     {
       type: 'string',

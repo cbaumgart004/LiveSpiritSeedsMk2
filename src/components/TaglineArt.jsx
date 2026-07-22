@@ -28,8 +28,12 @@ export const TAGLINE_COPY =
 export default function TaglineArt() {
   return (
     <div className="tagline">
-      <img className="tagline__wash" src={artUrl} alt="" decoding="async" />
-      <img className="tagline__flower" src={flowerUrl} alt="" decoding="async" />
+      {/* decoding="sync" is deliberate. With the default async decode these can
+          land after first paint, and inside the `over` layout — where the
+          wrapper carries opacity<1 — the late decode did not always trigger a
+          repaint, so the hero rendered as a bare photo with no artwork. */}
+      <img className="tagline__wash" src={artUrl} alt="" decoding="sync" fetchPriority="high" />
+      <img className="tagline__flower" src={flowerUrl} alt="" decoding="sync" />
       <div className="tagline__ink" dangerouslySetInnerHTML={{ __html: taglineText }} />
       <p className="visually-hidden">{TAGLINE_COPY}</p>
     </div>

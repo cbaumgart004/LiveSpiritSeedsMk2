@@ -8,7 +8,8 @@
       "layout": "splash",
       "title": "You are Resilient",
       "image": "/uploads/warrior-borderless.jpg",
-      "withTagline": true,
+      "taglinePlacement": "over",
+      "taglineBlend": 90,
       "buttons": [
         {
           "label": "Book a Session",

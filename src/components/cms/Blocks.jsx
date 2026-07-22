@@ -140,14 +140,35 @@ const OVERLAY_ALIGN = {
 
 function SplashSection({ block, isFirst, services }) {
   const align = OVERLAY_ALIGN[block.overlayAlign] ?? ''
-  // Pair mode: the tagline artwork sits beside the photo as a two-up
-  // composition, rather than the photo being a full-bleed backdrop with the
-  // type over it. The brushstroke bands span both columns so the pair reads as
-  // one picture — see `.splash__blend` in layout.css.
-  const pair = block.withTagline === true
-  const cls = `${sectionClass('section section--splash', null, isFirst, block)}${
-    pair ? ' splash--pair' : align
-  }`
+  // Three ways to show the tagline artwork (Tina "Tagline Artwork"):
+  //   none   – ordinary splash: photo behind, the block's own type over it.
+  //   beside – two-up banner, artwork next to the photo. The brushstroke bands
+  //            span both columns so the pair reads as one picture.
+  //   over   – the artwork composited onto a full-bleed photo, multiplied so
+  //            the washes tint the photograph instead of covering it.
+  // `withTagline` is the original boolean, kept so existing content still works.
+  const placement = block.taglinePlacement || (block.withTagline ? 'beside' : 'none')
+  const base = sectionClass('section section--splash', null, isFirst, block)
+
+  if (placement === 'over') {
+    const blend = Math.min(100, Math.max(10, block.taglineBlend || 88)) / 100
+    return (
+      <section className={`${base} splash--over`} style={{ '--tagline-blend': blend }}>
+        {block.image && (
+          <div className="splash__media" data-tina-field={tinaField(block, 'image')}>
+            <img src={block.image} alt={block.title || ''} />
+          </div>
+        )}
+        <div className="splash__overlay">
+          <TaglineArt />
+        </div>
+        <Buttons block={block} services={services} />
+      </section>
+    )
+  }
+
+  const pair = placement === 'beside'
+  const cls = `${base}${pair ? ' splash--pair' : align}`
 
   if (pair) {
     return (

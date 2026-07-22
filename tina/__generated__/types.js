@@ -34,7 +34,8 @@ export const PagePartsFragmentDoc = gql`
       eyebrow
       body
       image
-      withTagline
+      taglinePlacement
+      taglineBlend
       overlayAlign
       imageSide
       imageWidth
