@@ -261,6 +261,7 @@ const contentSection = {
       list: true,
       ui: { itemProps: (item: { title?: string }) => ({ label: item?.title || 'Card' }) },
       fields: [
+        { type: 'image', name: 'image', label: 'Thumbnail (optional)' },
         { type: 'string', name: 'title', label: 'Card Title' },
         { type: 'string', name: 'description', label: 'Card Text' },
         { type: 'string', name: 'buttonLabel', label: 'Button Text' },
@@ -319,6 +320,74 @@ const service = {
     },
     spacingField,
     buttonsField,
+    homeButtonField,
+  ],
+}
+
+// A generic embed block — the "consolidate every source" primitive. Any external
+// tool (OfferingTree schedule/offering, Canva design, Kit/ConvertKit form) hands
+// you a copy-paste snippet; drop it in one of these and it renders live, so the
+// owner edits the source once instead of hand-updating links on the site. Two
+// modes: an iframe URL (simplest — Canva "smart embed" link, OfferingTree/Kit
+// share URL) or raw embed code whose <script> tags are re-executed at render
+// (needed for Kit forms; see the EmbedBlock renderer in Blocks.jsx).
+const embed = {
+  name: 'embed',
+  label: 'Embed (OfferingTree / Canva / Kit)',
+  ui: {
+    itemProps: (item: { title?: string; source?: string }) => ({
+      label: item?.title || (item?.source ? `Embed – ${item.source}` : 'Embed'),
+    }),
+    defaultItem: { source: 'offeringtree', mode: 'url', height: 640, showHomeButton: true },
+  },
+  fields: [
+    { type: 'string', name: 'title', label: 'Heading (optional)' },
+    {
+      type: 'string',
+      name: 'source',
+      label: 'Source',
+      description: 'Which tool this embed comes from (just a label for your reference).',
+      options: [
+        { value: 'offeringtree', label: 'OfferingTree (schedule / offering)' },
+        { value: 'canva', label: 'Canva (design / poster)' },
+        { value: 'kit', label: 'Kit / ConvertKit (signup form)' },
+        { value: 'other', label: 'Other' },
+      ],
+      ui: { defaultValue: 'offeringtree' },
+    },
+    {
+      type: 'string',
+      name: 'mode',
+      label: 'Embed Type',
+      description:
+        'URL = paste the iframe/share link (simplest; best for Canva & OfferingTree). Code = paste the full snippet (needed for Kit forms that use a <script>).',
+      options: [
+        { value: 'url', label: 'URL (iframe link)' },
+        { value: 'code', label: 'Embed code (HTML / script)' },
+      ],
+      ui: { defaultValue: 'url' },
+    },
+    {
+      type: 'string',
+      name: 'url',
+      label: 'Embed URL',
+      description: 'URL mode. e.g. a Canva “smart embed” link or an OfferingTree schedule/offering URL.',
+    },
+    {
+      type: 'string',
+      name: 'code',
+      label: 'Embed Code',
+      description: 'Code mode. Paste the exact snippet the tool gives you — its <script> tags will run.',
+      ui: { component: 'textarea' },
+    },
+    {
+      type: 'number',
+      name: 'height',
+      label: 'Height (px)',
+      description: 'Height of the embed frame in URL mode. Blank = 640.',
+    },
+    { type: 'string', name: 'caption', label: 'Caption (optional)' },
+    spacingField,
     homeButtonField,
   ],
 }
@@ -404,7 +473,7 @@ export default defineConfig({
             name: 'blocks',
             label: 'Blocks',
             list: true,
-            templates: [contentSection, service],
+            templates: [contentSection, service, embed],
           },
         ],
       },

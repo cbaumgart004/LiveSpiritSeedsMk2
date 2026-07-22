@@ -36,6 +36,7 @@ export const PagePartsFragmentDoc = gql`
       images
       cards {
         __typename
+        image
         title
         description
         buttonLabel
@@ -78,6 +79,17 @@ export const PagePartsFragmentDoc = gql`
         status
         service
       }
+      showHomeButton
+    }
+    ... on PageBlocksEmbed {
+      title
+      source
+      mode
+      url
+      code
+      height
+      caption
+      spacing
       showHomeButton
     }
   }

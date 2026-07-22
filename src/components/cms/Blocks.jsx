@@ -5,6 +5,7 @@
 // region as click-to-edit inside /admin; for it to resolve, blocks must arrive
 // via useTina (see DynamicPage) — the hook stamps the editing metadata onto each
 // block object.
+import { useEffect, useRef } from 'react'
 import { tinaField } from 'tinacms/dist/react'
 import { TinaMarkdown } from 'tinacms/dist/rich-text'
 import ValuesSection from '../ValuesSection/ValuesSection'
@@ -238,6 +239,16 @@ function CardGrid({ block, isFirst, services }) {
       <div className="grid" data-tina-field={tinaField(block, 'cards')}>
         {cards.map((card, i) => (
           <div className="card" key={i}>
+            {card.image &&
+              (card.buttonUrl ? (
+                <a className="card-thumb" href={card.buttonUrl}>
+                  <img src={card.image} alt={card.title || ''} loading="lazy" />
+                </a>
+              ) : (
+                <div className="card-thumb">
+                  <img src={card.image} alt={card.title || ''} loading="lazy" />
+                </div>
+              ))}
             {card.title && <h3>{card.title}</h3>}
             {card.description && <p>{card.description}</p>}
             {card.buttonLabel && (
@@ -275,6 +286,71 @@ function EventSection({ block, isFirst, services }) {
         <Buttons block={block} services={services} />
         <HomeButton block={block} />
       </div>
+    </section>
+  )
+}
+
+// Renders a pasted embed snippet. A <script> inserted via innerHTML does NOT
+// run (HTML spec), so we clone each one into a fresh <script> the browser will
+// execute — this is what makes Kit/ConvertKit (and any script-based) embeds
+// actually load. Non-script HTML/iframes in the snippet render as-is.
+function RawEmbed({ html }) {
+  const ref = useRef(null)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    el.innerHTML = html || ''
+    el.querySelectorAll('script').forEach((old) => {
+      const s = document.createElement('script')
+      for (const attr of old.attributes) s.setAttribute(attr.name, attr.value)
+      s.textContent = old.textContent
+      old.replaceWith(s)
+    })
+    return () => {
+      el.innerHTML = ''
+    }
+  }, [html])
+  return <div className="embed-raw" ref={ref} />
+}
+
+// The consolidation block: one place to drop any external tool's copy-paste
+// widget (OfferingTree schedule, Canva design, Kit form) so the site stays live
+// off that source instead of hand-maintained links. URL mode → a themed iframe;
+// Code mode → RawEmbed (runs the snippet's scripts). Empty → an /admin hint.
+function EmbedBlock({ block, isFirst }) {
+  const useCode = block.mode === 'code'
+  const hasUrl = !useCode && block.url
+  const hasCode = useCode && block.code
+  return (
+    <section className={sectionClass('section section--stack', null, isFirst, block)}>
+      {block.title && <h2 data-tina-field={tinaField(block, 'title')}>{block.title}</h2>}
+      <div className="embed" data-tina-field={tinaField(block, useCode ? 'code' : 'url')}>
+        {hasUrl && (
+          <iframe
+            className="embed-frame"
+            src={block.url}
+            height={block.height || 640}
+            title={block.title || block.source || 'Embedded content'}
+            loading="lazy"
+            allow="payment"
+          />
+        )}
+        {hasCode && <RawEmbed html={block.code} />}
+        {!hasUrl && !hasCode && (
+          <div className="panel embed-placeholder">
+            <p>
+              Add your embed here in <strong>/admin</strong> — paste an OfferingTree schedule,
+              a Canva design, or a Kit signup snippet.
+            </p>
+          </div>
+        )}
+      </div>
+      {block.caption && (
+        <p className="embed-caption" data-tina-field={tinaField(block, 'caption')}>
+          {block.caption}
+        </p>
+      )}
+      <HomeButton block={block} />
     </section>
   )
 }
@@ -338,6 +414,8 @@ export default function Blocks({ blocks }) {
             return (
               <ServiceBlock key={i} block={block} isFirst={isFirst} side={side} services={services} />
             )
+          case 'PageBlocksEmbed':
+            return <EmbedBlock key={i} block={block} isFirst={isFirst} />
           default:
             return null
         }

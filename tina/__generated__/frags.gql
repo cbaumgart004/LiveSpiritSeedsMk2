@@ -27,6 +27,7 @@ fragment PageParts on Page {
       images
       cards {
         __typename
+        image
         title
         description
         buttonLabel
@@ -69,6 +70,17 @@ fragment PageParts on Page {
         status
         service
       }
+      showHomeButton
+    }
+    ... on PageBlocksEmbed {
+      title
+      source
+      mode
+      url
+      code
+      height
+      caption
+      spacing
       showHomeButton
     }
   }

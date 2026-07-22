@@ -79,12 +79,15 @@ Content is **data**, managed via TinaCMS (git-backed) — see [ADR 0002]. Two co
   `uiStyle` (`watercolor`/`layered`/`refined` — see §6 UX styles), `siteTitle`, `tagline`,
   `logo`, `contactEmail`.
 - **Page** (`content/pages/*.json`) — `title`, `navLabel`, `order`, `showInNav`, and an ordered
-  `blocks[]`. The palette is **two** block types:
+  `blocks[]`. The palette is **three** block types:
   - **`contentSection`** — a general section with a `layout` picker choosing the look:
     `imageText` (image beside text), `centered` (centered text), `cardGrid` (heading + grid of
     mini-cards, e.g. home "Our Services"), `values` (values list), `event` (announcement + images).
   - **`service`** — a bookable offering: `status` (`available`/`coming-soon`), `bookingOptions[]`
     (each with `addOns[]`), plus the shared fields below.
+  - **`embed`** — a generic third-party widget: `source` (offeringtree/canva/kit/other, a label),
+    `mode` (`url` iframe link **or** `code` raw snippet), `url`/`code`, `height`, `caption`. The
+    consolidation point for OfferingTree schedules, Canva designs, and Kit forms — see §6.
 
   Both types share: `imageSide`, `imageWidth` (% of the row, 20–70), `spacing`
   (`compact`/`normal`/`airy`), a unified `buttons[]` list, and `showHomeButton`. Each renders
@@ -104,7 +107,8 @@ images are repo-based (in `public/uploads`, compressed by a push-time GitHub Act
 [ADR 0002](./docs/adr/0002-tinacms-content-management.md).
 
 Block-renderer behaviors (`Blocks.jsx`): a `contentSection` dispatches on its `layout`; a `service`
-renders the bookable card. Image sides **auto-alternate** left/right by position (`imageSide:
+renders the bookable card; an `embed` renders a third-party widget (see **Live embeds** below).
+Image sides **auto-alternate** left/right by position (`imageSide:
 'auto'`, recomputed on drag-reorder; `left`/`right` pin a side) for the image-bearing looks
 (`imageText` + `service`); **image width** is a percent (`imageWidth`, 20–70) applied via the
 `--media-basis` CSS custom property so mobile can still force full-width; **vertical spacing**
@@ -121,6 +125,17 @@ session gets its own "Book w/ &lt;add-on&gt;" button derived from the referenced
 (owner-editable in `/admin`; no code flag). Every block has a `showHomeButton` toggle (default on).
 New pages/blocks start from `ui.defaultItem` presets rather than a blank form. Reusable setup +
 gotchas, including the block-model design patterns: [TinaCMS Vite playbook](./docs/tinacms-vite-playbook.md) (§8).
+
+**Live embeds (source consolidation).** The `embed` block (`EmbedBlock` in `Blocks.jsx`) is the one
+place to drop any external tool's copy-paste widget so the site stays live off that source instead of
+hand-maintained links — OfferingTree schedules/offerings, Canva designs, Kit/ConvertKit forms all
+hand you a snippet. Two modes: **`url`** renders a themed `<iframe>` (radius/shadow tokens, so it
+reads as part of the site under every UI style) — simplest, best for Canva "smart embed" links and
+OfferingTree share URLs; **`code`** renders `RawEmbed`, which sets the snippet as innerHTML **and
+re-executes its `<script>` tags** (a script inserted via innerHTML does not run per spec — this is
+required for Kit's JS form embeds). Empty blocks show an `/admin` hint instead of breaking. The
+"Practice With Me" page (`content/pages/practice-with-me.json`) is built from these. OfferingTree has
+no public REST API; embed widgets, Zapier, and Google-Calendar sync are the integration surfaces.
 
 **Seasonal theming.** The season lives in the **Settings** doc. To avoid a theme flash, `main.jsx`
 imports `content/settings/index.json` at build time and applies its `theme` as a `<body>` class

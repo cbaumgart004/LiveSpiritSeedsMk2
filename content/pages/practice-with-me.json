@@ -1,0 +1,67 @@
+{
+  "title": "Practice With Me",
+  "navLabel": "Practice With Me",
+  "order": 5,
+  "showInNav": true,
+  "blocks": [
+    {
+      "layout": "centered",
+      "title": "Practice With Me",
+      "body": "Book a live class or session below. The schedule updates automatically from OfferingTree — no need to keep links in sync by hand.\n",
+      "spacing": "normal",
+      "showHomeButton": false,
+      "_template": "contentSection"
+    },
+    {
+      "title": "Class Schedule",
+      "source": "offeringtree",
+      "mode": "url",
+      "url": "",
+      "height": 720,
+      "caption": "Live from OfferingTree — register and pay right here.",
+      "spacing": "normal",
+      "showHomeButton": false,
+      "_template": "embed"
+    },
+    {
+      "layout": "cardGrid",
+      "title": "Explore & Connect",
+      "cards": [
+        {
+          "image": "/uploads/link-soultree.png",
+          "title": "SoulTree Yoga — Class Schedule",
+          "description": "See the full class schedule at SoulTree in Lafayette, where I teach.",
+          "buttonLabel": "View Schedule",
+          "buttonUrl": "https://soultreecolorado.com/classes/yogaschedules/"
+        },
+        {
+          "image": "/uploads/726-Kaiut-Extended-Session-Sound-Healing-3.pdf.png",
+          "title": "Sound Bath & Kaiut Class at CURA",
+          "description": "Extended Kaiut session with sound healing — see dates and register at CURA.",
+          "buttonLabel": "See Schedule",
+          "buttonUrl": "https://curayogacenter.com/schedule/"
+        },
+        {
+          "image": "/uploads/link-mesa.png",
+          "title": "Moving to End Sexual Assault (MESA)",
+          "description": "A community partner supporting survivors of sexual assault in Boulder County.",
+          "buttonLabel": "Visit MESA",
+          "buttonUrl": "https://movingtoendsexualassault.org"
+        }
+      ],
+      "spacing": "normal",
+      "showHomeButton": false,
+      "_template": "contentSection"
+    },
+    {
+      "title": "Stay in the Loop",
+      "source": "kit",
+      "mode": "code",
+      "code": "",
+      "caption": "Newsletter signup, embedded from Kit.",
+      "spacing": "normal",
+      "showHomeButton": true,
+      "_template": "embed"
+    }
+  ]
+}
