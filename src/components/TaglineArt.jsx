@@ -15,6 +15,9 @@
 //
 // The lettering is outlines, so it carries no machine-readable text: the
 // visually-hidden paragraph below is the accessible copy. Keep the two in sync.
+//
+// NB: "lasting health" is deliberate — the owner corrected it from the earlier
+// "lasting healing" artwork. Don't change it back.
 import artUrl from '../assets/tagline-art.webp'
 import flowerUrl from '../assets/tagline-flower.webp'
 import taglineText from '../assets/tagline-text.svg?raw'
