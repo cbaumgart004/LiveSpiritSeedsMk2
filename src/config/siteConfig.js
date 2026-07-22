@@ -8,7 +8,7 @@ export const SITE_THEME = 'spring'
 // 🎭 GLOBAL UI STYLE (fallback only)
 // The overall look & feel, independent of the season. Live value comes from the
 // CMS Settings doc (`uiStyle`); this is applied by main.jsx only if that value
-// is missing/invalid. Accepts: "watercolor","serene","botanical".
+// is missing/invalid. Accepts: "watercolor","editorial","sanctuary","immersive".
 export const SITE_UI_STYLE = 'watercolor'
 
 // Note: service + add-on availability (e.g. Thai Herbal Compress) is now

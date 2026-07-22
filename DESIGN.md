@@ -133,15 +133,21 @@ themes in `src/styles/themes.css` key off that class.
 **color** tokens; the UX style owns **structure + type + scroll motion** (display font, borders,
 radius, shadows, layering, and scroll behaviour) via `src/styles/ui-styles.css` (`body.style-<x>`),
 so switching the look never changes the palette — every style consumes the current season's colors.
-Body text is **Merriweather Sans** in every style. Three looks:
+Body text is **Merriweather Sans** in every style. The three alternates are grounded in real
+yoga/wellness sites (a Firecrawl review of Lila Lolling, Wild Owl Yoga, Seven Senses). Four looks:
 - `watercolor` — the **original** (Euphoria Script + Farsan display, painterly bands, thick
   borders). The untouched baseline, so it has *no* overrides here; also the default and the
   fallback for any missing/invalid value.
-- `layered` — bold parallax: **Bricolage Grotesque** display, overlapping "petal" bands with a
-  crisp defined shadow, the watercolor kept but drifting on scroll (depth), content rising in as it
-  enters view. Sharp.
-- `refined` — quiet & sharp: **Marcellus** display, flat crisp bands (no wash), hairline rules,
-  tight radii, a gentle fade-up reveal.
+- `editorial` — light editorial minimalism (ref: Lila Lolling): **Fraunces** display, flat crisp
+  bands (no wash), hairline rules, small radii, a centered `❖` glyph divider under stacked
+  headings, a flattened transparent navbar, and a gentle fade-up reveal.
+- `sanctuary` — whimsical & soft (ref: Wild Owl Yoga): **Playfair Display** display + a **Caveat**
+  hand-lettered script accent (with a drawn SVG underline swash), big arch/petal-rounded media
+  tiles, floating `✦` sparkle glyphs, the watercolor wash kept but drifting; content rises in.
+- `immersive` — cinematic full-bleed (ref: Seven Senses): **Cormorant Garamond** display, seamless
+  edge-to-edge bands, a soft neutral vignette for depth, ghost/outline buttons, a transparent
+  hairline navbar, and strong wide parallax the content rises over. **Season colors are untouched
+  — the dark cinematic drama comes from real full-bleed photography (see media note below).**
 
 Owner-selectable in `/admin` (Settings → **UI Style**). Applied like the season: `main.jsx` bakes
 `style-<uiStyle>` onto `<body>` from the build-time Settings import (no flash); `App.jsx` re-applies
@@ -150,11 +156,21 @@ in `index.css`. **Motion safety:** reveal/parallax live inside a
 `@supports (animation-timeline: view())` + `prefers-reduced-motion: no-preference` guard and animate
 the `translate` property (so they compose with `.card:hover`), meaning browsers without CSS
 scroll-driven animations — and anyone preferring reduced motion — get the static, fully-visible
-layout with no invisible content.
+layout with no invisible content. The navbar's classes are CSS-module-scoped, so per-style navbar
+rules reach the top bar via the real `nav:has(h1)` element (only the top bar holds the `<h1>` title).
+
+**Media notes (alternate styles).** All three alternates ship CSS-only (no new binary assets), reusing
+the season washes/backgrounds and drawing decorative marks in CSS/inline-SVG. To reach parity with
+their reference sites they'd benefit from real media, currently **placeholdered**: `immersive` wants
+full-bleed **photography per season** (uses the season wash + a neutral vignette as a stand-in — this is
+the biggest gap); `sanctuary`'s gold doodles are CSS `✦` glyphs and its script underline is an inline
+SVG swash (a hand-drawn sparkle/underline set would elevate it), and a paper-grain texture overlay is
+optional; `editorial` uses the season's light background flat (a full-bleed hero photo would need a
+hero/media DOM change, not just CSS). None of these block shipping — they're upgrades.
 
 **Preview mode.** A non-destructive way to try a UX style + season on the live content *before*
 publishing — the owner's "preview before going live" for styles (content edits are already previewed
-on-page in `/admin` via `useTina`). Opened by URL (`?preview`, or `?style=refined&season=winter`),
+on-page in `/admin` via `useTina`). Opened by URL (`?preview`, or `?style=immersive&season=winter`),
 so ordinary visitors never see it. `utils/preview.js` seeds the choice from those params, holds it in
 `sessionStorage` (survives navigation between pages), and **never writes to the CMS**; `App.jsx`
 applies any override *after* the saved defaults so it wins, and renders `components/PreviewBar.jsx` —

@@ -7,7 +7,12 @@ import { savePreview, clearPreview } from '../utils/preview'
 // A tap-friendly toolbar for previewing a UI style + season on the live content
 // without saving to the CMS. Rendered only when Preview mode is active (see
 // utils/preview.js) so ordinary visitors never see it.
-const STYLE_LABELS = { watercolor: 'Original', layered: 'Layered', refined: 'Refined' }
+const STYLE_LABELS = {
+  watercolor: 'Original',
+  editorial: 'Editorial',
+  sanctuary: 'Sanctuary',
+  immersive: 'Immersive',
+}
 const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1)
 
 export default function PreviewBar({ initialStyle, initialSeason, onExit }) {

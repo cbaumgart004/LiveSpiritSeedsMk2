@@ -19,9 +19,14 @@
 /* layout. Reveals animate the `translate` property (not transform) */
 /* so they compose with `.card:hover`'s transform instead of        */
 /* clobbering it.                                                   */
+/*                                                                  */
+/* NAVBAR NOTE: the navbar's classes are CSS-module-scoped, so these */
+/* rules reach the top bar via the real `nav:has(h1)` element (only  */
+/* the top bar holds the <h1> title; the menu overlay holds a <ul>). */
+/* Font/size/border already follow the token overrides below.       */
 /* -------------------------------------------------------------- */
 
-/* Shared reveal keyframes (used by both new styles) */
+/* Shared reveal keyframes (used by all styles) */
 @keyframes ui-rise {
   from {
     opacity: 0;
@@ -53,6 +58,26 @@
     background-position: center 68%;
   }
 }
+/* A slow, wider drift for the immersive full-bleed scenes. */
+@keyframes ui-bg-drift-wide {
+  from {
+    background-position: center 20%;
+  }
+  to {
+    background-position: center 80%;
+  }
+}
+/* Sanctuary: decorative sparkles breathe in and out on scroll. */
+@keyframes ui-sparkle-float {
+  from {
+    opacity: 0.25;
+    translate: 0 10px;
+  }
+  to {
+    opacity: 0.9;
+    translate: 0 -10px;
+  }
+}
 
 /* -------------------------------------------------------------- */
 /* 🎨 Watercolor — the original brand look.                        */
@@ -63,145 +88,331 @@
 /* -------------------------------------------------------------- */
 
 /* -------------------------------------------------------------- */
-/* 🧱 Layered — bold parallax, overlapping "petal" bands, sharp.   */
-/* Keeps the watercolor wash (with depth parallax); stacks the      */
-/* bands with a crisp defined shadow; content rises in on scroll.   */
-/* Display face: Bricolage Grotesque.                               */
+/* 📖 Editorial — light editorial minimalism (ref: Lila Lolling).  */
+/* High-contrast serif, hairline rules, small radii, generous      */
+/* whitespace, a centered glyph divider under each heading, and a   */
+/* flattened transparent navbar. Quiet, magazine-calm; gentle       */
+/* fade-up on scroll. Display face: Fraunces.                       */
 /* -------------------------------------------------------------- */
-body.style-layered {
-  --font-heading: 'Bricolage Grotesque', system-ui, sans-serif;
-  --font-subheading: 'Bricolage Grotesque', system-ui, sans-serif;
-  --radius-1: 8px;
-  --radius-2: 10px; /* a touch sharper than the 12px default */
-  --panel-border: 2px;
-  --shadow-1: 0 12px 30px rgba(40, 28, 14, 0.18); /* crisp, defined layering */
-  --shadow-2: 0 16px 38px rgba(40, 28, 14, 0.16);
-  --shadow-3: 0 24px 52px rgba(40, 28, 14, 0.24);
-  --outline-shadow: none; /* Bricolage carries itself — no script outline */
-}
-
-/* Bricolage is a display sans: tighten and weight the headings */
-body.style-layered h2 {
-  font-family: var(--font-heading);
-  font-weight: 800;
-  font-size: clamp(2.4rem, 5vw, 4.25rem);
-  letter-spacing: -0.015em;
-  line-height: 1.02;
-}
-body.style-layered .panel h2,
-body.style-layered .panel h3,
-body.style-layered .card h2,
-body.style-layered .card h3,
-body.style-layered h3 {
-  font-weight: 700;
-  letter-spacing: -0.005em;
-}
-
-/* Overlapping, stacked bands. Each subsequent band slides up over the
-   previous one; the crisp shadow sells the depth. First section is
-   untouched (it clears the navbar). */
-body.style-layered .section + .section {
-  margin-top: calc(-1 * var(--space-3));
-}
-body.style-layered .section {
-  box-shadow: var(--shadow-1);
-}
-/* On phones the bands stack full-width; drop the overlap so nothing collides. */
-@media (max-width: 768px) {
-  body.style-layered .section + .section {
-    margin-top: var(--space-2);
-  }
-}
-
-/* Motion: content rises in, watercolor parallaxes. Scoped out of the
-   hero (.first-section) so nothing starts invisible above the fold. */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    body.style-layered .section:not(.first-section) > h2,
-    body.style-layered .section:not(.first-section) .panel,
-    body.style-layered .section:not(.first-section) .card,
-    body.style-layered .section:not(.first-section) .media {
-      animation: ui-rise linear both;
-      animation-timeline: view();
-      animation-range: entry 2% entry 42%;
-    }
-    body.style-layered .section::before {
-      animation: ui-bg-drift linear both;
-      animation-timeline: view();
-      animation-range: cover;
-    }
-  }
-}
-
-/* -------------------------------------------------------------- */
-/* 🪷 Refined — quiet, sharp edges, subtle reveal.                 */
-/* Flat crisp bands (no watercolor wash), hairline rules, tight     */
-/* radii; content fades up gently. Display face: Marcellus.         */
-/* -------------------------------------------------------------- */
-body.style-refined {
-  --font-heading: 'Marcellus', Georgia, serif;
-  --font-subheading: 'Marcellus', Georgia, serif;
-  --radius-1: 3px;
-  --radius-2: 4px; /* sharp corners */
+body.style-editorial {
+  --font-heading: 'Fraunces', Georgia, serif;
+  --font-subheading: 'Fraunces', Georgia, serif;
+  --radius-1: 2px;
+  --radius-2: 4px; /* crisp editorial corners */
   --panel-border: 1px;
-  --shadow-1: 0 2px 6px rgba(40, 28, 14, 0.05);
-  --shadow-2: 0 10px 26px rgba(40, 28, 14, 0.07);
-  --shadow-3: 0 16px 36px rgba(40, 28, 14, 0.1);
-  --outline-shadow: none;
+  --shadow-1: 0 1px 4px rgba(40, 28, 14, 0.04);
+  --shadow-2: 0 8px 22px rgba(40, 28, 14, 0.06);
+  --shadow-3: 0 14px 34px rgba(40, 28, 14, 0.09);
+  --outline-shadow: none; /* Fraunces needs no script outline */
 }
 
-/* Elegant Marcellus headings */
-body.style-refined h2 {
+/* Large, high-contrast serif headings */
+body.style-editorial h2 {
   font-family: var(--font-heading);
-  font-weight: 400;
-  font-size: clamp(2.3rem, 4.6vw, 3.8rem);
-  letter-spacing: 0.01em;
-  line-height: 1.08;
+  font-weight: 500;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  letter-spacing: -0.005em;
+  line-height: 1.05;
 }
-body.style-refined .panel h2,
-body.style-refined .panel h3,
-body.style-refined .card h2,
-body.style-refined .card h3,
-body.style-refined h3 {
-  font-weight: 400;
-  letter-spacing: 0.01em;
+body.style-editorial .panel h2,
+body.style-editorial .panel h3,
+body.style-editorial .card h2,
+body.style-editorial .card h3,
+body.style-editorial h3 {
+  font-family: var(--font-heading);
+  font-weight: 500;
+  letter-spacing: 0;
 }
 
-/* Flat, crisp bands — drop the painterly wash and heavy shadow, add a
-   hairline top rule for a sharp, quiet rhythm. */
-body.style-refined .section {
+/* Flat, quiet bands: drop the painterly wash + heavy shadow, add a
+   hairline top rule for a sharp editorial rhythm. First band keeps its
+   clearance for the navbar. */
+body.style-editorial .section {
   box-shadow: none;
   background: var(--bg-color-light);
-  border-top: 1px solid color-mix(in srgb, var(--primary-color) 28%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--primary-color) 22%, transparent);
   border-radius: 0;
 }
-body.style-refined .section::before {
+body.style-editorial .section::before {
   display: none;
 }
-
-/* Whisper-thin panels — lean on the hairline + light, not thick borders */
-body.style-refined .panel,
-body.style-refined .card {
-  border-color: color-mix(in srgb, var(--primary-color) 35%, transparent);
+body.style-editorial .first-section {
+  border-top: 0;
 }
 
-/* Quiet, tracked buttons */
-body.style-refined .btn {
-  text-transform: uppercase;
-  letter-spacing: 0.09em;
+/* A centered decorative glyph divider above every stacked heading —
+   the "❖ THE APPROACH" beat from the reference. */
+body.style-editorial .section--stack > h2::before {
+  content: '❖';
+  display: block;
   font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  color: color-mix(in srgb, var(--primary-color) 65%, transparent);
+  margin-bottom: var(--space-2);
+}
+
+/* Whisper-thin panels — lean on hairline + light, not thick borders */
+body.style-editorial .panel,
+body.style-editorial .card {
+  border-color: color-mix(in srgb, var(--primary-color) 30%, transparent);
+}
+
+/* Quiet, tracked, small-caps buttons */
+body.style-editorial .btn {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.78rem;
+}
+
+/* Flattened, transparent navbar: strip the framed title box; let the
+   serif title sit on the page. A hairline appears once scrolled. */
+body.style-editorial nav:has(h1) {
+  background: color-mix(in srgb, var(--bg-color-light) 78%, transparent);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid color-mix(in srgb, var(--primary-color) 14%, transparent);
+  box-shadow: none;
+  border-radius: 0;
+}
+body.style-editorial nav h1 {
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-shadow: none;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
 }
 
 /* Motion: a gentle fade-up only, matching the calm tone. */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    body.style-refined .section:not(.first-section) > h2,
-    body.style-refined .section:not(.first-section) .panel,
-    body.style-refined .section:not(.first-section) .card,
-    body.style-refined .section:not(.first-section) .media {
+    body.style-editorial .section:not(.first-section) > h2,
+    body.style-editorial .section:not(.first-section) .panel,
+    body.style-editorial .section:not(.first-section) .card,
+    body.style-editorial .section:not(.first-section) .media {
       animation: ui-rise-subtle linear both;
       animation-timeline: view();
-      animation-range: entry 2% entry 32%;
+      animation-range: entry 2% entry 34%;
+    }
+  }
+}
+
+/* -------------------------------------------------------------- */
+/* 🌿 Sanctuary — whimsical & soft (ref: Wild Owl Yoga).           */
+/* Dramatic thick/thin serif + a hand-lettered script accent with  */
+/* a drawn underline swash, big arch/petal-rounded media tiles,     */
+/* floating sparkle glyphs, the painterly wash kept and drifting.   */
+/* Display face: Playfair Display; accent: Caveat.                  */
+/* -------------------------------------------------------------- */
+body.style-sanctuary {
+  --font-heading: 'Playfair Display', Georgia, serif;
+  --font-subheading: 'Caveat', cursive;
+  --radius-1: 18px;
+  --radius-2: 28px; /* soft, organic rounding */
+  --panel-border: 0px;
+  --shadow-1: 0 14px 40px rgba(40, 28, 14, 0.12);
+  --shadow-2: 0 18px 46px rgba(40, 28, 14, 0.14);
+  --shadow-3: 0 26px 60px rgba(40, 28, 14, 0.18);
+  --outline-shadow: none;
+}
+
+/* Dramatic Playfair headings */
+body.style-sanctuary h2 {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: clamp(2.6rem, 6vw, 5rem);
+  letter-spacing: -0.01em;
+  line-height: 1.0;
+}
+
+/* Subheadings become the hand-lettered script accent, in the season's
+   primary color, underlined with a drawn SVG swash (inline data-URI, so
+   no media file). */
+body.style-sanctuary h3,
+body.style-sanctuary .panel h3,
+body.style-sanctuary .card h3 {
+  font-family: var(--font-subheading);
+  font-weight: 700;
+  font-size: clamp(1.9rem, 4vw, 3rem);
+  line-height: 1.1;
+  color: var(--primary-color);
+  display: inline-block;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='12' viewBox='0 0 240 12'%3E%3Cpath d='M3 7 C 60 2, 120 11, 237 5' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: 100% 0.5em;
+  padding-bottom: 0.35em;
+}
+
+/* Arch / petal media tiles — rounded top like a temple arch. */
+body.style-sanctuary .media img {
+  border-radius: 48% 48% var(--radius-2) var(--radius-2) / 32% 32% var(--radius-2) var(--radius-2);
+}
+
+/* Borderless soft panels — rely on the diffuse shadow, not a border. */
+body.style-sanctuary .panel,
+body.style-sanctuary .card {
+  border: 0;
+}
+
+/* Floating sparkle glyphs scattered over each band (CSS placeholder for
+   the reference's gold doodles — season-tinted via primary color). */
+body.style-sanctuary .section:not(.first-section) {
+  position: relative;
+}
+body.style-sanctuary .section:not(.first-section)::after {
+  content: '✦   ✦     ✦';
+  position: absolute;
+  top: 8%;
+  right: 6%;
+  font-size: 0.9rem;
+  letter-spacing: 1.4em;
+  line-height: 2.4;
+  color: color-mix(in srgb, var(--primary-color) 55%, transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Rounder, softer navbar title */
+body.style-sanctuary nav h1 {
+  border-radius: var(--radius-2);
+}
+
+/* Motion: content rises in, the wash drifts, sparkles breathe. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    body.style-sanctuary .section:not(.first-section) > h2,
+    body.style-sanctuary .section:not(.first-section) .panel,
+    body.style-sanctuary .section:not(.first-section) .card,
+    body.style-sanctuary .section:not(.first-section) .media {
+      animation: ui-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 2% entry 44%;
+    }
+    body.style-sanctuary .section::before {
+      animation: ui-bg-drift linear both;
+      animation-timeline: view();
+      animation-range: cover;
+    }
+    body.style-sanctuary .section:not(.first-section)::after {
+      animation: ui-sparkle-float linear both;
+      animation-timeline: view();
+      animation-range: entry 0% exit 100%;
+    }
+  }
+}
+
+/* -------------------------------------------------------------- */
+/* 🌌 Immersive — cinematic full-bleed bands (ref: Seven Senses).  */
+/* Edge-to-edge seamless bands, fine thin-tracked serif, ghost      */
+/* (outline) buttons, a soft neutral vignette for depth, strong     */
+/* parallax the content rises over. Display face: Cormorant         */
+/* Garamond. (Season colors are untouched — the dark, cinematic     */
+/* drama comes from real full-bleed photography; see the media      */
+/* note in DESIGN.md §6.)                                           */
+/* -------------------------------------------------------------- */
+body.style-immersive {
+  --font-heading: 'Cormorant Garamond', Georgia, serif;
+  --font-subheading: 'Cormorant Garamond', Georgia, serif;
+  --radius-1: 0px;
+  --radius-2: 0px; /* edge-to-edge, no rounding */
+  --panel-border: 1px;
+  --shadow-1: none;
+  --shadow-2: 0 12px 40px rgba(0, 0, 0, 0.14);
+  --shadow-3: 0 20px 60px rgba(0, 0, 0, 0.2);
+  --outline-shadow: none;
+}
+
+/* Fine, thin, wide-tracked serif headings */
+body.style-immersive h2 {
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-size: clamp(2.8rem, 6vw, 5rem);
+  letter-spacing: 0.02em;
+  line-height: 1.06;
+}
+body.style-immersive .panel h2,
+body.style-immersive .panel h3,
+body.style-immersive .card h2,
+body.style-immersive .card h3,
+body.style-immersive h3 {
+  font-family: var(--font-heading);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+/* Full-bleed, seamless bands: kill the radius/side-margin/shadow so the
+   scenes butt together edge to edge. First band keeps navbar clearance. */
+body.style-immersive .section {
+  border-radius: 0;
+  box-shadow: none;
+  margin-block: 0;
+  padding-block: var(--space-6);
+}
+/* Re-assert the first band's navbar clearance — the margin-block:0 above
+   would otherwise slide the hero under the fixed navbar. */
+body.style-immersive .first-section {
+  margin-top: calc(var(--navbar-height) + 1rem);
+}
+body.style-immersive .section--airy {
+  padding-block: calc(var(--space-6) * 1.6);
+}
+
+/* A soft neutral vignette over the wash for cinematic depth. Kept low so
+   the season's text color stays legible (this is a structural scrim, not
+   a palette color). Layered ahead of the season image in ::before. */
+body.style-immersive .section::before {
+  background-image: linear-gradient(
+      to bottom,
+      rgba(20, 14, 8, 0.16),
+      rgba(20, 14, 8, 0.28)
+    ),
+    var(--section-bg-image);
+}
+
+/* Ghost / outline buttons — hairline border, wide tracking, no fill.
+   Color still comes from the season's --primary-color. */
+body.style-immersive .btn {
+  background: transparent;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  border-radius: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.78rem;
+}
+
+/* Transparent, hairline navbar */
+body.style-immersive nav:has(h1) {
+  background: color-mix(in srgb, var(--bg-color-light) 30%, transparent);
+  backdrop-filter: blur(4px);
+  border-bottom: 1px solid color-mix(in srgb, var(--primary-color) 18%, transparent);
+  box-shadow: none;
+  border-radius: 0;
+}
+body.style-immersive nav h1 {
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-shadow: none;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+/* Motion: strong wide parallax the content rises over. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    body.style-immersive .section:not(.first-section) > h2,
+    body.style-immersive .section:not(.first-section) .panel,
+    body.style-immersive .section:not(.first-section) .card,
+    body.style-immersive .section:not(.first-section) .media {
+      animation: ui-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+    body.style-immersive .section::before {
+      animation: ui-bg-drift-wide linear both;
+      animation-timeline: view();
+      animation-range: cover;
     }
   }
 }
