@@ -2,7 +2,7 @@
   "title": "Practice With Me",
   "navLabel": "Practice With Me",
   "order": 5,
-  "showInNav": true,
+  "showInNav": false,
   "blocks": [
     {
       "layout": "centered",
