@@ -53,9 +53,9 @@
         },
         {
           "title": "Live Yoga Classes",
-          "description": "Join a local class and practice with us.",
-          "buttonLabel": "Learn More",
-          "buttonUrl": "/upcoming"
+          "description": "Join a local class and practice with us — see the live schedule and book.",
+          "buttonLabel": "Practice With Me",
+          "buttonUrl": "/practice-with-me"
         },
         {
           "title": "Practice Online",
