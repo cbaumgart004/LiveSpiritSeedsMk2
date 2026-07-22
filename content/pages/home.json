@@ -9,11 +9,21 @@
       "title": "You are Resilient",
       "image": "/uploads/warrior-borderless.jpg",
       "taglinePlacement": "over",
-      "taglineBlend": 90,
+      "taglineBlend": 72,
       "buttons": [
         {
           "label": "Book a Session",
-          "url": "/sessions",
+          "url": "/services",
+          "status": "active"
+        },
+        {
+          "label": "Practice With Me",
+          "url": "/practice-with-me",
+          "status": "active"
+        },
+        {
+          "label": "Services",
+          "url": "/services",
           "status": "active"
         }
       ],

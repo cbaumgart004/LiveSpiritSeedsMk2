@@ -213,10 +213,10 @@
 /* -------------------------------------------- */
 /* 🔀 Splash lap: artwork and photo, overlapped   */
 /* -------------------------------------------- */
-/* Side by side, but the artwork laps 15% of the row onto the photo and stays
-   semi-transparent, so the photograph reads through the overlap instead of the
-   two sitting as separate tiles. Each panel takes 57.5% and the artwork pulls
-   right by -15%: 57.5 + 57.5 - 15 = 100. */
+/* Side by side, but the artwork laps 15% of the row back over the photo and
+   stays semi-transparent, so the photograph reads through the overlap instead
+   of the two sitting as separate tiles. Photo left, artwork right; each panel
+   takes 57.5% and the artwork pulls left by -15%: 57.5 + 57.5 - 15 = 100. */
 
 .splash--lap {
   min-height: clamp(420px, 72vh, 840px);
@@ -236,10 +236,18 @@
 
 .splash--lap .splash__artwork {
   flex: 0 0 57.5%;
-  margin-right: -15%;
+  margin-left: -15%;
   position: relative;
   z-index: 2;
-  opacity: var(--tagline-blend, 0.9);
+  opacity: var(--tagline-blend, 0.72);
+}
+
+/* The button row leads the section, so it needs to sit above the lapped
+   panels in the stacking order as well as before them in flow. */
+.splash--lap > .button-row {
+  position: relative;
+  z-index: 3;
+  margin-bottom: var(--space-2);
 }
 
 /* Uncropped, as with the two-up: the photo is a real element, not a backdrop. */
@@ -262,7 +270,7 @@
   .splash--lap .splash__photo {
     flex: 0 0 auto;
     width: 100%;
-    margin-right: 0;
+    margin-left: 0;
   }
 
   .splash--lap .splash__photo {

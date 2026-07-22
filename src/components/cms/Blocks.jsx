@@ -144,9 +144,9 @@ function SplashSection({ block, isFirst, services }) {
   //   none   – ordinary splash: photo behind, the block's own type over it.
   //   beside – two-up banner, artwork next to the photo. The brushstroke bands
   //            span both columns so the pair reads as one picture.
-  //   over   – artwork and photo side by side but LAPPED: the artwork sits left,
-  //            overlapping the photo by 15%, and stays semi-transparent where it
-  //            crosses so the photograph reads through the overlap.
+  //   over   – photo and artwork side by side but LAPPED: the photo sits left,
+  //            the artwork laps 15% back over it and stays semi-transparent
+  //            where it crosses so the photograph reads through the overlap.
   // `withTagline` is the original boolean, kept so existing content still works.
   const placement = block.taglinePlacement || (block.withTagline ? 'beside' : 'none')
   const base = sectionClass('section section--splash', null, isFirst, block)
@@ -155,10 +155,10 @@ function SplashSection({ block, isFirst, services }) {
     const blend = Math.min(100, Math.max(10, block.taglineBlend || 90)) / 100
     return (
       <section className={`${base} splash--lap`} style={{ '--tagline-blend': blend }}>
+        {/* Buttons lead the section here, not trail it — they are the first
+            thing in the hero rather than a footnote under the artwork. */}
+        <Buttons block={block} services={services} />
         <div className="splash__content">
-          <div className="splash__artwork">
-            <TaglineArt />
-          </div>
           {block.image && (
             <img
               className="splash__photo"
@@ -167,8 +167,10 @@ function SplashSection({ block, isFirst, services }) {
               data-tina-field={tinaField(block, 'image')}
             />
           )}
+          <div className="splash__artwork">
+            <TaglineArt />
+          </div>
         </div>
-        <Buttons block={block} services={services} />
       </section>
     )
   }
