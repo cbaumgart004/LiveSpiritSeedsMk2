@@ -76,7 +76,7 @@ Adding a page = adding a content file (via `/admin`); it appears in the nav auto
 Content is **data**, managed via TinaCMS (git-backed) — see [ADR 0002]. Two collections:
 
 - **Settings** (`content/settings/index.json`) — `theme` (`spring`/`summer`/`fall`/`winter`),
-  `uiStyle` (`watercolor`/`layered`/`refined` — see §6 UX styles), `siteTitle`, `tagline`,
+  `uiStyle` (`watercolor`/`editorial`/`sanctuary`/`immersive` — see §6 UX styles), `siteTitle`, `tagline`,
   `logo`, `contactEmail`.
 - **Page** (`content/pages/*.json`) — `title`, `navLabel`, `order`, `showInNav`, and an ordered
   `blocks[]`. The palette is **three** block types:
@@ -169,9 +169,14 @@ Owner-selectable in `/admin` (Settings → **UI Style**). Applied like the seaso
 it from the CMS on load via `applyUiStyle` (`cms/site.js`) for live editing. Fonts are imported once
 in `index.css`. **Motion safety:** reveal/parallax live inside a
 `@supports (animation-timeline: view())` + `prefers-reduced-motion: no-preference` guard and animate
-the `translate` property (so they compose with `.card:hover`), meaning browsers without CSS
-scroll-driven animations — and anyone preferring reduced motion — get the static, fully-visible
-layout with no invisible content. The navbar's classes are CSS-module-scoped, so per-style navbar
+the `translate` property **only — never `opacity`**. That rule is load-bearing, not stylistic: a
+`fill: both` animation starting at `opacity: 0` renders its before-phase whenever its clock hasn't
+advanced, and a page loaded in a **background/hidden tab** has both a frozen document timeline and
+unresolved `view()` timelines — so every section computed to `opacity: 0` and the site rendered
+blank (the 2026-07-22 "content disappeared" bug). A stalled *translate* leaves content fully
+readable, just a few px off, so the reveal cannot fail closed. If a fade is ever wanted back, use
+`@starting-style` + `transition` (resting state = visible), not an animation. Animating `translate`
+rather than `transform` also lets it compose with `.card:hover`. The navbar's classes are CSS-module-scoped, so per-style navbar
 rules reach the top bar via the real `nav:has(h1)` element (only the top bar holds the `<h1>` title).
 
 **Media notes (alternate styles).** All three alternates ship CSS-only (no new binary assets), reusing

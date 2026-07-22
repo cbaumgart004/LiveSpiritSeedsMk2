@@ -33,3 +33,4 @@ dist-ssr
 # Generated Claude context (repomix index + git state)
 .claude/context/repo-map.md
 .claude/context/recent-changes.md
+.claude/settings.local.json

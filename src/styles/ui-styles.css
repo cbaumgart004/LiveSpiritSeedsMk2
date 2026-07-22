@@ -12,13 +12,22 @@
 /* Owner-selectable in /admin (Settings → UI Style). See DESIGN.md  */
 /* §6. Body face is Merriweather Sans in every style.               */
 /*                                                                  */
-/* MOTION SAFETY: reveal animations set opacity:0 ONLY inside a     */
-/* `@supports (animation-timeline: view())` + reduced-motion guard, */
-/* so browsers without scroll-driven animations (and anyone who     */
-/* prefers reduced motion) always get the static, fully-visible     */
-/* layout. Reveals animate the `translate` property (not transform) */
-/* so they compose with `.card:hover`'s transform instead of        */
-/* clobbering it.                                                   */
+/* MOTION SAFETY — NEVER put `opacity` in a reveal animation.       */
+/* An @supports guard is not enough. A `fill: both` animation that  */
+/* starts at opacity:0 renders its before-phase whenever its clock  */
+/* has not advanced — and that happens in practice: a page loaded   */
+/* in a background/hidden tab has a frozen document timeline AND    */
+/* unresolved view() timelines, so every section computes to        */
+/* opacity:0 and the site renders blank. Verified in Chrome: all    */
+/* reveal targets sat at opacity 0 until the tab was foregrounded.  */
+/* That is the "content disappeared" bug from 2026-07-22.           */
+/*                                                                  */
+/* So reveals animate `translate` ONLY. A stalled translate leaves  */
+/* content fully readable, just a few px off — it cannot fail       */
+/* closed. (Using `translate` rather than `transform` also lets it  */
+/* compose with `.card:hover`'s transform instead of clobbering it.)*/
+/* If a fade is ever wanted back, use @starting-style + transition, */
+/* whose resting state is the VISIBLE one — not an animation.       */
 /*                                                                  */
 /* NAVBAR NOTE: the navbar's classes are CSS-module-scoped, so these */
 /* rules reach the top bar via the real `nav:has(h1)` element (only  */
@@ -26,24 +35,22 @@
 /* Font/size/border already follow the token overrides below.       */
 /* -------------------------------------------------------------- */
 
-/* Shared reveal keyframes (used by all styles) */
+/* Shared reveal keyframes (used by all styles).
+   Deliberately translate-only — no opacity. See the MOTION SAFETY note above:
+   a translate can never make content unreadable, however the animation stalls. */
 @keyframes ui-rise {
   from {
-    opacity: 0;
     translate: 0 30px;
   }
   to {
-    opacity: 1;
     translate: 0 0;
   }
 }
 @keyframes ui-rise-subtle {
   from {
-    opacity: 0;
     translate: 0 14px;
   }
   to {
-    opacity: 1;
     translate: 0 0;
   }
 }
