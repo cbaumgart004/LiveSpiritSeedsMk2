@@ -144,23 +144,29 @@ function SplashSection({ block, isFirst, services }) {
   //   none   – ordinary splash: photo behind, the block's own type over it.
   //   beside – two-up banner, artwork next to the photo. The brushstroke bands
   //            span both columns so the pair reads as one picture.
-  //   over   – the artwork composited onto a full-bleed photo, multiplied so
-  //            the washes tint the photograph instead of covering it.
+  //   over   – artwork and photo side by side but LAPPED: the artwork sits left,
+  //            overlapping the photo by 15%, and stays semi-transparent where it
+  //            crosses so the photograph reads through the overlap.
   // `withTagline` is the original boolean, kept so existing content still works.
   const placement = block.taglinePlacement || (block.withTagline ? 'beside' : 'none')
   const base = sectionClass('section section--splash', null, isFirst, block)
 
   if (placement === 'over') {
-    const blend = Math.min(100, Math.max(10, block.taglineBlend || 88)) / 100
+    const blend = Math.min(100, Math.max(10, block.taglineBlend || 90)) / 100
     return (
-      <section className={`${base} splash--over`} style={{ '--tagline-blend': blend }}>
-        {block.image && (
-          <div className="splash__media" data-tina-field={tinaField(block, 'image')}>
-            <img src={block.image} alt={block.title || ''} />
+      <section className={`${base} splash--lap`} style={{ '--tagline-blend': blend }}>
+        <div className="splash__content">
+          <div className="splash__artwork">
+            <TaglineArt />
           </div>
-        )}
-        <div className="splash__overlay">
-          <TaglineArt />
+          {block.image && (
+            <img
+              className="splash__photo"
+              src={block.image}
+              alt={block.title || ''}
+              data-tina-field={tinaField(block, 'image')}
+            />
+          )}
         </div>
         <Buttons block={block} services={services} />
       </section>

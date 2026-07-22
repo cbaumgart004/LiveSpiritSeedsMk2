@@ -261,7 +261,7 @@ const contentSection = {
       options: [
         { value: 'none', label: 'Don’t show it' },
         { value: 'beside', label: 'Beside the photo (two-up banner)' },
-        { value: 'over', label: 'Over the photo (blended)' },
+        { value: 'over', label: 'Overlapping the photo (lapped side by side)' },
       ],
       ui: { defaultValue: 'none' },
     },
@@ -270,7 +270,7 @@ const contentSection = {
       name: 'taglineBlend',
       label: 'Tagline Blend %',
       description:
-        'Only used by "Over the photo". How strongly the artwork sits on the photo, 10–100. Lower lets more of the photo through. Defaults to 88.',
+        'Only used by "Overlapping the photo". Opacity of the artwork, 10–100 — it laps 15% onto the photo, so lower lets more of the photograph read through the overlap. Defaults to 90.',
     },
     {
       type: 'string',

@@ -172,16 +172,16 @@
   inset: 0;
 }
 
-/* The bowl photo, offset into the lower-right corner rather than centred over
-   the lettering. Kept out of the wash bitmap so this stays a CSS decision. */
+/* The bowl photo, centred in the artwork as it is in the original SVG. It is
+   kept out of the wash bitmap so its placement stays a CSS decision. */
 .tagline__bowls {
-  inset: auto 2% 3% auto;
-  width: 29%;
+  inset: 50% auto auto 50%;
+  translate: -50% -50%;
+  width: 42%;
   height: auto;
-  max-height: 44%;
+  max-height: 62%;
   object-fit: cover;
   border-radius: var(--radius-2);
-  box-shadow: var(--shadow-2);
 }
 
 .tagline__wash {
@@ -211,59 +211,73 @@
 }
 
 /* -------------------------------------------- */
-/* 🫧 Splash over: artwork blended onto the photo */
+/* 🔀 Splash lap: artwork and photo, overlapped   */
 /* -------------------------------------------- */
-/* The photo runs full-bleed and the artwork is laid over it at partial
-   opacity, so you read both at once. The art layer is a fully opaque bitmap,
-   so plain alpha is what lets the photograph through — `multiply` was tried
-   first and is wrong here: against a light photo it erases the pale washes
-   entirely and only the dark ink survives. Strength comes from
-   --tagline-blend, set per block by the Tina "Tagline Blend %" field. */
+/* Side by side, but the artwork laps 15% of the row onto the photo and stays
+   semi-transparent, so the photograph reads through the overlap instead of the
+   two sitting as separate tiles. Each panel takes 57.5% and the artwork pulls
+   right by -15%: 57.5 + 57.5 - 15 = 100. */
 
-.splash--over {
-  min-height: clamp(460px, 80vh, 880px);
+.splash--lap {
+  min-height: clamp(420px, 72vh, 840px);
   place-items: center;
   padding-block: clamp(1.5rem, 4vw, 3.5rem);
 }
 
-/* Show the whole photograph. `cover` cropped it — even biased upward it cut the
-   frame — so this mode uses `contain` and lets the seasonal band show at the
-   sides rather than losing any of the shot. */
-.splash--over .splash__media img {
-  object-fit: contain;
-  object-position: center;
+.splash--lap .splash__content {
+  width: 100%;
+  max-width: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
 }
 
-/* Do NOT add an edge-feather mask here. Two attempts failed for different
-   reasons and both left the artwork looking empty: two linear-gradient layers
-   with `mask-composite: intersect` zeroed the overlay out entirely, and a
-   single radial feather ate the washes — they sit at the artwork's PERIPHERY
-   (blue top-right, peach brushstrokes at the edges), which is exactly what a
-   centre-weighted mask fades away, leaving only the lettering. The painted
-   washes already fall off at their own edges, which is the blend. */
-/* Sized in vh, not %, on purpose. The photo is shown uncropped (`contain`), so
-   its rendered width is driven by the BAND HEIGHT (width = height x its aspect),
-   not by the page width. A percentage-width overlay therefore overhangs the
-   photo on any short viewport and buries it. Tracking vh keeps the artwork
-   just inside the photograph at any window size. */
-.splash--over .splash__overlay {
+.splash--lap .splash__artwork {
+  flex: 0 0 57.5%;
+  margin-right: -15%;
   position: relative;
   z-index: 2;
-  width: min(88vw, 84vh);
   opacity: var(--tagline-blend, 0.9);
 }
 
-/* The buttons must stay a normal, readable control — never blended. */
-.splash--over > .button-row {
-  position: relative;
-  z-index: 3;
+/* Uncropped, as with the two-up: the photo is a real element, not a backdrop. */
+.splash--lap .splash__photo {
+  flex: 0 0 57.5%;
+  width: 57.5%;
+  height: auto;
+  max-height: 68vh;
+  object-fit: contain;
+  border-radius: var(--radius-2);
 }
 
 @media (max-width: 768px) {
-  .splash--over {
-    min-height: clamp(320px, 52vh, 520px);
+  /* No room to lap on a phone — stack them and drop the negative pull. */
+  .splash--lap .splash__content {
+    flex-direction: column;
+  }
+
+  .splash--lap .splash__artwork,
+  .splash--lap .splash__photo {
+    flex: 0 0 auto;
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .splash--lap .splash__photo {
+    max-height: 42vh;
   }
 }
+
+/* Note on blending the artwork over a photo, kept from the full-bleed version
+   this layout replaced — both of these were tried and are wrong:
+     - `mix-blend-mode: multiply`: against a light photo it erases the pale
+       washes completely and only the dark ink survives.
+     - an edge-feather mask: two linear layers with `mask-composite: intersect`
+       zeroed the overlay out entirely, and a single radial feather ate the
+       washes, which sit at the artwork's PERIPHERY — exactly what a
+       centre-weighted mask fades. Plain alpha is what lets the photo through. */
 
 /* -------------------------------------------- */
 /* 🤝 Splash pair: artwork beside the photo      */
