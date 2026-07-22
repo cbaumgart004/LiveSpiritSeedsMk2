@@ -32,8 +32,9 @@ var PreviewLinkField = () => React.createElement(
 var SEASONS = ["spring", "summer", "fall", "winter"];
 var UI_STYLES = [
   { value: "watercolor", label: "Watercolor (original)" },
-  { value: "layered", label: "Layered (bold parallax)" },
-  { value: "refined", label: "Refined (sharp & quiet)" }
+  { value: "editorial", label: "Editorial (serif & airy)" },
+  { value: "sanctuary", label: "Sanctuary (whimsical & soft)" },
+  { value: "immersive", label: "Immersive (cinematic full-bleed)" }
 ];
 function serviceHeadings(allValues) {
   return (allValues?.blocks || []).filter((b) => (b?._template === "service" || b?._template === "serviceCard") && b?.title).map((b) => String(b.title).trim().toLowerCase());

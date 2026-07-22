@@ -1,8 +1,9 @@
 /* Font imports.
    Euphoria Script / Farsan → Watercolor display faces (original look, untouched).
-   Bricolage Grotesque → Layered display; Marcellus → Refined display.
+   Fraunces → Editorial display; Playfair Display + Caveat → Sanctuary display + script
+   accent; Cormorant Garamond → Immersive display.
    Merriweather Sans is the shared body face across every UI style. */
-@import url('https://fonts.googleapis.com/css2?family=Euphoria+Script&family=Farsan&family=Merriweather+Sans:wght@300;400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Marcellus&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Euphoria+Script&family=Farsan&family=Merriweather+Sans:wght@300;400;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Playfair+Display:wght@500;600;700;800&family=Caveat:wght@600;700&family=Cormorant+Garamond:wght@400;500;600&display=swap');
 
 /* Theme fade-in */
 html {

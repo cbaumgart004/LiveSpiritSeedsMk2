@@ -20,7 +20,7 @@ import './styles/animations.css' // keyframes/animation helpers
 // fallbacks for a missing/invalid Settings value). Both are baked from the
 // build-time Settings import so the first paint is already correct — no flash.
 const SEASONS = ['spring', 'summer', 'fall', 'winter']
-const UI_STYLES = ['watercolor', 'layered', 'refined']
+const UI_STYLES = ['watercolor', 'editorial', 'sanctuary', 'immersive']
 const initialTheme = SEASONS.includes(settings?.theme) ? settings.theme : SITE_THEME
 const initialUiStyle = UI_STYLES.includes(settings?.uiStyle) ? settings.uiStyle : SITE_UI_STYLE
 document.body.classList.add(initialTheme)

@@ -43,8 +43,9 @@ const SEASONS = ['spring', 'summer', 'fall', 'winter']
 // changing the look never changes the palette. See DESIGN.md §5–§6.
 const UI_STYLES = [
   { value: 'watercolor', label: 'Watercolor (original)' },
-  { value: 'layered', label: 'Layered (bold parallax)' },
-  { value: 'refined', label: 'Refined (sharp & quiet)' },
+  { value: 'editorial', label: 'Editorial (serif & airy)' },
+  { value: 'sanctuary', label: 'Sanctuary (whimsical & soft)' },
+  { value: 'immersive', label: 'Immersive (cinematic full-bleed)' },
 ]
 
 // Names of the Service cards on the current page, lower-cased. Used by the

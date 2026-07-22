@@ -2,7 +2,7 @@
 import { client } from '../../tina/__generated__/client'
 
 export const SEASONS = ['spring', 'summer', 'fall', 'winter']
-export const UI_STYLES = ['watercolor', 'layered', 'refined']
+export const UI_STYLES = ['watercolor', 'editorial', 'sanctuary', 'immersive']
 
 // Load the single Site Settings document.
 export async function loadSettings() {
