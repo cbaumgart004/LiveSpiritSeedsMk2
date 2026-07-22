@@ -79,6 +79,12 @@
    --split/--stack, the children are layered, not laid out in flow:
    the photo and scrim fill the band and the content sits on top. */
 
+/* SPLASH CLEARANCE: a hero must never start underneath the fixed navbar.
+   Tucking the photo under a translucent bar reads well in a mockup but hides
+   the top of the image, and under watercolor — whose bar is fully opaque —
+   that part of the photo is simply gone. So every style keeps the standard
+   .first-section navbar clearance and no style tucks the splash under it. */
+
 .section--splash {
   display: grid;
   place-items: center;
@@ -108,11 +114,16 @@
 .splash__scrim {
   background: linear-gradient(
     to bottom,
-    rgba(0, 0, 0, calc(var(--splash-scrim, 0.3) * 0.55)) 0%,
-    rgba(0, 0, 0, var(--splash-scrim, 0.3)) 100%
+    rgba(0, 0, 0, calc(var(--splash-scrim, 0.38) * 0.55)) 0%,
+    rgba(0, 0, 0, var(--splash-scrim, 0.38)) 100%
   );
 }
 
+/* Overlaid type sits on a photograph, so the primitive itself has to be
+   readable — the alternate styles set their own colors, but watercolor
+   inherits the page's dark body color, which disappears on a light photo.
+   The heading keeps its themed color (h2's own rule wins over this
+   inherited one), so the brand script still reads as the brand. */
 .splash__content {
   position: relative;
   z-index: 1;
@@ -121,6 +132,8 @@
   align-items: center;
   gap: var(--space-2);
   width: min(100%, 62ch);
+  color: #fff;
+  text-shadow: 0 1px 14px rgba(0, 0, 0, 0.5);
 }
 
 .splash__eyebrow {

@@ -7,7 +7,7 @@
     {
       "layout": "splash",
       "eyebrow": "Lafayette, Colorado",
-      "title": "Come Home to Yourself",
+      "title": "You are Resilient",
       "body": "Trauma-informed massage, sound healing, Ayurveda, and yin yoga — in a space built for slowing down.\n",
       "image": "/uploads/Warrior.jpg",
       "overlayAlign": "center",
@@ -22,9 +22,10 @@
       "_template": "contentSection"
     },
     {
-      "layout": "centered",
+      "layout": "event",
       "title": "Welcome to Spirit Seeds Wellness",
-      "body": "Holistic healing in Lafayette — trauma-informed massage, sound healing, Ayurveda, and yin yoga.\n",
+      "body": "",
+      "images": ["/uploads/you-are-resilient.png"],
       "spacing": "compact",
       "showHomeButton": false,
       "_template": "contentSection"
