@@ -190,6 +190,8 @@ export type Settings = Node & Document & {
   logo?: Maybe<Scalars['String']['output']>;
   theme?: Maybe<Scalars['String']['output']>;
   uiStyle?: Maybe<Scalars['String']['output']>;
+  navCtaLabel?: Maybe<Scalars['String']['output']>;
+  navCtaUrl?: Maybe<Scalars['String']['output']>;
   previewLink?: Maybe<Scalars['String']['output']>;
   contactEmail?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
@@ -217,6 +219,8 @@ export type SettingsFilter = {
   logo?: InputMaybe<ImageFilter>;
   theme?: InputMaybe<StringFilter>;
   uiStyle?: InputMaybe<StringFilter>;
+  navCtaLabel?: InputMaybe<StringFilter>;
+  navCtaUrl?: InputMaybe<StringFilter>;
   previewLink?: InputMaybe<StringFilter>;
   contactEmail?: InputMaybe<StringFilter>;
 };
@@ -255,8 +259,10 @@ export type PageBlocksContentSection = {
   __typename?: 'PageBlocksContentSection';
   layout?: Maybe<Scalars['String']['output']>;
   title?: Maybe<Scalars['String']['output']>;
+  eyebrow?: Maybe<Scalars['String']['output']>;
   body?: Maybe<Scalars['JSON']['output']>;
   image?: Maybe<Scalars['String']['output']>;
+  overlayAlign?: Maybe<Scalars['String']['output']>;
   imageSide?: Maybe<Scalars['String']['output']>;
   imageWidth?: Maybe<Scalars['Float']['output']>;
   images?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
@@ -369,8 +375,10 @@ export type PageBlocksContentSectionButtonsFilter = {
 export type PageBlocksContentSectionFilter = {
   layout?: InputMaybe<StringFilter>;
   title?: InputMaybe<StringFilter>;
+  eyebrow?: InputMaybe<StringFilter>;
   body?: InputMaybe<RichTextFilter>;
   image?: InputMaybe<ImageFilter>;
+  overlayAlign?: InputMaybe<StringFilter>;
   imageSide?: InputMaybe<StringFilter>;
   imageWidth?: InputMaybe<NumberFilter>;
   images?: InputMaybe<ImageFilter>;
@@ -539,6 +547,8 @@ export type SettingsMutation = {
   logo?: InputMaybe<Scalars['String']['input']>;
   theme?: InputMaybe<Scalars['String']['input']>;
   uiStyle?: InputMaybe<Scalars['String']['input']>;
+  navCtaLabel?: InputMaybe<Scalars['String']['input']>;
+  navCtaUrl?: InputMaybe<Scalars['String']['input']>;
   previewLink?: InputMaybe<Scalars['String']['input']>;
   contactEmail?: InputMaybe<Scalars['String']['input']>;
 };
@@ -561,8 +571,10 @@ export type PageBlocksContentSectionButtonsMutation = {
 export type PageBlocksContentSectionMutation = {
   layout?: InputMaybe<Scalars['String']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
+  eyebrow?: InputMaybe<Scalars['String']['input']>;
   body?: InputMaybe<Scalars['JSON']['input']>;
   image?: InputMaybe<Scalars['String']['input']>;
+  overlayAlign?: InputMaybe<Scalars['String']['input']>;
   imageSide?: InputMaybe<Scalars['String']['input']>;
   imageWidth?: InputMaybe<Scalars['Float']['input']>;
   images?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
@@ -631,16 +643,16 @@ export type PageMutation = {
   blocks?: InputMaybe<Array<InputMaybe<PageBlocksMutation>>>;
 };
 
-export type SettingsPartsFragment = { __typename: 'Settings', siteTitle?: string | null, tagline?: string | null, logo?: string | null, theme?: string | null, uiStyle?: string | null, previewLink?: string | null, contactEmail?: string | null };
+export type SettingsPartsFragment = { __typename: 'Settings', siteTitle?: string | null, tagline?: string | null, logo?: string | null, theme?: string | null, uiStyle?: string | null, navCtaLabel?: string | null, navCtaUrl?: string | null, previewLink?: string | null, contactEmail?: string | null };
 
-export type PagePartsFragment = { __typename: 'Page', title: string, navLabel?: string | null, order?: number | null, showInNav?: boolean | null, blocks?: Array<{ __typename: 'PageBlocksContentSection', layout?: string | null, title?: string | null, body?: any | null, image?: string | null, imageSide?: string | null, imageWidth?: number | null, images?: Array<string | null> | null, words?: Array<string | null> | null, spacing?: string | null, showHomeButton?: boolean | null, cards?: Array<{ __typename: 'PageBlocksContentSectionCards', image?: string | null, title?: string | null, description?: string | null, buttonLabel?: string | null, buttonUrl?: string | null } | null> | null, buttons?: Array<{ __typename: 'PageBlocksContentSectionButtons', label?: string | null, url?: string | null, status?: string | null, service?: string | null } | null> | null } | { __typename: 'PageBlocksService', title?: string | null, description?: any | null, image?: string | null, imageSide?: string | null, imageWidth?: number | null, status?: string | null, spacing?: string | null, showHomeButton?: boolean | null, bookingOptions?: Array<{ __typename: 'PageBlocksServiceBookingOptions', label?: string | null, bookUrl?: string | null, note?: string | null, addOns?: Array<{ __typename: 'PageBlocksServiceBookingOptionsAddOns', service?: string | null, bookUrl?: string | null } | null> | null } | null> | null, buttons?: Array<{ __typename: 'PageBlocksServiceButtons', label?: string | null, url?: string | null, status?: string | null, service?: string | null } | null> | null } | { __typename: 'PageBlocksEmbed', title?: string | null, source?: string | null, mode?: string | null, url?: string | null, code?: string | null, height?: number | null, caption?: string | null, spacing?: string | null, showHomeButton?: boolean | null } | null> | null };
+export type PagePartsFragment = { __typename: 'Page', title: string, navLabel?: string | null, order?: number | null, showInNav?: boolean | null, blocks?: Array<{ __typename: 'PageBlocksContentSection', layout?: string | null, title?: string | null, eyebrow?: string | null, body?: any | null, image?: string | null, overlayAlign?: string | null, imageSide?: string | null, imageWidth?: number | null, images?: Array<string | null> | null, words?: Array<string | null> | null, spacing?: string | null, showHomeButton?: boolean | null, cards?: Array<{ __typename: 'PageBlocksContentSectionCards', image?: string | null, title?: string | null, description?: string | null, buttonLabel?: string | null, buttonUrl?: string | null } | null> | null, buttons?: Array<{ __typename: 'PageBlocksContentSectionButtons', label?: string | null, url?: string | null, status?: string | null, service?: string | null } | null> | null } | { __typename: 'PageBlocksService', title?: string | null, description?: any | null, image?: string | null, imageSide?: string | null, imageWidth?: number | null, status?: string | null, spacing?: string | null, showHomeButton?: boolean | null, bookingOptions?: Array<{ __typename: 'PageBlocksServiceBookingOptions', label?: string | null, bookUrl?: string | null, note?: string | null, addOns?: Array<{ __typename: 'PageBlocksServiceBookingOptionsAddOns', service?: string | null, bookUrl?: string | null } | null> | null } | null> | null, buttons?: Array<{ __typename: 'PageBlocksServiceButtons', label?: string | null, url?: string | null, status?: string | null, service?: string | null } | null> | null } | { __typename: 'PageBlocksEmbed', title?: string | null, source?: string | null, mode?: string | null, url?: string | null, code?: string | null, height?: number | null, caption?: string | null, spacing?: string | null, showHomeButton?: boolean | null } | null> | null };
 
 export type SettingsQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
 }>;
 
 
-export type SettingsQuery = { __typename?: 'Query', settings: { __typename: 'Settings', id: string, siteTitle?: string | null, tagline?: string | null, logo?: string | null, theme?: string | null, uiStyle?: string | null, previewLink?: string | null, contactEmail?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
+export type SettingsQuery = { __typename?: 'Query', settings: { __typename: 'Settings', id: string, siteTitle?: string | null, tagline?: string | null, logo?: string | null, theme?: string | null, uiStyle?: string | null, navCtaLabel?: string | null, navCtaUrl?: string | null, previewLink?: string | null, contactEmail?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
 
 export type SettingsConnectionQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']['input']>;
@@ -652,14 +664,14 @@ export type SettingsConnectionQueryVariables = Exact<{
 }>;
 
 
-export type SettingsConnectionQuery = { __typename?: 'Query', settingsConnection: { __typename?: 'SettingsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'SettingsConnectionEdges', cursor: string, node?: { __typename: 'Settings', id: string, siteTitle?: string | null, tagline?: string | null, logo?: string | null, theme?: string | null, uiStyle?: string | null, previewLink?: string | null, contactEmail?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
+export type SettingsConnectionQuery = { __typename?: 'Query', settingsConnection: { __typename?: 'SettingsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'SettingsConnectionEdges', cursor: string, node?: { __typename: 'Settings', id: string, siteTitle?: string | null, tagline?: string | null, logo?: string | null, theme?: string | null, uiStyle?: string | null, navCtaLabel?: string | null, navCtaUrl?: string | null, previewLink?: string | null, contactEmail?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
 
 export type PageQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
 }>;
 
 
-export type PageQuery = { __typename?: 'Query', page: { __typename: 'Page', id: string, title: string, navLabel?: string | null, order?: number | null, showInNav?: boolean | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, blocks?: Array<{ __typename: 'PageBlocksContentSection', layout?: string | null, title?: string | null, body?: any | null, image?: string | null, imageSide?: string | null, imageWidth?: number | null, images?: Array<string | null> | null, words?: Array<string | null> | null, spacing?: string | null, showHomeButton?: boolean | null, cards?: Array<{ __typename: 'PageBlocksContentSectionCards', image?: string | null, title?: string | null, description?: string | null, buttonLabel?: string | null, buttonUrl?: string | null } | null> | null, buttons?: Array<{ __typename: 'PageBlocksContentSectionButtons', label?: string | null, url?: string | null, status?: string | null, service?: string | null } | null> | null } | { __typename: 'PageBlocksService', title?: string | null, description?: any | null, image?: string | null, imageSide?: string | null, imageWidth?: number | null, status?: string | null, spacing?: string | null, showHomeButton?: boolean | null, bookingOptions?: Array<{ __typename: 'PageBlocksServiceBookingOptions', label?: string | null, bookUrl?: string | null, note?: string | null, addOns?: Array<{ __typename: 'PageBlocksServiceBookingOptionsAddOns', service?: string | null, bookUrl?: string | null } | null> | null } | null> | null, buttons?: Array<{ __typename: 'PageBlocksServiceButtons', label?: string | null, url?: string | null, status?: string | null, service?: string | null } | null> | null } | { __typename: 'PageBlocksEmbed', title?: string | null, source?: string | null, mode?: string | null, url?: string | null, code?: string | null, height?: number | null, caption?: string | null, spacing?: string | null, showHomeButton?: boolean | null } | null> | null } };
+export type PageQuery = { __typename?: 'Query', page: { __typename: 'Page', id: string, title: string, navLabel?: string | null, order?: number | null, showInNav?: boolean | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, blocks?: Array<{ __typename: 'PageBlocksContentSection', layout?: string | null, title?: string | null, eyebrow?: string | null, body?: any | null, image?: string | null, overlayAlign?: string | null, imageSide?: string | null, imageWidth?: number | null, images?: Array<string | null> | null, words?: Array<string | null> | null, spacing?: string | null, showHomeButton?: boolean | null, cards?: Array<{ __typename: 'PageBlocksContentSectionCards', image?: string | null, title?: string | null, description?: string | null, buttonLabel?: string | null, buttonUrl?: string | null } | null> | null, buttons?: Array<{ __typename: 'PageBlocksContentSectionButtons', label?: string | null, url?: string | null, status?: string | null, service?: string | null } | null> | null } | { __typename: 'PageBlocksService', title?: string | null, description?: any | null, image?: string | null, imageSide?: string | null, imageWidth?: number | null, status?: string | null, spacing?: string | null, showHomeButton?: boolean | null, bookingOptions?: Array<{ __typename: 'PageBlocksServiceBookingOptions', label?: string | null, bookUrl?: string | null, note?: string | null, addOns?: Array<{ __typename: 'PageBlocksServiceBookingOptionsAddOns', service?: string | null, bookUrl?: string | null } | null> | null } | null> | null, buttons?: Array<{ __typename: 'PageBlocksServiceButtons', label?: string | null, url?: string | null, status?: string | null, service?: string | null } | null> | null } | { __typename: 'PageBlocksEmbed', title?: string | null, source?: string | null, mode?: string | null, url?: string | null, code?: string | null, height?: number | null, caption?: string | null, spacing?: string | null, showHomeButton?: boolean | null } | null> | null } };
 
 export type PageConnectionQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']['input']>;
@@ -671,7 +683,7 @@ export type PageConnectionQueryVariables = Exact<{
 }>;
 
 
-export type PageConnectionQuery = { __typename?: 'Query', pageConnection: { __typename?: 'PageConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'PageConnectionEdges', cursor: string, node?: { __typename: 'Page', id: string, title: string, navLabel?: string | null, order?: number | null, showInNav?: boolean | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, blocks?: Array<{ __typename: 'PageBlocksContentSection', layout?: string | null, title?: string | null, body?: any | null, image?: string | null, imageSide?: string | null, imageWidth?: number | null, images?: Array<string | null> | null, words?: Array<string | null> | null, spacing?: string | null, showHomeButton?: boolean | null, cards?: Array<{ __typename: 'PageBlocksContentSectionCards', image?: string | null, title?: string | null, description?: string | null, buttonLabel?: string | null, buttonUrl?: string | null } | null> | null, buttons?: Array<{ __typename: 'PageBlocksContentSectionButtons', label?: string | null, url?: string | null, status?: string | null, service?: string | null } | null> | null } | { __typename: 'PageBlocksService', title?: string | null, description?: any | null, image?: string | null, imageSide?: string | null, imageWidth?: number | null, status?: string | null, spacing?: string | null, showHomeButton?: boolean | null, bookingOptions?: Array<{ __typename: 'PageBlocksServiceBookingOptions', label?: string | null, bookUrl?: string | null, note?: string | null, addOns?: Array<{ __typename: 'PageBlocksServiceBookingOptionsAddOns', service?: string | null, bookUrl?: string | null } | null> | null } | null> | null, buttons?: Array<{ __typename: 'PageBlocksServiceButtons', label?: string | null, url?: string | null, status?: string | null, service?: string | null } | null> | null } | { __typename: 'PageBlocksEmbed', title?: string | null, source?: string | null, mode?: string | null, url?: string | null, code?: string | null, height?: number | null, caption?: string | null, spacing?: string | null, showHomeButton?: boolean | null } | null> | null } | null } | null> | null } };
+export type PageConnectionQuery = { __typename?: 'Query', pageConnection: { __typename?: 'PageConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'PageConnectionEdges', cursor: string, node?: { __typename: 'Page', id: string, title: string, navLabel?: string | null, order?: number | null, showInNav?: boolean | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, blocks?: Array<{ __typename: 'PageBlocksContentSection', layout?: string | null, title?: string | null, eyebrow?: string | null, body?: any | null, image?: string | null, overlayAlign?: string | null, imageSide?: string | null, imageWidth?: number | null, images?: Array<string | null> | null, words?: Array<string | null> | null, spacing?: string | null, showHomeButton?: boolean | null, cards?: Array<{ __typename: 'PageBlocksContentSectionCards', image?: string | null, title?: string | null, description?: string | null, buttonLabel?: string | null, buttonUrl?: string | null } | null> | null, buttons?: Array<{ __typename: 'PageBlocksContentSectionButtons', label?: string | null, url?: string | null, status?: string | null, service?: string | null } | null> | null } | { __typename: 'PageBlocksService', title?: string | null, description?: any | null, image?: string | null, imageSide?: string | null, imageWidth?: number | null, status?: string | null, spacing?: string | null, showHomeButton?: boolean | null, bookingOptions?: Array<{ __typename: 'PageBlocksServiceBookingOptions', label?: string | null, bookUrl?: string | null, note?: string | null, addOns?: Array<{ __typename: 'PageBlocksServiceBookingOptionsAddOns', service?: string | null, bookUrl?: string | null } | null> | null } | null> | null, buttons?: Array<{ __typename: 'PageBlocksServiceButtons', label?: string | null, url?: string | null, status?: string | null, service?: string | null } | null> | null } | { __typename: 'PageBlocksEmbed', title?: string | null, source?: string | null, mode?: string | null, url?: string | null, code?: string | null, height?: number | null, caption?: string | null, spacing?: string | null, showHomeButton?: boolean | null } | null> | null } | null } | null> | null } };
 
 export const SettingsPartsFragmentDoc = gql`
     fragment SettingsParts on Settings {
@@ -681,6 +693,8 @@ export const SettingsPartsFragmentDoc = gql`
   logo
   theme
   uiStyle
+  navCtaLabel
+  navCtaUrl
   previewLink
   contactEmail
 }
@@ -697,8 +711,10 @@ export const PagePartsFragmentDoc = gql`
     ... on PageBlocksContentSection {
       layout
       title
+      eyebrow
       body
       image
+      overlayAlign
       imageSide
       imageWidth
       images

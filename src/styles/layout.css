@@ -71,6 +71,87 @@
   text-align: center;
 }
 
+/* -------------------------------------------- */
+/* 🌅 Splash: photo band with the type OVER it   */
+/* -------------------------------------------- */
+/* The base shape only — height, alignment, type scale and scrim
+   strength are rewritten per UI style in ui-styles.css. Unlike
+   --split/--stack, the children are layered, not laid out in flow:
+   the photo and scrim fill the band and the content sits on top. */
+
+.section--splash {
+  display: grid;
+  place-items: center;
+  min-height: clamp(360px, 58vh, 620px);
+  padding: clamp(2rem, 6vw, 5rem);
+  overflow: hidden;
+  text-align: center;
+}
+
+/* Photo + scrim fill the band; content is the only thing in flow. */
+.splash__media,
+.splash__scrim {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.splash__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Keeps the overlaid type readable on any photo. Strength is per style. */
+.splash__scrim {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, calc(var(--splash-scrim, 0.3) * 0.55)) 0%,
+    rgba(0, 0, 0, var(--splash-scrim, 0.3)) 100%
+  );
+}
+
+.splash__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  width: min(100%, 62ch);
+}
+
+.splash__eyebrow {
+  margin: 0;
+  font-size: 0.8rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.splash__title {
+  margin: 0;
+}
+
+.splash__body p:last-child {
+  margin-bottom: 0;
+}
+
+/* Alignment variants (Tina "Splash Text Position") */
+.splash--bottom-left {
+  place-items: end start;
+  text-align: left;
+}
+
+.splash--bottom-left .splash__content {
+  align-items: flex-start;
+}
+
+.splash--bottom-center {
+  place-items: end center;
+}
+
 /* Reverse: flip the content (image/text) side */
 .section--split.section--reverse {
   flex-direction: row-reverse;

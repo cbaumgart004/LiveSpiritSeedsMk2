@@ -13,6 +13,8 @@ export const SettingsPartsFragmentDoc = gql`
   logo
   theme
   uiStyle
+  navCtaLabel
+  navCtaUrl
   previewLink
   contactEmail
 }
@@ -29,8 +31,10 @@ export const PagePartsFragmentDoc = gql`
     ... on PageBlocksContentSection {
       layout
       title
+      eyebrow
       body
       image
+      overlayAlign
       imageSide
       imageWidth
       images

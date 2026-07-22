@@ -223,6 +223,7 @@ const contentSection = {
       label: 'Layout',
       description: 'How this section looks. Pick one; only the matching fields below are used.',
       options: [
+        { value: 'splash', label: 'Splash / Hero (text over a full-width image)' },
         { value: 'imageText', label: 'Image + Text' },
         { value: 'centered', label: 'Centered Text' },
         { value: 'cardGrid', label: 'Card Grid' },
@@ -233,16 +234,36 @@ const contentSection = {
     },
     { type: 'string', name: 'title', label: 'Heading' },
     {
+      type: 'string',
+      name: 'eyebrow',
+      label: 'Eyebrow',
+      description:
+        'Splash layout. The small tracked line above the heading, e.g. "MASSAGE + SOUND HEALING".',
+    },
+    {
       type: 'rich-text',
       name: 'body',
       label: 'Body Text',
-      description: 'Used by Image + Text, Centered Text, and Event layouts.',
+      description: 'Used by Splash, Image + Text, Centered Text, and Event layouts.',
     },
     {
       type: 'image',
       name: 'image',
       label: 'Image',
-      description: 'Image + Text layout.',
+      description: 'Image + Text layout, and the background photo for the Splash layout.',
+    },
+    {
+      type: 'string',
+      name: 'overlayAlign',
+      label: 'Splash Text Position',
+      description:
+        'Splash layout only — where the overlaid text sits on the photo. Each UI Style also has its own default feel.',
+      options: [
+        { value: 'center', label: 'Centered' },
+        { value: 'bottomLeft', label: 'Bottom left' },
+        { value: 'bottomCenter', label: 'Bottom center' },
+      ],
+      ui: { defaultValue: 'center' },
     },
     imagePlacementField,
     imageWidthField,
@@ -431,6 +452,16 @@ export default defineConfig({
               'The overall look & feel. Independent of the season — the seasonal colors carry over into every style.',
             options: UI_STYLES,
             ui: { defaultValue: 'watercolor' },
+          },
+          // The navbar action button (Wild Owl's "BOOK", Seven Senses' "Sign In").
+          // Only the alternate UI styles render a nav CTA; watercolor's navbar is
+          // the untouched original. Leave the label blank to hide it everywhere.
+          { type: 'string', name: 'navCtaLabel', label: 'Nav Button Text' },
+          {
+            type: 'string',
+            name: 'navCtaUrl',
+            label: 'Nav Button Link',
+            description: 'Shown in the navbar on the Editorial / Sanctuary / Immersive styles.',
           },
           {
             type: 'string',

@@ -3,5 +3,7 @@
   "tagline": "Holistic healing in Lafayette, Colorado",
   "theme": "summer",
   "uiStyle": "watercolor",
+  "navCtaLabel": "Book",
+  "navCtaUrl": "/sessions",
   "contactEmail": "melissacarey@spiritseedswellness.com"
 }

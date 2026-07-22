@@ -53,6 +53,56 @@
   transition: font-size 0.3s ease, padding 0.3s ease, max-width 0.3s ease;
 }
 
+/* 🔗 INLINE PAGE MENU (alternate UI styles only)
+   Rendered by Nav.jsx for editorial/sanctuary/immersive. Only component-unique
+   structure lives here; each style's typography and placement come from the
+   `nav[data-nav-variant=...]` rules in ui-styles.css (ADR 0001). */
+.inlineMenu {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 2vw, 2rem);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.inlineMenu a {
+  display: inline-block;
+  padding: 0.35rem 0;
+  color: var(--text-color);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: opacity 0.2s ease, border-color 0.2s ease;
+  border-bottom: 1px solid transparent;
+}
+
+.inlineMenu a:hover {
+  border-bottom-color: currentColor;
+}
+
+/* 🎟 NAV ACTION BUTTON (Settings → Nav Button Text) */
+.navCta {
+  display: inline-block;
+  padding: 0.55rem 1.25rem;
+  border: 1px solid var(--primary-color);
+  border-radius: var(--radius-2);
+  color: var(--text-color);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+/* Inline menu is desktop-only; below 900px the hamburger overlay takes over
+   (see the media query at the bottom of this file). */
+
 /* 🍔 HAMBURGER BUTTON WRAPPER */
 .hamburgerWrapper {
   position: absolute;
@@ -62,6 +112,114 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* ============================================================== */
+/* 🧭 PER-STYLE NAVBAR SHAPE                                      */
+/* ============================================================== */
+/* These classes are module-scoped, so ui-styles.css cannot reach  */
+/* them. The split is: the LAYOUT of the bar (row vs. stacked,     */
+/* where the title/menu/CTA sit, whether the title keeps its frame)*/
+/* lives here, keyed off the `data-nav-variant` attribute Nav.jsx  */
+/* sets; the PAINT (background, borders, display font, colors) for */
+/* each style stays in ui-styles.css via `nav:has(h1)`. Watercolor */
+/* is the untouched original and deliberately has no rules here.   */
+
+/* Desktop: the inline-menu variants drop the hamburger entirely. */
+@media (min-width: 901px) {
+  .navbar[data-nav-variant='editorial'] .hamburgerWrapper,
+  .navbar[data-nav-variant='sanctuary'] .hamburgerWrapper,
+  .navbar[data-nav-variant='immersive'] .hamburgerWrapper {
+    display: none;
+  }
+
+  /* Editorial + Sanctuary: title left, menu (and CTA) right. The framed
+     title box is dropped so the display serif sits directly on the page. */
+  .navbar[data-nav-variant='editorial'] .navbarTopRow,
+  .navbar[data-nav-variant='sanctuary'] .navbarTopRow {
+    justify-content: space-between;
+    gap: clamp(1rem, 4vw, 3rem);
+  }
+
+  .navbar[data-nav-variant='editorial'] .title,
+  .navbar[data-nav-variant='sanctuary'] .title,
+  .navbar[data-nav-variant='immersive'] .title {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    padding: 0;
+    max-width: none;
+    text-align: left;
+    font-size: clamp(1.6rem, 2.4vw, 2.6rem);
+  }
+
+  /* Immersive: title centered with the menu stacked beneath it — the
+     two-row centered masthead from the Seven Senses reference. */
+  .navbar[data-nav-variant='immersive'] .navbarTopRow {
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.35rem;
+  }
+
+  .navbar[data-nav-variant='immersive'] .title {
+    text-align: center;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-size: clamp(1.3rem, 2vw, 2rem);
+  }
+
+  .navbar[data-nav-variant='immersive'] .navCta {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    translate: 0 -50%;
+  }
+}
+
+/* The alternates need room for a menu row, so the bar is taller and the
+   overflow clip is released (the original clips its watercolor image). */
+.navbar[data-nav-variant='editorial'],
+.navbar[data-nav-variant='sanctuary'],
+.navbar[data-nav-variant='immersive'] {
+  overflow: visible;
+}
+
+/* Per-variant CTA treatment. This is paint rather than layout, but the CTA
+   is a module-scoped class and so unreachable from ui-styles.css — keeping
+   it here beats matching on a hashed class name from the global sheet. */
+
+/* Editorial: a ruled text link, not a button. */
+.navbar[data-nav-variant='editorial'] .navCta {
+  border: 0;
+  border-bottom: 1px solid var(--primary-color);
+  border-radius: 0;
+  padding: 0.35rem 0;
+}
+
+/* Sanctuary: a soft filled pill — the reference's "BOOK" action. */
+.navbar[data-nav-variant='sanctuary'] .navCta {
+  background: var(--primary-color);
+  color: var(--bg-color-light);
+  border-color: transparent;
+  border-radius: 999px;
+}
+
+.navbar[data-nav-variant='sanctuary'] .navCta:hover {
+  background: var(--text-color);
+}
+
+/* Immersive: a ghost/outline button on the transparent bar. */
+.navbar[data-nav-variant='immersive'] .navCta {
+  background: transparent;
+  border-color: currentColor;
+  border-radius: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+}
+
+.navbar[data-nav-variant='immersive'] .inlineMenu a {
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
 }
 
 /* 🌈 DROPDOWN MENU */
@@ -155,6 +313,16 @@
 }
 
 /* 📱 RESPONSIVE ADJUSTMENTS */
+
+/* Below 900px there isn't room for an inline menu on any style, so every
+   variant collapses to the shared hamburger overlay. */
+@media (max-width: 900px) {
+  .inlineMenu,
+  .navCta {
+    display: none;
+  }
+}
+
 @media (max-width: 768px) {
   .navbar {
     top: 0;

@@ -124,6 +124,51 @@ function HomeButton({ block }) {
   )
 }
 
+// Splash / hero: a full-width photo with the type stack laid OVER it, rather
+// than a panel of text sitting above an image. This is the one block whose shape
+// each UI style rewrites (height, alignment, scrim, type scale) — see the
+// per-style `.section--splash` rules in ui-styles.css.
+//
+// Deliberately does NOT use the `.media` class: the reveal animations key off
+// `.media`, and a splash should never be offset by a scroll reveal.
+const OVERLAY_ALIGN = {
+  bottomLeft: ' splash--bottom-left',
+  bottomCenter: ' splash--bottom-center',
+  center: '',
+}
+
+function SplashSection({ block, isFirst, services }) {
+  const align = OVERLAY_ALIGN[block.overlayAlign] ?? ''
+  return (
+    <section
+      className={`${sectionClass('section section--splash', null, isFirst, block)}${align}`}
+    >
+      {block.image && (
+        <div className="splash__media" data-tina-field={tinaField(block, 'image')}>
+          <img src={block.image} alt="" />
+        </div>
+      )}
+      <div className="splash__scrim" aria-hidden="true" />
+      <div className="splash__content">
+        {block.eyebrow && (
+          <p className="splash__eyebrow" data-tina-field={tinaField(block, 'eyebrow')}>
+            {block.eyebrow}
+          </p>
+        )}
+        {block.title && (
+          <h2 className="splash__title" data-tina-field={tinaField(block, 'title')}>
+            {block.title}
+          </h2>
+        )}
+        <div className="splash__body">
+          <Body block={block} name="body" />
+        </div>
+        <Buttons block={block} services={services} />
+      </div>
+    </section>
+  )
+}
+
 function SplitSection({ block, isFirst, side, services }) {
   return (
     <section className={sectionClass('section section--split', side, isFirst, block)}>
@@ -359,6 +404,8 @@ function EmbedBlock({ block, isFirst }) {
 // the only layout that consumes an alternating image side.
 function ContentSection({ block, isFirst, side, services }) {
   switch (block.layout) {
+    case 'splash':
+      return <SplashSection block={block} isFirst={isFirst} services={services} />
     case 'centered':
       return <StackedSection block={block} isFirst={isFirst} services={services} />
     case 'cardGrid':

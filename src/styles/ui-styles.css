@@ -189,6 +189,35 @@ body.style-editorial nav h1 {
   box-shadow: none;
 }
 
+/* Splash: a tall, quiet photo band that runs up UNDER the translucent bar,
+   with a light scrim — the reference keeps its hero bright and lets the
+   serif do the work. Alignment is deliberately not set here: that is the
+   editor's "Splash Text Position" choice. */
+body.style-editorial .section--splash {
+  --splash-scrim: 0.24;
+  min-height: min(78vh, 720px);
+  border-radius: 0;
+}
+
+body.style-editorial .section--splash.first-section {
+  margin-top: 0;
+  padding-top: calc(var(--navbar-height) + var(--space-4));
+}
+
+body.style-editorial .splash__title {
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-size: clamp(2.6rem, 6vw, 5rem);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+
+body.style-editorial .splash__eyebrow,
+body.style-editorial .splash__body {
+  color: rgba(255, 255, 255, 0.92);
+}
+
 /* Motion: a gentle fade-up only, matching the calm tone. */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
@@ -279,9 +308,65 @@ body.style-sanctuary .section:not(.first-section)::after {
   z-index: 1;
 }
 
+/* Softer navbar: the original bar keeps the seasonal photo as its background,
+   which the unframed title and inline menu can't be read over. Replace it with
+   a soft wash of the season's light tone so the type stays legible. */
+body.style-sanctuary nav:has(h1) {
+  background: color-mix(in srgb, var(--bg-color-light) 86%, transparent);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid color-mix(in srgb, var(--primary-color) 18%, transparent);
+  box-shadow: var(--shadow-1);
+  border-radius: 0 0 var(--radius-2) var(--radius-2);
+}
+
 /* Rounder, softer navbar title */
 body.style-sanctuary nav h1 {
   border-radius: var(--radius-2);
+}
+
+/* Splash: a big arch-topped photo tile rather than a rectangle — the same
+   petal/arch language as the media tiles, so the hero reads as hand-made.
+   The script eyebrow does the "hand-lettered" work from the reference. */
+body.style-sanctuary .section--splash {
+  --splash-scrim: 0.28;
+  min-height: min(74vh, 680px);
+  /* A wide, shallow arch across the top — the same petal language as the
+     media tiles, at hero scale. */
+  border-radius: 50% 50% var(--radius-2) var(--radius-2) / 16% 16% var(--radius-2) var(--radius-2);
+}
+
+body.style-sanctuary .section--splash.first-section {
+  margin-top: calc(var(--navbar-height) * 0.35);
+  padding-top: calc(var(--navbar-height) * 0.8);
+}
+
+body.style-sanctuary .splash__eyebrow {
+  font-family: var(--font-subheading);
+  font-size: clamp(1.3rem, 2.6vw, 2rem);
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: #fff;
+}
+
+body.style-sanctuary .splash__title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(2.4rem, 5.5vw, 4.6rem);
+  line-height: 1.06;
+  color: #fff;
+}
+
+body.style-sanctuary .splash__body {
+  color: rgba(255, 255, 255, 0.94);
+}
+
+/* A floating sparkle on the hero, matching the section glyphs. */
+body.style-sanctuary .section--splash .splash__content::after {
+  content: '✦';
+  display: block;
+  margin-top: var(--space-2);
+  font-size: 1.4rem;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 /* Motion: content rises in, the wash drifts, sparkles breathe. */
@@ -403,6 +488,51 @@ body.style-immersive nav h1 {
   background: transparent;
   border: 0;
   box-shadow: none;
+}
+
+/* Splash: the full-viewport cinematic opener. Edge-to-edge, no radius, a
+   heavy scrim so the thin serif holds up over any photograph, and the bar
+   floating on top of it. This is the "splash page" the other styles only
+   hint at — DESIGN.md's media note about immersive wanting real seasonal
+   photography applies here first: the block's own image IS the scene. */
+body.style-immersive .section--splash {
+  --splash-scrim: 0.52;
+  min-height: 100svh;
+  margin-block: 0;
+  border-radius: 0;
+  padding-inline: clamp(1.5rem, 6vw, 6rem);
+}
+
+body.style-immersive .section--splash.first-section {
+  margin-top: 0;
+  padding-top: calc(var(--navbar-height) + var(--space-4));
+}
+
+body.style-immersive .splash__eyebrow {
+  letter-spacing: 0.42em;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+body.style-immersive .splash__title {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: clamp(2.8rem, 7vw, 6.5rem);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: #fff;
+}
+
+body.style-immersive .splash__body {
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 1.05rem;
+}
+
+/* Ghost buttons over the photograph, matching the style's button language. */
+body.style-immersive .section--splash .btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  color: #fff;
 }
 
 /* Motion: strong wide parallax the content rises over. */

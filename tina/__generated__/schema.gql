@@ -96,6 +96,8 @@ type Settings implements Node & Document {
   logo: String
   theme: String
   uiStyle: String
+  navCtaLabel: String
+  navCtaUrl: String
   previewLink: String
   contactEmail: String
   id: ID!
@@ -123,6 +125,8 @@ input SettingsFilter {
   logo: ImageFilter
   theme: StringFilter
   uiStyle: StringFilter
+  navCtaLabel: StringFilter
+  navCtaUrl: StringFilter
   previewLink: StringFilter
   contactEmail: StringFilter
 }
@@ -156,8 +160,10 @@ type PageBlocksContentSectionButtons {
 type PageBlocksContentSection {
   layout: String
   title: String
+  eyebrow: String
   body: JSON
   image: String
+  overlayAlign: String
   imageSide: String
   imageWidth: Float
   images: [String]
@@ -264,8 +270,10 @@ input PageBlocksContentSectionButtonsFilter {
 input PageBlocksContentSectionFilter {
   layout: StringFilter
   title: StringFilter
+  eyebrow: StringFilter
   body: RichTextFilter
   image: ImageFilter
+  overlayAlign: StringFilter
   imageSide: StringFilter
   imageWidth: NumberFilter
   images: ImageFilter
@@ -374,6 +382,8 @@ input SettingsMutation {
   logo: String
   theme: String
   uiStyle: String
+  navCtaLabel: String
+  navCtaUrl: String
   previewLink: String
   contactEmail: String
 }
@@ -396,8 +406,10 @@ input PageBlocksContentSectionButtonsMutation {
 input PageBlocksContentSectionMutation {
   layout: String
   title: String
+  eyebrow: String
   body: JSON
   image: String
+  overlayAlign: String
   imageSide: String
   imageWidth: Float
   images: [String]

@@ -5,6 +5,8 @@ fragment SettingsParts on Settings {
   logo
   theme
   uiStyle
+  navCtaLabel
+  navCtaUrl
   previewLink
   contactEmail
 }
@@ -20,8 +22,10 @@ fragment PageParts on Page {
     ... on PageBlocksContentSection {
       layout
       title
+      eyebrow
       body
       image
+      overlayAlign
       imageSide
       imageWidth
       images

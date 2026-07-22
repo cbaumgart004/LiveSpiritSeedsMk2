@@ -47,6 +47,7 @@ src/
   styles/              Layered global CSS (see §6)
   utils/               buttonFlashHandler.js — global click-flash effect
                        preview.js — non-destructive style/season preview state (§6)
+                       useUiStyle.js — watches the <body> style class (§6 UX styles)
   assets/              Seasonal logos/backgrounds (referenced by CSS themes)
 public/
   uploads/             CMS-uploaded images (repo-based media); favicon
@@ -77,12 +78,16 @@ Content is **data**, managed via TinaCMS (git-backed) — see [ADR 0002]. Two co
 
 - **Settings** (`content/settings/index.json`) — `theme` (`spring`/`summer`/`fall`/`winter`),
   `uiStyle` (`watercolor`/`editorial`/`sanctuary`/`immersive` — see §6 UX styles), `siteTitle`, `tagline`,
-  `logo`, `contactEmail`.
+  `logo`, `contactEmail`, and `navCtaLabel`/`navCtaUrl` (the navbar action button — rendered only by
+  the alternate styles; blank hides it).
 - **Page** (`content/pages/*.json`) — `title`, `navLabel`, `order`, `showInNav`, and an ordered
   `blocks[]`. The palette is **three** block types:
   - **`contentSection`** — a general section with a `layout` picker choosing the look:
-    `imageText` (image beside text), `centered` (centered text), `cardGrid` (heading + grid of
-    mini-cards, e.g. home "Our Services"), `values` (values list), `event` (announcement + images).
+    `splash` (hero photo with the type stack laid **over** it), `imageText` (image beside text),
+    `centered` (centered text), `cardGrid` (heading + grid of mini-cards, e.g. home "Our Services"),
+    `values` (values list), `event` (announcement + images). `splash` additionally uses `eyebrow`
+    (the small tracked line above the heading) and `overlayAlign`
+    (`center`/`bottomLeft`/`bottomCenter` — where the text sits on the photo).
   - **`service`** — a bookable offering: `status` (`available`/`coming-soon`), `bookingOptions[]`
     (each with `addOns[]`), plus the shared fields below.
   - **`embed`** — a generic third-party widget: `source` (offeringtree/canva/kit/other, a label),
@@ -163,6 +168,31 @@ yoga/wellness sites (a Firecrawl review of Lila Lolling, Wild Owl Yoga, Seven Se
   edge-to-edge bands, a soft neutral vignette for depth, ghost/outline buttons, a transparent
   hairline navbar, and strong wide parallax the content rises over. **Season colors are untouched
   — the dark cinematic drama comes from real full-bleed photography (see media note below).**
+
+**A UX style changes STRUCTURE, not just tokens.** The first pass of these alternates was only fonts,
+radii and shadows, which read as one site in three typefaces. What differentiates them is DOM shape,
+so two pieces are style-aware in markup rather than CSS alone:
+
+- **Splash / hero** (`section--splash`, `SplashSection` in `Blocks.jsx`) — a `contentSection` layout
+  where the photo and a scrim fill the band and the content (eyebrow → heading → body → buttons) is
+  layered *on top*, instead of a text panel stacked above an image. The base shape lives in
+  `layout.css`; each style rewrites height, scrim strength (`--splash-scrim`) and type scale:
+  editorial a tall quiet band running under the translucent bar, sanctuary an arch-topped tile with a
+  script eyebrow, immersive a full-`100svh` edge-to-edge scene with ghost buttons. Text alignment is
+  the **editor's** choice (`overlayAlign`) and no style overrides it. The splash deliberately avoids
+  the `.media` class so scroll reveals never offset a hero.
+- **Navbar shape** (`Nav.jsx`) — watercolor keeps the original framed-title-plus-hamburger bar; the
+  three alternates render the CMS page links **inline** on desktop (collapsing to the shared hamburger
+  overlay under 900px) plus the optional Settings action button. Editorial and sanctuary put the title
+  left with the menu right; immersive stacks a centred title over a centred menu row. `Nav.jsx` reads
+  the active style with `useUiStyle()` — a `MutationObserver` on the `<body>` class, so Preview-mode
+  chips restyle the navbar live without a reload — and exposes it as `data-nav-variant`.
+
+> **Where navbar rules live:** the navbar's classes are CSS-module-scoped and therefore unreachable
+> from `ui-styles.css`. The split is: the **layout** of the bar (row vs. stacked, title framing, the
+> inline menu and CTA) lives in `Nav.module.css` keyed off `[data-nav-variant]`; the **paint**
+> (background, borders, display font) stays in `ui-styles.css` via `nav:has(h1)`. Don't try to reach
+> a hashed module class from the global sheet.
 
 Owner-selectable in `/admin` (Settings → **UI Style**). Applied like the season: `main.jsx` bakes
 `style-<uiStyle>` onto `<body>` from the build-time Settings import (no flash); `App.jsx` re-applies
