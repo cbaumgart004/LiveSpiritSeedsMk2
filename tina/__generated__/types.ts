@@ -236,6 +236,7 @@ export type SettingsConnection = Connection & {
 
 export type PageBlocksContentSectionCards = {
   __typename?: 'PageBlocksContentSectionCards';
+  image?: Maybe<Scalars['String']['output']>;
   title?: Maybe<Scalars['String']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   buttonLabel?: Maybe<Scalars['String']['output']>;
@@ -302,7 +303,20 @@ export type PageBlocksService = {
   showHomeButton?: Maybe<Scalars['Boolean']['output']>;
 };
 
-export type PageBlocks = PageBlocksContentSection | PageBlocksService;
+export type PageBlocksEmbed = {
+  __typename?: 'PageBlocksEmbed';
+  title?: Maybe<Scalars['String']['output']>;
+  source?: Maybe<Scalars['String']['output']>;
+  mode?: Maybe<Scalars['String']['output']>;
+  url?: Maybe<Scalars['String']['output']>;
+  code?: Maybe<Scalars['String']['output']>;
+  height?: Maybe<Scalars['Float']['output']>;
+  caption?: Maybe<Scalars['String']['output']>;
+  spacing?: Maybe<Scalars['String']['output']>;
+  showHomeButton?: Maybe<Scalars['Boolean']['output']>;
+};
+
+export type PageBlocks = PageBlocksContentSection | PageBlocksService | PageBlocksEmbed;
 
 export type Page = Node & Document & {
   __typename?: 'Page';
@@ -338,6 +352,7 @@ export type RichTextFilter = {
 };
 
 export type PageBlocksContentSectionCardsFilter = {
+  image?: InputMaybe<ImageFilter>;
   title?: InputMaybe<StringFilter>;
   description?: InputMaybe<StringFilter>;
   buttonLabel?: InputMaybe<StringFilter>;
@@ -398,9 +413,22 @@ export type PageBlocksServiceFilter = {
   showHomeButton?: InputMaybe<BooleanFilter>;
 };
 
+export type PageBlocksEmbedFilter = {
+  title?: InputMaybe<StringFilter>;
+  source?: InputMaybe<StringFilter>;
+  mode?: InputMaybe<StringFilter>;
+  url?: InputMaybe<StringFilter>;
+  code?: InputMaybe<StringFilter>;
+  height?: InputMaybe<NumberFilter>;
+  caption?: InputMaybe<StringFilter>;
+  spacing?: InputMaybe<StringFilter>;
+  showHomeButton?: InputMaybe<BooleanFilter>;
+};
+
 export type PageBlocksFilter = {
   contentSection?: InputMaybe<PageBlocksContentSectionFilter>;
   service?: InputMaybe<PageBlocksServiceFilter>;
+  embed?: InputMaybe<PageBlocksEmbedFilter>;
 };
 
 export type PageFilter = {
@@ -516,6 +544,7 @@ export type SettingsMutation = {
 };
 
 export type PageBlocksContentSectionCardsMutation = {
+  image?: InputMaybe<Scalars['String']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   buttonLabel?: InputMaybe<Scalars['String']['input']>;
@@ -576,9 +605,22 @@ export type PageBlocksServiceMutation = {
   showHomeButton?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+export type PageBlocksEmbedMutation = {
+  title?: InputMaybe<Scalars['String']['input']>;
+  source?: InputMaybe<Scalars['String']['input']>;
+  mode?: InputMaybe<Scalars['String']['input']>;
+  url?: InputMaybe<Scalars['String']['input']>;
+  code?: InputMaybe<Scalars['String']['input']>;
+  height?: InputMaybe<Scalars['Float']['input']>;
+  caption?: InputMaybe<Scalars['String']['input']>;
+  spacing?: InputMaybe<Scalars['String']['input']>;
+  showHomeButton?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
 export type PageBlocksMutation = {
   contentSection?: InputMaybe<PageBlocksContentSectionMutation>;
   service?: InputMaybe<PageBlocksServiceMutation>;
+  embed?: InputMaybe<PageBlocksEmbedMutation>;
 };
 
 export type PageMutation = {
@@ -591,7 +633,7 @@ export type PageMutation = {
 
 export type SettingsPartsFragment = { __typename: 'Settings', siteTitle?: string | null, tagline?: string | null, logo?: string | null, theme?: string | null, uiStyle?: string | null, previewLink?: string | null, contactEmail?: string | null };
 
-export type PagePartsFragment = { __typename: 'Page', title: string, navLabel?: string | null, order?: number | null, showInNav?: boolean | null, blocks?: Array<{ __typename: 'PageBlocksContentSection', layout?: string | null, title?: string | null, body?: any | null, image?: string | null, imageSide?: string | null, imageWidth?: number | null, images?: Array<string | null> | null, words?: Array<string | null> | null, spacing?: string | null, showHomeButton?: boolean | null, cards?: Array<{ __typename: 'PageBlocksContentSectionCards', title?: string | null, description?: string | null, buttonLabel?: string | null, buttonUrl?: string | null } | null> | null, buttons?: Array<{ __typename: 'PageBlocksContentSectionButtons', label?: string | null, url?: string | null, status?: string | null, service?: string | null } | null> | null } | { __typename: 'PageBlocksService', title?: string | null, description?: any | null, image?: string | null, imageSide?: string | null, imageWidth?: number | null, status?: string | null, spacing?: string | null, showHomeButton?: boolean | null, bookingOptions?: Array<{ __typename: 'PageBlocksServiceBookingOptions', label?: string | null, bookUrl?: string | null, note?: string | null, addOns?: Array<{ __typename: 'PageBlocksServiceBookingOptionsAddOns', service?: string | null, bookUrl?: string | null } | null> | null } | null> | null, buttons?: Array<{ __typename: 'PageBlocksServiceButtons', label?: string | null, url?: string | null, status?: string | null, service?: string | null } | null> | null } | null> | null };
+export type PagePartsFragment = { __typename: 'Page', title: string, navLabel?: string | null, order?: number | null, showInNav?: boolean | null, blocks?: Array<{ __typename: 'PageBlocksContentSection', layout?: string | null, title?: string | null, body?: any | null, image?: string | null, imageSide?: string | null, imageWidth?: number | null, images?: Array<string | null> | null, words?: Array<string | null> | null, spacing?: string | null, showHomeButton?: boolean | null, cards?: Array<{ __typename: 'PageBlocksContentSectionCards', image?: string | null, title?: string | null, description?: string | null, buttonLabel?: string | null, buttonUrl?: string | null } | null> | null, buttons?: Array<{ __typename: 'PageBlocksContentSectionButtons', label?: string | null, url?: string | null, status?: string | null, service?: string | null } | null> | null } | { __typename: 'PageBlocksService', title?: string | null, description?: any | null, image?: string | null, imageSide?: string | null, imageWidth?: number | null, status?: string | null, spacing?: string | null, showHomeButton?: boolean | null, bookingOptions?: Array<{ __typename: 'PageBlocksServiceBookingOptions', label?: string | null, bookUrl?: string | null, note?: string | null, addOns?: Array<{ __typename: 'PageBlocksServiceBookingOptionsAddOns', service?: string | null, bookUrl?: string | null } | null> | null } | null> | null, buttons?: Array<{ __typename: 'PageBlocksServiceButtons', label?: string | null, url?: string | null, status?: string | null, service?: string | null } | null> | null } | { __typename: 'PageBlocksEmbed', title?: string | null, source?: string | null, mode?: string | null, url?: string | null, code?: string | null, height?: number | null, caption?: string | null, spacing?: string | null, showHomeButton?: boolean | null } | null> | null };
 
 export type SettingsQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
@@ -617,7 +659,7 @@ export type PageQueryVariables = Exact<{
 }>;
 
 
-export type PageQuery = { __typename?: 'Query', page: { __typename: 'Page', id: string, title: string, navLabel?: string | null, order?: number | null, showInNav?: boolean | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, blocks?: Array<{ __typename: 'PageBlocksContentSection', layout?: string | null, title?: string | null, body?: any | null, image?: string | null, imageSide?: string | null, imageWidth?: number | null, images?: Array<string | null> | null, words?: Array<string | null> | null, spacing?: string | null, showHomeButton?: boolean | null, cards?: Array<{ __typename: 'PageBlocksContentSectionCards', title?: string | null, description?: string | null, buttonLabel?: string | null, buttonUrl?: string | null } | null> | null, buttons?: Array<{ __typename: 'PageBlocksContentSectionButtons', label?: string | null, url?: string | null, status?: string | null, service?: string | null } | null> | null } | { __typename: 'PageBlocksService', title?: string | null, description?: any | null, image?: string | null, imageSide?: string | null, imageWidth?: number | null, status?: string | null, spacing?: string | null, showHomeButton?: boolean | null, bookingOptions?: Array<{ __typename: 'PageBlocksServiceBookingOptions', label?: string | null, bookUrl?: string | null, note?: string | null, addOns?: Array<{ __typename: 'PageBlocksServiceBookingOptionsAddOns', service?: string | null, bookUrl?: string | null } | null> | null } | null> | null, buttons?: Array<{ __typename: 'PageBlocksServiceButtons', label?: string | null, url?: string | null, status?: string | null, service?: string | null } | null> | null } | null> | null } };
+export type PageQuery = { __typename?: 'Query', page: { __typename: 'Page', id: string, title: string, navLabel?: string | null, order?: number | null, showInNav?: boolean | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, blocks?: Array<{ __typename: 'PageBlocksContentSection', layout?: string | null, title?: string | null, body?: any | null, image?: string | null, imageSide?: string | null, imageWidth?: number | null, images?: Array<string | null> | null, words?: Array<string | null> | null, spacing?: string | null, showHomeButton?: boolean | null, cards?: Array<{ __typename: 'PageBlocksContentSectionCards', image?: string | null, title?: string | null, description?: string | null, buttonLabel?: string | null, buttonUrl?: string | null } | null> | null, buttons?: Array<{ __typename: 'PageBlocksContentSectionButtons', label?: string | null, url?: string | null, status?: string | null, service?: string | null } | null> | null } | { __typename: 'PageBlocksService', title?: string | null, description?: any | null, image?: string | null, imageSide?: string | null, imageWidth?: number | null, status?: string | null, spacing?: string | null, showHomeButton?: boolean | null, bookingOptions?: Array<{ __typename: 'PageBlocksServiceBookingOptions', label?: string | null, bookUrl?: string | null, note?: string | null, addOns?: Array<{ __typename: 'PageBlocksServiceBookingOptionsAddOns', service?: string | null, bookUrl?: string | null } | null> | null } | null> | null, buttons?: Array<{ __typename: 'PageBlocksServiceButtons', label?: string | null, url?: string | null, status?: string | null, service?: string | null } | null> | null } | { __typename: 'PageBlocksEmbed', title?: string | null, source?: string | null, mode?: string | null, url?: string | null, code?: string | null, height?: number | null, caption?: string | null, spacing?: string | null, showHomeButton?: boolean | null } | null> | null } };
 
 export type PageConnectionQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']['input']>;
@@ -629,7 +671,7 @@ export type PageConnectionQueryVariables = Exact<{
 }>;
 
 
-export type PageConnectionQuery = { __typename?: 'Query', pageConnection: { __typename?: 'PageConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'PageConnectionEdges', cursor: string, node?: { __typename: 'Page', id: string, title: string, navLabel?: string | null, order?: number | null, showInNav?: boolean | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, blocks?: Array<{ __typename: 'PageBlocksContentSection', layout?: string | null, title?: string | null, body?: any | null, image?: string | null, imageSide?: string | null, imageWidth?: number | null, images?: Array<string | null> | null, words?: Array<string | null> | null, spacing?: string | null, showHomeButton?: boolean | null, cards?: Array<{ __typename: 'PageBlocksContentSectionCards', title?: string | null, description?: string | null, buttonLabel?: string | null, buttonUrl?: string | null } | null> | null, buttons?: Array<{ __typename: 'PageBlocksContentSectionButtons', label?: string | null, url?: string | null, status?: string | null, service?: string | null } | null> | null } | { __typename: 'PageBlocksService', title?: string | null, description?: any | null, image?: string | null, imageSide?: string | null, imageWidth?: number | null, status?: string | null, spacing?: string | null, showHomeButton?: boolean | null, bookingOptions?: Array<{ __typename: 'PageBlocksServiceBookingOptions', label?: string | null, bookUrl?: string | null, note?: string | null, addOns?: Array<{ __typename: 'PageBlocksServiceBookingOptionsAddOns', service?: string | null, bookUrl?: string | null } | null> | null } | null> | null, buttons?: Array<{ __typename: 'PageBlocksServiceButtons', label?: string | null, url?: string | null, status?: string | null, service?: string | null } | null> | null } | null> | null } | null } | null> | null } };
+export type PageConnectionQuery = { __typename?: 'Query', pageConnection: { __typename?: 'PageConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'PageConnectionEdges', cursor: string, node?: { __typename: 'Page', id: string, title: string, navLabel?: string | null, order?: number | null, showInNav?: boolean | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, blocks?: Array<{ __typename: 'PageBlocksContentSection', layout?: string | null, title?: string | null, body?: any | null, image?: string | null, imageSide?: string | null, imageWidth?: number | null, images?: Array<string | null> | null, words?: Array<string | null> | null, spacing?: string | null, showHomeButton?: boolean | null, cards?: Array<{ __typename: 'PageBlocksContentSectionCards', image?: string | null, title?: string | null, description?: string | null, buttonLabel?: string | null, buttonUrl?: string | null } | null> | null, buttons?: Array<{ __typename: 'PageBlocksContentSectionButtons', label?: string | null, url?: string | null, status?: string | null, service?: string | null } | null> | null } | { __typename: 'PageBlocksService', title?: string | null, description?: any | null, image?: string | null, imageSide?: string | null, imageWidth?: number | null, status?: string | null, spacing?: string | null, showHomeButton?: boolean | null, bookingOptions?: Array<{ __typename: 'PageBlocksServiceBookingOptions', label?: string | null, bookUrl?: string | null, note?: string | null, addOns?: Array<{ __typename: 'PageBlocksServiceBookingOptionsAddOns', service?: string | null, bookUrl?: string | null } | null> | null } | null> | null, buttons?: Array<{ __typename: 'PageBlocksServiceButtons', label?: string | null, url?: string | null, status?: string | null, service?: string | null } | null> | null } | { __typename: 'PageBlocksEmbed', title?: string | null, source?: string | null, mode?: string | null, url?: string | null, code?: string | null, height?: number | null, caption?: string | null, spacing?: string | null, showHomeButton?: boolean | null } | null> | null } | null } | null> | null } };
 
 export const SettingsPartsFragmentDoc = gql`
     fragment SettingsParts on Settings {
@@ -662,6 +704,7 @@ export const PagePartsFragmentDoc = gql`
       images
       cards {
         __typename
+        image
         title
         description
         buttonLabel
@@ -704,6 +747,17 @@ export const PagePartsFragmentDoc = gql`
         status
         service
       }
+      showHomeButton
+    }
+    ... on PageBlocksEmbed {
+      title
+      source
+      mode
+      url
+      code
+      height
+      caption
+      spacing
       showHomeButton
     }
   }

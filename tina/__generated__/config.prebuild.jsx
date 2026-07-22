@@ -198,6 +198,7 @@ var contentSection = {
       list: true,
       ui: { itemProps: (item) => ({ label: item?.title || "Card" }) },
       fields: [
+        { type: "image", name: "image", label: "Thumbnail (optional)" },
         { type: "string", name: "title", label: "Card Title" },
         { type: "string", name: "description", label: "Card Text" },
         { type: "string", name: "buttonLabel", label: "Button Text" },
@@ -255,6 +256,65 @@ var service = {
     },
     spacingField,
     buttonsField,
+    homeButtonField
+  ]
+};
+var embed = {
+  name: "embed",
+  label: "Embed (OfferingTree / Canva / Kit)",
+  ui: {
+    itemProps: (item) => ({
+      label: item?.title || (item?.source ? `Embed \u2013 ${item.source}` : "Embed")
+    }),
+    defaultItem: { source: "offeringtree", mode: "url", height: 640, showHomeButton: true }
+  },
+  fields: [
+    { type: "string", name: "title", label: "Heading (optional)" },
+    {
+      type: "string",
+      name: "source",
+      label: "Source",
+      description: "Which tool this embed comes from (just a label for your reference).",
+      options: [
+        { value: "offeringtree", label: "OfferingTree (schedule / offering)" },
+        { value: "canva", label: "Canva (design / poster)" },
+        { value: "kit", label: "Kit / ConvertKit (signup form)" },
+        { value: "other", label: "Other" }
+      ],
+      ui: { defaultValue: "offeringtree" }
+    },
+    {
+      type: "string",
+      name: "mode",
+      label: "Embed Type",
+      description: "URL = paste the iframe/share link (simplest; best for Canva & OfferingTree). Code = paste the full snippet (needed for Kit forms that use a <script>).",
+      options: [
+        { value: "url", label: "URL (iframe link)" },
+        { value: "code", label: "Embed code (HTML / script)" }
+      ],
+      ui: { defaultValue: "url" }
+    },
+    {
+      type: "string",
+      name: "url",
+      label: "Embed URL",
+      description: "URL mode. e.g. a Canva \u201Csmart embed\u201D link or an OfferingTree schedule/offering URL."
+    },
+    {
+      type: "string",
+      name: "code",
+      label: "Embed Code",
+      description: "Code mode. Paste the exact snippet the tool gives you \u2014 its <script> tags will run.",
+      ui: { component: "textarea" }
+    },
+    {
+      type: "number",
+      name: "height",
+      label: "Height (px)",
+      description: "Height of the embed frame in URL mode. Blank = 640."
+    },
+    { type: "string", name: "caption", label: "Caption (optional)" },
+    spacingField,
     homeButtonField
   ]
 };
@@ -340,7 +400,7 @@ var config_default = defineConfig({
             name: "blocks",
             label: "Blocks",
             list: true,
-            templates: [contentSection, service]
+            templates: [contentSection, service, embed]
           }
         ]
       }

@@ -139,6 +139,7 @@ type SettingsConnection implements Connection {
 }
 
 type PageBlocksContentSectionCards {
+  image: String
   title: String
   description: String
   buttonLabel: String
@@ -199,7 +200,19 @@ type PageBlocksService {
   showHomeButton: Boolean
 }
 
-union PageBlocks = PageBlocksContentSection | PageBlocksService
+type PageBlocksEmbed {
+  title: String
+  source: String
+  mode: String
+  url: String
+  code: String
+  height: Float
+  caption: String
+  spacing: String
+  showHomeButton: Boolean
+}
+
+union PageBlocks = PageBlocksContentSection | PageBlocksService | PageBlocksEmbed
 
 type Page implements Node & Document {
   title: String!
@@ -234,6 +247,7 @@ input RichTextFilter {
 }
 
 input PageBlocksContentSectionCardsFilter {
+  image: ImageFilter
   title: StringFilter
   description: StringFilter
   buttonLabel: StringFilter
@@ -294,9 +308,22 @@ input PageBlocksServiceFilter {
   showHomeButton: BooleanFilter
 }
 
+input PageBlocksEmbedFilter {
+  title: StringFilter
+  source: StringFilter
+  mode: StringFilter
+  url: StringFilter
+  code: StringFilter
+  height: NumberFilter
+  caption: StringFilter
+  spacing: StringFilter
+  showHomeButton: BooleanFilter
+}
+
 input PageBlocksFilter {
   contentSection: PageBlocksContentSectionFilter
   service: PageBlocksServiceFilter
+  embed: PageBlocksEmbedFilter
 }
 
 input PageFilter {
@@ -352,6 +379,7 @@ input SettingsMutation {
 }
 
 input PageBlocksContentSectionCardsMutation {
+  image: String
   title: String
   description: String
   buttonLabel: String
@@ -412,9 +440,22 @@ input PageBlocksServiceMutation {
   showHomeButton: Boolean
 }
 
+input PageBlocksEmbedMutation {
+  title: String
+  source: String
+  mode: String
+  url: String
+  code: String
+  height: Float
+  caption: String
+  spacing: String
+  showHomeButton: Boolean
+}
+
 input PageBlocksMutation {
   contentSection: PageBlocksContentSectionMutation
   service: PageBlocksServiceMutation
+  embed: PageBlocksEmbedMutation
 }
 
 input PageMutation {

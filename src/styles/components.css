@@ -127,3 +127,52 @@
   justify-content: center;
   flex-wrap: wrap;
 }
+
+/* -------------------------------------------------------------- */
+/* 🔌 Embed block — a generic container for pasted third-party    */
+/* widgets (OfferingTree schedule, Canva design, Kit form). The   */
+/* iframe is themed with the shared radius/shadow tokens so it     */
+/* reads as part of the site under every UI style.                */
+/* -------------------------------------------------------------- */
+.embed {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.embed-frame {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-radius: var(--radius-2);
+  box-shadow: var(--shadow-2);
+  background: var(--bg-color-light);
+}
+.embed-raw {
+  width: 100%;
+}
+.embed-placeholder {
+  text-align: center;
+  opacity: 0.75;
+  border-style: dashed;
+}
+.embed-caption {
+  margin-top: 0.6rem;
+  font-size: 0.85rem;
+  opacity: 0.75;
+}
+
+/* Card thumbnail — an optional image atop a card-grid card (used for link
+   cards: SoulTree schedule, partners, pulled-in events). */
+.card-thumb {
+  display: block;
+  width: 100%;
+  margin-bottom: 0.9rem;
+}
+.card-thumb img {
+  width: 100%;
+  height: 170px;
+  object-fit: contain;
+  background: var(--bg-color-light);
+  border-radius: var(--radius-1);
+  box-shadow: var(--shadow-1);
+}
