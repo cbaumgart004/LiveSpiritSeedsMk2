@@ -11,6 +11,10 @@
   --navbar-background: url('../assets/Logo_Spring.jpg');
   --section-bg-image: url('../assets/backgrounds/Spirit_Seeds_Background_Green.jpg');
   --blossom-icon: url('../assets/icons/blossom-pink.png');
+  /* The tagline flower (assets/tagline-flower.webp) is a bitmap, so it can only
+     be tinted, not re-filled. It is painted at roughly hue 205 (winter blue), so
+     each season shifts it toward its own --primary-color. See layout.css. */
+  --tagline-hue: -45deg; /* -> mint #11eb9e */
   /* Canva Colors (commented)
   --primary-color: #11eb9e;
   --text-color: #1a9a13;
@@ -34,6 +38,7 @@
   --gradient-reverse: linear-gradient(to left, #e9b87d 0%, #e9c1ff 100%);
   --navbar-background: url('../assets/Logo_Summer.jpg');
   --section-bg-image: url('../assets/backgrounds/SummerWaterColor.jpg');
+  --tagline-hue: -170deg; /* -> warm orange #ffb347 */
   --blossom-icon: url('../assets/icons/blossom-gold.png');
   /* Canva Colors (commented)
   --primary-color: #ea5a1d;
@@ -58,6 +63,7 @@
   --gradient-reverse: linear-gradient(to left, #d97706, #92400e);
   --navbar-background: url('../assets/Logo_Fall.jpg');
   --section-bg-image: url('../assets/backgrounds/FallWaterColor.jpg');
+  --tagline-hue: -172deg; /* -> amber #d97706 */
   --blossom-icon: url('../assets/icons/blossom-rust.png');
   /* Canva Colors (commented)
   --primary-color: #920e0a;
@@ -81,6 +87,7 @@
   --gradient-reverse: linear-gradient(to left, #6cb4ee, #bcdff9);
   --navbar-background: url('../assets/Logo_Winter.jpg');
   --section-bg-image: url('../assets/backgrounds/WinterWaterColor.jpg');
+  --tagline-hue: 0deg; /* already the winter blue #6cb4ee — leave it alone */
   --blossom-icon: url('../assets/icons/blossom-blue.png');
   /* Canva Colors (commented)
   --primary-color: #2272dd;

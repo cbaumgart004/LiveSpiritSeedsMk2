@@ -9,6 +9,7 @@ import { useEffect, useRef } from 'react'
 import { tinaField } from 'tinacms/dist/react'
 import { TinaMarkdown } from 'tinacms/dist/rich-text'
 import ValuesSection from '../ValuesSection/ValuesSection'
+import TaglineArt from '../TaglineArt'
 
 // Which side the image sits on. 'left'/'right' are explicit overrides from the
 // editor; anything else ('auto' or empty) alternates by position so images
@@ -139,10 +140,40 @@ const OVERLAY_ALIGN = {
 
 function SplashSection({ block, isFirst, services }) {
   const align = OVERLAY_ALIGN[block.overlayAlign] ?? ''
+  // Pair mode: the tagline artwork sits beside the photo as a two-up
+  // composition, rather than the photo being a full-bleed backdrop with the
+  // type over it. The brushstroke bands span both columns so the pair reads as
+  // one picture — see `.splash__blend` in layout.css.
+  const pair = block.withTagline === true
+  const cls = `${sectionClass('section section--splash', null, isFirst, block)}${
+    pair ? ' splash--pair' : align
+  }`
+
+  if (pair) {
+    return (
+      <section className={cls}>
+        <div className="splash__blend splash__blend--top" aria-hidden="true" />
+        <div className="splash__blend splash__blend--bottom" aria-hidden="true" />
+        <div className="splash__content">
+          <TaglineArt />
+          {block.image && (
+            <img
+              className="splash__photo"
+              src={block.image}
+              alt={block.title || ''}
+              data-tina-field={tinaField(block, 'image')}
+            />
+          )}
+        </div>
+        {/* The artwork carries the words, but the call to action still needs to
+            be a real link, so buttons stay below the pair. */}
+        <Buttons block={block} services={services} />
+      </section>
+    )
+  }
+
   return (
-    <section
-      className={`${sectionClass('section section--splash', null, isFirst, block)}${align}`}
-    >
+    <section className={cls}>
       {block.image && (
         <div className="splash__media" data-tina-field={tinaField(block, 'image')}>
           <img src={block.image} alt="" />

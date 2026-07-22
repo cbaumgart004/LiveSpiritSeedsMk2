@@ -25,6 +25,7 @@ fragment PageParts on Page {
       eyebrow
       body
       image
+      withTagline
       overlayAlign
       imageSide
       imageWidth

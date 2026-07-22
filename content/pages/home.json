@@ -6,11 +6,9 @@
   "blocks": [
     {
       "layout": "splash",
-      "eyebrow": "Lafayette, Colorado",
       "title": "You are Resilient",
-      "body": "Trauma-informed massage, sound healing, Ayurveda, and yin yoga — in a space built for slowing down.\n",
       "image": "/uploads/Warrior.jpg",
-      "overlayAlign": "center",
+      "withTagline": true,
       "buttons": [
         {
           "label": "Book a Session",
@@ -18,15 +16,6 @@
           "status": "active"
         }
       ],
-      "showHomeButton": false,
-      "_template": "contentSection"
-    },
-    {
-      "layout": "event",
-      "title": "Welcome to Spirit Seeds Wellness",
-      "body": "",
-      "images": ["/uploads/you-are-resilient.png"],
-      "spacing": "compact",
       "showHomeButton": false,
       "_template": "contentSection"
     },

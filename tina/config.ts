@@ -253,6 +253,13 @@ const contentSection = {
       description: 'Image + Text layout, and the background photo for the Splash layout.',
     },
     {
+      type: 'boolean',
+      name: 'withTagline',
+      label: 'Show Tagline Artwork Beside the Photo',
+      description:
+        'Splash layout only. Puts the "Your Integrative Healer / You are Resilient" artwork next to the photo as a two-up banner. The heading, eyebrow, body and buttons are not shown in this mode — the artwork carries the words.',
+    },
+    {
       type: 'string',
       name: 'overlayAlign',
       label: 'Splash Text Position',

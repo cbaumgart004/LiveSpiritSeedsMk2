@@ -42,6 +42,7 @@ src/
   components/
     cms/Blocks.jsx     Renders blocks[] into the CSS primitives (§6)
     Nav.jsx            Nav generated from the CMS page list; Hamburger, ScrollToTop
+    TaglineArt.jsx     The "You are Resilient" banner, in 3 themeable layers (§6)
     PreviewBar.jsx     Non-destructive style/season preview toolbar (§6 Preview mode)
     ValuesSection/     Reused by the values block
   styles/              Layered global CSS (see §6)
@@ -181,6 +182,21 @@ so two pieces are style-aware in markup rather than CSS alone:
   script eyebrow, immersive a full-`100svh` edge-to-edge scene with ghost buttons. Text alignment is
   the **editor's** choice (`overlayAlign`) and no style overrides it. The splash deliberately avoids
   the `.media` class so scroll reveals never offset a hero.
+- **Tagline artwork** (`TaglineArt.jsx`) — the "Your Integrative Healer / You are Resilient" banner.
+  The supplied `Tagline.svg` was a 26MB export with the lettering converted to outlines and the
+  washes embedded as base64 rasters: unshippable, and impossible to theme as a single `<img>`. It is
+  split into three layers in `src/assets/` — `tagline-art.webp` (the painted washes + bowl photo,
+  75KB), `tagline-flower.webp` (the flower, separated so it can be tinted, 32KB) and
+  `tagline-text.svg` (the lettering as paths, `fill="currentColor"`, inlined via `?raw` so it
+  inherits the page `color`; ~174KB raw but ~23KB brotli). The ink follows `--text-color`; the
+  flower is a bitmap so it can only be **tinted**, via a per-season `--tagline-hue` token in
+  `themes.css`. The lettering carries no machine-readable text, so `TAGLINE_COPY` supplies a
+  visually-hidden accessible equivalent — **keep the two in sync**.
+- **Splash pair mode** — a `splash` block with `withTagline` renders the artwork beside the photo as
+  a two-up banner instead of type-over-photo. In this mode the photo is a real column with
+  `object-fit: contain` (never cropped), the block's heading/eyebrow/body are not shown because the
+  artwork carries the words, and the brushstroke band lifted out of the SVG (`wash-band.webp`) is
+  stretched across **both** columns at the top and bottom so the pair reads as one composition.
 - **Navbar shape** (`Nav.jsx`) — watercolor keeps the original framed-title-plus-hamburger bar; the
   three alternates render the CMS page links **inline** on desktop (collapsing to the shared hamburger
   overlay under 900px) plus the optional Settings action button. Editorial and sanctuary put the title

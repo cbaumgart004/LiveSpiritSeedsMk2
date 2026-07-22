@@ -33,6 +33,20 @@ body {
   line-height: 1.6;
 }
 
+/* Available to screen readers, invisible on screen. Used where artwork carries
+   the words as outlines (see components/TaglineArt.jsx). */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 /* -------------------------------------------- */
 /* 📄 Page Wrapper Utility (Global Layout Rule) */
 /* -------------------------------------------- */

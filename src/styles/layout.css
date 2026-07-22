@@ -151,6 +151,121 @@
   margin-bottom: 0;
 }
 
+/* -------------------------------------------- */
+/* 🖋️ Tagline artwork (components/TaglineArt)   */
+/* -------------------------------------------- */
+/* Three stacked layers in one 1230:693 box: painted washes, the flower,
+   and the lettering. Only the last two are themed — the washes are the
+   artist's original palette and stay as painted. */
+
+.tagline {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1230 / 693;
+}
+
+.tagline__wash,
+.tagline__flower,
+.tagline__ink {
+  position: absolute;
+  inset: 0;
+}
+
+.tagline__wash {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* The flower is a bitmap, so it can only be tinted. --tagline-hue is set per
+   season in themes.css; the placement matches where it sits in the artwork. */
+.tagline__flower {
+  inset: auto auto 22% 30%;
+  width: 7.2%;
+  height: auto;
+  filter: hue-rotate(var(--tagline-hue, 0deg)) saturate(1.05);
+}
+
+/* Inline SVG inherits `color`, which is the whole point of not using <img>. */
+.tagline__ink {
+  color: var(--tagline-ink, var(--text-color));
+}
+
+.tagline__ink svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* -------------------------------------------- */
+/* 🤝 Splash pair: artwork beside the photo      */
+/* -------------------------------------------- */
+
+.splash--pair {
+  place-items: stretch;
+}
+
+.splash--pair .splash__content {
+  width: 100%;
+  max-width: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 3rem);
+}
+
+/* In pair mode the photo is a real column rather than a background, so it is
+   never cropped from the top — `contain` keeps the whole frame visible. */
+.splash--pair .splash__photo {
+  width: 100%;
+  height: 100%;
+  max-height: 60vh;
+  object-fit: contain;
+  object-position: center;
+  border-radius: var(--radius-2);
+}
+
+/* The peach brushstroke lifted out of the artwork, stretched across BOTH
+   columns at the top and bottom edges so the two images read as one
+   composition instead of two tiles side by side. */
+.splash__blend {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 26%;
+  pointer-events: none;
+  background-image: url('../assets/wash-band.webp');
+  background-repeat: no-repeat;
+  background-size: 115% 100%;
+  background-position: center;
+  opacity: 0.55;
+  z-index: 1;
+}
+
+.splash__blend--top {
+  top: 4%;
+}
+
+.splash__blend--bottom {
+  bottom: 4%;
+  scale: -1 -1; /* mirror it so the two bands aren't identical */
+}
+
+@media (max-width: 768px) {
+  .splash--pair .splash__content {
+    grid-template-columns: 1fr;
+  }
+
+  .splash--pair .splash__photo {
+    max-height: 42vh;
+  }
+
+  .splash__blend {
+    height: 18%;
+    opacity: 0.4;
+  }
+}
+
 /* Alignment variants (Tina "Splash Text Position") */
 .splash--bottom-left {
   place-items: end start;
