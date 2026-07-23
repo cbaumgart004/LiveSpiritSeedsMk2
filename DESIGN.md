@@ -6,7 +6,9 @@ A token-efficient map of this repo. Read this first; open source only for the fi
 
 A static marketing/brochure website for the **Live Spirit Seeds** wellness & massage-therapy
 practice. It's a client-side React SPA — no backend, no database, no auth. Page content is
-hardcoded in components and driven by a small config file.
+**data, not code**: git-backed JSON under `content/`, owner-editable through TinaCMS at
+`/admin`, rendered by a single dynamic route (§4). Adding a page means adding a content file,
+not writing a component.
 
 ## 2. Stack & entry points
 
@@ -293,6 +295,3 @@ ADRs live in `docs/adr/`; domain vocabulary in [`CONTEXT.md`](./CONTEXT.md).
 
 Reusable how-to (portable across repos): [TinaCMS on a Vite + React SPA — Playbook](./docs/tinacms-vite-playbook.md)
 — setup recipe, the on-page editing wiring, and a cheap-diagnosis checklist (§7) for editing bugs.
-
-In progress (`feature/admin-cms` branch): making content owner-editable via TinaCMS — pages will
-render from git-backed content files instead of hardcoded JSX, with on-page editing at `/admin`.
