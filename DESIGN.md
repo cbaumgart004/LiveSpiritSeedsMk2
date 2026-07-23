@@ -117,12 +117,22 @@ images are repo-based (in `public/uploads`, compressed by a push-time GitHub Act
 > **Deploys depend on TinaCloud, per branch.** `npm run build` is `tinacms build`, which regenerates
 > `tina/__generated__/client.ts` — the committed copy points at `http://localhost:4001/graphql` (the
 > local dev server) and is *always* overwritten at build time, so never treat it as the real endpoint.
-> The build needs `TINA_CLIENT_ID` + `TINA_TOKEN`, and serves content for the branch in
-> `tina/config.ts` (`TINA_BRANCH` → `VERCEL_GIT_COMMIT_REF` → `main`). **A preview deploy of a feature
-> branch therefore fails until that branch has been indexed in the TinaCloud dashboard** — the code is
-> the branch's but the content query goes to TinaCloud, and an unknown branch (or one whose indexed
-> schema predates a new field) errors. Note also that the SPA queries TinaCloud **at runtime**, so the
-> live site has a runtime dependency on it; there is no static content fallback yet.
+> The build needs `TINA_CLIENT_ID` + `TINA_TOKEN`, and serves content for the branch resolved in
+> `tina/config.ts`: `TINA_BRANCH` → `VERCEL_GIT_COMMIT_REF` (Vercel) → `CF_PAGES_BRANCH` (Cloudflare
+> Pages) → `main`. **A preview deploy of a feature branch therefore fails until that branch has been
+> indexed in the TinaCloud dashboard** — the code is the branch's but the content query goes to
+> TinaCloud, and an unknown branch (or one whose indexed schema predates a new field) errors.
+>
+> ⚠️ **Never pin `TINA_BRANCH` in the host's env vars.** It overrides the whole chain, so a leftover
+> value keeps every later deploy querying a branch that may no longer exist — the failure names a
+> branch absent from `git branch -a`, which sends you looking in the repo instead of the dashboard.
+> Leave it unset so each deploy resolves its own branch. (This bit us on 2026-07-23: a stale
+> `feature/admin-cms` in Vercel silently defeated the fix in `8140d69`.)
+>
+> Note also that the SPA queries TinaCloud **at runtime**, so the live site has a runtime dependency
+> on it; there is no static content fallback yet. A deploy whose **origin** isn't in TinaCloud →
+> Site URLs has its content reads blocked and renders the app's "Page not found" on every page even
+> though the build succeeded — see the playbook §6/§7.
 
 Block-renderer behaviors (`Blocks.jsx`): a `contentSection` dispatches on its `layout`; a `service`
 renders the bookable card; an `embed` renders a third-party widget (see **Live embeds** below).

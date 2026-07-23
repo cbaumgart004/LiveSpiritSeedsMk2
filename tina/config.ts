@@ -435,15 +435,27 @@ const embed = {
 
 export default defineConfig({
   // Which git branch TinaCloud serves content from. Preview deploys build from
-  // a feature branch, so fall back to the branch Vercel is building
-  // (VERCEL_GIT_COMMIT_REF) before defaulting to main — otherwise a preview
-  // builds this branch's CODE against main's CONTENT, and every query fails on
-  // fields main's indexed schema doesn't have yet.
+  // a feature branch, so fall back to the branch the HOST is building before
+  // defaulting to main — otherwise a preview builds this branch's CODE against
+  // main's CONTENT, and every query fails on fields main's indexed schema
+  // doesn't have yet. VERCEL_GIT_COMMIT_REF is Vercel's; CF_PAGES_BRANCH is
+  // Cloudflare Pages' (only one is ever set, so the order between them is
+  // arbitrary). A host with neither lands on main.
+  //
+  // DON'T pin TINA_BRANCH in the host dashboard. It wins over everything below,
+  // so a value left over from an old branch silently breaks every future deploy
+  // (cost us a debugging session on 2026-07-23 — a stale `feature/admin-cms`).
+  // Leave it unset and let the per-deploy branch resolve itself; set it only to
+  // deliberately override a single build.
   //
   // NOTE: this only picks the branch. TinaCloud must also have INDEXED it —
   // open the branch once in the TinaCloud dashboard, or the build errors with
   // the branch unknown. See DESIGN.md §6 (Content / CMS).
-  branch: process.env.TINA_BRANCH || process.env.VERCEL_GIT_COMMIT_REF || 'main',
+  branch:
+    process.env.TINA_BRANCH ||
+    process.env.VERCEL_GIT_COMMIT_REF ||
+    process.env.CF_PAGES_BRANCH ||
+    'main',
   // Local dev works without these; TinaCloud fills them in for production (Phase 4).
   clientId: process.env.TINA_CLIENT_ID || null,
   token: process.env.TINA_TOKEN || null,
