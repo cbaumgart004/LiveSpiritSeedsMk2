@@ -52,18 +52,8 @@
         }
       ],
       "spacing": "normal",
-      "showHomeButton": false,
-      "_template": "contentSection"
-    },
-    {
-      "title": "Stay in the Loop",
-      "source": "kit",
-      "mode": "code",
-      "code": "",
-      "caption": "Newsletter signup, embedded from Kit.",
-      "spacing": "normal",
       "showHomeButton": true,
-      "_template": "embed"
+      "_template": "contentSection"
     }
   ]
 }
