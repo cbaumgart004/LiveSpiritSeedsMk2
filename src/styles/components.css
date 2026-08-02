@@ -240,6 +240,16 @@
 @media (max-width: 640px) {
   .schedule__item {
     grid-template-columns: 1fr;
+    /* The shared .card padding (var(--space-4) = 32px a side) eats 64px of a
+       ~310px card, which squeezed the text column to 239px and wrapped nearly
+       every class name onto a second line. Tighter here buys ~45px back. */
+    padding: 0.9rem 1rem;
+  }
+  /* The shared .card rule sets 1.1rem, at which most class names ("Restorative
+     Yin and Sound Healing") overshoot the line by a word. One step down fits
+     them. !important to beat `.card p`, as the sibling rules above do. */
+  .schedule__name {
+    font-size: 1rem !important;
   }
   .schedule__meta {
     grid-column: 1;

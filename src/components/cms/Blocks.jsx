@@ -35,6 +35,22 @@ function sectionClass(base, side, isFirst, block) {
   return `${base}${reverse}${first}${spacingClass(block)}`
 }
 
+// Does a rich-text field actually contain anything? Clearing the text in /admin
+// leaves an AST shell ({ type: 'root', children: [ an empty paragraph ] }), which
+// is truthy — so a plain `block.body &&` check would still render an empty panel.
+// Images count as content even though they carry no text.
+function hasRichText(content) {
+  if (!content) return false
+  if (typeof content === 'string') return content.trim().length > 0
+  const walk = (node) => {
+    if (!node || typeof node !== 'object') return false
+    if (typeof node.text === 'string' && node.text.trim()) return true
+    if (node.type === 'img' || node.url) return true
+    return Array.isArray(node.children) && node.children.some(walk)
+  }
+  return walk(content)
+}
+
 // Renders a rich-text (AST) field. Rich-text bodies are objects; TinaMarkdown
 // renders them — including any inline images the editor embeds. The string
 // guard keeps a hand-edited/plain-text value from rendering as [object Object].
@@ -247,9 +263,13 @@ function StackedSection({ block, isFirst, services }) {
   return (
     <section className={sectionClass('section section--stack', null, isFirst, block)}>
       {block.title && <h2 data-tina-field={tinaField(block, 'title')}>{block.title}</h2>}
-      <div className="panel">
-        <Body block={block} name="body" />
-      </div>
+      {/* Skip the panel when there's no body — an empty one renders as a bare
+          bordered strip, which is what a heading-only section used to look like. */}
+      {hasRichText(block.body) && (
+        <div className="panel">
+          <Body block={block} name="body" />
+        </div>
+      )}
       <Buttons block={block} services={services} />
       <HomeButton block={block} />
     </section>

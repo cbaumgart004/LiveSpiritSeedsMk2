@@ -7,7 +7,7 @@
     {
       "layout": "centered",
       "title": "Practice With Me",
-      "body": "Book a live class or session below. The schedule updates itself from every studio I teach at — no need to keep links in sync by hand.\n",
+      "body": "",
       "spacing": "normal",
       "showHomeButton": false,
       "_template": "contentSection"

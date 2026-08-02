@@ -213,10 +213,15 @@
 /* -------------------------------------------- */
 /* 🔀 Splash lap: artwork and photo, overlapped   */
 /* -------------------------------------------- */
-/* Side by side, but the artwork laps 15% of the row back over the photo and
-   stays semi-transparent, so the photograph reads through the overlap instead
-   of the two sitting as separate tiles. Photo left, artwork right; each panel
-   takes 57.5% and the artwork pulls left by -15%: 57.5 + 57.5 - 15 = 100. */
+/* Side by side, but the artwork laps 15% of the row over the photo and stays
+   semi-transparent *where it crosses*, so the photograph reads through the
+   overlap instead of the two sitting as separate tiles. Artwork left, photo
+   right; each panel takes 57.5% and the artwork pushes right by -15%:
+   57.5 + 57.5 - 15 = 100.
+
+   The artwork is first visually (`order: -1`) rather than by reordering the
+   DOM, so the photo stays first in source — it is the meaningful image, and
+   the artwork's words are already exposed to assistive tech by TaglineArt. */
 
 .splash--lap {
   min-height: clamp(420px, 72vh, 840px);
@@ -235,11 +240,32 @@
 }
 
 .splash--lap .splash__artwork {
+  order: -1;
   flex: 0 0 57.5%;
-  margin-left: -15%;
+  margin-right: -15%;
   position: relative;
   z-index: 2;
-  opacity: var(--tagline-blend, 0.72);
+  /* Fade ONLY the lapping edge, not the whole panel. A blanket `opacity` washed
+     out the lettering everywhere — including the two-thirds of the artwork that
+     sits over plain background — which is what made the pair read as misaligned.
+     The fade starts at 78% rather than at the geometric start of the lap: the
+     "You are Resilient" lettering runs almost to the artwork's right edge, and
+     fading from the overlap's true beginning swallowed the middle of the words. */
+  --tagline-lap: rgba(0, 0, 0, var(--tagline-blend, 0.72));
+  -webkit-mask-image: linear-gradient(
+    to right,
+    #000 0%,
+    #000 78%,
+    var(--tagline-lap) 92%,
+    var(--tagline-lap) 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    #000 0%,
+    #000 78%,
+    var(--tagline-lap) 92%,
+    var(--tagline-lap) 100%
+  );
 }
 
 /* The button row leads the section, so it needs to sit above the lapped
@@ -271,6 +297,13 @@
     flex: 0 0 auto;
     width: 100%;
     margin-left: 0;
+    margin-right: 0;
+  }
+
+  /* Stacked, nothing laps — so the artwork must be fully opaque again. */
+  .splash--lap .splash__artwork {
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 
   .splash--lap .splash__photo {
