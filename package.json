@@ -9,7 +9,8 @@
     "build": "tinacms build -c \"node ./node_modules/vite/bin/vite.js build\"",
     "lint": "eslint .",
     "preview": "vite preview",
-    "optimize:images": "node scripts/optimize-images.mjs"
+    "optimize:images": "node scripts/optimize-images.mjs",
+    "schedule:harvest": "node scripts/harvest-schedule.mjs"
   },
   "dependencies": {
     "prop-types": "^15.8.1",
@@ -30,6 +31,7 @@
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.16",
     "globals": "^15.14.0",
+    "node-html-parser": "^9.0.1",
     "sharp": "^0.35.3",
     "vite-plugin-compression": "^0.5.1"
   }

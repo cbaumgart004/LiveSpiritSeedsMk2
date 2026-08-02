@@ -215,6 +215,9 @@ type PageBlocksEmbed {
   url: String
   code: String
   height: Float
+  scheduleLimit: Float
+  scheduleEmptyText: String
+  scheduleLinkLabel: String
   caption: String
   spacing: String
   showHomeButton: Boolean
@@ -327,6 +330,9 @@ input PageBlocksEmbedFilter {
   url: StringFilter
   code: StringFilter
   height: NumberFilter
+  scheduleLimit: NumberFilter
+  scheduleEmptyText: StringFilter
+  scheduleLinkLabel: StringFilter
   caption: StringFilter
   spacing: StringFilter
   showHomeButton: BooleanFilter
@@ -465,6 +471,9 @@ input PageBlocksEmbedMutation {
   url: String
   code: String
   height: Float
+  scheduleLimit: Float
+  scheduleEmptyText: String
+  scheduleLinkLabel: String
   caption: String
   spacing: String
   showHomeButton: Boolean

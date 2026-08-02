@@ -1,0 +1,65 @@
+name: Harvest teaching schedule
+
+# Rebuilds content/schedule/melissa.json from every studio in
+# scripts/lib/schedule-sources.mjs, so the site shows one consolidated schedule
+# without Melissa re-entering her classes anywhere.
+#
+# Committing that file is what deploys it: the host rebuilds on push, and the
+# site imports the JSON at build time. Pushes made with GITHUB_TOKEN don't
+# retrigger workflows, so there is no loop (same as optimize-uploads.yml).
+#
+# NOTIFICATION: if a studio's widget breaks or Melissa drops off its roster, the
+# harvester exits non-zero and this job goes red — GitHub emails the repo owner.
+# We still commit whatever we harvested first, so one broken studio can't wipe
+# the other studios' classes off the site while it's being looked at.
+on:
+  schedule:
+    # 09:15 UTC ≈ 03:15 MDT — after studios have posted the day's changes.
+    - cron: '15 9 * * *'
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/harvest-schedule.mjs'
+      - 'scripts/lib/schedule-sources.mjs'
+      - 'scripts/lib/adapters/**'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: harvest-schedule
+  cancel-in-progress: false
+
+jobs:
+  harvest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+
+      - name: Harvest schedules
+        id: harvest
+        # Don't fail the step yet — we want the commit below to run first.
+        continue-on-error: true
+        run: node scripts/harvest-schedule.mjs
+
+      - name: Commit schedule
+        run: |
+          if [ -n "$(git status --porcelain content/schedule)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add content/schedule
+            git commit -m "chore: refresh teaching schedule"
+            git push
+          else
+            echo "Schedule unchanged."
+          fi
+
+      - name: Report source failures
+        if: steps.harvest.outcome == 'failure'
+        run: |
+          echo "::error::A schedule source needs review — see the Harvest schedules step for the ✗ lines."
+          exit 1

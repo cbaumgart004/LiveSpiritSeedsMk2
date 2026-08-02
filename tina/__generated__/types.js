@@ -94,6 +94,9 @@ export const PagePartsFragmentDoc = gql`
       url
       code
       height
+      scheduleLimit
+      scheduleEmptyText
+      scheduleLinkLabel
       caption
       spacing
       showHomeButton

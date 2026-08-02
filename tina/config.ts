@@ -392,6 +392,7 @@ const embed = {
         { value: 'offeringtree', label: 'OfferingTree (schedule / offering)' },
         { value: 'canva', label: 'Canva (design / poster)' },
         { value: 'kit', label: 'Kit / ConvertKit (signup form)' },
+        { value: 'teaching-schedule', label: 'My teaching schedule (all studios)' },
         { value: 'other', label: 'Other' },
       ],
       ui: { defaultValue: 'offeringtree' },
@@ -405,6 +406,7 @@ const embed = {
       options: [
         { value: 'url', label: 'URL (iframe link)' },
         { value: 'code', label: 'Embed code (HTML / script)' },
+        { value: 'schedule', label: 'Teaching schedule (nothing to paste — updates itself)' },
       ],
       ui: { defaultValue: 'url' },
     },
@@ -426,6 +428,28 @@ const embed = {
       name: 'height',
       label: 'Height (px)',
       description: 'Height of the embed frame in URL mode. Blank = 640.',
+    },
+    // --- Schedule mode -------------------------------------------------------
+    // Nothing to paste: the classes are harvested nightly from every studio in
+    // scripts/lib/schedule-sources.mjs. These fields only control the wording.
+    {
+      type: 'number',
+      name: 'scheduleLimit',
+      label: 'Schedule: most classes to show',
+      description: 'Schedule mode. Blank = show everything found (about two weeks ahead).',
+    },
+    {
+      type: 'string',
+      name: 'scheduleEmptyText',
+      label: 'Schedule: message when there are no classes',
+      description:
+        'Schedule mode. Shown on a week with nothing scheduled, so the section never looks broken. Blank = "No classes scheduled just now."',
+    },
+    {
+      type: 'string',
+      name: 'scheduleLinkLabel',
+      label: 'Schedule: studio link wording',
+      description: 'Schedule mode. Blank = "Full schedule at {studio}".',
     },
     { type: 'string', name: 'caption', label: 'Caption (optional)' },
     spacingField,

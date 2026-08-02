@@ -418,14 +418,119 @@ function RawEmbed({ html }) {
   return <div className="embed-raw" ref={ref} />
 }
 
+// Melissa's classes across every studio she teaches at, harvested nightly by
+// scripts/harvest-schedule.mjs. Imported at build time (not fetched) so the page
+// has no runtime dependency on any studio's booking widget — the Action commits
+// this file, which triggers a rebuild. See DESIGN.md §6 (Teaching schedule).
+import scheduleData from '../../../content/schedule/melissa.json'
+
+// 'YYYY-MM-DD' → "Sunday, August 2". Built from parts, not new Date(string),
+// which parses a bare date as UTC and lands on the previous day west of GMT.
+function formatDay(iso) {
+  const [y, m, d] = iso.split('-').map(Number)
+  return new Date(y, m - 1, d).toLocaleDateString(undefined, {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+  })
+}
+
+function groupByDay(sessions) {
+  const days = []
+  for (const s of sessions) {
+    const last = days[days.length - 1]
+    if (last && last.date === s.date) last.sessions.push(s)
+    else days.push({ date: s.date, sessions: [s] })
+  }
+  return days
+}
+
+// Schedule mode. Renders the harvested classes as our own markup rather than a
+// studio widget, so it themes under every UI style and can't break the page.
+// An empty list is a NORMAL result (a week off), so it gets a real message and a
+// way through to the studio — never a blank panel that reads as broken.
+function ScheduleEmbed({ block }) {
+  const all = scheduleData.sessions || []
+  const limit = Number(block.scheduleLimit) || 0
+  const sessions = limit > 0 ? all.slice(0, limit) : all
+  const studios = scheduleData.studios || []
+  const linkLabel = block.scheduleLinkLabel || 'Full schedule at {studio}'
+
+  if (!sessions.length) {
+    return (
+      <div className="panel schedule-empty">
+        <p>{block.scheduleEmptyText || 'No classes scheduled just now.'}</p>
+        {studios.length > 0 && (
+          <div className="button-row">
+            {studios.map((s) => (
+              <a key={s.id} className="btn" href={s.scheduleUrl} target="_blank" rel="noreferrer">
+                {linkLabel.replace('{studio}', s.label)}
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  return (
+    <div className="schedule">
+      {groupByDay(sessions).map((day) => (
+        <div className="schedule__day" key={day.date}>
+          <h3 className="schedule__date">{formatDay(day.date)}</h3>
+          <ul className="schedule__list">
+            {day.sessions.map((s) => (
+              <li className="card schedule__item" key={s.id}>
+                <p className="schedule__time">
+                  {s.startTime}
+                  {s.endTime ? ` – ${s.endTime}` : ''}
+                  {s.timezone ? ` ${s.timezone}` : ''}
+                </p>
+                <p className="schedule__name">{s.name}</p>
+                <p className="schedule__meta">
+                  {/* Prefer a per-event booking page when the source has one
+                      (The Events Calendar does; Mindbody's widget doesn't). */}
+                  <a href={s.bookUrl || s.studioUrl} target="_blank" rel="noreferrer">
+                    {s.studio}
+                  </a>
+                  {s.cost && <span> · {s.cost}</span>}
+                  {/* The harvester keeps Mindbody's "(substitute)" suffix — it's
+                      real information for someone deciding whether to come. */}
+                  {/\(substitute\)/i.test(s.staff) && <span className="schedule__note"> · substitute</span>}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 // The consolidation block: one place to drop any external tool's copy-paste
 // widget (OfferingTree schedule, Canva design, Kit form) so the site stays live
 // off that source instead of hand-maintained links. URL mode → a themed iframe;
-// Code mode → RawEmbed (runs the snippet's scripts). Empty → an /admin hint.
+// Code mode → RawEmbed (runs the snippet's scripts); Schedule mode → the
+// harvested teaching schedule (nothing to paste). Empty → an /admin hint.
 function EmbedBlock({ block, isFirst }) {
+  const isSchedule = block.mode === 'schedule'
   const useCode = block.mode === 'code'
-  const hasUrl = !useCode && block.url
+  const hasUrl = !isSchedule && !useCode && block.url
   const hasCode = useCode && block.code
+  if (isSchedule) {
+    return (
+      <section className={sectionClass('section section--stack', null, isFirst, block)}>
+        {block.title && <h2 data-tina-field={tinaField(block, 'title')}>{block.title}</h2>}
+        <ScheduleEmbed block={block} />
+        {block.caption && (
+          <p className="embed-caption" data-tina-field={tinaField(block, 'caption')}>
+            {block.caption}
+          </p>
+        )}
+        <HomeButton block={block} />
+      </section>
+    )
+  }
   return (
     <section className={sectionClass('section section--stack', null, isFirst, block)}>
       {block.title && <h2 data-tina-field={tinaField(block, 'title')}>{block.title}</h2>}

@@ -25,6 +25,8 @@ not writing a component.
 - `npm run build` — production build.
 - `npm run lint` — ESLint.
 - `npm run preview` — preview the built site.
+- `npm run schedule:harvest` — rebuild `content/schedule/melissa.json` from every studio (§6).
+  Runs nightly in CI; run it by hand after editing `scripts/lib/schedule-sources.mjs`.
 
 ## 3. Layout
 
@@ -32,6 +34,14 @@ not writing a component.
 content/               CMS content (git-backed, editable in /admin) — see ADR 0002
   settings/index.json  Site Settings (theme, siteTitle, tagline, logo, contact)
   pages/*.json         One file per page; filename = route slug; holds blocks[]
+  schedule/melissa.json  GENERATED, not owner-edited — the harvested teaching
+                       schedule (§6 Teaching schedule). Not a Tina collection.
+scripts/
+  harvest-schedule.mjs Builds content/schedule/melissa.json from every studio
+  lib/schedule-sources.mjs  Which studios to harvest (add a studio here)
+  lib/time.mjs         Timezone helpers shared by the adapters
+  lib/adapters/        One per booking platform: healcode (Mindbody),
+                       tribe-events (WordPress), momence, punchpass-ics
 tina/
   config.ts            TinaCMS schema (Settings + Page collections, block palette)
   __generated__/       Generated GraphQL client + types (committed)
@@ -93,9 +103,11 @@ Content is **data**, managed via TinaCMS (git-backed) — see [ADR 0002]. Two co
     (`center`/`bottomLeft`/`bottomCenter` — where the text sits on the photo).
   - **`service`** — a bookable offering: `status` (`available`/`coming-soon`), `bookingOptions[]`
     (each with `addOns[]`), plus the shared fields below.
-  - **`embed`** — a generic third-party widget: `source` (offeringtree/canva/kit/other, a label),
-    `mode` (`url` iframe link **or** `code` raw snippet), `url`/`code`, `height`, `caption`. The
-    consolidation point for OfferingTree schedules, Canva designs, and Kit forms — see §6.
+  - **`embed`** — a generic third-party widget: `source` (offeringtree/canva/kit/teaching-schedule/
+    other, a label), `mode` (`url` iframe link, `code` raw snippet, **or `schedule`** — the harvested
+    teaching schedule, which needs nothing pasted), `url`/`code`, `height`, `caption`, plus
+    `scheduleLimit`/`scheduleEmptyText`/`scheduleLinkLabel` for schedule mode. The consolidation
+    point for OfferingTree schedules, Canva designs, Kit forms, and class schedules — see §6.
 
   Both types share: `imageSide`, `imageWidth` (% of the row, 20–70), `spacing`
   (`compact`/`normal`/`airy`), a unified `buttons[]` list, and `showHomeButton`. Each renders
@@ -164,6 +176,84 @@ re-executes its `<script>` tags** (a script inserted via innerHTML does not run 
 required for Kit's JS form embeds). Empty blocks show an `/admin` hint instead of breaking. The
 "Practice With Me" page (`content/pages/practice-with-me.json`) is built from these. OfferingTree has
 no public REST API; embed widgets, Zapier, and Google-Calendar sync are the integration surfaces.
+
+**Teaching schedule (multi-studio).** Melissa teaches at several studios; the site shows one merged
+list of her upcoming classes without her re-entering anything. A nightly GitHub Action
+(`.github/workflows/harvest-schedule.yml`) runs `scripts/harvest-schedule.mjs`, which walks
+`scripts/lib/schedule-sources.mjs`, calls one adapter per studio, merges and sorts every class, and
+commits `content/schedule/melissa.json`. The commit triggers the host's rebuild; `Blocks.jsx`
+**imports that JSON at build time**, so the page has *no* runtime dependency on any studio's booking
+widget (the site already depends on TinaCloud at runtime — don't compound it). Rendered by the
+`embed` block in `schedule` mode as our own markup, so it inherits the season's colors and each UI
+style's type/radius tokens instead of fighting the vendor's stylesheet.
+
+> **Adding a studio is a config change**, not a code change — add an entry to `schedule-sources.mjs`
+> — *unless* the studio runs a platform with no adapter yet, which needs a new `lib/adapters/*.mjs`.
+>
+> **Mindbody/Healcode adapter.** Studios using a `<healcode-widget data-type="schedules">` are served
+> by an unauthenticated JSON endpoint the widget itself calls:
+> `widgets.mindbodyonline.com/widgets/schedules/<widgetId>/load_markup?options[start_date]=YYYY-MM-DD`.
+> It answers `{ class_sessions, calendar, filters }` — `class_sessions` is 7 days of server-rendered
+> HTML from `start_date` (loop the date to go further out), and `filters` is a JSON *string* whose
+> `trainer` array is the studio's instructor roster. Two traps: the endpoint returns **HTTP 500 if you
+> send `Accept: application/json`** even though it answers JSON, and `widgetId` is the **numeric** id
+> in that URL, *not* the long hex `data-widget-id` on the element. Match instructors on the
+> `data-bw-widget-trainer` attribute, never the displayed name — that's what catches rows Mindbody
+> labels "Melissa Carey (substitute)".
+>
+> **The Events Calendar adapter (`tribe-events.mjs`).** WordPress sites running the Tribe plugin —
+> MESA does — expose a public REST API, so no scraping: `<site>/wp-json/tribe/events/v1/events`
+> with `start_date`/`end_date`. It hands back structured events including a real per-event page URL
+> (used as the session's booking link; Mindbody's widget has none). The catch is that **Tribe has no
+> instructor field** — an event's `organizer` is the host org, not the teacher — so this adapter
+> matches `instructorPattern` against the event description. MESA writes an explicit
+> "Instructor: Melissa Carey" line, which is precise enough to exclude their other programming.
+>
+> That hook is weaker than Mindbody's trainer id, and it's deliberately biased: matching her **name**
+> rather than the class title means that if the class is handed to someone else it silently drops off
+> this site, rather than crediting her for a class she isn't teaching. The residual risk is the other
+> direction — if MESA stops naming the instructor, her classes vanish with no alert, because we can't
+> tell that apart from her not being scheduled.
+>
+> **Momence adapter (`momence.mjs`)** — All Purpose Yoga. Momence's schedule plugin reads a public
+> JSON API, so we call the same endpoint:
+> `readonly-api.momence.com/host-plugins/host/<hostId>/host-schedule/sessions`. The richest of the
+> four: a numeric `teacherId`, an `isCancelled` flag, and a per-session booking `link`. Match on the
+> id — this studio lists her as **"Melissa Christine Carey"**, which a name match tuned to the other
+> studios' "Melissa Carey" would miss. `startsAt` is a **UTC instant** and must be converted, or her
+> 7pm classes land on the wrong day.
+>
+> **Punchpass adapter (`punchpass-ics.mjs`)** — CURA. The studio embeds Punchpass in a *cross-origin
+> iframe*, which no browser-side filter could read into — but Punchpass also publishes a public iCal
+> feed (`<studio>.punchpass.com/org/<orgId>/calendars/all_classes.ics`, org id from the studio's
+> `/calendar_feed_info`), and server-side there's no iframe to fight. One request returns months of
+> structured classes; we prefer it to the schedule HTML, which paginates by day and pollutes
+> `textContent` with inline SVG `<style>` rules. Punchpass exposes no teacher id, so the instructor
+> comes from the event's `ORGANIZER;CN=` — which also catches co-taught classes billed as
+> "Adriana Wignall & Melissa Carey". Two traps: **unfold** iCal's folded lines (CRLF + space) before
+> parsing or long values truncate, and cancellations are marked by a `CANCELED - ` **summary prefix**
+> rather than a status field. It's also the only feed with no from-date parameter, so the adapter
+> bounds both ends itself.
+>
+> **Time handling lives in `lib/time.mjs`**, not in the adapters: the four sources express time three
+> different ways (already-local strings, local wall time + abbreviation, a UTC instant, and wall time
+> + `TZID`). Everything is normalised to the studio's own zone before merging.
+>
+> **Alerting is deliberately asymmetric.** Zero classes is a *legitimate* result (a week off) and must
+> never alert, or the notification gets ignored. The harvester exits non-zero — failing the workflow,
+> which emails the repo owner — only when a source is genuinely broken: the fetch failed, the widget
+> returned zero sessions for *every* instructor, or Melissa is no longer on the studio's roster (she
+> was removed, or the trainer id changed). A failing source keeps its previously harvested classes
+> rather than vanishing from the site while someone looks at it.
+>
+> Only the healcode adapter can verify she's *still* a teacher (Mindbody publishes a roster in
+> `filters.trainer`). Tribe, Momence and Punchpass expose only the classes actually scheduled, so
+> "no classes" and "no longer teaches here" are indistinguishable there — those adapters return
+> `trainerOnRoster: true` unconditionally rather than guess.
+>
+> An adapter opts out of the empty-window check with `emptyWindowIsError: false` (tribe-events does):
+> a yoga studio always has *something* on in a fortnight, but a small non-profit's calendar can
+> legitimately be empty between programme cycles, and a false alert teaches everyone to ignore it.
 
 **Seasonal theming.** The season lives in the **Settings** doc. To avoid a theme flash, `main.jsx`
 imports `content/settings/index.json` at build time and applies its `theme` as a `<body>` class
@@ -291,6 +381,8 @@ from `App`'s `useEffect` to attach a global visual flash on button clicks.
   `/admin`. `siteConfig.js` now holds only the `SITE_THEME` + `SITE_UI_STYLE` fallbacks.
 - **Season and UI style are two independent axes:** season = color, UI style = structure/type.
   A UI style must never set a color token, so any season works under any look (see §6).
+- **`content/schedule/*.json` is generated** — edit `scripts/lib/schedule-sources.mjs` instead. It is
+  deliberately *not* a Tina collection, so nothing in `/admin` can be overwritten by the nightly run.
 - **Two styling systems coexist:** global CSS + CSS Modules. Match the component you're editing.
 - **CSS load order is load-bearing** — see §6 before reorganizing style imports.
 - No tests, no TypeScript, no state management library. Keep it simple.

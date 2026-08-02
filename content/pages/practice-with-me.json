@@ -7,18 +7,20 @@
     {
       "layout": "centered",
       "title": "Practice With Me",
-      "body": "Book a live class or session below. The schedule updates automatically from OfferingTree — no need to keep links in sync by hand.\n",
+      "body": "Book a live class or session below. The schedule updates itself from every studio I teach at — no need to keep links in sync by hand.\n",
       "spacing": "normal",
       "showHomeButton": false,
       "_template": "contentSection"
     },
     {
       "title": "Class Schedule",
-      "source": "offeringtree",
-      "mode": "url",
+      "source": "teaching-schedule",
+      "mode": "schedule",
       "url": "",
       "height": 720,
-      "caption": "Live from OfferingTree — register and pay right here.",
+      "scheduleEmptyText": "No classes on the calendar this week — my next ones will appear here as soon as they're scheduled.",
+      "scheduleLinkLabel": "Full schedule at {studio}",
+      "caption": "Updated daily from every studio I teach at — click a studio to book.",
       "spacing": "normal",
       "showHomeButton": false,
       "_template": "embed"

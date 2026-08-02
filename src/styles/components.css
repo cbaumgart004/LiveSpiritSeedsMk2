@@ -161,6 +161,91 @@
   opacity: 0.75;
 }
 
+/* -------------------------------------------------------------- */
+/* 🗓 Teaching schedule — the harvested class list (embed block,   */
+/* Schedule mode). Our own markup rather than a studio widget, so  */
+/* it inherits the season's colours and every UI style's type and  */
+/* radius tokens instead of fighting Mindbody's stylesheet.        */
+/* Data: content/schedule/melissa.json (see DESIGN.md §6).         */
+/* -------------------------------------------------------------- */
+.schedule {
+  width: 100%;
+  max-width: 780px;
+  margin: 0 auto;
+  text-align: left;
+}
+.schedule__day + .schedule__day {
+  margin-top: var(--space-4);
+}
+.schedule__date {
+  font-family: var(--font-subheading);
+  font-size: 1.5rem;
+  color: var(--primary-color);
+  text-shadow: var(--outline-shadow);
+  margin-bottom: 0.75rem;
+}
+.schedule__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+/* Time and title sit on one row on desktop, stack on narrow screens. */
+.schedule__item {
+  display: grid;
+  grid-template-columns: minmax(9.5rem, auto) 1fr;
+  gap: 0.15rem 1.25rem;
+  align-items: baseline;
+  padding: 1.1rem var(--space-4);
+}
+/* Times stay in the BODY font on purpose. The display/script faces some UI
+   styles use are lovely for headings and genuinely hard to read for "8:30 AM –
+   9:30 AM" — and the time is the one thing a visitor must not misread. */
+.schedule__time {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem !important;
+  letter-spacing: 0.01em;
+  color: var(--primary-color);
+  white-space: nowrap;
+}
+.schedule__name {
+  font-weight: 600;
+}
+.schedule__meta {
+  grid-column: 2;
+  font-size: 0.9rem !important;
+  opacity: 0.8;
+}
+/* The shared .panel/.card paragraph rule adds block margins that open a gap
+   between the title and the studio line inside these compact rows. */
+.schedule__item p {
+  margin: 0;
+}
+.schedule__meta a {
+  color: inherit;
+}
+.schedule__note {
+  font-style: italic;
+}
+/* A week with no classes is a normal outcome, not an error — keep it quiet
+   and give people a way through to the studio. */
+.schedule-empty {
+  text-align: center;
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+@media (max-width: 640px) {
+  .schedule__item {
+    grid-template-columns: 1fr;
+  }
+  .schedule__meta {
+    grid-column: 1;
+  }
+}
+
 /* Card thumbnail — an optional image atop a card-grid card (used for link
    cards: SoulTree schedule, partners, pulled-in events). */
 .card-thumb {
