@@ -1,7 +1,7 @@
 {
   "_generated": "DO NOT EDIT BY HAND. Rebuilt daily by scripts/harvest-schedule.mjs.",
   "teacher": "Melissa Carey",
-  "generatedAt": "2026-08-02T19:09:22.781Z",
+  "generatedAt": "2026-08-02T20:49:44.060Z",
   "rangeStart": "2026-08-02",
   "weeks": 4,
   "sources": [
@@ -58,7 +58,7 @@
   ],
   "sessions": [
     {
-      "id": "soultree:91302080",
+      "id": "soultree:102060160",
       "date": "2026-08-02",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -88,7 +88,7 @@
       "sortKey": "2026-08-05T1140"
     },
     {
-      "id": "cura:36b9a1d9-9250-4039-98cd-43bb357370e3",
+      "id": "cura:acfb0200-1504-4c7a-85d0-566282138f7f",
       "date": "2026-08-08",
       "startTime": "2:00 PM",
       "endTime": "3:30 PM",
@@ -104,7 +104,7 @@
       "sortKey": "2026-08-08T0840"
     },
     {
-      "id": "soultree:51372700",
+      "id": "soultree:93898080",
       "date": "2026-08-09",
       "startTime": "8:30 AM",
       "endTime": "9:30 AM",
@@ -118,7 +118,7 @@
       "sortKey": "2026-08-09T0510"
     },
     {
-      "id": "soultree:51373060",
+      "id": "soultree:93898440",
       "date": "2026-08-09",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -164,7 +164,7 @@
       "sortKey": "2026-08-12T1140"
     },
     {
-      "id": "soultree:94706460",
+      "id": "soultree:5651520",
       "date": "2026-08-16",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -210,7 +210,7 @@
       "sortKey": "2026-08-19T1140"
     },
     {
-      "id": "soultree:88155000",
+      "id": "soultree:23466720",
       "date": "2026-08-23",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
