@@ -329,7 +329,8 @@ var embed = {
       options: [
         { value: "url", label: "URL (iframe link)" },
         { value: "code", label: "Embed code (HTML / script)" },
-        { value: "schedule", label: "Teaching schedule (nothing to paste \u2014 updates itself)" }
+        { value: "schedule", label: "Teaching schedule (nothing to paste \u2014 updates itself)" },
+        { value: "newsletter", label: "Newsletter signup (Kit \u2014 matches the site\u2019s look)" }
       ],
       ui: { defaultValue: "url" }
     },
@@ -351,6 +352,59 @@ var embed = {
       name: "height",
       label: "Height (px)",
       description: "Height of the embed frame in URL mode. Blank = 640."
+    },
+    // --- Newsletter mode -----------------------------------------------------
+    // Nothing to paste either: we render our own form and post it to Kit, so the
+    // signup inherits the season's colours and the UI style's type/radius tokens
+    // instead of arriving pre-styled by Kit. Only the form ID and the wording
+    // live here. See the NewsletterEmbed renderer in Blocks.jsx.
+    {
+      type: "string",
+      name: "newsletterFormId",
+      label: "Newsletter: Kit form ID",
+      description: "Newsletter mode. The number in your Kit form URL \u2014 app.kit.com/forms/designers/THIS-NUMBER. Not an API key; nothing secret."
+    },
+    {
+      type: "string",
+      name: "newsletterIntro",
+      label: "Newsletter: intro line",
+      description: "A sentence above the box \u2014 what people get, and how often."
+    },
+    {
+      type: "boolean",
+      name: "newsletterAskName",
+      label: "Newsletter: also ask for a first name",
+      description: "Lets you greet people by name in Kit. Every extra field costs you signups, so leave it off unless you will use it."
+    },
+    {
+      type: "string",
+      name: "newsletterPlaceholder",
+      label: "Newsletter: email box placeholder",
+      description: "Blank = \u201Cyour@email.com\u201D."
+    },
+    {
+      type: "string",
+      name: "newsletterNamePlaceholder",
+      label: "Newsletter: name box placeholder",
+      description: "Only used when the name field is on. Blank = \u201CFirst name\u201D."
+    },
+    {
+      type: "string",
+      name: "newsletterButtonLabel",
+      label: "Newsletter: button label",
+      description: "Blank = \u201CSubscribe\u201D."
+    },
+    {
+      type: "string",
+      name: "newsletterSuccess",
+      label: "Newsletter: thank-you message",
+      description: "Shown in place of the form after signing up. Blank = \u201CThank you \u2014 check your inbox to confirm.\u201D Keep the confirm hint if your Kit form uses double opt-in."
+    },
+    {
+      type: "string",
+      name: "newsletterFinePrint",
+      label: "Newsletter: fine print",
+      description: "Small line under the button, e.g. \u201CNo spam. Unsubscribe any time.\u201D"
     },
     // --- Schedule mode -------------------------------------------------------
     // Nothing to paste: the classes are harvested nightly from every studio in

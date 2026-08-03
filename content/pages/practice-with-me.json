@@ -26,6 +26,19 @@
       "_template": "embed"
     },
     {
+      "title": "Stay in Touch",
+      "source": "kit",
+      "mode": "newsletter",
+      "newsletterFormId": "7800435",
+      "newsletterIntro": "Occasional notes on practice, plus first word when new classes and workshops go on the calendar.",
+      "newsletterButtonLabel": "Subscribe",
+      "newsletterSuccess": "Thank you — check your inbox to confirm your subscription.",
+      "newsletterFinePrint": "No spam, and you can unsubscribe any time.",
+      "spacing": "normal",
+      "showHomeButton": false,
+      "_template": "embed"
+    },
+    {
       "layout": "cardGrid",
       "title": "Explore & Connect",
       "cards": [

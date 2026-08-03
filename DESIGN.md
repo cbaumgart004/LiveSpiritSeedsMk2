@@ -177,6 +177,22 @@ required for Kit's JS form embeds). Empty blocks show an `/admin` hint instead o
 "Practice With Me" page (`content/pages/practice-with-me.json`) is built from these. OfferingTree has
 no public REST API; embed widgets, Zapier, and Google-Calendar sync are the integration surfaces.
 
+**Newsletter signup (Kit).** The `newsletter` mode (`NewsletterEmbed` in `Blocks.jsx`) renders **our
+own form** and POSTs it to `https://app.kit.com/forms/<formId>/subscriptions` — the same
+unauthenticated endpoint Kit's HTML embed submits to, so there is **no API key** in the client and
+nothing secret in a static build. Kit's field names (`email_address`, `fields[first_name]`) are the
+wire contract; everything else (heading, intro, button label, thank-you, fine print) is CMS copy.
+Success swaps the form for the thank-you; a non-200, a `status` other than `success`, or a network
+failure surfaces a visible error — a silent failure would cost a subscriber with nobody noticing.
+Only the **form ID** lives in content (`newsletterFormId`), so pointing at a different Kit form is an
+`/admin` change.
+
+> **Why not Kit's own embed?** Same reason as the schedule: Kit's JS embed brings Kit's stylesheet
+> and can only match **one** season, but the season is owner-switchable at runtime (§6), so a
+> Kit-styled form goes out of brand the moment Melissa moves to fall. Our markup reads from the
+> season's color tokens and the UI style's type/radius tokens, so it re-skins on both axes for free.
+> The `code` mode is still there if a raw Kit snippet is ever needed as a fallback.
+
 **Teaching schedule (multi-studio).** Melissa teaches at several studios; the site shows one merged
 list of her upcoming classes without her re-entering anything. A nightly GitHub Action
 (`.github/workflows/harvest-schedule.yml`) runs `scripts/harvest-schedule.mjs`, which walks

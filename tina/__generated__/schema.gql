@@ -215,6 +215,14 @@ type PageBlocksEmbed {
   url: String
   code: String
   height: Float
+  newsletterFormId: String
+  newsletterIntro: String
+  newsletterAskName: Boolean
+  newsletterPlaceholder: String
+  newsletterNamePlaceholder: String
+  newsletterButtonLabel: String
+  newsletterSuccess: String
+  newsletterFinePrint: String
   scheduleLimit: Float
   scheduleEmptyText: String
   scheduleLinkLabel: String
@@ -330,6 +338,14 @@ input PageBlocksEmbedFilter {
   url: StringFilter
   code: StringFilter
   height: NumberFilter
+  newsletterFormId: StringFilter
+  newsletterIntro: StringFilter
+  newsletterAskName: BooleanFilter
+  newsletterPlaceholder: StringFilter
+  newsletterNamePlaceholder: StringFilter
+  newsletterButtonLabel: StringFilter
+  newsletterSuccess: StringFilter
+  newsletterFinePrint: StringFilter
   scheduleLimit: NumberFilter
   scheduleEmptyText: StringFilter
   scheduleLinkLabel: StringFilter
@@ -471,6 +487,14 @@ input PageBlocksEmbedMutation {
   url: String
   code: String
   height: Float
+  newsletterFormId: String
+  newsletterIntro: String
+  newsletterAskName: Boolean
+  newsletterPlaceholder: String
+  newsletterNamePlaceholder: String
+  newsletterButtonLabel: String
+  newsletterSuccess: String
+  newsletterFinePrint: String
   scheduleLimit: Float
   scheduleEmptyText: String
   scheduleLinkLabel: String
