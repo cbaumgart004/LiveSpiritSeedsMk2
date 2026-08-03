@@ -85,6 +85,14 @@ fragment PageParts on Page {
       url
       code
       height
+      newsletterFormId
+      newsletterIntro
+      newsletterAskName
+      newsletterPlaceholder
+      newsletterNamePlaceholder
+      newsletterButtonLabel
+      newsletterSuccess
+      newsletterFinePrint
       scheduleLimit
       scheduleEmptyText
       scheduleLinkLabel

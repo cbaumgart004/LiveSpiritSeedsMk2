@@ -94,6 +94,14 @@ export const PagePartsFragmentDoc = gql`
       url
       code
       height
+      newsletterFormId
+      newsletterIntro
+      newsletterAskName
+      newsletterPlaceholder
+      newsletterNamePlaceholder
+      newsletterButtonLabel
+      newsletterSuccess
+      newsletterFinePrint
       scheduleLimit
       scheduleEmptyText
       scheduleLinkLabel

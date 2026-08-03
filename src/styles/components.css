@@ -256,6 +256,101 @@
   }
 }
 
+/* -------------------------------------------------------------- */
+/* ✉️ Newsletter signup — the Kit form (embed block, Newsletter    */
+/* mode). Our own markup posted to Kit, for the same reason as the */
+/* schedule above: Kit's JS embed brings Kit's stylesheet, which    */
+/* can only match one season, and the season is owner-switchable.   */
+/* Everything here reads from tokens, so it re-skins for free.      */
+/* -------------------------------------------------------------- */
+.newsletter {
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+}
+.newsletter__intro {
+  margin-bottom: var(--space-3);
+}
+/* Row on desktop, stacked on narrow screens — the wrap does that on its own
+   once the input hits its min-width. */
+.newsletter__form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  justify-content: center;
+  align-items: stretch;
+}
+.newsletter__field {
+  flex: 1 1 15rem;
+  min-width: 0;
+  display: block;
+  text-align: left;
+}
+/* The placeholder carries the visible prompt; the label stays in the a11y tree
+   for screen readers rather than being dropped with `display:none`. */
+.newsletter__label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.newsletter__input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--text-color);
+  background: var(--bg-color);
+  border: 2px solid var(--primary-color);
+  border-radius: var(--radius-1);
+}
+.newsletter__input::placeholder {
+  color: var(--text-color);
+  opacity: 0.55;
+}
+.newsletter__input:focus-visible {
+  outline: 2px solid var(--text-color);
+  outline-offset: 2px;
+}
+/* The button is the .btn primitive; it only needs to stop stretching full-width
+   in the wrapped (mobile) layout. */
+.newsletter__form .btn {
+  flex: 0 0 auto;
+}
+.newsletter__note {
+  margin-top: var(--space-2);
+  font-weight: 600;
+}
+.newsletter__note--ok {
+  color: var(--primary-color);
+  text-shadow: var(--outline-shadow);
+}
+/* Not a themed colour: a failed signup must read as wrong in every season, and
+   the seasonal palettes are all warm/soft enough that one of them would make an
+   error look decorative. */
+.newsletter__note--error {
+  color: #b3261e;
+}
+.newsletter__fine {
+  margin-top: var(--space-2);
+  font-size: 0.85rem !important;
+  opacity: 0.75;
+}
+
+@media (max-width: 640px) {
+  /* Once the row wraps, a half-width button next to nothing looks like a
+     mistake — give it the full line. */
+  .newsletter__form .btn {
+    flex: 1 1 100%;
+  }
+}
+
 /* Card thumbnail — an optional image atop a card-grid card (used for link
    cards: SoulTree schedule, partners, pulled-in events). */
 .card-thumb {

@@ -371,7 +371,9 @@ const service = {
 // owner edits the source once instead of hand-updating links on the site. Two
 // modes: an iframe URL (simplest — Canva "smart embed" link, OfferingTree/Kit
 // share URL) or raw embed code whose <script> tags are re-executed at render
-// (needed for Kit forms; see the EmbedBlock renderer in Blocks.jsx).
+// (see the EmbedBlock renderer in Blocks.jsx). Two further modes paste nothing
+// and render as our own themed markup instead: `schedule` (harvested classes)
+// and `newsletter` (a Kit signup posted straight to Kit) — see DESIGN.md §6.
 const embed = {
   name: 'embed',
   label: 'Embed (OfferingTree / Canva / Kit)',
@@ -407,6 +409,7 @@ const embed = {
         { value: 'url', label: 'URL (iframe link)' },
         { value: 'code', label: 'Embed code (HTML / script)' },
         { value: 'schedule', label: 'Teaching schedule (nothing to paste — updates itself)' },
+        { value: 'newsletter', label: 'Newsletter signup (Kit — matches the site’s look)' },
       ],
       ui: { defaultValue: 'url' },
     },
@@ -428,6 +431,61 @@ const embed = {
       name: 'height',
       label: 'Height (px)',
       description: 'Height of the embed frame in URL mode. Blank = 640.',
+    },
+    // --- Newsletter mode -----------------------------------------------------
+    // Nothing to paste either: we render our own form and post it to Kit, so the
+    // signup inherits the season's colours and the UI style's type/radius tokens
+    // instead of arriving pre-styled by Kit. Only the form ID and the wording
+    // live here. See the NewsletterEmbed renderer in Blocks.jsx.
+    {
+      type: 'string',
+      name: 'newsletterFormId',
+      label: 'Newsletter: Kit form ID',
+      description:
+        'Newsletter mode. The number in your Kit form URL — app.kit.com/forms/designers/THIS-NUMBER. Not an API key; nothing secret.',
+    },
+    {
+      type: 'string',
+      name: 'newsletterIntro',
+      label: 'Newsletter: intro line',
+      description: 'A sentence above the box — what people get, and how often.',
+    },
+    {
+      type: 'boolean',
+      name: 'newsletterAskName',
+      label: 'Newsletter: also ask for a first name',
+      description: 'Lets you greet people by name in Kit. Every extra field costs you signups, so leave it off unless you will use it.',
+    },
+    {
+      type: 'string',
+      name: 'newsletterPlaceholder',
+      label: 'Newsletter: email box placeholder',
+      description: 'Blank = “your@email.com”.',
+    },
+    {
+      type: 'string',
+      name: 'newsletterNamePlaceholder',
+      label: 'Newsletter: name box placeholder',
+      description: 'Only used when the name field is on. Blank = “First name”.',
+    },
+    {
+      type: 'string',
+      name: 'newsletterButtonLabel',
+      label: 'Newsletter: button label',
+      description: 'Blank = “Subscribe”.',
+    },
+    {
+      type: 'string',
+      name: 'newsletterSuccess',
+      label: 'Newsletter: thank-you message',
+      description:
+        'Shown in place of the form after signing up. Blank = “Thank you — check your inbox to confirm.” Keep the confirm hint if your Kit form uses double opt-in.',
+    },
+    {
+      type: 'string',
+      name: 'newsletterFinePrint',
+      label: 'Newsletter: fine print',
+      description: 'Small line under the button, e.g. “No spam. Unsubscribe any time.”',
     },
     // --- Schedule mode -------------------------------------------------------
     // Nothing to paste: the classes are harvested nightly from every studio in

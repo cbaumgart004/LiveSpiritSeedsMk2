@@ -5,7 +5,7 @@
 // region as click-to-edit inside /admin; for it to resolve, blocks must arrive
 // via useTina (see DynamicPage) — the hook stamps the editing metadata onto each
 // block object.
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { tinaField } from 'tinacms/dist/react'
 import { TinaMarkdown } from 'tinacms/dist/rich-text'
 import ValuesSection from '../ValuesSection/ValuesSection'
@@ -438,6 +438,145 @@ function RawEmbed({ html }) {
   return <div className="embed-raw" ref={ref} />
 }
 
+// Newsletter mode. Kit's JS embed ships Kit's own stylesheet, so it can only
+// ever match ONE season — and the season is owner-switchable from /admin, so
+// that form would drift out of brand the moment Melissa moves to fall. Same
+// call as the teaching schedule (DESIGN.md §6): render our own markup and post
+// to the vendor, rather than fight the vendor's stylesheet.
+//
+// This is the unauthenticated endpoint Kit's own HTML embed submits to, so
+// there is NO api key here and nothing secret to leak from a static site.
+// Field names (`email_address`, `fields[first_name]`) are Kit's, not ours.
+const kitEndpoint = (formId) => `https://app.kit.com/forms/${formId}/subscriptions`
+
+const GENERIC_ERROR = 'That didn’t go through. Please try again in a moment.'
+
+// Kit answers 200 even when it refuses the signup, so the HTTP status alone
+// tells us nothing — `status` in the body is the real verdict. On failure it
+// returns {errors: {fields: [...], messages: [...]}}.
+//
+// Only a complaint about the ADDRESS is worth repeating to the visitor ("Email
+// address is invalid") — that is something they can fix. A form-level error
+// means the form id is wrong or the form was deleted, which reads as gibberish
+// to a visitor ("Form Couldn't find a form for this request", six times over)
+// and is Melissa's to fix, so it gets the generic wording instead.
+function kitErrorMessage(data) {
+  const fields = data?.errors?.fields
+  const message = data?.errors?.messages?.[0]
+  if (message && Array.isArray(fields) && fields.includes('email_address')) return message
+  return GENERIC_ERROR
+}
+
+function NewsletterEmbed({ block }) {
+  const formId = String(block.newsletterFormId || '').trim()
+  const [status, setStatus] = useState('idle')
+  const [error, setError] = useState(GENERIC_ERROR)
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+    if (status === 'sending') return
+    // Grab the node before the first await — React nulls currentTarget out as
+    // soon as the event is done being dispatched.
+    const form = e.currentTarget
+    const body = new FormData(form)
+    setStatus('sending')
+    try {
+      const res = await fetch(kitEndpoint(formId), {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body,
+      })
+      const data = await res.json().catch(() => null)
+      // A silent no-op that still looks like it worked is the one outcome worse
+      // than an error: she'd never know she lost the subscriber.
+      if (!res.ok || data?.status !== 'success') {
+        setError(kitErrorMessage(data))
+        setStatus('error')
+        return
+      }
+      form.reset()
+      setStatus('success')
+    } catch {
+      // Network failure — no response body to read, so nothing specific to say.
+      setError(GENERIC_ERROR)
+      setStatus('error')
+    }
+  }
+
+  if (!formId) {
+    return (
+      <div className="panel embed-placeholder">
+        <p>
+          Add your Kit <strong>form ID</strong> in <strong>/admin</strong> to turn this into
+          a signup form.
+        </p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="panel newsletter">
+      {block.newsletterIntro && (
+        <p className="newsletter__intro" data-tina-field={tinaField(block, 'newsletterIntro')}>
+          {block.newsletterIntro}
+        </p>
+      )}
+
+      {status === 'success' ? (
+        <p className="newsletter__note newsletter__note--ok" role="status">
+          {block.newsletterSuccess || 'Thank you — check your inbox to confirm.'}
+        </p>
+      ) : (
+        <form
+          className="newsletter__form"
+          onSubmit={handleSubmit}
+          action={kitEndpoint(formId)}
+          method="post"
+        >
+          {block.newsletterAskName && (
+            <label className="newsletter__field">
+              <span className="newsletter__label">First name</span>
+              <input
+                className="newsletter__input"
+                type="text"
+                name="fields[first_name]"
+                autoComplete="given-name"
+                placeholder={block.newsletterNamePlaceholder || 'First name'}
+              />
+            </label>
+          )}
+          <label className="newsletter__field">
+            <span className="newsletter__label">Email address</span>
+            <input
+              className="newsletter__input"
+              type="email"
+              name="email_address"
+              required
+              autoComplete="email"
+              placeholder={block.newsletterPlaceholder || 'your@email.com'}
+            />
+          </label>
+          <button className="btn" type="submit" disabled={status === 'sending'}>
+            {status === 'sending' ? 'Sending…' : block.newsletterButtonLabel || 'Subscribe'}
+          </button>
+        </form>
+      )}
+
+      {status === 'error' && (
+        <p className="newsletter__note newsletter__note--error" role="alert">
+          {error}
+        </p>
+      )}
+
+      {block.newsletterFinePrint && (
+        <p className="newsletter__fine" data-tina-field={tinaField(block, 'newsletterFinePrint')}>
+          {block.newsletterFinePrint}
+        </p>
+      )}
+    </div>
+  )
+}
+
 // Melissa's classes across every studio she teaches at, harvested nightly by
 // scripts/harvest-schedule.mjs. Imported at build time (not fetched) so the page
 // has no runtime dependency on any studio's booking widget — the Action commits
@@ -534,14 +673,17 @@ function ScheduleEmbed({ block }) {
 // harvested teaching schedule (nothing to paste). Empty → an /admin hint.
 function EmbedBlock({ block, isFirst }) {
   const isSchedule = block.mode === 'schedule'
+  const isNewsletter = block.mode === 'newsletter'
   const useCode = block.mode === 'code'
-  const hasUrl = !isSchedule && !useCode && block.url
+  const hasUrl = !isSchedule && !isNewsletter && !useCode && block.url
   const hasCode = useCode && block.code
-  if (isSchedule) {
+  // The two modes we render as our OWN markup — nothing to paste, and they
+  // theme with the season + UI style rather than the vendor's stylesheet.
+  if (isSchedule || isNewsletter) {
     return (
       <section className={sectionClass('section section--stack', null, isFirst, block)}>
         {block.title && <h2 data-tina-field={tinaField(block, 'title')}>{block.title}</h2>}
-        <ScheduleEmbed block={block} />
+        {isSchedule ? <ScheduleEmbed block={block} /> : <NewsletterEmbed block={block} />}
         {block.caption && (
           <p className="embed-caption" data-tina-field={tinaField(block, 'caption')}>
             {block.caption}
