@@ -1,8 +1,8 @@
 {
   "_generated": "DO NOT EDIT BY HAND. Rebuilt daily by scripts/harvest-schedule.mjs.",
   "teacher": "Melissa Carey",
-  "generatedAt": "2026-08-04T11:36:36.563Z",
-  "rangeStart": "2026-08-04",
+  "generatedAt": "2026-08-05T11:30:47.197Z",
+  "rangeStart": "2026-08-05",
   "weeks": 4,
   "sources": [
     {
@@ -24,14 +24,14 @@
       "label": "All Purpose Yoga",
       "status": "ok",
       "classes": 4,
-      "scanned": 199
+      "scanned": 200
     },
     {
       "id": "cura",
       "label": "CURA Yoga Center",
       "status": "ok",
       "classes": 1,
-      "scanned": 466
+      "scanned": 472
     }
   ],
   "studios": [
@@ -74,7 +74,7 @@
       "sortKey": "2026-08-05T1140"
     },
     {
-      "id": "cura:a1fead0b-7492-400e-9df1-028682dcb77b",
+      "id": "cura:6d8c1509-aaab-4c7a-9614-c44962744cd9",
       "date": "2026-08-08",
       "startTime": "2:00 PM",
       "endTime": "3:30 PM",
@@ -90,7 +90,7 @@
       "sortKey": "2026-08-08T0840"
     },
     {
-      "id": "soultree:154246080",
+      "id": "soultree:82464300",
       "date": "2026-08-09",
       "startTime": "8:30 AM",
       "endTime": "9:30 AM",
@@ -104,7 +104,7 @@
       "sortKey": "2026-08-09T0510"
     },
     {
-      "id": "soultree:154246240",
+      "id": "soultree:82464460",
       "date": "2026-08-09",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -150,7 +150,7 @@
       "sortKey": "2026-08-12T1140"
     },
     {
-      "id": "soultree:164549320",
+      "id": "soultree:80442640",
       "date": "2026-08-16",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -196,7 +196,7 @@
       "sortKey": "2026-08-19T1140"
     },
     {
-      "id": "soultree:156078120",
+      "id": "soultree:203922240",
       "date": "2026-08-23",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -242,7 +242,7 @@
       "sortKey": "2026-08-26T1140"
     },
     {
-      "id": "soultree:66840440",
+      "id": "soultree:154944020",
       "date": "2026-08-30",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
