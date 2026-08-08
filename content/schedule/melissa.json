@@ -1,8 +1,8 @@
 {
   "_generated": "DO NOT EDIT BY HAND. Rebuilt daily by scripts/harvest-schedule.mjs.",
   "teacher": "Melissa Carey",
-  "generatedAt": "2026-08-07T10:12:26.556Z",
-  "rangeStart": "2026-08-07",
+  "generatedAt": "2026-08-08T09:55:40.748Z",
+  "rangeStart": "2026-08-08",
   "weeks": 4,
   "sources": [
     {
@@ -10,20 +10,20 @@
       "label": "Soul Tree Yoga",
       "status": "ok",
       "classes": 5,
-      "scanned": 122
+      "scanned": 127
     },
     {
       "id": "mesa",
       "label": "MESA",
-      "status": "stale",
-      "detail": "Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON",
-      "classes": 4
+      "status": "ok",
+      "classes": 4,
+      "scanned": 5
     },
     {
       "id": "allpurpose",
       "label": "All Purpose Yoga",
       "status": "ok",
-      "classes": 4,
+      "classes": 5,
       "scanned": 195
     },
     {
@@ -31,7 +31,7 @@
       "label": "CURA Yoga Center",
       "status": "ok",
       "classes": 1,
-      "scanned": 476
+      "scanned": 474
     }
   ],
   "studios": [
@@ -58,7 +58,7 @@
   ],
   "sessions": [
     {
-      "id": "cura:cedbcc8a-fb0d-4339-a73e-02df034ff165",
+      "id": "cura:51e87230-cb41-4848-b318-baea04223e7b",
       "date": "2026-08-08",
       "startTime": "2:00 PM",
       "endTime": "3:30 PM",
@@ -74,7 +74,7 @@
       "sortKey": "2026-08-08T0840"
     },
     {
-      "id": "soultree:18658960",
+      "id": "soultree:18750700",
       "date": "2026-08-09",
       "startTime": "8:30 AM",
       "endTime": "9:30 AM",
@@ -88,7 +88,7 @@
       "sortKey": "2026-08-09T0510"
     },
     {
-      "id": "soultree:18659120",
+      "id": "soultree:18750860",
       "date": "2026-08-09",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -134,7 +134,7 @@
       "sortKey": "2026-08-12T1140"
     },
     {
-      "id": "soultree:17947660",
+      "id": "soultree:54636940",
       "date": "2026-08-16",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -180,7 +180,7 @@
       "sortKey": "2026-08-19T1140"
     },
     {
-      "id": "soultree:18110460",
+      "id": "soultree:54303120",
       "date": "2026-08-23",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -226,7 +226,7 @@
       "sortKey": "2026-08-26T1140"
     },
     {
-      "id": "soultree:18954380",
+      "id": "soultree:55588000",
       "date": "2026-08-30",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -270,6 +270,22 @@
       "bookUrl": "https://momence.com/s/134753321",
       "cost": "",
       "sortKey": "2026-09-02T1140"
+    },
+    {
+      "id": "allpurpose:138621512",
+      "date": "2026-09-04",
+      "startTime": "7:00 PM",
+      "endTime": "9:00 PM",
+      "timezone": "MDT",
+      "name": "Mantra Magic: Sound Healing and Nada Yoga",
+      "type": "",
+      "level": "",
+      "staff": "Melissa Christine Carey",
+      "studio": "All Purpose Yoga",
+      "studioUrl": "https://allpurposeyoga.com/schedule/",
+      "bookUrl": "https://momence.com/s/138621512",
+      "cost": "",
+      "sortKey": "2026-09-04T1140"
     }
   ]
 }
