@@ -1,8 +1,8 @@
 {
   "_generated": "DO NOT EDIT BY HAND. Rebuilt daily by scripts/harvest-schedule.mjs.",
   "teacher": "Melissa Carey",
-  "generatedAt": "2026-08-11T10:11:57.064Z",
-  "rangeStart": "2026-08-11",
+  "generatedAt": "2026-08-12T10:21:56.524Z",
+  "rangeStart": "2026-08-12",
   "weeks": 4,
   "sources": [
     {
@@ -10,7 +10,7 @@
       "label": "Soul Tree Yoga",
       "status": "ok",
       "classes": 5,
-      "scanned": 129
+      "scanned": 131
     },
     {
       "id": "mesa",
@@ -24,14 +24,14 @@
       "label": "All Purpose Yoga",
       "status": "ok",
       "classes": 7,
-      "scanned": 196
+      "scanned": 195
     },
     {
       "id": "cura",
       "label": "CURA Yoga Center",
       "status": "ok",
       "classes": 0,
-      "scanned": 470
+      "scanned": 475
     }
   ],
   "studios": [
@@ -74,7 +74,7 @@
       "sortKey": "2026-08-12T1140"
     },
     {
-      "id": "soultree:28826360",
+      "id": "soultree:70164360",
       "date": "2026-08-16",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -120,7 +120,7 @@
       "sortKey": "2026-08-19T1140"
     },
     {
-      "id": "soultree:29288880",
+      "id": "soultree:730920",
       "date": "2026-08-23",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -166,7 +166,7 @@
       "sortKey": "2026-08-26T1140"
     },
     {
-      "id": "soultree:28830000",
+      "id": "soultree:68940100",
       "date": "2026-08-30",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -260,7 +260,7 @@
       "sortKey": "2026-09-06T0720"
     },
     {
-      "id": "soultree:11412840",
+      "id": "soultree:69048340",
       "date": "2026-09-06",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -274,7 +274,7 @@
       "sortKey": "2026-09-06T1080"
     },
     {
-      "id": "soultree:11413080",
+      "id": "soultree:69048540",
       "date": "2026-09-07",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
