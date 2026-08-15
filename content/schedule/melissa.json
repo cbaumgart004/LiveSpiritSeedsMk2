@@ -1,8 +1,8 @@
 {
   "_generated": "DO NOT EDIT BY HAND. Rebuilt daily by scripts/harvest-schedule.mjs.",
   "teacher": "Melissa Carey",
-  "generatedAt": "2026-08-14T10:18:20.158Z",
-  "rangeStart": "2026-08-14",
+  "generatedAt": "2026-08-15T09:41:00.138Z",
+  "rangeStart": "2026-08-15",
   "weeks": 4,
   "sources": [
     {
@@ -10,7 +10,7 @@
       "label": "Soul Tree Yoga",
       "status": "ok",
       "classes": 5,
-      "scanned": 136
+      "scanned": 137
     },
     {
       "id": "mesa",
@@ -30,8 +30,8 @@
       "id": "cura",
       "label": "CURA Yoga Center",
       "status": "ok",
-      "classes": 0,
-      "scanned": 471
+      "classes": 1,
+      "scanned": 468
     }
   ],
   "studios": [
@@ -58,7 +58,7 @@
   ],
   "sessions": [
     {
-      "id": "soultree:6225720",
+      "id": "soultree:22550260",
       "date": "2026-08-16",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -104,7 +104,7 @@
       "sortKey": "2026-08-19T1140"
     },
     {
-      "id": "soultree:18280160",
+      "id": "soultree:23030980",
       "date": "2026-08-23",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -150,7 +150,7 @@
       "sortKey": "2026-08-26T1140"
     },
     {
-      "id": "soultree:6260240",
+      "id": "soultree:22669520",
       "date": "2026-08-30",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -244,7 +244,7 @@
       "sortKey": "2026-09-06T0720"
     },
     {
-      "id": "soultree:18208180",
+      "id": "soultree:23001040",
       "date": "2026-09-06",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -258,7 +258,7 @@
       "sortKey": "2026-09-06T1080"
     },
     {
-      "id": "soultree:18208380",
+      "id": "soultree:23001240",
       "date": "2026-09-07",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -286,6 +286,22 @@
       "bookUrl": "https://momence.com/s/135095925",
       "cost": "",
       "sortKey": "2026-09-09T1140"
+    },
+    {
+      "id": "cura:9b892065-6be2-44c2-b1c4-9d43b50a091a",
+      "date": "2026-09-12",
+      "startTime": "2:00 PM",
+      "endTime": "3:30 PM",
+      "timezone": "MDT",
+      "name": "Sound Healing with Meditation & Pranayama",
+      "type": "",
+      "level": "",
+      "staff": "Melissa Carey",
+      "studio": "CURA Yoga Center",
+      "studioUrl": "https://curayogacenter.com/schedule/",
+      "bookUrl": "https://app.punchpass.com/org/5744/classes/20208212",
+      "cost": "",
+      "sortKey": "2026-09-12T0840"
     }
   ]
 }
