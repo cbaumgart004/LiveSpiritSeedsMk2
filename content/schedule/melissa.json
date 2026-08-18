@@ -1,37 +1,37 @@
 {
   "_generated": "DO NOT EDIT BY HAND. Rebuilt daily by scripts/harvest-schedule.mjs.",
   "teacher": "Melissa Carey",
-  "generatedAt": "2026-08-17T09:58:34.494Z",
-  "rangeStart": "2026-08-17",
+  "generatedAt": "2026-08-18T09:49:42.203Z",
+  "rangeStart": "2026-08-18",
   "weeks": 4,
   "sources": [
     {
       "id": "soultree",
       "label": "Soul Tree Yoga",
       "status": "ok",
-      "classes": 5,
-      "scanned": 137
+      "classes": 7,
+      "scanned": 141
     },
     {
       "id": "mesa",
       "label": "MESA",
       "status": "ok",
-      "classes": 3,
-      "scanned": 4
+      "classes": 2,
+      "scanned": 3
     },
     {
       "id": "allpurpose",
       "label": "All Purpose Yoga",
       "status": "ok",
       "classes": 7,
-      "scanned": 184
+      "scanned": 187
     },
     {
       "id": "cura",
       "label": "CURA Yoga Center",
       "status": "ok",
       "classes": 1,
-      "scanned": 463
+      "scanned": 465
     }
   ],
   "studios": [
@@ -58,22 +58,6 @@
   ],
   "sessions": [
     {
-      "id": "mesa:14675",
-      "date": "2026-08-17",
-      "startTime": "4:00 PM",
-      "endTime": "4:45 PM",
-      "timezone": "MDT",
-      "name": "Trauma-Informed Yoga Class",
-      "type": "",
-      "level": "",
-      "staff": "Melissa Carey",
-      "studio": "MESA",
-      "studioUrl": "https://movingtoendsexualassault.org/calendar/",
-      "bookUrl": "https://movingtoendsexualassault.org/calendar/trauma-informed-yoga-class-8-17-2026/",
-      "cost": "$10",
-      "sortKey": "2026-08-17T0960"
-    },
-    {
       "id": "allpurpose:133976576",
       "date": "2026-08-19",
       "startTime": "7:00 PM",
@@ -90,7 +74,7 @@
       "sortKey": "2026-08-19T1140"
     },
     {
-      "id": "soultree:31166940",
+      "id": "soultree:12392960",
       "date": "2026-08-23",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -136,7 +120,21 @@
       "sortKey": "2026-08-26T1140"
     },
     {
-      "id": "soultree:96798320",
+      "id": "soultree:12832700",
+      "date": "2026-08-29",
+      "startTime": "9:45 AM",
+      "endTime": "11:15 AM",
+      "timezone": "MDT",
+      "name": "In-person Soul Flow",
+      "type": "Classes",
+      "level": "",
+      "staff": "Melissa Carey (substitute)",
+      "studio": "Soul Tree Yoga",
+      "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
+      "sortKey": "2026-08-29T0585"
+    },
+    {
+      "id": "soultree:12832900",
       "date": "2026-08-30",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -230,7 +228,7 @@
       "sortKey": "2026-09-06T0720"
     },
     {
-      "id": "soultree:94615940",
+      "id": "soultree:12958840",
       "date": "2026-09-06",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -244,7 +242,7 @@
       "sortKey": "2026-09-06T1080"
     },
     {
-      "id": "soultree:31913540",
+      "id": "soultree:12959040",
       "date": "2026-09-07",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -274,7 +272,7 @@
       "sortKey": "2026-09-09T1140"
     },
     {
-      "id": "cura:2cec1a66-e450-4fcd-9a18-0724c2b27d91",
+      "id": "cura:09861cf2-aee4-4025-acd9-986bea8ab2b4",
       "date": "2026-09-12",
       "startTime": "2:00 PM",
       "endTime": "3:30 PM",
@@ -290,7 +288,7 @@
       "sortKey": "2026-09-12T0840"
     },
     {
-      "id": "soultree:31914940",
+      "id": "soultree:13022440",
       "date": "2026-09-13",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -302,6 +300,20 @@
       "studio": "Soul Tree Yoga",
       "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
       "sortKey": "2026-09-13T1080"
+    },
+    {
+      "id": "soultree:13022640",
+      "date": "2026-09-14",
+      "startTime": "12:00 PM",
+      "endTime": "1:00 PM",
+      "timezone": "MDT",
+      "name": "Lunchtime Accessible Yoga",
+      "type": "Classes",
+      "level": "",
+      "staff": "Melissa Carey",
+      "studio": "Soul Tree Yoga",
+      "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
+      "sortKey": "2026-09-14T0720"
     }
   ]
 }
