@@ -1,23 +1,23 @@
 {
   "_generated": "DO NOT EDIT BY HAND. Rebuilt daily by scripts/harvest-schedule.mjs.",
   "teacher": "Melissa Carey",
-  "generatedAt": "2026-08-24T10:04:26.670Z",
-  "rangeStart": "2026-08-24",
+  "generatedAt": "2026-08-25T09:52:24.259Z",
+  "rangeStart": "2026-08-25",
   "weeks": 4,
   "sources": [
     {
       "id": "soultree",
       "label": "Soul Tree Yoga",
       "status": "ok",
-      "classes": 7,
-      "scanned": 150
+      "classes": 8,
+      "scanned": 155
     },
     {
       "id": "mesa",
       "label": "MESA",
-      "status": "ok",
-      "classes": 2,
-      "scanned": 3
+      "status": "stale",
+      "detail": "Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON",
+      "classes": 1
     },
     {
       "id": "allpurpose",
@@ -31,7 +31,7 @@
       "label": "CURA Yoga Center",
       "status": "ok",
       "classes": 1,
-      "scanned": 460
+      "scanned": 462
     }
   ],
   "studios": [
@@ -58,22 +58,6 @@
   ],
   "sessions": [
     {
-      "id": "mesa:14677",
-      "date": "2026-08-24",
-      "startTime": "4:00 PM",
-      "endTime": "4:45 PM",
-      "timezone": "MDT",
-      "name": "Trauma-Informed Yoga Class",
-      "type": "",
-      "level": "",
-      "staff": "Melissa Carey",
-      "studio": "MESA",
-      "studioUrl": "https://movingtoendsexualassault.org/calendar/",
-      "bookUrl": "https://movingtoendsexualassault.org/calendar/trauma-informed-yoga-class-8-24-2026/",
-      "cost": "$10",
-      "sortKey": "2026-08-24T0960"
-    },
-    {
       "id": "allpurpose:134390055",
       "date": "2026-08-26",
       "startTime": "7:00 PM",
@@ -90,7 +74,7 @@
       "sortKey": "2026-08-26T1140"
     },
     {
-      "id": "soultree:93030560",
+      "id": "soultree:11338060",
       "date": "2026-08-29",
       "startTime": "9:45 AM",
       "endTime": "11:15 AM",
@@ -104,7 +88,7 @@
       "sortKey": "2026-08-29T0585"
     },
     {
-      "id": "soultree:93030760",
+      "id": "soultree:11338260",
       "date": "2026-08-30",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -198,7 +182,7 @@
       "sortKey": "2026-09-06T0720"
     },
     {
-      "id": "soultree:16568420",
+      "id": "soultree:28932940",
       "date": "2026-09-06",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -212,7 +196,7 @@
       "sortKey": "2026-09-06T1080"
     },
     {
-      "id": "soultree:27276380",
+      "id": "soultree:28933140",
       "date": "2026-09-07",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -242,7 +226,7 @@
       "sortKey": "2026-09-09T1140"
     },
     {
-      "id": "cura:df9e3eed-c0bf-48ba-a55f-b7e9d0161001",
+      "id": "cura:c7b8ffcb-345b-4e61-a2e9-b84591e6ce4d",
       "date": "2026-09-12",
       "startTime": "2:00 PM",
       "endTime": "3:30 PM",
@@ -258,7 +242,7 @@
       "sortKey": "2026-09-12T0840"
     },
     {
-      "id": "soultree:27277820",
+      "id": "soultree:28769400",
       "date": "2026-09-13",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -272,7 +256,7 @@
       "sortKey": "2026-09-13T1080"
     },
     {
-      "id": "soultree:29041960",
+      "id": "soultree:28769600",
       "date": "2026-09-14",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -302,7 +286,7 @@
       "sortKey": "2026-09-16T1140"
     },
     {
-      "id": "soultree:29043520",
+      "id": "soultree:18669340",
       "date": "2026-09-20",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -314,6 +298,20 @@
       "studio": "Soul Tree Yoga",
       "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
       "sortKey": "2026-09-20T1080"
+    },
+    {
+      "id": "soultree:18669540",
+      "date": "2026-09-21",
+      "startTime": "12:00 PM",
+      "endTime": "1:00 PM",
+      "timezone": "MDT",
+      "name": "Lunchtime Accessible Yoga",
+      "type": "Classes",
+      "level": "",
+      "staff": "Melissa Carey",
+      "studio": "Soul Tree Yoga",
+      "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
+      "sortKey": "2026-09-21T0720"
     }
   ]
 }
