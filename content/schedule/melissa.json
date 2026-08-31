@@ -1,8 +1,8 @@
 {
   "_generated": "DO NOT EDIT BY HAND. Rebuilt daily by scripts/harvest-schedule.mjs.",
   "teacher": "Melissa Carey",
-  "generatedAt": "2026-08-30T14:26:41.902Z",
-  "rangeStart": "2026-08-30",
+  "generatedAt": "2026-08-31T17:05:22.991Z",
+  "rangeStart": "2026-08-31",
   "weeks": 4,
   "sources": [
     {
@@ -10,28 +10,28 @@
       "label": "Soul Tree Yoga",
       "status": "ok",
       "classes": 7,
-      "scanned": 165
+      "scanned": 163
     },
     {
       "id": "mesa",
       "label": "MESA",
       "status": "ok",
-      "classes": 4,
-      "scanned": 6
+      "classes": 5,
+      "scanned": 7
     },
     {
       "id": "allpurpose",
       "label": "All Purpose Yoga",
       "status": "ok",
-      "classes": 7,
-      "scanned": 188
+      "classes": 4,
+      "scanned": 185
     },
     {
       "id": "cura",
       "label": "CURA Yoga Center",
       "status": "ok",
       "classes": 1,
-      "scanned": 462
+      "scanned": 458
     }
   ],
   "studios": [
@@ -57,20 +57,6 @@
     }
   ],
   "sessions": [
-    {
-      "id": "soultree:60979720",
-      "date": "2026-08-30",
-      "startTime": "6:00 PM",
-      "endTime": "7:15 PM",
-      "timezone": "MDT",
-      "name": "In-Person Yin & Restore with Sound Healing",
-      "type": "Classes",
-      "level": "",
-      "staff": "Melissa Carey",
-      "studio": "Soul Tree Yoga",
-      "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
-      "sortKey": "2026-08-30T1080"
-    },
     {
       "id": "mesa:14679",
       "date": "2026-08-31",
@@ -104,55 +90,7 @@
       "sortKey": "2026-09-02T1140"
     },
     {
-      "id": "allpurpose:138621512",
-      "date": "2026-09-04",
-      "startTime": "7:00 PM",
-      "endTime": "9:00 PM",
-      "timezone": "MDT",
-      "name": "Mantra Magic: Sound Healing and Nada Yoga",
-      "type": "",
-      "level": "",
-      "staff": "Melissa Christine Carey",
-      "studio": "All Purpose Yoga",
-      "studioUrl": "https://allpurposeyoga.com/schedule/",
-      "bookUrl": "https://momence.com/s/138621512",
-      "cost": "",
-      "sortKey": "2026-09-04T1140"
-    },
-    {
-      "id": "allpurpose:138621514",
-      "date": "2026-09-05",
-      "startTime": "1:00 PM",
-      "endTime": "6:00 PM",
-      "timezone": "MDT",
-      "name": "Mantra Magic: Sound Healing and Nada Yoga",
-      "type": "",
-      "level": "",
-      "staff": "Melissa Christine Carey",
-      "studio": "All Purpose Yoga",
-      "studioUrl": "https://allpurposeyoga.com/schedule/",
-      "bookUrl": "https://momence.com/s/138621514",
-      "cost": "",
-      "sortKey": "2026-09-05T0780"
-    },
-    {
-      "id": "allpurpose:138621516",
-      "date": "2026-09-06",
-      "startTime": "12:00 PM",
-      "endTime": "5:00 PM",
-      "timezone": "MDT",
-      "name": "Mantra Magic: Sound Healing and Nada Yoga",
-      "type": "",
-      "level": "",
-      "staff": "Melissa Christine Carey",
-      "studio": "All Purpose Yoga",
-      "studioUrl": "https://allpurposeyoga.com/schedule/",
-      "bookUrl": "https://momence.com/s/138621516",
-      "cost": "",
-      "sortKey": "2026-09-06T0720"
-    },
-    {
-      "id": "soultree:60299680",
+      "id": "soultree:106679540",
       "date": "2026-09-06",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -166,7 +104,7 @@
       "sortKey": "2026-09-06T1080"
     },
     {
-      "id": "soultree:60299880",
+      "id": "soultree:105482660",
       "date": "2026-09-07",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -212,7 +150,7 @@
       "sortKey": "2026-09-09T1140"
     },
     {
-      "id": "cura:ceeb58c8-b435-47a8-bf6b-9abe2ca96897",
+      "id": "cura:c9efb039-7eec-4f9e-874a-962c50b1be42",
       "date": "2026-09-12",
       "startTime": "2:00 PM",
       "endTime": "3:30 PM",
@@ -228,7 +166,7 @@
       "sortKey": "2026-09-12T0840"
     },
     {
-      "id": "soultree:60397300",
+      "id": "soultree:105484140",
       "date": "2026-09-13",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -242,7 +180,7 @@
       "sortKey": "2026-09-13T1080"
     },
     {
-      "id": "soultree:60397500",
+      "id": "soultree:518940",
       "date": "2026-09-14",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -288,7 +226,7 @@
       "sortKey": "2026-09-16T1140"
     },
     {
-      "id": "soultree:31145520",
+      "id": "soultree:520500",
       "date": "2026-09-20",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -302,7 +240,7 @@
       "sortKey": "2026-09-20T1080"
     },
     {
-      "id": "soultree:31145720",
+      "id": "soultree:460140",
       "date": "2026-09-21",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -346,6 +284,36 @@
       "bookUrl": "https://momence.com/s/136058128",
       "cost": "",
       "sortKey": "2026-09-23T1140"
+    },
+    {
+      "id": "soultree:461620",
+      "date": "2026-09-27",
+      "startTime": "6:00 PM",
+      "endTime": "7:15 PM",
+      "timezone": "MDT",
+      "name": "In-Person Yin & Restore with Sound Healing",
+      "type": "Classes",
+      "level": "",
+      "staff": "Melissa Carey",
+      "studio": "Soul Tree Yoga",
+      "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
+      "sortKey": "2026-09-27T1080"
+    },
+    {
+      "id": "mesa:14720",
+      "date": "2026-09-28",
+      "startTime": "4:00 PM",
+      "endTime": "4:45 PM",
+      "timezone": "MDT",
+      "name": "Trauma-Informed Yoga Class",
+      "type": "",
+      "level": "",
+      "staff": "Melissa Carey",
+      "studio": "MESA",
+      "studioUrl": "https://movingtoendsexualassault.org/calendar/",
+      "bookUrl": "https://movingtoendsexualassault.org/calendar/trauma-informed-yoga-class-9-28-26/",
+      "cost": "$8",
+      "sortKey": "2026-09-28T0960"
     }
   ]
 }
