@@ -1,8 +1,8 @@
 {
   "_generated": "DO NOT EDIT BY HAND. Rebuilt daily by scripts/harvest-schedule.mjs.",
   "teacher": "Melissa Carey",
-  "generatedAt": "2026-09-09T13:44:30.911Z",
-  "rangeStart": "2026-09-09",
+  "generatedAt": "2026-09-10T13:37:22.244Z",
+  "rangeStart": "2026-09-10",
   "weeks": 4,
   "sources": [
     {
@@ -10,7 +10,7 @@
       "label": "Soul Tree Yoga",
       "status": "ok",
       "classes": 8,
-      "scanned": 171
+      "scanned": 172
     },
     {
       "id": "mesa",
@@ -24,14 +24,14 @@
       "label": "All Purpose Yoga",
       "status": "ok",
       "classes": 4,
-      "scanned": 185
+      "scanned": 184
     },
     {
       "id": "cura",
       "label": "CURA Yoga Center",
       "status": "ok",
       "classes": 1,
-      "scanned": 471
+      "scanned": 467
     }
   ],
   "studios": [
@@ -58,23 +58,7 @@
   ],
   "sessions": [
     {
-      "id": "allpurpose:135095925",
-      "date": "2026-09-09",
-      "startTime": "7:00 PM",
-      "endTime": "8:00 PM",
-      "timezone": "MDT",
-      "name": "Restorative Yin and Sound Healing",
-      "type": "",
-      "level": "",
-      "staff": "Melissa Christine Carey",
-      "studio": "All Purpose Yoga",
-      "studioUrl": "https://allpurposeyoga.com/schedule/",
-      "bookUrl": "https://momence.com/s/135095925",
-      "cost": "",
-      "sortKey": "2026-09-09T1140"
-    },
-    {
-      "id": "cura:3cc6035e-d840-4842-8c76-107d3d76c7c2",
+      "id": "cura:e64cacfd-b91a-42b3-aa8e-c34279b5eb04",
       "date": "2026-09-12",
       "startTime": "2:00 PM",
       "endTime": "3:30 PM",
@@ -90,7 +74,7 @@
       "sortKey": "2026-09-12T0840"
     },
     {
-      "id": "soultree:9679340",
+      "id": "soultree:24118160",
       "date": "2026-09-13",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -104,7 +88,7 @@
       "sortKey": "2026-09-13T1080"
     },
     {
-      "id": "soultree:9679540",
+      "id": "soultree:24118360",
       "date": "2026-09-14",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -150,7 +134,7 @@
       "sortKey": "2026-09-16T1140"
     },
     {
-      "id": "soultree:534880",
+      "id": "soultree:25528100",
       "date": "2026-09-20",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -164,7 +148,7 @@
       "sortKey": "2026-09-20T1080"
     },
     {
-      "id": "soultree:535080",
+      "id": "soultree:25528300",
       "date": "2026-09-21",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -210,7 +194,7 @@
       "sortKey": "2026-09-23T1140"
     },
     {
-      "id": "soultree:3067680",
+      "id": "soultree:24935020",
       "date": "2026-09-27",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -224,7 +208,7 @@
       "sortKey": "2026-09-27T1080"
     },
     {
-      "id": "soultree:3067880",
+      "id": "soultree:24935220",
       "date": "2026-09-28",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -270,7 +254,7 @@
       "sortKey": "2026-09-30T1140"
     },
     {
-      "id": "soultree:11740680",
+      "id": "soultree:7977800",
       "date": "2026-10-04",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -284,7 +268,7 @@
       "sortKey": "2026-10-04T1080"
     },
     {
-      "id": "soultree:11740880",
+      "id": "soultree:7978000",
       "date": "2026-10-05",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -296,6 +280,22 @@
       "studio": "Soul Tree Yoga",
       "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
       "sortKey": "2026-10-05T0720"
+    },
+    {
+      "id": "allpurpose:136894946",
+      "date": "2026-10-07",
+      "startTime": "7:00 PM",
+      "endTime": "8:00 PM",
+      "timezone": "MDT",
+      "name": "Restorative Yin and Sound Healing",
+      "type": "",
+      "level": "",
+      "staff": "Melissa Christine Carey",
+      "studio": "All Purpose Yoga",
+      "studioUrl": "https://allpurposeyoga.com/schedule/",
+      "bookUrl": "https://momence.com/s/136894946",
+      "cost": "",
+      "sortKey": "2026-10-07T1140"
     }
   ]
 }
