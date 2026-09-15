@@ -1,8 +1,8 @@
 {
   "_generated": "DO NOT EDIT BY HAND. Rebuilt daily by scripts/harvest-schedule.mjs.",
   "teacher": "Melissa Carey",
-  "generatedAt": "2026-09-14T15:55:15.256Z",
-  "rangeStart": "2026-09-14",
+  "generatedAt": "2026-09-15T14:21:05.500Z",
+  "rangeStart": "2026-09-15",
   "weeks": 4,
   "sources": [
     {
@@ -10,14 +10,14 @@
       "label": "Soul Tree Yoga",
       "status": "ok",
       "classes": 8,
-      "scanned": 170
+      "scanned": 171
     },
     {
       "id": "mesa",
       "label": "MESA",
       "status": "ok",
-      "classes": 3,
-      "scanned": 4
+      "classes": 2,
+      "scanned": 3
     },
     {
       "id": "allpurpose",
@@ -31,7 +31,7 @@
       "label": "CURA Yoga Center",
       "status": "ok",
       "classes": 0,
-      "scanned": 463
+      "scanned": 465
     }
   ],
   "studios": [
@@ -58,36 +58,6 @@
   ],
   "sessions": [
     {
-      "id": "soultree:2292760",
-      "date": "2026-09-14",
-      "startTime": "12:00 PM",
-      "endTime": "1:00 PM",
-      "timezone": "MDT",
-      "name": "Lunchtime Accessible Yoga",
-      "type": "Classes",
-      "level": "",
-      "staff": "Melissa Carey",
-      "studio": "Soul Tree Yoga",
-      "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
-      "sortKey": "2026-09-14T0720"
-    },
-    {
-      "id": "mesa:14715",
-      "date": "2026-09-14",
-      "startTime": "4:00 PM",
-      "endTime": "4:45 PM",
-      "timezone": "MDT",
-      "name": "Trauma-Informed Yoga Class",
-      "type": "",
-      "level": "",
-      "staff": "Melissa Carey",
-      "studio": "MESA",
-      "studioUrl": "https://movingtoendsexualassault.org/calendar/",
-      "bookUrl": "https://movingtoendsexualassault.org/calendar/trauma-informed-yoga-class-9-14-26/",
-      "cost": "$8",
-      "sortKey": "2026-09-14T0960"
-    },
-    {
       "id": "allpurpose:135588904",
       "date": "2026-09-16",
       "startTime": "7:00 PM",
@@ -104,7 +74,7 @@
       "sortKey": "2026-09-16T1140"
     },
     {
-      "id": "soultree:2294520",
+      "id": "soultree:8910900",
       "date": "2026-09-20",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -118,7 +88,7 @@
       "sortKey": "2026-09-20T1080"
     },
     {
-      "id": "soultree:1419160",
+      "id": "soultree:8911100",
       "date": "2026-09-21",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -164,7 +134,7 @@
       "sortKey": "2026-09-23T1140"
     },
     {
-      "id": "soultree:1420680",
+      "id": "soultree:9100720",
       "date": "2026-09-27",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -178,7 +148,7 @@
       "sortKey": "2026-09-27T1080"
     },
     {
-      "id": "soultree:1449020",
+      "id": "soultree:9100920",
       "date": "2026-09-28",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -224,7 +194,7 @@
       "sortKey": "2026-09-30T1140"
     },
     {
-      "id": "soultree:1450540",
+      "id": "soultree:1946120",
       "date": "2026-10-04",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -238,7 +208,7 @@
       "sortKey": "2026-10-04T1080"
     },
     {
-      "id": "soultree:1330560",
+      "id": "soultree:1946320",
       "date": "2026-10-05",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -268,7 +238,7 @@
       "sortKey": "2026-10-07T1140"
     },
     {
-      "id": "soultree:1332120",
+      "id": "soultree:28122560",
       "date": "2026-10-11",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -280,6 +250,20 @@
       "studio": "Soul Tree Yoga",
       "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
       "sortKey": "2026-10-11T1080"
+    },
+    {
+      "id": "soultree:28122760",
+      "date": "2026-10-12",
+      "startTime": "12:00 PM",
+      "endTime": "1:00 PM",
+      "timezone": "MDT",
+      "name": "Lunchtime Accessible Yoga",
+      "type": "Classes",
+      "level": "",
+      "staff": "Melissa Carey",
+      "studio": "Soul Tree Yoga",
+      "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
+      "sortKey": "2026-10-12T0720"
     }
   ]
 }
