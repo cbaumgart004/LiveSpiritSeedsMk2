@@ -1,8 +1,8 @@
 {
   "_generated": "DO NOT EDIT BY HAND. Rebuilt daily by scripts/harvest-schedule.mjs.",
   "teacher": "Melissa Carey",
-  "generatedAt": "2026-09-19T13:09:41.365Z",
-  "rangeStart": "2026-09-19",
+  "generatedAt": "2026-09-20T13:37:06.408Z",
+  "rangeStart": "2026-09-20",
   "weeks": 4,
   "sources": [
     {
@@ -24,14 +24,14 @@
       "label": "All Purpose Yoga",
       "status": "ok",
       "classes": 4,
-      "scanned": 192
+      "scanned": 191
     },
     {
       "id": "cura",
       "label": "CURA Yoga Center",
       "status": "ok",
       "classes": 0,
-      "scanned": 469
+      "scanned": 470
     }
   ],
   "studios": [
@@ -58,7 +58,7 @@
   ],
   "sessions": [
     {
-      "id": "soultree:4815720",
+      "id": "soultree:35173340",
       "date": "2026-09-20",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -72,7 +72,7 @@
       "sortKey": "2026-09-20T1080"
     },
     {
-      "id": "soultree:4815920",
+      "id": "soultree:35173540",
       "date": "2026-09-21",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -118,7 +118,7 @@
       "sortKey": "2026-09-23T1140"
     },
     {
-      "id": "soultree:5539260",
+      "id": "soultree:36147640",
       "date": "2026-09-27",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -132,7 +132,7 @@
       "sortKey": "2026-09-27T1080"
     },
     {
-      "id": "soultree:5539460",
+      "id": "soultree:36147840",
       "date": "2026-09-28",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -178,7 +178,7 @@
       "sortKey": "2026-09-30T1140"
     },
     {
-      "id": "soultree:5476020",
+      "id": "soultree:36586900",
       "date": "2026-10-04",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -192,7 +192,7 @@
       "sortKey": "2026-10-04T1080"
     },
     {
-      "id": "soultree:5476220",
+      "id": "soultree:36587100",
       "date": "2026-10-05",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -222,7 +222,7 @@
       "sortKey": "2026-10-07T1140"
     },
     {
-      "id": "soultree:5286080",
+      "id": "soultree:9729440",
       "date": "2026-10-11",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -236,7 +236,7 @@
       "sortKey": "2026-10-11T1080"
     },
     {
-      "id": "soultree:5286280",
+      "id": "soultree:9729640",
       "date": "2026-10-12",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
