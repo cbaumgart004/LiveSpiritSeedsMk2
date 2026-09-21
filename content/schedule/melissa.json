@@ -1,8 +1,8 @@
 {
   "_generated": "DO NOT EDIT BY HAND. Rebuilt daily by scripts/harvest-schedule.mjs.",
   "teacher": "Melissa Carey",
-  "generatedAt": "2026-09-20T13:37:06.408Z",
-  "rangeStart": "2026-09-20",
+  "generatedAt": "2026-09-21T15:55:43.744Z",
+  "rangeStart": "2026-09-21",
   "weeks": 4,
   "sources": [
     {
@@ -10,7 +10,7 @@
       "label": "Soul Tree Yoga",
       "status": "ok",
       "classes": 8,
-      "scanned": 174
+      "scanned": 169
     },
     {
       "id": "mesa",
@@ -31,7 +31,7 @@
       "label": "CURA Yoga Center",
       "status": "ok",
       "classes": 0,
-      "scanned": 470
+      "scanned": 466
     }
   ],
   "studios": [
@@ -58,21 +58,7 @@
   ],
   "sessions": [
     {
-      "id": "soultree:35173340",
-      "date": "2026-09-20",
-      "startTime": "6:00 PM",
-      "endTime": "7:15 PM",
-      "timezone": "MDT",
-      "name": "In-Person Yin & Restore with Sound Healing",
-      "type": "Classes",
-      "level": "",
-      "staff": "Melissa Carey",
-      "studio": "Soul Tree Yoga",
-      "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
-      "sortKey": "2026-09-20T1080"
-    },
-    {
-      "id": "soultree:35173540",
+      "id": "soultree:22539640",
       "date": "2026-09-21",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -118,7 +104,7 @@
       "sortKey": "2026-09-23T1140"
     },
     {
-      "id": "soultree:36147640",
+      "id": "soultree:22541360",
       "date": "2026-09-27",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -132,7 +118,7 @@
       "sortKey": "2026-09-27T1080"
     },
     {
-      "id": "soultree:36147840",
+      "id": "soultree:74383560",
       "date": "2026-09-28",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -178,7 +164,7 @@
       "sortKey": "2026-09-30T1140"
     },
     {
-      "id": "soultree:36586900",
+      "id": "soultree:74385080",
       "date": "2026-10-04",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -192,7 +178,7 @@
       "sortKey": "2026-10-04T1080"
     },
     {
-      "id": "soultree:36587100",
+      "id": "soultree:77006920",
       "date": "2026-10-05",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -222,7 +208,7 @@
       "sortKey": "2026-10-07T1140"
     },
     {
-      "id": "soultree:9729440",
+      "id": "soultree:77008480",
       "date": "2026-10-11",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -236,7 +222,7 @@
       "sortKey": "2026-10-11T1080"
     },
     {
-      "id": "soultree:9729640",
+      "id": "soultree:23854280",
       "date": "2026-10-12",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -264,6 +250,20 @@
       "bookUrl": "https://momence.com/s/137280391",
       "cost": "",
       "sortKey": "2026-10-14T1140"
+    },
+    {
+      "id": "soultree:23855800",
+      "date": "2026-10-18",
+      "startTime": "6:00 PM",
+      "endTime": "7:15 PM",
+      "timezone": "MDT",
+      "name": "In-Person Yin & Restore with Sound Healing",
+      "type": "Classes",
+      "level": "",
+      "staff": "Melissa Carey",
+      "studio": "Soul Tree Yoga",
+      "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
+      "sortKey": "2026-10-18T1080"
     }
   ]
 }
