@@ -1,8 +1,8 @@
 {
   "_generated": "DO NOT EDIT BY HAND. Rebuilt daily by scripts/harvest-schedule.mjs.",
   "teacher": "Melissa Carey",
-  "generatedAt": "2026-09-21T15:55:43.744Z",
-  "rangeStart": "2026-09-21",
+  "generatedAt": "2026-09-22T14:03:38.915Z",
+  "rangeStart": "2026-09-22",
   "weeks": 4,
   "sources": [
     {
@@ -10,28 +10,28 @@
       "label": "Soul Tree Yoga",
       "status": "ok",
       "classes": 8,
-      "scanned": 169
+      "scanned": 170
     },
     {
       "id": "mesa",
       "label": "MESA",
       "status": "ok",
-      "classes": 2,
-      "scanned": 3
+      "classes": 1,
+      "scanned": 2
     },
     {
       "id": "allpurpose",
       "label": "All Purpose Yoga",
       "status": "ok",
       "classes": 4,
-      "scanned": 191
+      "scanned": 201
     },
     {
       "id": "cura",
       "label": "CURA Yoga Center",
       "status": "ok",
       "classes": 0,
-      "scanned": 466
+      "scanned": 479
     }
   ],
   "studios": [
@@ -58,36 +58,6 @@
   ],
   "sessions": [
     {
-      "id": "soultree:22539640",
-      "date": "2026-09-21",
-      "startTime": "12:00 PM",
-      "endTime": "1:00 PM",
-      "timezone": "MDT",
-      "name": "Lunchtime Accessible Yoga",
-      "type": "Classes",
-      "level": "",
-      "staff": "Melissa Carey",
-      "studio": "Soul Tree Yoga",
-      "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
-      "sortKey": "2026-09-21T0720"
-    },
-    {
-      "id": "mesa:14718",
-      "date": "2026-09-21",
-      "startTime": "4:00 PM",
-      "endTime": "4:45 PM",
-      "timezone": "MDT",
-      "name": "Trauma-Informed Yoga Class",
-      "type": "",
-      "level": "",
-      "staff": "Melissa Carey",
-      "studio": "MESA",
-      "studioUrl": "https://movingtoendsexualassault.org/calendar/",
-      "bookUrl": "https://movingtoendsexualassault.org/calendar/trauma-informed-yoga-class-9-21-26/",
-      "cost": "$8",
-      "sortKey": "2026-09-21T0960"
-    },
-    {
       "id": "allpurpose:136058128",
       "date": "2026-09-23",
       "startTime": "7:00 PM",
@@ -104,7 +74,7 @@
       "sortKey": "2026-09-23T1140"
     },
     {
-      "id": "soultree:22541360",
+      "id": "soultree:31786680",
       "date": "2026-09-27",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -118,7 +88,7 @@
       "sortKey": "2026-09-27T1080"
     },
     {
-      "id": "soultree:74383560",
+      "id": "soultree:31786880",
       "date": "2026-09-28",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -164,7 +134,7 @@
       "sortKey": "2026-09-30T1140"
     },
     {
-      "id": "soultree:74385080",
+      "id": "soultree:30779240",
       "date": "2026-10-04",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -178,7 +148,7 @@
       "sortKey": "2026-10-04T1080"
     },
     {
-      "id": "soultree:77006920",
+      "id": "soultree:30779440",
       "date": "2026-10-05",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -208,7 +178,7 @@
       "sortKey": "2026-10-07T1140"
     },
     {
-      "id": "soultree:77008480",
+      "id": "soultree:30690900",
       "date": "2026-10-11",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -222,7 +192,7 @@
       "sortKey": "2026-10-11T1080"
     },
     {
-      "id": "soultree:23854280",
+      "id": "soultree:30691100",
       "date": "2026-10-12",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -252,7 +222,7 @@
       "sortKey": "2026-10-14T1140"
     },
     {
-      "id": "soultree:23855800",
+      "id": "soultree:31110100",
       "date": "2026-10-18",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -264,6 +234,20 @@
       "studio": "Soul Tree Yoga",
       "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
       "sortKey": "2026-10-18T1080"
+    },
+    {
+      "id": "soultree:31110300",
+      "date": "2026-10-19",
+      "startTime": "12:00 PM",
+      "endTime": "1:00 PM",
+      "timezone": "MDT",
+      "name": "Lunchtime Accessible Yoga",
+      "type": "Classes",
+      "level": "",
+      "staff": "Melissa Carey",
+      "studio": "Soul Tree Yoga",
+      "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
+      "sortKey": "2026-10-19T0720"
     }
   ]
 }
