@@ -1,7 +1,7 @@
 {
   "_generated": "DO NOT EDIT BY HAND. Rebuilt daily by scripts/harvest-schedule.mjs.",
   "teacher": "Melissa Carey",
-  "generatedAt": "2026-09-28T17:40:46.488Z",
+  "generatedAt": "2026-09-28T18:11:03.914Z",
   "rangeStart": "2026-09-28",
   "weeks": 4,
   "sources": [
@@ -9,22 +9,23 @@
       "id": "soultree",
       "label": "Soul Tree Yoga",
       "status": "ok",
-      "classes": 9,
-      "scanned": 171
+      "classes": 8,
+      "scanned": 170
     },
     {
       "id": "mesa",
       "label": "MESA",
-      "status": "ok",
-      "classes": 1,
-      "scanned": 2
+      "status": "flaky",
+      "streak": 1,
+      "detail": "events API returned HTTP 520",
+      "classes": 1
     },
     {
       "id": "allpurpose",
       "label": "All Purpose Yoga",
-      "status": "stale",
-      "detail": "sessions API returned HTTP 502",
-      "classes": 4
+      "status": "ok",
+      "classes": 4,
+      "scanned": 213
     },
     {
       "id": "cura",
@@ -58,20 +59,6 @@
   ],
   "sessions": [
     {
-      "id": "soultree:112120700",
-      "date": "2026-09-28",
-      "startTime": "12:00 PM",
-      "endTime": "1:00 PM",
-      "timezone": "MDT",
-      "name": "Lunchtime Accessible Yoga",
-      "type": "Classes",
-      "level": "",
-      "staff": "Melissa Carey",
-      "studio": "Soul Tree Yoga",
-      "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
-      "sortKey": "2026-09-28T0720"
-    },
-    {
       "id": "mesa:14720",
       "date": "2026-09-28",
       "startTime": "4:00 PM",
@@ -104,7 +91,7 @@
       "sortKey": "2026-09-30T1140"
     },
     {
-      "id": "soultree:112121900",
+      "id": "soultree:112863000",
       "date": "2026-10-02",
       "startTime": "6:30 AM",
       "endTime": "7:30 AM",
@@ -118,7 +105,7 @@
       "sortKey": "2026-10-02T0390"
     },
     {
-      "id": "soultree:112122420",
+      "id": "soultree:112863520",
       "date": "2026-10-04",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
