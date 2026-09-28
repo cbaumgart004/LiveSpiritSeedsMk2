@@ -262,6 +262,10 @@ style's type/radius tokens instead of fighting the vendor's stylesheet.
 > was removed, or the trainer id changed). A failing source keeps its previously harvested classes
 > rather than vanishing from the site while someone looks at it.
 >
+> An outage on the studio's side (HTTP 5xx or 429, or no answer at all) only warns until the same
+> source has failed that way on three runs in a row; `sources[].streak` in `melissa.json` counts them.
+> A studio's server having a bad night is not worth an email; one down for three days is.
+>
 > Only the healcode adapter can verify she's *still* a teacher (Mindbody publishes a roster in
 > `filters.trainer`). Tribe, Momence and Punchpass expose only the classes actually scheduled, so
 > "no classes" and "no longer teaches here" are indistinguishable there — those adapters return
