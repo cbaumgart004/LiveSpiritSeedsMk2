@@ -131,7 +131,7 @@ images are repo-based (in `public/uploads`, compressed by a push-time GitHub Act
 > local dev server) and is *always* overwritten at build time, so never treat it as the real endpoint.
 > The build needs `TINA_CLIENT_ID` + `TINA_TOKEN`, and serves content for the branch resolved in
 > `tina/config.ts`: `TINA_BRANCH` → `VERCEL_GIT_COMMIT_REF` (Vercel) → `CF_PAGES_BRANCH` (Cloudflare
-> Pages) → `main`. **A preview deploy of a feature branch therefore fails until that branch has been
+> Pages) → `AWS_BRANCH` (Amplify Hosting) → `main`. **A preview deploy of a feature branch therefore fails until that branch has been
 > indexed in the TinaCloud dashboard** — the code is the branch's but the content query goes to
 > TinaCloud, and an unknown branch (or one whose indexed schema predates a new field) errors.
 >

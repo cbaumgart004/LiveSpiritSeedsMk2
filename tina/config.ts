@@ -521,8 +521,8 @@ export default defineConfig({
   // defaulting to main — otherwise a preview builds this branch's CODE against
   // main's CONTENT, and every query fails on fields main's indexed schema
   // doesn't have yet. VERCEL_GIT_COMMIT_REF is Vercel's; CF_PAGES_BRANCH is
-  // Cloudflare Pages' (only one is ever set, so the order between them is
-  // arbitrary). A host with neither lands on main.
+  // Cloudflare Pages'; AWS_BRANCH is Amplify Hosting's (only one is ever set,
+  // so the order between them is arbitrary). A host with none lands on main.
   //
   // DON'T pin TINA_BRANCH in the host dashboard. It wins over everything below,
   // so a value left over from an old branch silently breaks every future deploy
@@ -537,6 +537,7 @@ export default defineConfig({
     process.env.TINA_BRANCH ||
     process.env.VERCEL_GIT_COMMIT_REF ||
     process.env.CF_PAGES_BRANCH ||
+    process.env.AWS_BRANCH ||
     'main',
   // Local dev works without these; TinaCloud fills them in for production (Phase 4).
   clientId: process.env.TINA_CLIENT_ID || null,
