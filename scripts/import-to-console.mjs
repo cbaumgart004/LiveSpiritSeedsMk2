@@ -10,10 +10,9 @@
 // A page or the settings the console already has is skipped, so edits made in
 // the console survive a re-run; --replace overwrites them with Tina's copy.
 //
-// The token is the editor token the console keeps for this tab: on the site
-// with the editor open, run sessionStorage.getItem('eotm:token:spiritseeds') in
-// the browser's developer console. It lasts 8 hours and edits only this site.
-// Never commit it or paste it into a file.
+// The token: admin.theedgeofthemap.com → Manage → SpiritSeeds → Copy an editor
+// token (console 1.1.1+). It lasts 8 hours and edits only this site. Never
+// commit it or paste it into a file.
 
 import { readFileSync, readdirSync } from 'node:fs'
 import { pageFromTina, settingsFromTina } from '../src/cms/fromTina.js'
