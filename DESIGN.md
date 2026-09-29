@@ -139,6 +139,9 @@ is the live preview. `DynamicPage` finds the page by slug (`home` is `/`) and pa
 - **On-page editing.** Every section carries `data-eotm-edit`, `data-eotm-item` and
   `data-eotm-size="width"`; side images carry `data-eotm-size="imageWidth"`; rich text carries
   `data-eotm-richtext`. The console turns these into an Edit button and drag handles.
+- **The owner's own section types** (console "Your own types") render through
+  `components/cms/CustomSection.jsx` from their fields (`useSchema`), in the plain section style
+  until given a design. Photos carry the owner's turn, mirror and fade (`components/cms/photo.js`).
 - **Photos.** New ones upload to the site's photo bucket through the console; existing ones stay in
   `public/uploads` and are reused by path.
 

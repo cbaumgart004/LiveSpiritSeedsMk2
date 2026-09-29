@@ -68,6 +68,33 @@ export function useDocuments(type) {
   }, [type, docs, tick]) // eslint-disable-line react-hooks/exhaustive-deps
 }
 
+// The site's schema, with the owner's own types (the console's schema/custom.js):
+// the live one while the editor is open, else the console's public boot answer.
+// Null until known, or when the console cannot be reached.
+let bootSchema = null
+export function useSchema() {
+  const [schema, setSchema] = useState(() => window.EOTM?.schema ?? null)
+  useEffect(() => {
+    let active = true
+    bootSchema ??= fetch(`${CONSOLE_API}/boot`).then((r) => (r.ok ? r.json() : null)).then((b) => b?.schema ?? null).catch(() => null)
+    bootSchema.then((s) => active && !window.EOTM?.schema && s && setSchema(s))
+    let unsubscribe = null
+    let timer = null
+    const wire = () => {
+      if (!window.EOTM) { timer = setTimeout(wire, 50); return }
+      if (window.EOTM.schema) setSchema(window.EOTM.schema)
+      unsubscribe = window.EOTM.subscribe((c) => c.type === '$schema' && setSchema(window.EOTM.schema))
+    }
+    wire()
+    return () => {
+      active = false
+      clearTimeout(timer)
+      if (unsubscribe) unsubscribe()
+    }
+  }, [])
+  return schema
+}
+
 // Site settings: the console's singleton over the bundled file, field by field.
 export function useSettings() {
   const { ready, docs } = useDocuments('settings')

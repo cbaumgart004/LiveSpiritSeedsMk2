@@ -14,10 +14,9 @@ import { useEffect, useRef, useState } from 'react'
 import ValuesSection from '../ValuesSection/ValuesSection'
 import TaglineArt from '../TaglineArt'
 
-// An image field's address and description: { src, alt } from the console, or
-// a bare path from older content.
-const srcOf = (v) => (typeof v === 'string' ? v : v?.src || '')
-const altOf = (v, fallback = '') => (typeof v === 'object' && v?.alt) || fallback
+import CustomSection from './CustomSection'
+import { srcOf, altOf, imageStyle } from './photo'
+import { useSchema } from '../../cms/site'
 
 // The attributes that make a section editable and sizable from the page, and
 // its owner-set width. `doc` is the page's id (or slug for the bundled copy).
@@ -91,7 +90,7 @@ function Media({ block, name = 'image', alt, width, side }) {
   return (
     <div className="media" style={style} data-eotm-size="imageWidth" data-eotm-min="20" data-eotm-max="70"
       data-eotm-label="image" data-eotm-edge={side === 'right' ? 'left' : undefined}>
-      <img src={src} alt={altOf(block[name], alt)} />
+      <img src={src} alt={altOf(block[name], alt)} style={imageStyle(block[name])} />
     </div>
   )
 }
@@ -193,7 +192,7 @@ function SplashSection({ block, isFirst, services, doc }) {
         <Buttons block={block} services={services} />
         <div className="splash__content">
           {srcOf(block.image) && (
-            <img className="splash__photo" src={srcOf(block.image)} alt={altOf(block.image, block.title || '')} />
+            <img className="splash__photo" src={srcOf(block.image)} alt={altOf(block.image, block.title || '')} style={imageStyle(block.image)} />
           )}
           <div className="splash__artwork">
             <TaglineArt />
@@ -214,7 +213,7 @@ function SplashSection({ block, isFirst, services, doc }) {
         <div className="splash__content">
           <TaglineArt />
           {srcOf(block.image) && (
-            <img className="splash__photo" src={srcOf(block.image)} alt={altOf(block.image, block.title || '')} />
+            <img className="splash__photo" src={srcOf(block.image)} alt={altOf(block.image, block.title || '')} style={imageStyle(block.image)} />
           )}
         </div>
         {/* The artwork carries the words, but the call to action still needs to
@@ -228,7 +227,7 @@ function SplashSection({ block, isFirst, services, doc }) {
     <section className={cls} {...editable(doc, block)}>
       {srcOf(block.image) && (
         <div className="splash__media">
-          <img src={srcOf(block.image)} alt={altOf(block.image)} />
+          <img src={srcOf(block.image)} alt={altOf(block.image)} style={imageStyle(block.image)} />
         </div>
       )}
       <div className="splash__scrim" aria-hidden="true" />
@@ -375,11 +374,11 @@ function CardGrid({ block, isFirst, services, doc }) {
             {srcOf(card.image) &&
               (card.buttonUrl ? (
                 <a className="card-thumb" href={card.buttonUrl}>
-                  <img src={srcOf(card.image)} alt={altOf(card.image, card.title || '')} loading="lazy" />
+                  <img src={srcOf(card.image)} alt={altOf(card.image, card.title || '')} loading="lazy" style={imageStyle(card.image)} />
                 </a>
               ) : (
                 <div className="card-thumb">
-                  <img src={srcOf(card.image)} alt={altOf(card.image, card.title || '')} loading="lazy" />
+                  <img src={srcOf(card.image)} alt={altOf(card.image, card.title || '')} loading="lazy" style={imageStyle(card.image)} />
                 </div>
               ))}
             {card.title && <h3>{card.title}</h3>}
@@ -412,7 +411,7 @@ function EventSection({ block, isFirst, services, doc }) {
             const image = typeof entry === 'string' ? entry : entry?.image
             return srcOf(image) && (
               <div className="media" key={entry?._id ?? i}>
-                <img src={srcOf(image)} alt={altOf(image)} />
+                <img src={srcOf(image)} alt={altOf(image)} style={imageStyle(image)} />
               </div>
             )
           })}
@@ -772,6 +771,8 @@ function usesMediaSide(block) {
 
 export default function Blocks({ blocks, doc }) {
   const list = blocks || []
+  // Section types the owner designed in the console render from their fields.
+  const schema = useSchema()
   // Map of service Heading -> { status, slug, bookUrl }, so a linked button or
   // add-on can reflect the availability of — and link to — a service by name.
   const services = {}
@@ -798,8 +799,12 @@ export default function Blocks({ blocks, doc }) {
             return <ServiceBlock key={key} block={block} isFirst={isFirst} side={side} services={services} doc={doc} />
           case 'embed':
             return <EmbedBlock key={key} block={block} isFirst={isFirst} doc={doc} />
-          default:
-            return null
+          default: {
+            const def = schema?.blocks?.[block._type]
+            if (!def) return null
+            return <CustomSection key={key} block={block} def={def}
+              className={sectionClass(def.className || 'section section--stack', null, isFirst, block)} marks={editable(doc, block)} />
+          }
         }
       })}
     </>
