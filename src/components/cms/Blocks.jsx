@@ -1,15 +1,41 @@
 /* eslint-disable react/prop-types */
 // Renders a page's blocks[] into the CSS primitives from ADR 0001.
-// There are two block types: a "Content Section" (whose `layout` picks one of
-// several looks) and a "Service" (bookable). tinaField(block, 'field') marks a
-// region as click-to-edit inside /admin; for it to resolve, blocks must arrive
-// via useTina (see DynamicPage) — the hook stamps the editing metadata onto each
-// block object.
+// There are three block types: a "Content Section" (whose `layout` picks one of
+// several looks), a "Service" (bookable) and an "Embed". Blocks arrive in the
+// Edge of the Map console's shape (src/cms/fromTina.js has the mapping from
+// Tina's): each has an _id and a _type, images are { src, alt }, and rich text
+// is sanitized HTML.
+//
+// Every section is marked for the console's click-to-edit and drag-to-size
+// (data-eotm-*, see the console's Targets.jsx): pointing at a section while
+// editing shows an Edit button, and its edge (and a side image's edge) can be
+// dragged to a new width.
 import { useEffect, useRef, useState } from 'react'
-import { tinaField } from 'tinacms/dist/react'
-import { TinaMarkdown } from 'tinacms/dist/rich-text'
 import ValuesSection from '../ValuesSection/ValuesSection'
 import TaglineArt from '../TaglineArt'
+
+// An image field's address and description: { src, alt } from the console, or
+// a bare path from older content.
+const srcOf = (v) => (typeof v === 'string' ? v : v?.src || '')
+const altOf = (v, fallback = '') => (typeof v === 'object' && v?.alt) || fallback
+
+// The attributes that make a section editable and sizable from the page, and
+// its owner-set width. `doc` is the page's id (or slug for the bundled copy).
+function editable(doc, block, extraStyle) {
+  if (!doc) return { style: extraStyle }
+  const width = Number(block.width)
+  const style = width > 0 && width < 100 ? { ...extraStyle, maxWidth: `${width}%`, marginInline: 'auto' } : extraStyle
+  return {
+    'data-eotm-edit': `page:${doc}`,
+    'data-eotm-item': block._id,
+    'data-eotm-label': block.title || (block._type === 'embed' ? 'embed' : 'section'),
+    'data-eotm-size': 'width',
+    'data-eotm-min': 30,
+    'data-eotm-max': 100,
+    'data-eotm-centered': '',
+    style,
+  }
+}
 
 // Which side the image sits on. 'left'/'right' are explicit overrides from the
 // editor; anything else ('auto' or empty) alternates by position so images
@@ -35,46 +61,37 @@ function sectionClass(base, side, isFirst, block) {
   return `${base}${reverse}${first}${spacingClass(block)}`
 }
 
-// Does a rich-text field actually contain anything? Clearing the text in /admin
-// leaves an AST shell ({ type: 'root', children: [ an empty paragraph ] }), which
-// is truthy — so a plain `block.body &&` check would still render an empty panel.
-// Images count as content even though they carry no text.
-function hasRichText(content) {
-  if (!content) return false
-  if (typeof content === 'string') return content.trim().length > 0
-  const walk = (node) => {
-    if (!node || typeof node !== 'object') return false
-    if (typeof node.text === 'string' && node.text.trim()) return true
-    if (node.type === 'img' || node.url) return true
-    return Array.isArray(node.children) && node.children.some(walk)
-  }
-  return walk(content)
+// Does a rich-text field actually contain anything? A cleared editor leaves
+// markup such as <p></p>, which is truthy, so a plain `block.body &&` check
+// would still render an empty panel. Images count though they carry no text.
+function hasRichText(html) {
+  if (typeof html !== 'string') return false
+  return /<img\b/i.test(html) || html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim().length > 0
 }
 
-// Renders a rich-text (AST) field. Rich-text bodies are objects; TinaMarkdown
-// renders them — including any inline images the editor embeds. The string
-// guard keeps a hand-edited/plain-text value from rendering as [object Object].
+// A rich-text field, as the HTML the console stored (sanitized when saved) or
+// the bundled content converted from Markdown. `data-eotm-richtext` lets the
+// owner drag an image inside it to a new width.
 function Body({ block, name }) {
-  const content = block[name]
-  if (!content) return null
-  return (
-    <div data-tina-field={tinaField(block, name)}>
-      {typeof content === 'string' ? <p>{content}</p> : <TinaMarkdown content={content} />}
-    </div>
-  )
+  const html = block[name]
+  if (!hasRichText(html)) return null
+  return <div className="rich-text" data-eotm-richtext={name} dangerouslySetInnerHTML={{ __html: html }} />
 }
 
 // Editable image whose width is editor-controlled: `imageWidth` (a percentage,
 // 20–70) is passed to CSS as the custom property --media-basis, which sets the
 // image column's flex-basis on desktop. We set the CSS var (not flex-basis
 // directly) so the mobile stylesheet can still force full-width stacking.
-function Media({ block, name = 'image', alt, width }) {
-  if (!block[name]) return null
+// `side` says which edge faces the text, so dragging that edge resizes it.
+function Media({ block, name = 'image', alt, width, side }) {
+  const src = srcOf(block[name])
+  if (!src) return null
   const style =
     typeof width === 'number' && width > 0 ? { '--media-basis': `${width}%` } : undefined
   return (
-    <div className="media" style={style} data-tina-field={tinaField(block, name)}>
-      <img src={block[name]} alt={alt || ''} />
+    <div className="media" style={style} data-eotm-size="imageWidth" data-eotm-min="20" data-eotm-max="70"
+      data-eotm-label="image" data-eotm-edge={side === 'right' ? 'left' : undefined}>
+      <img src={src} alt={altOf(block[name], alt)} />
     </div>
   )
 }
@@ -120,7 +137,7 @@ function Buttons({ block, services }) {
   const items = block.buttons
   if (!items?.length) return null
   return (
-    <div className="button-row" data-tina-field={tinaField(block, 'buttons')}>
+    <div className="button-row">
       {items.map((btn, i) => (
         <ButtonItem key={i} btn={btn} services={services} />
       ))}
@@ -154,7 +171,7 @@ const OVERLAY_ALIGN = {
   center: '',
 }
 
-function SplashSection({ block, isFirst, services }) {
+function SplashSection({ block, isFirst, services, doc }) {
   const align = OVERLAY_ALIGN[block.overlayAlign] ?? ''
   // Three ways to show the tagline artwork (Tina "Tagline Artwork"):
   //   none   – ordinary splash: photo behind, the block's own type over it.
@@ -170,18 +187,13 @@ function SplashSection({ block, isFirst, services }) {
   if (placement === 'over') {
     const blend = Math.min(100, Math.max(10, block.taglineBlend || 90)) / 100
     return (
-      <section className={`${base} splash--lap`} style={{ '--tagline-blend': blend }}>
+      <section className={`${base} splash--lap`} {...editable(doc, block, { '--tagline-blend': blend })}>
         {/* Buttons lead the section here, not trail it — they are the first
             thing in the hero rather than a footnote under the artwork. */}
         <Buttons block={block} services={services} />
         <div className="splash__content">
-          {block.image && (
-            <img
-              className="splash__photo"
-              src={block.image}
-              alt={block.title || ''}
-              data-tina-field={tinaField(block, 'image')}
-            />
+          {srcOf(block.image) && (
+            <img className="splash__photo" src={srcOf(block.image)} alt={altOf(block.image, block.title || '')} />
           )}
           <div className="splash__artwork">
             <TaglineArt />
@@ -196,18 +208,13 @@ function SplashSection({ block, isFirst, services }) {
 
   if (pair) {
     return (
-      <section className={cls}>
+      <section className={cls} {...editable(doc, block)}>
         <div className="splash__blend splash__blend--top" aria-hidden="true" />
         <div className="splash__blend splash__blend--bottom" aria-hidden="true" />
         <div className="splash__content">
           <TaglineArt />
-          {block.image && (
-            <img
-              className="splash__photo"
-              src={block.image}
-              alt={block.title || ''}
-              data-tina-field={tinaField(block, 'image')}
-            />
+          {srcOf(block.image) && (
+            <img className="splash__photo" src={srcOf(block.image)} alt={altOf(block.image, block.title || '')} />
           )}
         </div>
         {/* The artwork carries the words, but the call to action still needs to
@@ -218,21 +225,21 @@ function SplashSection({ block, isFirst, services }) {
   }
 
   return (
-    <section className={cls}>
-      {block.image && (
-        <div className="splash__media" data-tina-field={tinaField(block, 'image')}>
-          <img src={block.image} alt="" />
+    <section className={cls} {...editable(doc, block)}>
+      {srcOf(block.image) && (
+        <div className="splash__media">
+          <img src={srcOf(block.image)} alt={altOf(block.image)} />
         </div>
       )}
       <div className="splash__scrim" aria-hidden="true" />
       <div className="splash__content">
         {block.eyebrow && (
-          <p className="splash__eyebrow" data-tina-field={tinaField(block, 'eyebrow')}>
+          <p className="splash__eyebrow">
             {block.eyebrow}
           </p>
         )}
         {block.title && (
-          <h2 className="splash__title" data-tina-field={tinaField(block, 'title')}>
+          <h2 className="splash__title">
             {block.title}
           </h2>
         )}
@@ -245,12 +252,12 @@ function SplashSection({ block, isFirst, services }) {
   )
 }
 
-function SplitSection({ block, isFirst, side, services }) {
+function SplitSection({ block, isFirst, side, services, doc }) {
   return (
-    <section className={sectionClass('section section--split', side, isFirst, block)}>
-      <Media block={block} alt={block.title} width={block.imageWidth} />
+    <section className={sectionClass('section section--split', side, isFirst, block)} {...editable(doc, block)}>
+      <Media block={block} alt={block.title} width={block.imageWidth} side={side} />
       <div className="panel">
-        {block.title && <h2 data-tina-field={tinaField(block, 'title')}>{block.title}</h2>}
+        {block.title && <h2>{block.title}</h2>}
         <Body block={block} name="body" />
         <Buttons block={block} services={services} />
         <HomeButton block={block} />
@@ -259,10 +266,10 @@ function SplitSection({ block, isFirst, side, services }) {
   )
 }
 
-function StackedSection({ block, isFirst, services }) {
+function StackedSection({ block, isFirst, services, doc }) {
   return (
-    <section className={sectionClass('section section--stack', null, isFirst, block)}>
-      {block.title && <h2 data-tina-field={tinaField(block, 'title')}>{block.title}</h2>}
+    <section className={sectionClass('section section--stack', null, isFirst, block)} {...editable(doc, block)}>
+      {block.title && <h2>{block.title}</h2>}
       {/* Skip the panel when there's no body — an empty one renders as a bare
           bordered strip, which is what a heading-only section used to look like. */}
       {hasRichText(block.body) && (
@@ -307,18 +314,19 @@ function AddOnButton({ addOn, services }) {
   )
 }
 
-function ServiceBlock({ block, isFirst, side, services }) {
+function ServiceBlock({ block, isFirst, side, services, doc }) {
   const options = block.bookingOptions || []
   const comingSoon = block.status === 'coming-soon'
   return (
     <section
       id={slugify(block.title)}
       className={sectionClass('section section--split', side, isFirst, block)}
+      {...editable(doc, block)}
     >
-      <Media block={block} alt={block.title} width={block.imageWidth} />
+      <Media block={block} alt={block.title} width={block.imageWidth} side={side} />
       <div className="panel">
         {block.title && (
-          <h2 data-tina-field={tinaField(block, 'title')}>
+          <h2>
             {block.title}
             {comingSoon && <span className="status-badge">Coming Soon</span>}
           </h2>
@@ -327,7 +335,7 @@ function ServiceBlock({ block, isFirst, side, services }) {
         {/* Each session gets its own row: the base booking button plus one
             "Book w/ <add-on>" button per add-on offered on that session. */}
         {options.map((opt, i) => (
-          <div key={i}>
+          <div key={opt._id ?? i}>
             <div className="button-row">
               {comingSoon ? (
                 // A Coming Soon service can't be booked yet.
@@ -356,22 +364,22 @@ function ServiceBlock({ block, isFirst, side, services }) {
   )
 }
 
-function CardGrid({ block, isFirst, services }) {
+function CardGrid({ block, isFirst, services, doc }) {
   const cards = block.cards || []
   return (
-    <section className={sectionClass('section section--stack', null, isFirst, block)}>
-      {block.title && <h2 data-tina-field={tinaField(block, 'title')}>{block.title}</h2>}
-      <div className="grid" data-tina-field={tinaField(block, 'cards')}>
+    <section className={sectionClass('section section--stack', null, isFirst, block)} {...editable(doc, block)}>
+      {block.title && <h2>{block.title}</h2>}
+      <div className="grid">
         {cards.map((card, i) => (
-          <div className="card" key={i}>
-            {card.image &&
+          <div className="card" key={card._id ?? i}>
+            {srcOf(card.image) &&
               (card.buttonUrl ? (
                 <a className="card-thumb" href={card.buttonUrl}>
-                  <img src={card.image} alt={card.title || ''} loading="lazy" />
+                  <img src={srcOf(card.image)} alt={altOf(card.image, card.title || '')} loading="lazy" />
                 </a>
               ) : (
                 <div className="card-thumb">
-                  <img src={card.image} alt={card.title || ''} loading="lazy" />
+                  <img src={srcOf(card.image)} alt={altOf(card.image, card.title || '')} loading="lazy" />
                 </div>
               ))}
             {card.title && <h3>{card.title}</h3>}
@@ -392,21 +400,22 @@ function CardGrid({ block, isFirst, services }) {
   )
 }
 
-function EventSection({ block, isFirst, services }) {
+function EventSection({ block, isFirst, services, doc }) {
   return (
-    <section className={sectionClass('section', null, isFirst, block)}>
+    <section className={sectionClass('section', null, isFirst, block)} {...editable(doc, block)}>
       <div className="panel">
-        {block.title && <h2 data-tina-field={tinaField(block, 'title')}>{block.title}</h2>}
+        {block.title && <h2>{block.title}</h2>}
         <Body block={block} name="body" />
-        <div data-tina-field={tinaField(block, 'images')}>
-          {(block.images || []).map(
-            (src, i) =>
-              src && (
-                <div className="media" key={i}>
-                  <img src={src} alt="" />
-                </div>
-              )
-          )}
+        <div>
+          {(block.images || []).map((entry, i) => {
+            // A console row is { _id, image }; older content is a bare path.
+            const image = typeof entry === 'string' ? entry : entry?.image
+            return srcOf(image) && (
+              <div className="media" key={entry?._id ?? i}>
+                <img src={srcOf(image)} alt={altOf(image)} />
+              </div>
+            )
+          })}
         </div>
         <Buttons block={block} services={services} />
         <HomeButton block={block} />
@@ -507,8 +516,8 @@ function NewsletterEmbed({ block }) {
     return (
       <div className="panel embed-placeholder">
         <p>
-          Add your Kit <strong>form ID</strong> in <strong>/admin</strong> to turn this into
-          a signup form.
+          Add your Kit <strong>form ID</strong> in the editor to turn this into a signup
+          form.
         </p>
       </div>
     )
@@ -517,7 +526,7 @@ function NewsletterEmbed({ block }) {
   return (
     <div className="panel newsletter">
       {block.newsletterIntro && (
-        <p className="newsletter__intro" data-tina-field={tinaField(block, 'newsletterIntro')}>
+        <p className="newsletter__intro">
           {block.newsletterIntro}
         </p>
       )}
@@ -569,7 +578,7 @@ function NewsletterEmbed({ block }) {
       )}
 
       {block.newsletterFinePrint && (
-        <p className="newsletter__fine" data-tina-field={tinaField(block, 'newsletterFinePrint')}>
+        <p className="newsletter__fine">
           {block.newsletterFinePrint}
         </p>
       )}
@@ -670,8 +679,8 @@ function ScheduleEmbed({ block }) {
 // widget (OfferingTree schedule, Canva design, Kit form) so the site stays live
 // off that source instead of hand-maintained links. URL mode → a themed iframe;
 // Code mode → RawEmbed (runs the snippet's scripts); Schedule mode → the
-// harvested teaching schedule (nothing to paste). Empty → an /admin hint.
-function EmbedBlock({ block, isFirst }) {
+// harvested teaching schedule (nothing to paste). Empty → an editor hint.
+function EmbedBlock({ block, isFirst, doc }) {
   const isSchedule = block.mode === 'schedule'
   const isNewsletter = block.mode === 'newsletter'
   const useCode = block.mode === 'code'
@@ -681,11 +690,11 @@ function EmbedBlock({ block, isFirst }) {
   // theme with the season + UI style rather than the vendor's stylesheet.
   if (isSchedule || isNewsletter) {
     return (
-      <section className={sectionClass('section section--stack', null, isFirst, block)}>
-        {block.title && <h2 data-tina-field={tinaField(block, 'title')}>{block.title}</h2>}
+      <section className={sectionClass('section section--stack', null, isFirst, block)} {...editable(doc, block)}>
+        {block.title && <h2>{block.title}</h2>}
         {isSchedule ? <ScheduleEmbed block={block} /> : <NewsletterEmbed block={block} />}
         {block.caption && (
-          <p className="embed-caption" data-tina-field={tinaField(block, 'caption')}>
+          <p className="embed-caption">
             {block.caption}
           </p>
         )}
@@ -694,9 +703,9 @@ function EmbedBlock({ block, isFirst }) {
     )
   }
   return (
-    <section className={sectionClass('section section--stack', null, isFirst, block)}>
-      {block.title && <h2 data-tina-field={tinaField(block, 'title')}>{block.title}</h2>}
-      <div className="embed" data-tina-field={tinaField(block, useCode ? 'code' : 'url')}>
+    <section className={sectionClass('section section--stack', null, isFirst, block)} {...editable(doc, block)}>
+      {block.title && <h2>{block.title}</h2>}
+      <div className="embed">
         {hasUrl && (
           <iframe
             className="embed-frame"
@@ -711,14 +720,14 @@ function EmbedBlock({ block, isFirst }) {
         {!hasUrl && !hasCode && (
           <div className="panel embed-placeholder">
             <p>
-              Add your embed here in <strong>/admin</strong> — paste an OfferingTree schedule,
-              a Canva design, or a Kit signup snippet.
+              Add your embed here in the editor: paste an OfferingTree schedule, a Canva
+              design, or a Kit signup snippet.
             </p>
           </div>
         )}
       </div>
       {block.caption && (
-        <p className="embed-caption" data-tina-field={tinaField(block, 'caption')}>
+        <p className="embed-caption">
           {block.caption}
         </p>
       )}
@@ -729,43 +738,45 @@ function EmbedBlock({ block, isFirst }) {
 
 // Renders one Content Section by its chosen layout. imageText is the default and
 // the only layout that consumes an alternating image side.
-function ContentSection({ block, isFirst, side, services }) {
+function ContentSection({ block, isFirst, side, services, doc }) {
+  const props = { block, isFirst, services, doc }
   switch (block.layout) {
     case 'splash':
-      return <SplashSection block={block} isFirst={isFirst} services={services} />
+      return <SplashSection {...props} />
     case 'centered':
-      return <StackedSection block={block} isFirst={isFirst} services={services} />
+      return <StackedSection {...props} />
     case 'cardGrid':
-      return <CardGrid block={block} isFirst={isFirst} services={services} />
+      return <CardGrid {...props} />
     case 'values':
       return (
-        <div>
-          <ValuesSection title={block.title} words={block.words || []} />
+        <div {...editable(doc, block)}>
+          {/* Console rows are { _id, text }; older content is bare strings. */}
+          <ValuesSection title={block.title} words={(block.words || []).map((w) => (typeof w === 'string' ? w : w?.text)).filter(Boolean)} />
           <HomeButton block={block} />
         </div>
       )
     case 'event':
-      return <EventSection block={block} isFirst={isFirst} services={services} />
+      return <EventSection {...props} />
     case 'imageText':
     default:
-      return <SplitSection block={block} isFirst={isFirst} side={side} services={services} />
+      return <SplitSection {...props} side={side} />
   }
 }
 
 // Layouts that consume an alternating image side (so mediaIndex only advances
 // for blocks that actually show a side-by-side image).
 function usesMediaSide(block) {
-  if (block.__typename === 'PageBlocksService') return true
-  return block.__typename === 'PageBlocksContentSection' && (block.layout || 'imageText') === 'imageText'
+  if (block._type === 'service') return true
+  return block._type === 'contentSection' && (block.layout || 'imageText') === 'imageText'
 }
 
-export default function Blocks({ blocks }) {
+export default function Blocks({ blocks, doc }) {
   const list = blocks || []
   // Map of service Heading -> { status, slug, bookUrl }, so a linked button or
   // add-on can reflect the availability of — and link to — a service by name.
   const services = {}
   list.forEach((b) => {
-    if (b.__typename === 'PageBlocksService' && b.title) {
+    if (b._type === 'service' && b.title) {
       const bookUrl = (b.bookingOptions || []).map((o) => o.bookUrl).find(Boolean) || ''
       services[b.title.trim().toLowerCase()] = { status: b.status, slug: slugify(b.title), bookUrl }
     }
@@ -779,17 +790,14 @@ export default function Blocks({ blocks }) {
       {list.map((block, i) => {
         const isFirst = i === 0
         const side = usesMediaSide(block) ? resolveSide(block, mediaIndex++) : null
-        switch (block.__typename) {
-          case 'PageBlocksContentSection':
-            return (
-              <ContentSection key={i} block={block} isFirst={isFirst} side={side} services={services} />
-            )
-          case 'PageBlocksService':
-            return (
-              <ServiceBlock key={i} block={block} isFirst={isFirst} side={side} services={services} />
-            )
-          case 'PageBlocksEmbed':
-            return <EmbedBlock key={i} block={block} isFirst={isFirst} />
+        const key = block._id ?? i
+        switch (block._type) {
+          case 'contentSection':
+            return <ContentSection key={key} block={block} isFirst={isFirst} side={side} services={services} doc={doc} />
+          case 'service':
+            return <ServiceBlock key={key} block={block} isFirst={isFirst} side={side} services={services} doc={doc} />
+          case 'embed':
+            return <EmbedBlock key={key} block={block} isFirst={isFirst} doc={doc} />
           default:
             return null
         }

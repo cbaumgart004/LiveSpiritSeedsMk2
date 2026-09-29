@@ -1,34 +1,28 @@
-/* eslint-disable react/prop-types */
-import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { useTina } from 'tinacms/dist/react'
-import { client } from '../../tina/__generated__/client'
 import Nav from '../components/Nav'
 import Blocks from '../components/cms/Blocks'
+import { useDocuments } from '../cms/site'
 
-// Loads a Page content file by slug and renders its blocks.
-// `/` maps to home.json; `/:slug` maps to <slug>.json.
+// Renders one Page by slug: `/` is the page whose slug is `home`, `/:slug` the
+// page with that slug. Pages come from the Edge of the Map console (drafts
+// included while the owner edits), else from the bundled content files.
 export default function DynamicPage() {
-  const { slug } = useParams()
-  const relativePath = `${slug || 'home'}.json`
-  // Keep the full response ({ data, query, variables }) — useTina needs all three.
-  const [res, setRes] = useState(null)
-  const [notFound, setNotFound] = useState(false)
+  const { slug = 'home' } = useParams()
+  const { ready, docs } = useDocuments('page')
+  const page = docs.find((d) => d.slug === slug)
 
-  useEffect(() => {
-    let active = true
-    setRes(null)
-    setNotFound(false)
-    client.queries
-      .page({ relativePath })
-      .then((r) => active && setRes(r))
-      .catch(() => active && setNotFound(true))
-    return () => {
-      active = false
-    }
-  }, [relativePath])
+  if (!ready) {
+    return (
+      <>
+        <Nav />
+        <div className="page-wrapper first-section" style={{ padding: '2rem' }}>
+          Loading…
+        </div>
+      </>
+    )
+  }
 
-  if (notFound) {
+  if (!page) {
     return (
       <>
         <Nav />
@@ -41,30 +35,12 @@ export default function DynamicPage() {
     )
   }
 
-  if (!res) {
-    return (
-      <>
-        <Nav />
-        <div className="page-wrapper first-section" style={{ padding: '2rem' }}>
-          Loading…
-        </div>
-      </>
-    )
-  }
-
-  return <PageView payload={res} />
-}
-
-// Separate component so useTina (a hook) runs unconditionally, after the
-// loading/not-found guards above. useTina hydrates the block objects with the
-// editing metadata that tinaField(...) reads, and live-updates them while
-// editing in /admin.
-function PageView({ payload }) {
-  const { data } = useTina(payload)
   return (
     <>
       <Nav />
-      <Blocks blocks={data?.page?.blocks} />
+      {/* Click-to-edit names the page by id; a bundled copy is not in the
+          console, so it names it by slug and the console finds the imported one. */}
+      <Blocks blocks={page.data?.blocks} doc={page.id?.startsWith('bundled:') ? page.slug : page.id} />
     </>
   )
 }

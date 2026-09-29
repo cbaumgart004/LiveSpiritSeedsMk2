@@ -6,8 +6,9 @@ A token-efficient map of this repo. Read this first; open source only for the fi
 
 A static marketing/brochure website for the **Live Spirit Seeds** wellness & massage-therapy
 practice. It's a client-side React SPA — no backend, no database, no auth. Page content is
-**data, not code**: git-backed JSON under `content/`, owner-editable through TinaCMS at
-`/admin`, rendered by a single dynamic route (§4). Adding a page means adding a content file,
+**data, not code**: documents in the Edge of the Map console, which the owner edits on the live
+page with `?edit` (ADR 0003), rendered by a single dynamic route (§4). The TinaCMS files under
+`content/` are the import source and the offline fallback. Adding a page means adding a content file,
 not writing a component.
 
 ## 2. Stack & entry points
@@ -22,7 +23,9 @@ not writing a component.
 
 ### Scripts
 - `npm run dev` — Vite dev server on port 5173 (`host: true`, so reachable over LAN/mobile).
-- `npm run build` — production build.
+- `npm run build` — production build (plain Vite; no TinaCloud).
+- `npm test` — the Tina-to-console conversion tests.
+- `npm run import:console` — copy `content/` into the console (`--dry-run`, `--replace`; ADR 0003).
 - `npm run lint` — ESLint.
 - `npm run preview` — preview the built site.
 - `npm run schedule:harvest` — rebuild `content/schedule/melissa.json` from every studio (§6).
@@ -31,26 +34,27 @@ not writing a component.
 ## 3. Layout
 
 ```
-content/               CMS content (git-backed, editable in /admin) — see ADR 0002
+content/               The TinaCMS content: import source and offline fallback (ADR 0003)
   settings/index.json  Site Settings (theme, siteTitle, tagline, logo, contact)
   pages/*.json         One file per page; filename = route slug; holds blocks[]
   schedule/melissa.json  GENERATED, not owner-edited — the harvested teaching
                        schedule (§6 Teaching schedule). Not a Tina collection.
 scripts/
   harvest-schedule.mjs Builds content/schedule/melissa.json from every studio
+  import-to-console.mjs Copies content/ into the Edge of the Map console (ADR 0003)
+  fromTina.test.mjs    Tests of the conversion (npm test)
   lib/schedule-sources.mjs  Which studios to harvest (add a studio here)
   lib/time.mjs         Timezone helpers shared by the adapters
   lib/adapters/        One per booking platform: healcode (Mindbody),
                        tribe-events (WordPress), momence, punchpass-ics
-tina/
-  config.ts            TinaCMS schema (Settings + Page collections, block palette)
-  __generated__/       Generated GraphQL client + types (committed)
 src/
   main.jsx              App bootstrap: CSS imports + default theme class + render
   App.jsx              Router (dynamic /:slug) + theme load + button-flash effect
   config/siteConfig.js Fallback default theme (SITE_THEME) applied before CMS loads
-  cms/site.js          Data helpers over the Tina client (settings, pages, theme)
-  pages/DynamicPage.jsx Loads a Page by slug, renders its blocks, enables useTina
+  cms/site.js          Pages and settings from the console, drafts overlaid; theme helpers
+  cms/fromTina.js      Tina files in the console's shape (import and fallback)
+  cms/markdown.js      Markdown to HTML for Tina's rich text
+  pages/DynamicPage.jsx Finds a Page by slug and renders its blocks
   components/
     cms/Blocks.jsx     Renders blocks[] into the CSS primitives (§6)
     Nav.jsx            Nav generated from the CMS page list; Hamburger, ScrollToTop
@@ -80,14 +84,15 @@ Routing is **dynamic** (`src/App.jsx`): content, not code, defines the pages.
 | Path      | Renders                                                        |
 |-----------|---------------------------------------------------------------|
 | `/`       | `DynamicPage` → `content/pages/home.json`                     |
-| `/:slug`  | `DynamicPage` → `content/pages/<slug>.json` (404 panel if missing) |
+| `/:slug`  | `DynamicPage` → the console Page with that slug (404 panel if missing) |
 
-Adding a page = adding a content file (via `/admin`); it appears in the nav automatically.
+Adding a page = a new Page in the console (`?edit`); it appears in the nav automatically.
 `<ScrollToTop>` resets scroll on every route change.
 
 ## 5. Domain model
 
-Content is **data**, managed via TinaCMS (git-backed) — see [ADR 0002]. Two collections:
+Content is **data**, kept in the Edge of the Map console (ADR 0003). Two types, with the same fields
+the Tina collections had; the file paths below are the Tina copies:
 
 - **Settings** (`content/settings/index.json`) — `theme` (`spring`/`summer`/`fall`/`winter`),
   `uiStyle` (`watercolor`/`editorial`/`sanctuary`/`immersive` — see §6 UX styles), `siteTitle`, `tagline`,
@@ -120,31 +125,22 @@ Content is **data**, managed via TinaCMS (git-backed) — see [ADR 0002]. Two co
 
 ## 6. Subsystems
 
-**Content / CMS.** Pages render from git-backed content files through TinaCMS. `DynamicPage`
-queries a page by slug via the generated client and passes `blocks[]` to `Blocks.jsx`, which
-maps each block type to a CSS primitive. `useTina` enables on-page editing at `/admin`; uploaded
-images are repo-based (in `public/uploads`, compressed by a push-time GitHub Action). Governed by
-[ADR 0002](./docs/adr/0002-tinacms-content-management.md).
+**Content / CMS.** Pages and Site Settings are documents in the Edge of the Map console
+(`admin.theedgeofthemap.com`, schema `console/schema/sites/spiritseeds.json` on the console branch),
+governed by [ADR 0003](./docs/adr/0003-edge-of-the-map-console-replaces-tinacms.md). `index.html`
+loads the console's loader; `src/cms/site.js` reads published documents from the console's public
+API and overlays the owner's drafts while the editor is open (`useDocuments`, `useSettings`), which
+is the live preview. `DynamicPage` finds the page by slug (`home` is `/`) and passes `blocks[]` to
+`Blocks.jsx`, which maps each block type to a CSS primitive.
 
-> **Deploys depend on TinaCloud, per branch.** `npm run build` is `tinacms build`, which regenerates
-> `tina/__generated__/client.ts` — the committed copy points at `http://localhost:4001/graphql` (the
-> local dev server) and is *always* overwritten at build time, so never treat it as the real endpoint.
-> The build needs `TINA_CLIENT_ID` + `TINA_TOKEN`, and serves content for the branch resolved in
-> `tina/config.ts`: `TINA_BRANCH` → `VERCEL_GIT_COMMIT_REF` (Vercel) → `CF_PAGES_BRANCH` (Cloudflare
-> Pages) → `AWS_BRANCH` (Amplify Hosting) → `main`. **A preview deploy of a feature branch therefore fails until that branch has been
-> indexed in the TinaCloud dashboard** — the code is the branch's but the content query goes to
-> TinaCloud, and an unknown branch (or one whose indexed schema predates a new field) errors.
->
-> ⚠️ **Never pin `TINA_BRANCH` in the host's env vars.** It overrides the whole chain, so a leftover
-> value keeps every later deploy querying a branch that may no longer exist — the failure names a
-> branch absent from `git branch -a`, which sends you looking in the repo instead of the dashboard.
-> Leave it unset so each deploy resolves its own branch. (This bit us on 2026-07-23: a stale
-> `feature/admin-cms` in Vercel silently defeated the fix in `8140d69`.)
->
-> Note also that the SPA queries TinaCloud **at runtime**, so the live site has a runtime dependency
-> on it; there is no static content fallback yet. A deploy whose **origin** isn't in TinaCloud →
-> Site URLs has its content reads blocked and renders the app's "Page not found" on every page even
-> though the build succeeded — see the playbook §6/§7.
+- **Fallback.** Until the console holds pages, or when it cannot be reached, the bundled Tina files
+  under `content/` render instead, converted by `src/cms/fromTina.js` (Markdown to HTML by
+  `src/cms/markdown.js`). Settings fall back field by field.
+- **On-page editing.** Every section carries `data-eotm-edit`, `data-eotm-item` and
+  `data-eotm-size="width"`; side images carry `data-eotm-size="imageWidth"`; rich text carries
+  `data-eotm-richtext`. The console turns these into an Edit button and drag handles.
+- **Photos.** New ones upload to the site's photo bucket through the console; existing ones stay in
+  `public/uploads` and are reused by path.
 
 Block-renderer behaviors (`Blocks.jsx`): a `contentSection` dispatches on its `layout`; a `service`
 renders the bookable card; an `embed` renders a third-party widget (see **Live embeds** below).
@@ -152,8 +148,8 @@ Image sides **auto-alternate** left/right by position (`imageSide:
 'auto'`, recomputed on drag-reorder; `left`/`right` pin a side) for the image-bearing looks
 (`imageText` + `service`); **image width** is a percent (`imageWidth`, 20–70) applied via the
 `--media-basis` CSS custom property so mobile can still force full-width; **vertical spacing**
-(`spacing`) maps to `.section--compact`/`.section--airy`. Rich-text bodies render via `TinaMarkdown`
-and are stored on disk as **markdown strings, not AST objects** (see the playbook §4).
+(`spacing`) maps to `.section--compact`/`.section--airy`. Rich-text bodies are sanitized HTML from the
+console, rendered as-is; the Tina files hold Markdown, converted by `src/cms/markdown.js`.
 
 **Unified buttons.** Every block shares one `buttons[]` list. A button is a plain link with a manual
 `status` (`active`/`coming-soon` — coming-soon renders non-clickable, prefixed "Coming Soon - "),
@@ -162,7 +158,7 @@ and are stored on disk as **markdown strings, not AST objects** (see the playboo
 `service` blocks additionally carry their own `status` (coming-soon shows a badge and disables
 booking) and `bookingOptions[]`; each **booking option** (session) can list `addOns[]`, so every
 session gets its own "Book w/ &lt;add-on&gt;" button derived from the referenced service's status
-(owner-editable in `/admin`; no code flag). Every block has a `showHomeButton` toggle (default on).
+(owner-editable in the editor (`?edit`); no code flag). Every block has a `showHomeButton` toggle (default on).
 New pages/blocks start from `ui.defaultItem` presets rather than a blank form. Reusable setup +
 gotchas, including the block-model design patterns: [TinaCMS Vite playbook](./docs/tinacms-vite-playbook.md) (§8).
 
@@ -173,7 +169,7 @@ hand you a snippet. Two modes: **`url`** renders a themed `<iframe>` (radius/sha
 reads as part of the site under every UI style) — simplest, best for Canva "smart embed" links and
 OfferingTree share URLs; **`code`** renders `RawEmbed`, which sets the snippet as innerHTML **and
 re-executes its `<script>` tags** (a script inserted via innerHTML does not run per spec — this is
-required for Kit's JS form embeds). Empty blocks show an `/admin` hint instead of breaking. The
+required for Kit's JS form embeds). Empty blocks show an the editor (`?edit`) hint instead of breaking. The
 "Practice With Me" page (`content/pages/practice-with-me.json`) is built from these. OfferingTree has
 no public REST API; embed widgets, Zapier, and Google-Calendar sync are the integration surfaces.
 
@@ -185,7 +181,7 @@ wire contract; everything else (heading, intro, button label, thank-you, fine pr
 Success swaps the form for the thank-you; a non-200, a `status` other than `success`, or a network
 failure surfaces a visible error — a silent failure would cost a subscriber with nobody noticing.
 Only the **form ID** lives in content (`newsletterFormId`), so pointing at a different Kit form is an
-`/admin` change.
+the editor (`?edit`) change.
 
 > **Why not Kit's own embed?** Same reason as the schedule: Kit's JS embed brings Kit's stylesheet
 > and can only match **one** season, but the season is owner-switchable at runtime (§6), so a
@@ -199,7 +195,7 @@ list of her upcoming classes without her re-entering anything. A nightly GitHub 
 `scripts/lib/schedule-sources.mjs`, calls one adapter per studio, merges and sorts every class, and
 commits `content/schedule/melissa.json`. The commit triggers the host's rebuild; `Blocks.jsx`
 **imports that JSON at build time**, so the page has *no* runtime dependency on any studio's booking
-widget (the site already depends on TinaCloud at runtime — don't compound it). Rendered by the
+widget (the page should not depend on a studio widget at runtime). Rendered by the
 `embed` block in `schedule` mode as our own markup, so it inherits the season's colors and each UI
 style's type/radius tokens instead of fighting the vendor's stylesheet.
 
@@ -338,7 +334,7 @@ so two pieces are style-aware in markup rather than CSS alone:
 > (background, borders, display font) stays in `ui-styles.css` via `nav:has(h1)`. Don't try to reach
 > a hashed module class from the global sheet.
 
-Owner-selectable in `/admin` (Settings → **UI Style**). Applied like the season: `main.jsx` bakes
+Owner-selectable in the editor (`?edit`) (Settings → **UI Style**). Applied like the season: `main.jsx` bakes
 `style-<uiStyle>` onto `<body>` from the build-time Settings import (no flash); `App.jsx` re-applies
 it from the CMS on load via `applyUiStyle` (`cms/site.js`) for live editing. Fonts are imported once
 in `index.css`. **Motion safety:** reveal/parallax live inside a
@@ -364,12 +360,12 @@ hero/media DOM change, not just CSS). None of these block shipping — they're u
 
 **Preview mode.** A non-destructive way to try a UX style + season on the live content *before*
 publishing — the owner's "preview before going live" for styles (content edits are already previewed
-on-page in `/admin` via `useTina`). Opened by URL (`?preview`, or `?style=immersive&season=winter`),
+on-page in the editor (`?edit`)). Opened by URL (`?preview`, or `?style=immersive&season=winter`),
 so ordinary visitors never see it. `utils/preview.js` seeds the choice from those params, holds it in
 `sessionStorage` (survives navigation between pages), and **never writes to the CMS**; `App.jsx`
 applies any override *after* the saved defaults so it wins, and renders `components/PreviewBar.jsx` —
 a tap-friendly bottom toolbar (Style + Season chips) sized for mobile. Exiting restores the saved
-defaults and strips the params. The owner then sets the winner as the real default in `/admin`.
+defaults and strips the params. The owner then sets the winner as the real default in the editor (`?edit`).
 
 **Global CSS layers.** Loaded in this order in `main.jsx` — order matters for cascade:
 `variables.css` → `themes.css` → `index.css` (base elements) → `layout.css` (shared layout)
@@ -394,11 +390,11 @@ from `App`'s `useEffect` to attach a global visual flash on button clicks.
 
 - **Content, not code, drives availability:** season, UI style (both Settings doc) and
   service/add-on/button status (per `service` block, referenced by name) are owner-editable in
-  `/admin`. `siteConfig.js` now holds only the `SITE_THEME` + `SITE_UI_STYLE` fallbacks.
+  the editor (`?edit`). `siteConfig.js` now holds only the `SITE_THEME` + `SITE_UI_STYLE` fallbacks.
 - **Season and UI style are two independent axes:** season = color, UI style = structure/type.
   A UI style must never set a color token, so any season works under any look (see §6).
 - **`content/schedule/*.json` is generated** — edit `scripts/lib/schedule-sources.mjs` instead. It is
-  deliberately *not* a Tina collection, so nothing in `/admin` can be overwritten by the nightly run.
+  deliberately *not* a Tina collection, so nothing in the editor (`?edit`) can be overwritten by the nightly run.
 - **Two styling systems coexist:** global CSS + CSS Modules. Match the component you're editing.
 - **CSS load order is load-bearing** — see §6 before reorganizing style imports.
 - No tests, no TypeScript, no state management library. Keep it simple.
@@ -409,7 +405,8 @@ from `App`'s `useEffect` to attach a global visual flash on button clicks.
 ADRs live in `docs/adr/`; domain vocabulary in [`CONTEXT.md`](./CONTEXT.md).
 
 - [ADR 0001 — Hybrid CSS architecture with a single-primitive design system](./docs/adr/0001-hybrid-css-architecture.md)
-- [ADR 0002 — TinaCMS (git-backed) for owner-editable content](./docs/adr/0002-tinacms-content-management.md)
+- [ADR 0002 — TinaCMS (git-backed) for owner-editable content](./docs/adr/0002-tinacms-content-management.md) (superseded by 0003 at cutover)
+- [ADR 0003: The Edge of the Map console replaces TinaCMS](./docs/adr/0003-edge-of-the-map-console-replaces-tinacms.md)
 
 Reusable how-to (portable across repos): [TinaCMS on a Vite + React SPA — Playbook](./docs/tinacms-vite-playbook.md)
 — setup recipe, the on-page editing wiring, and a cheap-diagnosis checklist (§7) for editing bugs.

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import styles from './Nav.module.css'
 import Hamburger from './Hamburger'
-import { loadSettings, loadPages, hrefForSlug } from '../cms/site'
+import { hrefForSlug, navLinks, useDocuments, useSettings } from '../cms/site'
 import { useUiStyle } from '../utils/useUiStyle'
 
 // The navbar's SHAPE is per UI style, not just its paint (DESIGN.md §6):
@@ -20,9 +20,11 @@ const INLINE_MENU_STYLES = ['editorial', 'sanctuary', 'immersive']
 function Nav() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const [links, setLinks] = useState([])
-  const [siteTitle, setSiteTitle] = useState('Spirit Seeds Wellness')
-  const [cta, setCta] = useState(null)
+  // Menu links from the page list; the title and action button from Site Settings.
+  const links = navLinks(useDocuments('page').docs)
+  const { settings } = useSettings()
+  const siteTitle = settings.siteTitle || 'Spirit Seeds Wellness'
+  const cta = settings.navCtaLabel ? { label: settings.navCtaLabel, url: settings.navCtaUrl || '/' } : null
   const uiStyle = useUiStyle()
   const showInlineMenu = INLINE_MENU_STYLES.includes(uiStyle)
 
@@ -34,21 +36,6 @@ function Nav() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  useEffect(() => {
-    // Nav links come from the CMS page list; the title + action button from Site Settings.
-    loadPages()
-      .then(setLinks)
-      .catch(() => {})
-    loadSettings()
-      .then((settings) => {
-        if (settings?.siteTitle) setSiteTitle(settings.siteTitle)
-        if (settings?.navCtaLabel) {
-          setCta({ label: settings.navCtaLabel, url: settings.navCtaUrl || '/' })
-        }
-      })
-      .catch(() => {})
-  }, [])
-
   return (
     <>
       <nav
@@ -56,7 +43,7 @@ function Nav() {
         data-nav-variant={uiStyle}
       >
         <div className={styles.navbarTopRow}>
-          <h1 className={styles.title}>{siteTitle}</h1>
+          <h1 className={styles.title} data-eotm-edit="settings:settings" data-eotm-label="site settings">{siteTitle}</h1>
 
           {showInlineMenu && (
             <ul className={styles.inlineMenu}>
