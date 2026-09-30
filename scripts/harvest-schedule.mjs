@@ -14,6 +14,10 @@
 //           an alert. Do not "fix" this by failing on an empty session list.
 //   stale   the source failed. We keep whatever we harvested last time so the
 //           studio doesn't silently vanish from the site, and exit non-zero.
+//   flaky   the source failed with an outage on its side (HTTP 5xx or 429, or
+//           no answer at all). Kept like stale, but only a warning until it has
+//           failed TRANSIENT_LIMIT runs in a row: a studio's server having a bad
+//           night is not worth an email, a studio down for days is.
 //   error   the source answered but is not usable:
 //             - it returned zero sessions for EVERY instructor → widget broke
 //             - Melissa is no longer on the studio's instructor roster
@@ -44,6 +48,15 @@ const OUT = resolve(ROOT, 'content/schedule/melissa.json')
 // show (the embed block's "most classes to show" field) — a studio with a weekly
 // class looks empty on a 2-week window, and the extra requests are trivial.
 const WEEKS = Number(process.env.SCHEDULE_WEEKS || 4)
+
+// Consecutive daily runs a source may fail transiently before it alerts.
+const TRANSIENT_LIMIT = 3
+
+// The adapters throw plain Errors; an outage reads as "HTTP 5xx"/"HTTP 429" in
+// the message, or as fetch's own network failure.
+function isTransient(err) {
+  return /HTTP (5\d\d|429)\b/.test(err.message) || err.name === 'TypeError' || err.name === 'AbortError' || err.name === 'TimeoutError'
+}
 
 async function readPrevious() {
   try {
@@ -100,9 +113,24 @@ async function run() {
       // Keep the last good data for this studio rather than dropping it.
       const kept = (previous.sessions || []).filter((s) => s.id.startsWith(`${source.id}:`) && s.date >= today)
       sessions.push(...kept)
-      report.push({ id: source.id, label: source.label, status: 'stale', detail: err.message, classes: kept.length })
-      failed = true
-      console.error(`✗ ${source.label}: ${err.message} (kept ${kept.length} previously harvested class(es))`)
+      const last = (previous.sources || []).find((s) => s.id === source.id)
+      const streak = isTransient(err) ? (last?.status === 'flaky' ? (last.streak ?? 1) : 0) + 1 : 0
+      const alert = streak === 0 || streak >= TRANSIENT_LIMIT
+      report.push({
+        id: source.id,
+        label: source.label,
+        status: streak ? 'flaky' : 'stale',
+        ...(streak ? { streak } : {}),
+        detail: err.message,
+        classes: kept.length,
+      })
+      const line = `${source.label}: ${err.message} (kept ${kept.length} previously harvested class(es))`
+      if (alert) {
+        failed = true
+        console.error(`✗ ${line}${streak ? ` (failed ${streak} runs in a row)` : ''}`)
+      } else {
+        console.log(`::warning::${line}; transient, run ${streak} of ${TRANSIENT_LIMIT} before it alerts`)
+      }
     }
   }
 
