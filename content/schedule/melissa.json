@@ -1,8 +1,8 @@
 {
   "_generated": "DO NOT EDIT BY HAND. Rebuilt daily by scripts/harvest-schedule.mjs.",
   "teacher": "Melissa Carey",
-  "generatedAt": "2026-09-29T15:48:54.261Z",
-  "rangeStart": "2026-09-29",
+  "generatedAt": "2026-09-30T15:56:47.348Z",
+  "rangeStart": "2026-09-30",
   "weeks": 4,
   "sources": [
     {
@@ -10,7 +10,7 @@
       "label": "Soul Tree Yoga",
       "status": "ok",
       "classes": 9,
-      "scanned": 171
+      "scanned": 172
     },
     {
       "id": "mesa",
@@ -30,8 +30,8 @@
       "id": "cura",
       "label": "CURA Yoga Center",
       "status": "ok",
-      "classes": 0,
-      "scanned": 479
+      "classes": 1,
+      "scanned": 486
     }
   ],
   "studios": [
@@ -74,7 +74,7 @@
       "sortKey": "2026-09-30T1140"
     },
     {
-      "id": "soultree:141137660",
+      "id": "soultree:172594120",
       "date": "2026-10-02",
       "startTime": "6:30 AM",
       "endTime": "7:30 AM",
@@ -88,7 +88,7 @@
       "sortKey": "2026-10-02T0390"
     },
     {
-      "id": "soultree:141138180",
+      "id": "soultree:172594640",
       "date": "2026-10-04",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -102,7 +102,7 @@
       "sortKey": "2026-10-04T1080"
     },
     {
-      "id": "soultree:141138380",
+      "id": "soultree:172594840",
       "date": "2026-10-05",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -132,7 +132,7 @@
       "sortKey": "2026-10-07T1140"
     },
     {
-      "id": "soultree:42864600",
+      "id": "soultree:178566440",
       "date": "2026-10-11",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -146,7 +146,7 @@
       "sortKey": "2026-10-11T1080"
     },
     {
-      "id": "soultree:42864800",
+      "id": "soultree:178566640",
       "date": "2026-10-12",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -176,7 +176,7 @@
       "sortKey": "2026-10-14T1140"
     },
     {
-      "id": "soultree:144028400",
+      "id": "soultree:51382260",
       "date": "2026-10-18",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -190,7 +190,7 @@
       "sortKey": "2026-10-18T1080"
     },
     {
-      "id": "soultree:144028600",
+      "id": "soultree:51382460",
       "date": "2026-10-19",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -220,7 +220,23 @@
       "sortKey": "2026-10-21T1140"
     },
     {
-      "id": "soultree:146293700",
+      "id": "cura:23028dd3-45d2-49ae-bb07-48ea23501944",
+      "date": "2026-10-24",
+      "startTime": "2:00 PM",
+      "endTime": "3:30 PM",
+      "timezone": "MDT",
+      "name": "Sound Healing with Meditation & Pranayama",
+      "type": "",
+      "level": "",
+      "staff": "Melissa Carey",
+      "studio": "CURA Yoga Center",
+      "studioUrl": "https://curayogacenter.com/schedule/",
+      "bookUrl": "https://app.punchpass.com/org/5744/classes/20964264",
+      "cost": "",
+      "sortKey": "2026-10-24T0840"
+    },
+    {
+      "id": "soultree:177661120",
       "date": "2026-10-25",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -234,7 +250,7 @@
       "sortKey": "2026-10-25T1080"
     },
     {
-      "id": "soultree:146293900",
+      "id": "soultree:177661320",
       "date": "2026-10-26",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
