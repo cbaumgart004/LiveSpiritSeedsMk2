@@ -1,8 +1,8 @@
 {
   "_generated": "DO NOT EDIT BY HAND. Rebuilt daily by scripts/harvest-schedule.mjs.",
   "teacher": "Melissa Carey",
-  "generatedAt": "2026-09-30T15:56:47.348Z",
-  "rangeStart": "2026-09-30",
+  "generatedAt": "2026-10-01T16:26:46.079Z",
+  "rangeStart": "2026-10-01",
   "weeks": 4,
   "sources": [
     {
@@ -31,7 +31,7 @@
       "label": "CURA Yoga Center",
       "status": "ok",
       "classes": 1,
-      "scanned": 486
+      "scanned": 483
     }
   ],
   "studios": [
@@ -58,23 +58,7 @@
   ],
   "sessions": [
     {
-      "id": "allpurpose:136486902",
-      "date": "2026-09-30",
-      "startTime": "7:00 PM",
-      "endTime": "8:00 PM",
-      "timezone": "MDT",
-      "name": "Restorative Yin and Sound Healing",
-      "type": "",
-      "level": "",
-      "staff": "Melissa Christine Carey",
-      "studio": "All Purpose Yoga",
-      "studioUrl": "https://allpurposeyoga.com/schedule/",
-      "bookUrl": "https://momence.com/s/136486902",
-      "cost": "",
-      "sortKey": "2026-09-30T1140"
-    },
-    {
-      "id": "soultree:172594120",
+      "id": "soultree:22667140",
       "date": "2026-10-02",
       "startTime": "6:30 AM",
       "endTime": "7:30 AM",
@@ -88,7 +72,7 @@
       "sortKey": "2026-10-02T0390"
     },
     {
-      "id": "soultree:172594640",
+      "id": "soultree:22667660",
       "date": "2026-10-04",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -102,7 +86,7 @@
       "sortKey": "2026-10-04T1080"
     },
     {
-      "id": "soultree:172594840",
+      "id": "soultree:22667860",
       "date": "2026-10-05",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -132,7 +116,7 @@
       "sortKey": "2026-10-07T1140"
     },
     {
-      "id": "soultree:178566440",
+      "id": "soultree:5915460",
       "date": "2026-10-11",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -146,7 +130,7 @@
       "sortKey": "2026-10-11T1080"
     },
     {
-      "id": "soultree:178566640",
+      "id": "soultree:5915660",
       "date": "2026-10-12",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -176,7 +160,7 @@
       "sortKey": "2026-10-14T1140"
     },
     {
-      "id": "soultree:51382260",
+      "id": "soultree:24279080",
       "date": "2026-10-18",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -190,7 +174,7 @@
       "sortKey": "2026-10-18T1080"
     },
     {
-      "id": "soultree:51382460",
+      "id": "soultree:24279280",
       "date": "2026-10-19",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -220,7 +204,7 @@
       "sortKey": "2026-10-21T1140"
     },
     {
-      "id": "cura:23028dd3-45d2-49ae-bb07-48ea23501944",
+      "id": "cura:cb750678-6f53-490e-ba12-9a07de51d9d2",
       "date": "2026-10-24",
       "startTime": "2:00 PM",
       "endTime": "3:30 PM",
@@ -236,7 +220,7 @@
       "sortKey": "2026-10-24T0840"
     },
     {
-      "id": "soultree:177661120",
+      "id": "soultree:23805740",
       "date": "2026-10-25",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -250,7 +234,7 @@
       "sortKey": "2026-10-25T1080"
     },
     {
-      "id": "soultree:177661320",
+      "id": "soultree:23805940",
       "date": "2026-10-26",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -262,6 +246,22 @@
       "studio": "Soul Tree Yoga",
       "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
       "sortKey": "2026-10-26T0720"
+    },
+    {
+      "id": "allpurpose:138130636",
+      "date": "2026-10-28",
+      "startTime": "7:00 PM",
+      "endTime": "8:00 PM",
+      "timezone": "MDT",
+      "name": "Restorative Yin and Sound Healing",
+      "type": "",
+      "level": "",
+      "staff": "Melissa Christine Carey",
+      "studio": "All Purpose Yoga",
+      "studioUrl": "https://allpurposeyoga.com/schedule/",
+      "bookUrl": "https://momence.com/s/138130636",
+      "cost": "",
+      "sortKey": "2026-10-28T1140"
     }
   ]
 }
