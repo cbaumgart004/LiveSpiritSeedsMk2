@@ -43,7 +43,7 @@ function Nav() {
         data-nav-variant={uiStyle}
       >
         <div className={styles.navbarTopRow}>
-          <h1 className={styles.title} data-eotm-edit="settings:settings" data-eotm-label="site settings">{siteTitle}</h1>
+          <h1 className={styles.title} data-eotm-edit="settings:settings" data-eotm-label="site settings" data-eotm-text="siteTitle">{siteTitle}</h1>
 
           {showInlineMenu && (
             <ul className={styles.inlineMenu}>

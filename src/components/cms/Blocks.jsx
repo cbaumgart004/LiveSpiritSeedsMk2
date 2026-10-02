@@ -233,12 +233,12 @@ function SplashSection({ block, isFirst, services, doc }) {
       <div className="splash__scrim" aria-hidden="true" />
       <div className="splash__content">
         {block.eyebrow && (
-          <p className="splash__eyebrow">
+          <p className="splash__eyebrow" data-eotm-text="eyebrow">
             {block.eyebrow}
           </p>
         )}
         {block.title && (
-          <h2 className="splash__title">
+          <h2 className="splash__title" data-eotm-text="title">
             {block.title}
           </h2>
         )}
@@ -256,7 +256,7 @@ function SplitSection({ block, isFirst, side, services, doc }) {
     <section className={sectionClass('section section--split', side, isFirst, block)} {...editable(doc, block)}>
       <Media block={block} alt={block.title} width={block.imageWidth} side={side} />
       <div className="panel">
-        {block.title && <h2>{block.title}</h2>}
+        {block.title && <h2 data-eotm-text="title">{block.title}</h2>}
         <Body block={block} name="body" />
         <Buttons block={block} services={services} />
         <HomeButton block={block} />
@@ -268,7 +268,7 @@ function SplitSection({ block, isFirst, side, services, doc }) {
 function StackedSection({ block, isFirst, services, doc }) {
   return (
     <section className={sectionClass('section section--stack', null, isFirst, block)} {...editable(doc, block)}>
-      {block.title && <h2>{block.title}</h2>}
+      {block.title && <h2 data-eotm-text="title">{block.title}</h2>}
       {/* Skip the panel when there's no body — an empty one renders as a bare
           bordered strip, which is what a heading-only section used to look like. */}
       {hasRichText(block.body) && (
@@ -326,7 +326,7 @@ function ServiceBlock({ block, isFirst, side, services, doc }) {
       <div className="panel">
         {block.title && (
           <h2>
-            {block.title}
+            <span data-eotm-text="title">{block.title}</span>
             {comingSoon && <span className="status-badge">Coming Soon</span>}
           </h2>
         )}
@@ -367,7 +367,7 @@ function CardGrid({ block, isFirst, services, doc }) {
   const cards = block.cards || []
   return (
     <section className={sectionClass('section section--stack', null, isFirst, block)} {...editable(doc, block)}>
-      {block.title && <h2>{block.title}</h2>}
+      {block.title && <h2 data-eotm-text="title">{block.title}</h2>}
       <div className="grid">
         {cards.map((card, i) => (
           <div className="card" key={card._id ?? i}>
@@ -381,8 +381,8 @@ function CardGrid({ block, isFirst, services, doc }) {
                   <img src={srcOf(card.image)} alt={altOf(card.image, card.title || '')} loading="lazy" style={imageStyle(card.image)} />
                 </div>
               ))}
-            {card.title && <h3>{card.title}</h3>}
-            {card.description && <p>{card.description}</p>}
+            {card.title && <h3 data-eotm-text="title" data-eotm-in={card._id}>{card.title}</h3>}
+            {card.description && <p data-eotm-text="description" data-eotm-in={card._id}>{card.description}</p>}
             {card.buttonLabel && (
               <div className="button-row">
                 <a className="btn" href={card.buttonUrl}>
@@ -403,7 +403,7 @@ function EventSection({ block, isFirst, services, doc }) {
   return (
     <section className={sectionClass('section', null, isFirst, block)} {...editable(doc, block)}>
       <div className="panel">
-        {block.title && <h2>{block.title}</h2>}
+        {block.title && <h2 data-eotm-text="title">{block.title}</h2>}
         <Body block={block} name="body" />
         <div>
           {(block.images || []).map((entry, i) => {
@@ -690,10 +690,10 @@ function EmbedBlock({ block, isFirst, doc }) {
   if (isSchedule || isNewsletter) {
     return (
       <section className={sectionClass('section section--stack', null, isFirst, block)} {...editable(doc, block)}>
-        {block.title && <h2>{block.title}</h2>}
+        {block.title && <h2 data-eotm-text="title">{block.title}</h2>}
         {isSchedule ? <ScheduleEmbed block={block} /> : <NewsletterEmbed block={block} />}
         {block.caption && (
-          <p className="embed-caption">
+          <p className="embed-caption" data-eotm-text="caption">
             {block.caption}
           </p>
         )}
@@ -703,7 +703,7 @@ function EmbedBlock({ block, isFirst, doc }) {
   }
   return (
     <section className={sectionClass('section section--stack', null, isFirst, block)} {...editable(doc, block)}>
-      {block.title && <h2>{block.title}</h2>}
+      {block.title && <h2 data-eotm-text="title">{block.title}</h2>}
       <div className="embed">
         {hasUrl && (
           <iframe
@@ -726,7 +726,7 @@ function EmbedBlock({ block, isFirst, doc }) {
         )}
       </div>
       {block.caption && (
-        <p className="embed-caption">
+        <p className="embed-caption" data-eotm-text="caption">
           {block.caption}
         </p>
       )}
