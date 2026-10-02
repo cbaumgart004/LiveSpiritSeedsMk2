@@ -1,30 +1,30 @@
 {
   "_generated": "DO NOT EDIT BY HAND. Rebuilt daily by scripts/harvest-schedule.mjs.",
   "teacher": "Melissa Carey",
-  "generatedAt": "2026-10-01T16:26:46.079Z",
-  "rangeStart": "2026-10-01",
+  "generatedAt": "2026-10-02T12:32:39.313Z",
+  "rangeStart": "2026-10-02",
   "weeks": 4,
   "sources": [
     {
       "id": "soultree",
       "label": "Soul Tree Yoga",
       "status": "ok",
-      "classes": 9,
-      "scanned": 172
+      "classes": 8,
+      "scanned": 175
     },
     {
       "id": "mesa",
       "label": "MESA",
       "status": "ok",
-      "classes": 0,
-      "scanned": 1
+      "classes": 4,
+      "scanned": 5
     },
     {
       "id": "allpurpose",
       "label": "All Purpose Yoga",
       "status": "ok",
       "classes": 4,
-      "scanned": 223
+      "scanned": 231
     },
     {
       "id": "cura",
@@ -58,21 +58,7 @@
   ],
   "sessions": [
     {
-      "id": "soultree:22667140",
-      "date": "2026-10-02",
-      "startTime": "6:30 AM",
-      "endTime": "7:30 AM",
-      "timezone": "MDT",
-      "name": "Rise & Shine Soul Flow",
-      "type": "Classes",
-      "level": "",
-      "staff": "Melissa Carey (substitute)",
-      "studio": "Soul Tree Yoga",
-      "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
-      "sortKey": "2026-10-02T0390"
-    },
-    {
-      "id": "soultree:22667660",
+      "id": "soultree:6322160",
       "date": "2026-10-04",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -86,7 +72,7 @@
       "sortKey": "2026-10-04T1080"
     },
     {
-      "id": "soultree:22667860",
+      "id": "soultree:6322360",
       "date": "2026-10-05",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -98,6 +84,22 @@
       "studio": "Soul Tree Yoga",
       "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
       "sortKey": "2026-10-05T0720"
+    },
+    {
+      "id": "mesa:14741",
+      "date": "2026-10-05",
+      "startTime": "4:00 PM",
+      "endTime": "4:45 PM",
+      "timezone": "MDT",
+      "name": "Trauma-Informed Yoga Class",
+      "type": "",
+      "level": "",
+      "staff": "Melissa Carey",
+      "studio": "MESA",
+      "studioUrl": "https://movingtoendsexualassault.org/calendar/",
+      "bookUrl": "https://movingtoendsexualassault.org/calendar/trauma-informed-yoga-class/",
+      "cost": "$8",
+      "sortKey": "2026-10-05T0960"
     },
     {
       "id": "allpurpose:136894946",
@@ -116,7 +118,7 @@
       "sortKey": "2026-10-07T1140"
     },
     {
-      "id": "soultree:5915460",
+      "id": "soultree:5870580",
       "date": "2026-10-11",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -130,7 +132,7 @@
       "sortKey": "2026-10-11T1080"
     },
     {
-      "id": "soultree:5915660",
+      "id": "soultree:5870780",
       "date": "2026-10-12",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -142,6 +144,22 @@
       "studio": "Soul Tree Yoga",
       "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
       "sortKey": "2026-10-12T0720"
+    },
+    {
+      "id": "mesa:14743",
+      "date": "2026-10-12",
+      "startTime": "4:00 PM",
+      "endTime": "4:45 PM",
+      "timezone": "MDT",
+      "name": "Trauma-Informed Yoga Class",
+      "type": "",
+      "level": "",
+      "staff": "Melissa Carey",
+      "studio": "MESA",
+      "studioUrl": "https://movingtoendsexualassault.org/calendar/",
+      "bookUrl": "https://movingtoendsexualassault.org/calendar/trauma-informed-yoga-class-2/",
+      "cost": "$8",
+      "sortKey": "2026-10-12T0960"
     },
     {
       "id": "allpurpose:137280391",
@@ -160,7 +178,7 @@
       "sortKey": "2026-10-14T1140"
     },
     {
-      "id": "soultree:24279080",
+      "id": "soultree:5876140",
       "date": "2026-10-18",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -174,7 +192,7 @@
       "sortKey": "2026-10-18T1080"
     },
     {
-      "id": "soultree:24279280",
+      "id": "soultree:5876340",
       "date": "2026-10-19",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -186,6 +204,22 @@
       "studio": "Soul Tree Yoga",
       "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
       "sortKey": "2026-10-19T0720"
+    },
+    {
+      "id": "mesa:14745",
+      "date": "2026-10-19",
+      "startTime": "4:00 PM",
+      "endTime": "4:45 PM",
+      "timezone": "MDT",
+      "name": "Trauma-Informed Yoga Class",
+      "type": "",
+      "level": "",
+      "staff": "Melissa Carey",
+      "studio": "MESA",
+      "studioUrl": "https://movingtoendsexualassault.org/calendar/",
+      "bookUrl": "https://movingtoendsexualassault.org/calendar/trauma-informed-yoga-class-3/",
+      "cost": "$8",
+      "sortKey": "2026-10-19T0960"
     },
     {
       "id": "allpurpose:137643665",
@@ -204,7 +238,7 @@
       "sortKey": "2026-10-21T1140"
     },
     {
-      "id": "cura:cb750678-6f53-490e-ba12-9a07de51d9d2",
+      "id": "cura:e396bcfb-0112-44df-a242-77a8b512050c",
       "date": "2026-10-24",
       "startTime": "2:00 PM",
       "endTime": "3:30 PM",
@@ -220,7 +254,7 @@
       "sortKey": "2026-10-24T0840"
     },
     {
-      "id": "soultree:23805740",
+      "id": "soultree:5892840",
       "date": "2026-10-25",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -234,7 +268,7 @@
       "sortKey": "2026-10-25T1080"
     },
     {
-      "id": "soultree:23805940",
+      "id": "soultree:5893040",
       "date": "2026-10-26",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -246,6 +280,22 @@
       "studio": "Soul Tree Yoga",
       "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
       "sortKey": "2026-10-26T0720"
+    },
+    {
+      "id": "mesa:14747",
+      "date": "2026-10-26",
+      "startTime": "4:00 PM",
+      "endTime": "4:45 PM",
+      "timezone": "MDT",
+      "name": "Trauma-Informed Yoga Class",
+      "type": "",
+      "level": "",
+      "staff": "Melissa Carey",
+      "studio": "MESA",
+      "studioUrl": "https://movingtoendsexualassault.org/calendar/",
+      "bookUrl": "https://movingtoendsexualassault.org/calendar/trauma-informed-yoga-class-4/",
+      "cost": "$8",
+      "sortKey": "2026-10-26T0960"
     },
     {
       "id": "allpurpose:138130636",
