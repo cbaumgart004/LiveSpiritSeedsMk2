@@ -4,6 +4,7 @@ import styles from './Nav.module.css'
 import Hamburger from './Hamburger'
 import { hrefForSlug, navLinks, useDocuments, useSettings } from '../cms/site'
 import { useUiStyle } from '../utils/useUiStyle'
+import { srcOf } from './cms/photo'
 
 // The navbar's SHAPE is per UI style, not just its paint (DESIGN.md §6):
 //   watercolor — the untouched original: framed title box + hamburger only.
@@ -25,6 +26,7 @@ function Nav() {
   const { settings } = useSettings()
   const siteTitle = settings.siteTitle || 'Spirit Seeds Wellness'
   const cta = settings.navCtaLabel ? { label: settings.navCtaLabel, url: settings.navCtaUrl || '/' } : null
+  const headerPhoto = srcOf(settings.headerImage)
   const uiStyle = useUiStyle()
   const showInlineMenu = INLINE_MENU_STYLES.includes(uiStyle)
 
@@ -38,9 +40,15 @@ function Nav() {
 
   return (
     <>
+      {/* The whole header opens Site settings: its title, action button and
+          photo. The photo is the owner's if she set one (settings.headerImage),
+          else the season's own (themes.css, --navbar-background). */}
       <nav
         className={`${styles.navbar} ${scrolled ? styles.scrolled : ''}`}
         data-nav-variant={uiStyle}
+        data-eotm-edit="settings:settings"
+        data-eotm-label="header"
+        style={headerPhoto ? { '--navbar-background': `url("${headerPhoto}")` } : undefined}
       >
         <div className={styles.navbarTopRow}>
           <h1 className={styles.title} data-eotm-edit="settings:settings" data-eotm-label="site settings" data-eotm-text="siteTitle">{siteTitle}</h1>
