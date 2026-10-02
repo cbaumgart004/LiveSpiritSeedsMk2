@@ -4,7 +4,7 @@ import ScrollToTop from './components/ScrollToTop'
 import PreviewBar from './components/PreviewBar'
 import { useEffect, useState } from 'react'
 import { setupButtonClickFlash } from './utils/buttonFlashHandler'
-import { applyTheme, applyUiStyle, useSettings } from './cms/site'
+import { applyTheme, applyUiStyle, useSettings, CONSOLE_API } from './cms/site'
 import { initPreview, applyPreview } from './utils/preview'
 
 // The Edge of the Map console asks for a page by dispatching 'eotm:navigate'
@@ -21,6 +21,17 @@ function ConsoleNavigation() {
     return () => window.removeEventListener('eotm:navigate', onNavigate)
   }, [navigate])
   return null
+}
+
+// The owner's way in: /preview signs her in through the console and brings her
+// back to the home page with the editor open, as StoryShaped's /preview does.
+// The address she came from goes along, so a preview returns to the preview.
+function ToEditor() {
+  useEffect(() => {
+    const back = encodeURIComponent('/')
+    location.replace(`${new URL(CONSOLE_API).origin}/?handoff=spiritseeds&return=${back}&origin=${encodeURIComponent(location.origin)}`)
+  }, [])
+  return <p style={{ padding: '2rem', textAlign: 'center' }}>Opening the editor…</p>
 }
 
 function App() {
@@ -60,6 +71,7 @@ function App() {
       <ScrollToTop /> {/* 💫 Always scroll to top on route change */}
       <ConsoleNavigation />
       <Routes>
+        <Route path="/preview" element={<ToEditor />} />
         <Route path="/" element={<DynamicPage />} />
         <Route path="/:slug" element={<DynamicPage />} />
       </Routes>
