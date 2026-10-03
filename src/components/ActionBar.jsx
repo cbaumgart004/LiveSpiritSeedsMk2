@@ -35,11 +35,13 @@ const ICONS = {
   ),
 }
 
-// Facebook, Instagram and email as round icons, each only when set.
+// Facebook, Instagram and email as round icons. Facebook and Instagram each
+// need their switch on and an address (Site settings), so the owner can fill
+// one in before showing it; email shows whenever there is one.
 function SocialIcons({ settings }) {
   const items = [
-    settings.facebookUrl && { key: 'facebook', label: 'Facebook', href: settings.facebookUrl },
-    settings.instagramUrl && { key: 'instagram', label: 'Instagram', href: settings.instagramUrl },
+    settings.showFacebook === true && settings.facebookUrl && { key: 'facebook', label: 'Facebook', href: settings.facebookUrl },
+    settings.showInstagram === true && settings.instagramUrl && { key: 'instagram', label: 'Instagram', href: settings.instagramUrl },
     settings.contactEmail && { key: 'mail', label: 'Email', href: `mailto:${settings.contactEmail}` },
   ].filter(Boolean)
   if (!items.length) return null

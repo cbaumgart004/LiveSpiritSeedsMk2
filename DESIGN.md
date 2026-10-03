@@ -407,7 +407,8 @@ from `App`'s `useEffect` to attach a global visual flash on button clicks.
 - **Buttons under the menu bar** (`ActionBar.jsx`): fixed at `--navbar-height` on every page, from
   Site settings `actionButtons` (bundled default: Book a Session, Practice With Me, Services), plus a
   **Connect** button opening a themed window (`Modal.jsx`, a native `<dialog>` in the panel look)
-  with Facebook, Instagram and email as icons (`facebookUrl`, `instagramUrl`, `contactEmail`), any
+  with Facebook, Instagram and email as icons (`facebookUrl`, `instagramUrl`, each shown only with its
+  `showFacebook` / `showInstagram` switch on, off by default; `contactEmail`), any
   other `socials`, and the newsletter form (`newsletterFormId`) last. `<body>` carries
   `has-action-bar` while it is shown, and `.first-section` clears `--action-bar-height` as well.
 - **Account button** (`AccountButton.jsx`, `src/cms/account.js`): the person icon left of the
