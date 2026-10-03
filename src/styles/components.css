@@ -486,6 +486,84 @@ dialog.modal::backdrop {
 /* -------------------------------------------------------------- */
 /* Account button and window (AccountButton.jsx)                  */
 /* -------------------------------------------------------------- */
+/* Inputs in a window fill its width without passing its right edge: the
+   shared input style is content-box, so width: 100% plus padding overflowed
+   and the fields sat off centre. */
+dialog.modal input,
+.newsletter__input {
+  box-sizing: border-box;
+}
+.link-button {
+  justify-self: center;
+  border: 0;
+  background: none;
+  padding: 0.25rem;
+  color: var(--primary-color);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.password-field {
+  position: relative;
+  display: block;
+}
+.password-field .newsletter__input {
+  padding-right: 3rem;
+}
+.password-field__eye {
+  position: absolute;
+  top: 50%;
+  right: 0.4rem;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border: 0;
+  background: transparent;
+  color: var(--primary-color);
+  cursor: pointer;
+}
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-3);
+  list-style: none;
+  margin: 0 0 var(--space-2);
+  padding: 0;
+}
+.social-icons__link {
+  display: grid;
+  justify-items: center;
+  gap: 0.3rem;
+  color: var(--primary-color);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+.social-icons__link svg {
+  box-sizing: content-box;
+  padding: 0.7rem;
+  border: var(--panel-border) solid var(--primary-color);
+  border-radius: 50%;
+  background: var(--secondary-color);
+  transition: transform 0.2s ease;
+}
+.social-icons__link:hover svg {
+  transform: scale(1.08);
+}
+.newsletter__offer {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+}
+.reset-password {
+  max-width: 30rem;
+  margin: 0 auto;
+}
+
 .account-button {
   display: grid;
   place-items: center;
@@ -570,6 +648,45 @@ dialog.modal::backdrop {
 .next-up__body {
   margin-bottom: var(--space-2);
 }
+/* The owner's layout, alignment and text size (the section's fields). */
+@media (min-width: 900px) {
+  .next-up--side {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+  .next-up--side .next-up__part + .next-up__part {
+    padding-top: 0;
+    padding-left: var(--space-3);
+    border-top: 0;
+    border-left: var(--panel-border) solid var(--primary-color);
+  }
+}
+.next-up--left {
+  text-align: left;
+}
+.next-up--left .next-up__image {
+  margin-left: 0;
+}
+.next-up--small {
+  font-size: 0.9em;
+}
+.next-up--large {
+  font-size: 1.15em;
+}
+.next-up--small .next-up__title,
+.next-up--large .next-up__title {
+  font-size: calc(clamp(1.5rem, 4vw, 2.1rem) * var(--next-up-scale, 1));
+}
+.next-up--small { --next-up-scale: 0.85; }
+.next-up--large { --next-up-scale: 1.2; }
+/* .panel p is a fixed 1.1rem, so the section's text size names it outright. */
+.panel.next-up--small p {
+  font-size: 0.95rem;
+}
+.panel.next-up--large p {
+  font-size: 1.3rem;
+}
+
 /* Only the owner sees this, while editing: where the event will go. */
 .next-up__part--hidden {
   opacity: 0.6;

@@ -9,6 +9,7 @@
 // there is NO api key here and nothing secret to leak from a static site.
 // Field names (`email_address`, `fields[first_name]`) are Kit's, not ours.
 import { useState } from 'react'
+import { currentLogin, openAccount } from '../cms/account'
 
 const kitEndpoint = (formId) => `https://app.kit.com/forms/${formId}/subscriptions`
 
@@ -42,6 +43,8 @@ export default function NewsletterForm({
   const id = String(formId || '').trim()
   const [status, setStatus] = useState('idle')
   const [error, setError] = useState(GENERIC_ERROR)
+  // After a signup with no account signed in: the address, to offer one.
+  const [offer, setOffer] = useState('')
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -50,6 +53,7 @@ export default function NewsletterForm({
     // soon as the event is done being dispatched.
     const form = e.currentTarget
     const body = new FormData(form)
+    const email = String(body.get('email_address') || '')
     setStatus('sending')
     try {
       const res = await fetch(kitEndpoint(id), { method: 'POST', headers: { Accept: 'application/json' }, body })
@@ -63,6 +67,7 @@ export default function NewsletterForm({
       }
       form.reset()
       setStatus('success')
+      if (!(await currentLogin())) setOffer(email)
     } catch {
       setError(GENERIC_ERROR)
       setStatus('error')
@@ -87,7 +92,15 @@ export default function NewsletterForm({
         <p className="newsletter__note newsletter__note--ok" role="status">
           {success || 'Thank you! Check your inbox to confirm.'}
         </p>
-      ) : (
+      ) : null}
+      {status === 'success' && offer ? (
+        <div className="newsletter__offer">
+          <p>Would you like an account too? It keeps your details for booking and sign-ups.</p>
+          <button type="button" className="btn" onClick={() => openAccount({ mode: 'up', email: offer })}>Create an account</button>
+          <button type="button" className="link-button" onClick={() => setOffer('')}>No, thanks</button>
+        </div>
+      ) : null}
+      {status === 'success' ? null : (
         <form className="newsletter__form" onSubmit={handleSubmit} action={kitEndpoint(id)} method="post">
           {askName && (
             <label className="newsletter__field">

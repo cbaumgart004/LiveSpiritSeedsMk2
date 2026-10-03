@@ -56,7 +56,7 @@ function ClassPart({ block }) {
   return (
     <div className="next-up__part">
       <p className="next-up__eyebrow" data-eotm-text="classHeading">{block.classHeading || 'Next Live Class'}</p>
-      <h3 className="next-up__title">{c.name}</h3>
+      <h3 className="next-up__title" {...(typed ? { 'data-eotm-text': 'className' } : {})}>{c.name}</h3>
       <p className="next-up__meta">
         {[formatDay(c.date), c.time, c.studio].filter(Boolean).join(' · ')}
       </p>
@@ -106,10 +106,16 @@ function EventPart({ block }) {
   )
 }
 
+// Layout, alignment and text size are the owner's (the section's own fields).
 export default function NextUp({ block, className, marks }) {
+  const mods = [
+    block.layout === 'side' && 'next-up--side',
+    block.align === 'left' && 'next-up--left',
+    ['small', 'large'].includes(block.textSize) && `next-up--${block.textSize}`,
+  ].filter(Boolean).join(' ')
   return (
     <section className={className} {...marks}>
-      <div className="panel next-up">
+      <div className={`panel next-up ${mods}`}>
         <ClassPart block={block} />
         <EventPart block={block} />
       </div>

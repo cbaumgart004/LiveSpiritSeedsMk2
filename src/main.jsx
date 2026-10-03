@@ -2,6 +2,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
+import { applyFonts } from './cms/site'
 import { SITE_THEME, SITE_UI_STYLE } from './config/siteConfig.js'
 // Content is git-backed and static, so the current theme is known at build time.
 // Importing it here bakes the correct season into the first paint — no
@@ -35,6 +36,7 @@ const initialTheme = [remembered.theme, settings?.theme].find((t) => SEASONS.inc
 const initialUiStyle = [remembered.uiStyle, settings?.uiStyle].find((s) => UI_STYLES.includes(s)) ?? SITE_UI_STYLE
 document.body.classList.add(initialTheme)
 document.body.classList.add(`style-${initialUiStyle}`)
+applyFonts(remembered)
 document.documentElement.classList.add('visible')
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

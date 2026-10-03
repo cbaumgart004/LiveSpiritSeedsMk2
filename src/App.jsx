@@ -4,7 +4,9 @@ import ScrollToTop from './components/ScrollToTop'
 import PreviewBar from './components/PreviewBar'
 import { useEffect, useState } from 'react'
 import { setupButtonClickFlash } from './utils/buttonFlashHandler'
-import { applyTheme, applyUiStyle, rememberLook, useSettings, CONSOLE_API } from './cms/site'
+import { applyFonts, applyTheme, applyUiStyle, rememberLook, useSettings, CONSOLE_API } from './cms/site'
+import AccountModal from './components/AccountModal'
+import ResetPassword from './pages/ResetPassword'
 import { initPreview, applyPreview } from './utils/preview'
 
 // The Edge of the Map console asks for a page by dispatching 'eotm:navigate'
@@ -53,9 +55,10 @@ function App() {
     if (!ready) return
     applyTheme(settings.theme)
     applyUiStyle(settings.uiStyle)
-    rememberLook(settings.theme, settings.uiStyle)
+    applyFonts(settings)
+    rememberLook(settings)
     if (preview) applyPreview(preview)
-  }, [ready, settings.theme, settings.uiStyle, preview])
+  }, [ready, settings, preview])
 
   const exitPreview = () => {
     // Restore the saved defaults (no reload) and hide the bar.
@@ -73,9 +76,11 @@ function App() {
       <ConsoleNavigation />
       <Routes>
         <Route path="/preview" element={<ToEditor />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/" element={<DynamicPage />} />
         <Route path="/:slug" element={<DynamicPage />} />
       </Routes>
+      <AccountModal />
       {preview && (
         <PreviewBar
           initialStyle={preview.style || settings.uiStyle}

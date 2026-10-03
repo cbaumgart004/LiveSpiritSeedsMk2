@@ -275,6 +275,12 @@ style's type/radius tokens instead of fighting the vendor's stylesheet.
 > a yoga studio always has *something* on in a fortnight, but a small non-profit's calendar can
 > legitimately be empty between programme cycles, and a false alert teaches everyone to ignore it.
 
+**Fonts and text size.** Every rule names its face through `--font-heading`, `--font-subheading` and
+`--font-body`, which each UI style sets on `<body>`. Site settings' heading, subheading and body
+fonts set the same variables inline on `<body>` (`applyFonts` in `site.js`), which wins over the
+style; "The UI style's own" removes them. Text size scales the root font size, and every size is in
+rem, so all text moves together. Only faces the site already loads are offered.
+
 **Seasonal theming.** The season lives in the **Settings** doc (console: Site settings, Seasonal
 theme). To avoid a theme flash, `main.jsx` applies a season as a `<body>` class **before first
 paint**: the one this browser last read from the console (`rememberLook` in `site.js`, localStorage
@@ -401,10 +407,15 @@ from `App`'s `useEffect` to attach a global visual flash on button clicks.
 - **Buttons under the menu bar** (`ActionBar.jsx`): fixed at `--navbar-height` on every page, from
   Site settings `actionButtons` (bundled default: Book a Session, Practice With Me, Services), plus a
   **Connect** button opening a themed window (`Modal.jsx`, a native `<dialog>` in the panel look)
-  with `socials`, the contact email and the newsletter form (`newsletterFormId`). `<body>` carries
+  with Facebook, Instagram and email as icons (`facebookUrl`, `instagramUrl`, `contactEmail`), any
+  other `socials`, and the newsletter form (`newsletterFormId`) last. `<body>` carries
   `has-action-bar` while it is shown, and `.first-section` clears `--action-bar-height` as well.
 - **Account button** (`AccountButton.jsx`, `src/cms/account.js`): the person icon left of the
-  hamburger (end of the inline row on desktop alternate styles). Sign in or create an account
+  hamburger (end of the inline row on desktop alternate styles). It opens the one account window,
+  `AccountModal.jsx`, mounted once in `App` and opened by `openAccount()` from anywhere (the
+  newsletter offers an account after a signup when nobody is signed in). Passwords have a show
+  button (`PasswordField.jsx`); creating an account asks for it twice; **Can't log in?** asks Neon
+  Auth for a link back to `/reset-password` (`pages/ResetPassword.jsx`). Sign in or create an account
   through Neon Auth at `/_edit/auth` on the site's own address; then `POST <console>/handoff` asks
   whether that login edits the site. A member gets an editor token (kept where the loader reads it)
   and **Edit site**; anyone else is a signed-in visitor. **Unverified:** Neon Auth answered

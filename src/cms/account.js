@@ -86,3 +86,25 @@ function forgetEditor() {
 }
 
 export const openEditor = () => window.EOTM?.open?.()
+
+// The password link: Neon Auth emails a link back to this site's
+// /reset-password with ?token=. Better Auth renamed the endpoint; try the
+// current name, then the older one (as the console's auth.js does).
+export async function requestReset(email) {
+  const body = { email, redirectTo: `${location.origin}/reset-password` }
+  try {
+    return await post('/request-password-reset', body)
+  } catch {
+    return post('/forget-password', body)
+  }
+}
+
+export const resetPassword = (token, newPassword) => post('/reset-password', { token, newPassword })
+
+// One account window serves every way in (the person icon, the newsletter's
+// offer, a finished password reset): they ask for it by this event, and
+// AccountModal, mounted once in App, answers. mode: 'in' | 'up' | 'reset'.
+export const ACCOUNT_EVENT = 'ss:account'
+export function openAccount(detail = {}) {
+  window.dispatchEvent(new CustomEvent(ACCOUNT_EVENT, { detail }))
+}
