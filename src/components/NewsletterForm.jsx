@@ -45,6 +45,8 @@ export default function NewsletterForm({
   const [error, setError] = useState(GENERIC_ERROR)
   // After a signup with no account signed in: the address, to offer one.
   const [offer, setOffer] = useState('')
+  // Kit's spam guard: a page where the visitor proves they are a person.
+  const [guard, setGuard] = useState('')
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -58,6 +60,14 @@ export default function NewsletterForm({
     try {
       const res = await fetch(kitEndpoint(id), { method: 'POST', headers: { Accept: 'application/json' }, body })
       const data = await res.json().catch(() => null)
+      // Kit answers "quarantined" with a guard page when its spam check wants a
+      // person to confirm; the signup completes there. Treating that as a
+      // failure lost the subscriber, so send them to it instead.
+      if (res.ok && data?.status === 'quarantined' && /^https:\/\/app\.kit\.com\//.test(data.url ?? '')) {
+        setGuard(data.url)
+        setStatus('idle')
+        return
+      }
       // A silent no-op that still looks like it worked is the one outcome worse
       // than an error: she'd never know she lost the subscriber.
       if (!res.ok || data?.status !== 'success') {
@@ -118,6 +128,13 @@ export default function NewsletterForm({
             {status === 'sending' ? 'Sending…' : buttonLabel || 'Subscribe'}
           </button>
         </form>
+      )}
+
+      {guard && (
+        <p className="newsletter__note" role="status">
+          One more step: Kit wants to check you are a person.{' '}
+          <a href={guard} target="_blank" rel="noreferrer">Finish signing up</a>
+        </p>
       )}
 
       {status === 'error' && (
