@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom'
 import Nav from '../components/Nav'
+import ActionBar from '../components/ActionBar'
 import Blocks from '../components/cms/Blocks'
 import { useDocuments } from '../cms/site'
 
@@ -15,6 +16,7 @@ export default function DynamicPage() {
     return (
       <>
         <Nav />
+        <ActionBar />
         <div className="page-wrapper first-section" style={{ padding: '2rem' }}>
           Loading…
         </div>
@@ -26,6 +28,7 @@ export default function DynamicPage() {
     return (
       <>
         <Nav />
+        <ActionBar />
         <section className="section section--stack first-section">
           <div className="panel">
             <h2>Page not found</h2>
@@ -38,6 +41,7 @@ export default function DynamicPage() {
   return (
     <>
       <Nav />
+      <ActionBar />
       {/* Click-to-edit names the page by id; a bundled copy is not in the
           console, so it names it by slug and the console finds the imported one. */}
       <Blocks blocks={page.data?.blocks} doc={page.id?.startsWith('bundled:') ? page.slug : page.id} />

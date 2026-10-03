@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import styles from './Nav.module.css'
 import Hamburger from './Hamburger'
+import AccountButton from './AccountButton'
 import { hrefForSlug, navLinks, useDocuments, useSettings } from '../cms/site'
 import { useUiStyle } from '../utils/useUiStyle'
 import { srcOf } from './cms/photo'
@@ -69,7 +70,12 @@ function Nav() {
             </a>
           )}
 
+          {/* Desktop inline-menu styles hide the hamburger's corner, so the
+              account button sits at the end of the row there instead. */}
+          {showInlineMenu && <AccountButton className={styles.inlineAccount} />}
+
           <div className={styles.hamburgerWrapper}>
+            <AccountButton />
             <Hamburger isOpen={isOpen} toggleMenu={toggleMenu} />
           </div>
         </div>

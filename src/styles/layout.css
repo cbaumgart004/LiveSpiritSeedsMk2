@@ -15,6 +15,11 @@
 .first-section {
   margin-top: calc(var(--navbar-height) + 1rem);
 }
+/* The buttons under the menu bar (ActionBar.jsx) are fixed too. */
+body.has-action-bar .section.first-section,
+body.has-action-bar .first-section {
+  margin-top: calc(var(--navbar-height) + var(--action-bar-height) + 1rem);
+}
 
 /* -------------------------------------------- */
 /* 💠 Section primitive (see ADR 0001)          */

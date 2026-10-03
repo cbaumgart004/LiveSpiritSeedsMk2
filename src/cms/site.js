@@ -118,6 +118,45 @@ export function hrefForSlug(slug) {
   return slug === 'home' ? '/' : `/${slug}`
 }
 
+// The season and UI style last read from Settings, kept in this browser so
+// main.jsx paints the next visit in them. The bundled file's season is only a
+// build-time snapshot, so without this every visit opened in that season and
+// switched once the console answered.
+export const LOOK_KEY = 'ss:look'
+export function rememberLook(settings) {
+  const { theme, uiStyle, headingFont, subheadingFont, bodyFont, textSize } = settings
+  try {
+    localStorage.setItem(LOOK_KEY, JSON.stringify({ theme, uiStyle, headingFont, subheadingFont, bodyFont, textSize }))
+  } catch { /* private mode: the bundled season paints first */ }
+}
+
+// The owner's fonts and text size (Site settings). Every rule names its face
+// through --font-heading, --font-subheading and --font-body, which each UI
+// style sets on <body>; an inline value on <body> wins over the style's, and
+// "default" (or blank) removes it so the style's own face returns. Only faces
+// the site already loads are offered (index.css, index.html).
+const FONTS = {
+  'Euphoria Script': 'cursive',
+  Caveat: 'cursive',
+  Farsan: 'cursive',
+  'Playfair Display': 'Georgia, serif',
+  Fraunces: 'Georgia, serif',
+  'Cormorant Garamond': 'Georgia, serif',
+  'Merriweather Sans': 'sans-serif',
+  Assistant: 'sans-serif',
+}
+export function applyFonts({ headingFont, subheadingFont, bodyFont, textSize } = {}) {
+  const body = document.body.style
+  for (const [prop, face] of [['--font-heading', headingFont], ['--font-subheading', subheadingFont], ['--font-body', bodyFont]]) {
+    if (FONTS[face]) body.setProperty(prop, `'${face}', ${FONTS[face]}`)
+    else body.removeProperty(prop)
+  }
+  // Every size is in rem, so the root size scales all text together.
+  const size = Number(textSize)
+  if (size >= 85 && size <= 125 && size !== 100) document.documentElement.style.fontSize = `${size}%`
+  else document.documentElement.style.removeProperty('font-size')
+}
+
 // Apply the seasonal theme (from Settings) to <body>.
 export function applyTheme(theme) {
   if (!SEASONS.includes(theme)) return

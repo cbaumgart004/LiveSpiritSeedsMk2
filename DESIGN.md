@@ -176,8 +176,9 @@ required for Kit's JS form embeds). Empty blocks show an the editor (`?edit`) hi
 "Practice With Me" page (`content/pages/practice-with-me.json`) is built from these. OfferingTree has
 no public REST API; embed widgets, Zapier, and Google-Calendar sync are the integration surfaces.
 
-**Newsletter signup (Kit).** The `newsletter` mode (`NewsletterEmbed` in `Blocks.jsx`) renders **our
-own form** and POSTs it to `https://app.kit.com/forms/<formId>/subscriptions` — the same
+**Newsletter signup (Kit).** The `newsletter` mode (`NewsletterEmbed` in `Blocks.jsx`, a thin wrapper
+over the shared `NewsletterForm.jsx`, also used by the Connect window) renders **our
+own form**, straight on the section's card rather than in a second panel inside it, and POSTs it to `https://app.kit.com/forms/<formId>/subscriptions` — the same
 unauthenticated endpoint Kit's HTML embed submits to, so there is **no API key** in the client and
 nothing secret in a static build. Kit's field names (`email_address`, `fields[first_name]`) are the
 wire contract; everything else (heading, intro, button label, thank-you, fine print) is CMS copy.
@@ -274,9 +275,17 @@ style's type/radius tokens instead of fighting the vendor's stylesheet.
 > a yoga studio always has *something* on in a fortnight, but a small non-profit's calendar can
 > legitimately be empty between programme cycles, and a false alert teaches everyone to ignore it.
 
-**Seasonal theming.** The season lives in the **Settings** doc. To avoid a theme flash, `main.jsx`
-imports `content/settings/index.json` at build time and applies its `theme` as a `<body>` class
-**before first paint** (the page is `visibility: hidden` until then — see `index.html`);
+**Fonts and text size.** Every rule names its face through `--font-heading`, `--font-subheading` and
+`--font-body`, which each UI style sets on `<body>`. Site settings' heading, subheading and body
+fonts set the same variables inline on `<body>` (`applyFonts` in `site.js`), which wins over the
+style; "The UI style's own" removes them. Text size scales the root font size, and every size is in
+rem, so all text moves together. Only faces the site already loads are offered.
+
+**Seasonal theming.** The season lives in the **Settings** doc (console: Site settings, Seasonal
+theme). To avoid a theme flash, `main.jsx` applies a season as a `<body>` class **before first
+paint**: the one this browser last read from the console (`rememberLook` in `site.js`, localStorage
+`ss:look`), else the build-time `content/settings/index.json`, which goes stale as soon as the owner
+switches season. The page stays `visibility: hidden` until then (`index.html`);
 `siteConfig.js`'s `SITE_THEME` is only a fallback for a missing/invalid value. `App.jsx` re-applies
 the theme from the CMS on load (same value on first render; updates during live editing). The CSS
 themes in `src/styles/themes.css` key off that class.
@@ -392,6 +401,31 @@ defaults and strips the params. The owner then sets the winner as the real defau
 from `App`'s `useEffect` to attach a global visual flash on button clicks.
 
 **Navigation.** `components/Nav.jsx` (+ `Hamburger.jsx` for mobile) provide site nav.
+
+**Under the menu bar, and the account button.** Three pieces added 2026-10-03:
+
+- **Buttons under the menu bar** (`ActionBar.jsx`): fixed at `--navbar-height` on every page, from
+  Site settings `actionButtons` (bundled default: Book a Session, Practice With Me, Services), plus a
+  **Connect** button opening a themed window (`Modal.jsx`, a native `<dialog>` in the panel look)
+  with Facebook, Instagram and email as icons (`facebookUrl`, `instagramUrl`, each shown only with its
+  `showFacebook` / `showInstagram` switch on, off by default; `contactEmail`), any
+  other `socials`, and the newsletter form (`newsletterFormId`) last. `<body>` carries
+  `has-action-bar` while it is shown, and `.first-section` clears `--action-bar-height` as well.
+- **Account button** (`AccountButton.jsx`, `src/cms/account.js`): the person icon left of the
+  hamburger (end of the inline row on desktop alternate styles). It opens the one account window,
+  `AccountModal.jsx`, mounted once in `App` and opened by `openAccount()` from anywhere (the
+  newsletter offers an account after a signup when nobody is signed in). Passwords have a show
+  button (`PasswordField.jsx`); creating an account asks for it twice; **Can't log in?** asks Neon
+  Auth for a link back to `/reset-password` (`pages/ResetPassword.jsx`). Sign in or create an account
+  through Neon Auth at `/_edit/auth` on the site's own address; then `POST <console>/handoff` asks
+  whether that login edits the site. A member gets an editor token (kept where the loader reads it)
+  and **Edit site**; anyone else is a signed-in visitor. **Unverified:** Neon Auth answered
+  `INVALID_ORIGIN` for the preview address on 2026-10-03, so sign-in fails until the address is a
+  trusted domain in Neon Auth.
+- **Next class and event banner** (`nextUp` block, `cms/NextUp.jsx`): the class the owner typed, or
+  with no class name the next class on the teaching schedule; below it the earliest `event`
+  document dated today or later. With no such event that half is hidden on the site and shown
+  dashed, marked hidden, while the editor is open.
 
 ## 7. Conventions & gotchas
 

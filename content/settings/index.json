@@ -5,5 +5,22 @@
   "uiStyle": "watercolor",
   "navCtaLabel": "Book",
   "navCtaUrl": "/sessions",
-  "contactEmail": "melissacarey@spiritseedswellness.com"
+  "contactEmail": "melissacarey@spiritseedswellness.com",
+  "actionButtons": [
+    {
+      "label": "Book a Session",
+      "url": "https://spiritseedswellnessmelissacarey.offeringtree.com/offerings"
+    },
+    {
+      "label": "Practice With Me",
+      "url": "/practice-with-me"
+    },
+    {
+      "label": "Services",
+      "url": "/services"
+    }
+  ],
+  "connectLabel": "Connect",
+  "connectIntro": "Find me on social media, or get first word of new classes and events.",
+  "newsletterFormId": "7800435"
 }

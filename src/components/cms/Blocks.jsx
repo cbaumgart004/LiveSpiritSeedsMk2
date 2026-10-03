@@ -10,11 +10,13 @@
 // (data-eotm-*, see the console's Targets.jsx): pointing at a section while
 // editing shows an Edit button, and its edge (and a side image's edge) can be
 // dragged to a new width.
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import ValuesSection from '../ValuesSection/ValuesSection'
 import TaglineArt from '../TaglineArt'
 
 import CustomSection from './CustomSection'
+import NextUp from './NextUp'
+import NewsletterForm from '../NewsletterForm'
 import { srcOf, altOf, imageStyle } from './photo'
 import { useSchema } from '../../cms/site'
 
@@ -446,142 +448,21 @@ function RawEmbed({ html }) {
   return <div className="embed-raw" ref={ref} />
 }
 
-// Newsletter mode. Kit's JS embed ships Kit's own stylesheet, so it can only
-// ever match ONE season — and the season is owner-switchable from /admin, so
-// that form would drift out of brand the moment Melissa moves to fall. Same
-// call as the teaching schedule (DESIGN.md §6): render our own markup and post
-// to the vendor, rather than fight the vendor's stylesheet.
-//
-// This is the unauthenticated endpoint Kit's own HTML embed submits to, so
-// there is NO api key here and nothing secret to leak from a static site.
-// Field names (`email_address`, `fields[first_name]`) are Kit's, not ours.
-const kitEndpoint = (formId) => `https://app.kit.com/forms/${formId}/subscriptions`
-
-const GENERIC_ERROR = 'That didn’t go through. Please try again in a moment.'
-
-// Kit answers 200 even when it refuses the signup, so the HTTP status alone
-// tells us nothing — `status` in the body is the real verdict. On failure it
-// returns {errors: {fields: [...], messages: [...]}}.
-//
-// Only a complaint about the ADDRESS is worth repeating to the visitor ("Email
-// address is invalid") — that is something they can fix. A form-level error
-// means the form id is wrong or the form was deleted, which reads as gibberish
-// to a visitor ("Form Couldn't find a form for this request", six times over)
-// and is Melissa's to fix, so it gets the generic wording instead.
-function kitErrorMessage(data) {
-  const fields = data?.errors?.fields
-  const message = data?.errors?.messages?.[0]
-  if (message && Array.isArray(fields) && fields.includes('email_address')) return message
-  return GENERIC_ERROR
-}
-
+// Newsletter mode: the shared Kit form (../NewsletterForm.jsx) with this
+// section's wording. It sits straight on the section's own card, not in a
+// second panel inside it.
 function NewsletterEmbed({ block }) {
-  const formId = String(block.newsletterFormId || '').trim()
-  const [status, setStatus] = useState('idle')
-  const [error, setError] = useState(GENERIC_ERROR)
-
-  async function handleSubmit(e) {
-    e.preventDefault()
-    if (status === 'sending') return
-    // Grab the node before the first await — React nulls currentTarget out as
-    // soon as the event is done being dispatched.
-    const form = e.currentTarget
-    const body = new FormData(form)
-    setStatus('sending')
-    try {
-      const res = await fetch(kitEndpoint(formId), {
-        method: 'POST',
-        headers: { Accept: 'application/json' },
-        body,
-      })
-      const data = await res.json().catch(() => null)
-      // A silent no-op that still looks like it worked is the one outcome worse
-      // than an error: she'd never know she lost the subscriber.
-      if (!res.ok || data?.status !== 'success') {
-        setError(kitErrorMessage(data))
-        setStatus('error')
-        return
-      }
-      form.reset()
-      setStatus('success')
-    } catch {
-      // Network failure — no response body to read, so nothing specific to say.
-      setError(GENERIC_ERROR)
-      setStatus('error')
-    }
-  }
-
-  if (!formId) {
-    return (
-      <div className="panel embed-placeholder">
-        <p>
-          Add your Kit <strong>form ID</strong> in the editor to turn this into a signup
-          form.
-        </p>
-      </div>
-    )
-  }
-
   return (
-    <div className="panel newsletter">
-      {block.newsletterIntro && (
-        <p className="newsletter__intro">
-          {block.newsletterIntro}
-        </p>
-      )}
-
-      {status === 'success' ? (
-        <p className="newsletter__note newsletter__note--ok" role="status">
-          {block.newsletterSuccess || 'Thank you — check your inbox to confirm.'}
-        </p>
-      ) : (
-        <form
-          className="newsletter__form"
-          onSubmit={handleSubmit}
-          action={kitEndpoint(formId)}
-          method="post"
-        >
-          {block.newsletterAskName && (
-            <label className="newsletter__field">
-              <span className="newsletter__label">First name</span>
-              <input
-                className="newsletter__input"
-                type="text"
-                name="fields[first_name]"
-                autoComplete="given-name"
-                placeholder={block.newsletterNamePlaceholder || 'First name'}
-              />
-            </label>
-          )}
-          <label className="newsletter__field">
-            <span className="newsletter__label">Email address</span>
-            <input
-              className="newsletter__input"
-              type="email"
-              name="email_address"
-              required
-              autoComplete="email"
-              placeholder={block.newsletterPlaceholder || 'your@email.com'}
-            />
-          </label>
-          <button className="btn" type="submit" disabled={status === 'sending'}>
-            {status === 'sending' ? 'Sending…' : block.newsletterButtonLabel || 'Subscribe'}
-          </button>
-        </form>
-      )}
-
-      {status === 'error' && (
-        <p className="newsletter__note newsletter__note--error" role="alert">
-          {error}
-        </p>
-      )}
-
-      {block.newsletterFinePrint && (
-        <p className="newsletter__fine">
-          {block.newsletterFinePrint}
-        </p>
-      )}
-    </div>
+    <NewsletterForm
+      formId={block.newsletterFormId}
+      intro={block.newsletterIntro}
+      askName={block.newsletterAskName}
+      placeholder={block.newsletterPlaceholder}
+      namePlaceholder={block.newsletterNamePlaceholder}
+      buttonLabel={block.newsletterButtonLabel}
+      success={block.newsletterSuccess}
+      finePrint={block.newsletterFinePrint}
+    />
   )
 }
 
@@ -799,6 +680,8 @@ export default function Blocks({ blocks, doc }) {
             return <ServiceBlock key={key} block={block} isFirst={isFirst} side={side} services={services} doc={doc} />
           case 'embed':
             return <EmbedBlock key={key} block={block} isFirst={isFirst} doc={doc} />
+          case 'nextUp':
+            return <NextUp key={key} block={block} className={sectionClass('section section--stack', null, isFirst, block)} marks={editable(doc, block)} />
           default: {
             const def = schema?.blocks?.[block._type]
             if (!def) return null
