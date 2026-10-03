@@ -85,7 +85,10 @@ export default function ActionBar() {
 
   return (
     <>
-      <div ref={bar} className="action-bar" data-eotm-edit="settings:settings" data-eotm-label="buttons">
+      {/* Site settings "Buttons per row on a phone": two (a 2 by 2 square for
+          four), one, or all in one row. */}
+      <div ref={bar} className={`action-bar action-bar--per-row-${['1', 'all'].includes(settings.actionButtonsPerRow) ? settings.actionButtonsPerRow : '2'}`}
+        data-eotm-edit="settings:settings" data-eotm-label="buttons" data-eotm-field="actionButtons">
         {buttons.map((b) =>
           isInternal(b.url) ? (
             <Link key={b._id ?? b.label} className="btn action-bar__btn" to={b.url}>{b.label}</Link>

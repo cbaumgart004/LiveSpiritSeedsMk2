@@ -14,7 +14,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1rem 2rem;
+  padding: 0.5rem 2rem;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -33,18 +33,20 @@
 /* 🌼 TITLE */
 .title {
   font-family: var(--font-heading);
-  font-size: clamp(2.4rem, 5vw + 1rem, 8rem);
+  font-size: clamp(2rem, 3vw + 1rem, 4.5rem);
+  line-height: 1.1;
   font-weight: bold;
   color: var(--primary-color);
   text-align: center;
   text-shadow: var(--outline-shadow);
-  padding: 0.5rem 2rem;
+  padding: 0.3rem 1.5rem;
   background-color: var(--bg-color-light);
   border: var(--panel-border) solid var(--primary-color);
   border-radius: var(--radius-2);
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
   box-sizing: border-box;
-  max-width: 90vw;
+  /* Room for the account and menu buttons either side. */
+  max-width: calc(100% - 9rem);
   width: fit-content;
   white-space: normal;
   overflow: hidden;
@@ -103,16 +105,23 @@
 /* Inline menu is desktop-only; below 900px the hamburger overlay takes over
    (see the media query at the bottom of this file). */
 
-/* 🍔 HAMBURGER BUTTON WRAPPER */
-.hamburgerWrapper {
+/* 🍔 MENU BUTTON (right) AND ACCOUNT BUTTON (left)
+   Mirror images: the same inset from each edge, centred on the bar. */
+.hamburgerWrapper,
+.accountWrapper {
   position: absolute;
-  top: 3.25rem;
-  right: 2rem;
+  top: 50%;
+  translate: 0 -50%;
   z-index: 60;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem; /* the account button, then the menu button */
+}
+.hamburgerWrapper {
+  right: 0;
+}
+.accountWrapper {
+  left: 0;
 }
 
 /* The account button at the end of the inline menu row (desktop only). */
@@ -135,7 +144,10 @@
 @media (min-width: 901px) {
   .navbar[data-nav-variant='editorial'] .hamburgerWrapper,
   .navbar[data-nav-variant='sanctuary'] .hamburgerWrapper,
-  .navbar[data-nav-variant='immersive'] .hamburgerWrapper {
+  .navbar[data-nav-variant='immersive'] .hamburgerWrapper,
+  .navbar[data-nav-variant='editorial'] .accountWrapper,
+  .navbar[data-nav-variant='sanctuary'] .accountWrapper,
+  .navbar[data-nav-variant='immersive'] .accountWrapper {
     display: none;
   }
 
@@ -228,10 +240,10 @@
   letter-spacing: 0.2em;
 }
 
-/* 🌈 DROPDOWN MENU */
+/* 🌈 DROPDOWN MENU: opens just under the bar, whatever its height. */
 .menuOverlay {
   position: fixed;
-  top: 9rem;
+  top: calc(var(--navbar-height) + 0.5rem);
   right: 2rem;
   background: var(--bg-color);
   border-radius: 10px;
@@ -250,7 +262,6 @@
 
 .menuOverlay.show {
   transform: scaleY(1);
-  top: 10rem;
   opacity: 1;
   pointer-events: all;
 }
@@ -337,9 +348,8 @@
     bottom: auto;
     transform: none;
     width: 100%;
-    height: 120px; /* 💡 much more comfortable */
     border-radius: 0;
-    padding: 0.5rem 1rem;
+    padding: 0.25rem 1rem;
   }
 
   .navbarTopRow {
@@ -350,36 +360,28 @@
     gap: 1rem;
   }
 
-  .hamburgerWrapper {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    margin: 0;
-  }
   .menuOverlay {
-    top: 6.5rem;
     right: 1rem;
   }
   .title {
-    font-size: clamp(1.2rem, 5vw, 2.2rem);
+    font-size: clamp(1.1rem, 4.5vw, 1.8rem);
     text-align: center;
     white-space: normal;
     overflow: visible;
     text-overflow: unset;
-    max-width: 90vw;
-    padding: 0.4rem 1rem;
+    max-width: calc(100% - 6.5rem);
+    padding: 0.2rem 0.8rem;
     margin: 0 auto;
   }
 }
 
 @media (max-width: 480px) {
   .navbar {
-    height: 100px; /* 💫 even smaller for very short screens */
-    padding: 0.25rem 0.5rem;
+    padding: 0.2rem 0.75rem;
   }
 
   .title {
-    font-size: clamp(1rem, 5vw, 2rem);
-    padding: 0.3rem 0.5rem;
+    font-size: clamp(1rem, 5vw, 1.5rem);
+    padding: 0.15rem 0.5rem;
   }
 }

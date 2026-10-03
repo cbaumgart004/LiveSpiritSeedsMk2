@@ -631,7 +631,7 @@ function ContentSection({ block, isFirst, side, services, doc }) {
       return (
         <div {...editable(doc, block)}>
           {/* Console rows are { _id, text }; older content is bare strings. */}
-          <ValuesSection title={block.title} words={(block.words || []).map((w) => (typeof w === 'string' ? w : w?.text)).filter(Boolean)} />
+          <ValuesSection title={block.title} words={(block.words || []).map((w) => (typeof w === 'string' ? { text: w } : w)).filter((w) => w?.text)} />
           <HomeButton block={block} />
         </div>
       )

@@ -49,9 +49,16 @@ function Nav() {
         data-nav-variant={uiStyle}
         data-eotm-edit="settings:settings"
         data-eotm-label="header"
+        data-eotm-field="headerImage"
         style={headerPhoto ? { '--navbar-background': `url("${headerPhoto}")` } : undefined}
       >
         <div className={styles.navbarTopRow}>
+          {/* The account button left of the title, mirroring the menu button
+              on the right, so the bar is symmetrical. */}
+          <div className={styles.accountWrapper}>
+            <AccountButton />
+          </div>
+
           <h1 className={styles.title} data-eotm-edit="settings:settings" data-eotm-label="site settings" data-eotm-text="siteTitle">{siteTitle}</h1>
 
           {showInlineMenu && (
@@ -70,12 +77,11 @@ function Nav() {
             </a>
           )}
 
-          {/* Desktop inline-menu styles hide the hamburger's corner, so the
-              account button sits at the end of the row there instead. */}
+          {/* Desktop inline-menu styles hide both corners, so the account
+              button sits at the end of the row there instead. */}
           {showInlineMenu && <AccountButton className={styles.inlineAccount} />}
 
           <div className={styles.hamburgerWrapper}>
-            <AccountButton />
             <Hamburger isOpen={isOpen} toggleMenu={toggleMenu} />
           </div>
         </div>

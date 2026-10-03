@@ -103,7 +103,8 @@ the Tina collections had; the file paths below are the Tina copies:
   - **`contentSection`** — a general section with a `layout` picker choosing the look:
     `splash` (hero photo with the type stack laid **over** it), `imageText` (image beside text),
     `centered` (centered text), `cardGrid` (heading + grid of mini-cards, e.g. home "Our Services"),
-    `values` (values list), `event` (announcement + images). `splash` additionally uses `eyebrow`
+    `values` (labelled **Footer** in the editor: the values in one small line, rendered as
+    `<footer class="section footer">`), `event` (announcement + images). `splash` additionally uses `eyebrow`
     (the small tracked line above the heading) and `overlayAlign`
     (`center`/`bottomLeft`/`bottomCenter` — where the text sits on the photo).
   - **`service`** — a bookable offering: `status` (`available`/`coming-soon`), `bookingOptions[]`
@@ -138,7 +139,11 @@ is the live preview. `DynamicPage` finds the page by slug (`home` is `/`) and pa
   `src/cms/markdown.js`). Settings fall back field by field.
 - **On-page editing.** Every section carries `data-eotm-edit`, `data-eotm-item` and
   `data-eotm-size="width"`; side images carry `data-eotm-size="imageWidth"`; rich text carries
-  `data-eotm-richtext`. The console turns these into an Edit button and drag handles.
+  `data-eotm-richtext`; headings and the footer's values carry `data-eotm-text` (a value names its
+  row with `data-eotm-in`). The header names `headerImage` and the action bar `actionButtons` with
+  `data-eotm-field`. The console turns these into an Edit button and drag handles; from console
+  1.2.3 one click on marked text types it in place and opens that field in the pane, and a click
+  anywhere else in a marked part opens it at its `data-eotm-field`.
 - **The owner's own section types** (console "Your own types") render through
   `components/cms/CustomSection.jsx` from their fields (`useSchema`), in the plain section style
   until given a design. Photos carry the owner's turn, mirror and fade (`components/cms/photo.js`).
@@ -400,19 +405,23 @@ defaults and strips the params. The owner then sets the winner as the real defau
 **Button click-flash.** `utils/buttonFlashHandler.js` (`setupButtonClickFlash`) is invoked once
 from `App`'s `useEffect` to attach a global visual flash on button clicks.
 
-**Navigation.** `components/Nav.jsx` (+ `Hamburger.jsx` for mobile) provide site nav.
+**Navigation.** `components/Nav.jsx` (+ `Hamburger.jsx` for mobile) provide site nav. The bar is
+`--navbar-height` tall (`variables.css`: 150px, 76px at 768px and under, 64px at 480px and under).
+The account button sits left of the title and the menu button right of it, the same inset from
+each edge and centred on the bar.
 
 **Under the menu bar, and the account button.** Three pieces added 2026-10-03:
 
 - **Buttons under the menu bar** (`ActionBar.jsx`): fixed at `--navbar-height` on every page, from
-  Site settings `actionButtons` (bundled default: Book a Session, Practice With Me, Services), plus a
+  Site settings `actionButtons` (on a phone, `actionButtonsPerRow`: two per row by default, one, or
+  all in one row) (bundled default: Book a Session, Practice With Me, Services), plus a
   **Connect** button opening a themed window (`Modal.jsx`, a native `<dialog>` in the panel look)
   with Facebook, Instagram and email as icons (`facebookUrl`, `instagramUrl`, each shown only with its
   `showFacebook` / `showInstagram` switch on, off by default; `contactEmail`), any
   other `socials`, and the newsletter form (`newsletterFormId`) last. `<body>` carries
   `has-action-bar` while it is shown, and `.first-section` clears `--action-bar-height` as well.
 - **Account button** (`AccountButton.jsx`, `src/cms/account.js`): the person icon left of the
-  hamburger (end of the inline row on desktop alternate styles). It opens the one account window,
+  title, mirroring the hamburger (end of the inline row on desktop alternate styles). It opens the one account window,
   `AccountModal.jsx`, mounted once in `App` and opened by `openAccount()` from anywhere (the
   newsletter offers an account after a signup when nobody is signed in). Passwords have a show
   button (`PasswordField.jsx`); creating an account asks for it twice; **Can't log in?** asks Neon
