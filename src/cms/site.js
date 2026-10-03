@@ -118,6 +118,17 @@ export function hrefForSlug(slug) {
   return slug === 'home' ? '/' : `/${slug}`
 }
 
+// The season and UI style last read from Settings, kept in this browser so
+// main.jsx paints the next visit in them. The bundled file's season is only a
+// build-time snapshot, so without this every visit opened in that season and
+// switched once the console answered.
+export const LOOK_KEY = 'ss:look'
+export function rememberLook(theme, uiStyle) {
+  try {
+    localStorage.setItem(LOOK_KEY, JSON.stringify({ theme, uiStyle }))
+  } catch { /* private mode: the bundled season paints first */ }
+}
+
 // Apply the seasonal theme (from Settings) to <body>.
 export function applyTheme(theme) {
   if (!SEASONS.includes(theme)) return

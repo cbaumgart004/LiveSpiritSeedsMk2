@@ -263,7 +263,11 @@
 /* can only match one season, and the season is owner-switchable.   */
 /* Everything here reads from tokens, so it re-skins for free.      */
 /* -------------------------------------------------------------- */
+/* No panel of its own: it sits on the section's card (or in the Connect
+   window), so there is no box inside a box, and border-box keeps it from
+   pushing past its section on a phone. */
 .newsletter {
+  box-sizing: border-box;
   width: 100%;
   max-width: 640px;
   margin: 0 auto;
@@ -365,4 +369,214 @@
   background: var(--bg-color-light);
   border-radius: var(--radius-1);
   box-shadow: var(--shadow-1);
+}
+
+/* -------------------------------------------------------------- */
+/* Buttons under the menu bar (ActionBar.jsx)                     */
+/* -------------------------------------------------------------- */
+:root {
+  --action-bar-height: 3.75rem;
+}
+.action-bar {
+  position: fixed;
+  top: var(--navbar-height);
+  left: 0;
+  z-index: 40; /* under the nav (50) and its menu overlay */
+  box-sizing: border-box;
+  width: 100%;
+  height: var(--action-bar-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  padding: 0 var(--space-2);
+  background-color: var(--bg-color-light);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: var(--panel-border) solid var(--primary-color);
+  border-radius: 0 0 var(--radius-1) var(--radius-1);
+  box-shadow: var(--shadow-1);
+}
+.action-bar__btn {
+  padding: 0.5rem 1.1rem;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  text-decoration: none;
+}
+/* A phone keeps the bar one row high and lets it scroll sideways, rather
+   than wrapping into a second row that would cover the page. */
+@media (max-width: 640px) {
+  :root {
+    --action-bar-height: 3.25rem;
+  }
+  .action-bar {
+    justify-content: flex-start;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .action-bar::-webkit-scrollbar {
+    display: none;
+  }
+  .action-bar__btn {
+    flex: 0 0 auto;
+    padding: 0.45rem 0.9rem;
+    font-size: 0.88rem;
+  }
+}
+
+/* -------------------------------------------------------------- */
+/* Themed window (Modal.jsx): the Connect and account windows     */
+/* -------------------------------------------------------------- */
+dialog.modal {
+  box-sizing: border-box;
+  width: min(92vw, 34rem);
+  max-height: 88vh;
+  overflow-y: auto;
+  padding: var(--space-4) var(--space-3) var(--space-3);
+  margin: auto;
+  border-radius: var(--radius-2);
+  background-color: var(--bg-color-light);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: var(--shadow-3);
+  text-align: center;
+}
+dialog.modal::backdrop {
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(3px);
+}
+.modal__close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 0;
+  background: transparent;
+  color: var(--primary-color);
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.panel .modal__title {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 6vw, 2.6rem);
+  text-shadow: var(--outline-shadow);
+  margin-bottom: var(--space-2);
+}
+.panel .modal__subtitle {
+  margin: var(--space-3) 0 var(--space-1);
+}
+.modal__intro {
+  margin-bottom: var(--space-2);
+}
+.modal__links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-1);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.modal__links .btn {
+  text-decoration: none;
+}
+
+/* -------------------------------------------------------------- */
+/* Account button and window (AccountButton.jsx)                  */
+/* -------------------------------------------------------------- */
+.account-button {
+  display: grid;
+  place-items: center;
+  width: clamp(30px, 6vw, 50px);
+  height: clamp(30px, 6vw, 50px);
+  padding: 0;
+  border: none;
+  border-radius: 10px;
+  background: var(--secondary-color);
+  color: var(--primary-color);
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.account__form {
+  display: grid;
+  gap: var(--space-2);
+  text-align: left;
+}
+.account__tabs {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-1);
+}
+.account__tabs button {
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--text-color);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+}
+.account__tabs button.is-on {
+  border-bottom-color: var(--primary-color);
+  color: var(--primary-color);
+  font-weight: 700;
+}
+.account__field {
+  display: grid;
+  gap: 0.3rem;
+  font-weight: 600;
+}
+.account__form .btn {
+  justify-self: center;
+}
+
+/* -------------------------------------------------------------- */
+/* Next class and event banner (cms/NextUp.jsx)                   */
+/* -------------------------------------------------------------- */
+.next-up {
+  box-sizing: border-box;
+  display: grid;
+  gap: var(--space-3);
+  text-align: center;
+}
+.next-up__part + .next-up__part {
+  padding-top: var(--space-3);
+  border-top: var(--panel-border) solid var(--primary-color);
+}
+.next-up__eyebrow {
+  font-size: 0.85rem !important;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+.panel .next-up__title {
+  font-size: clamp(1.5rem, 4vw, 2.1rem);
+  margin-bottom: 0.4rem;
+}
+.next-up__meta {
+  margin-bottom: var(--space-2);
+}
+.next-up__image {
+  display: block;
+  max-width: min(100%, 420px);
+  margin: 0 auto var(--space-2);
+  border-radius: var(--radius-1);
+}
+.next-up__body {
+  margin-bottom: var(--space-2);
+}
+/* Only the owner sees this, while editing: where the event will go. */
+.next-up__part--hidden {
+  opacity: 0.6;
+  border: 2px dashed var(--primary-color);
+  border-radius: var(--radius-1);
+  padding: var(--space-2);
+}
+.next-up__status {
+  font-style: italic;
 }

@@ -21,8 +21,18 @@ import './styles/animations.css' // keyframes/animation helpers
 // build-time Settings import so the first paint is already correct — no flash.
 const SEASONS = ['spring', 'summer', 'fall', 'winter']
 const UI_STYLES = ['watercolor', 'editorial', 'sanctuary', 'immersive']
-const initialTheme = SEASONS.includes(settings?.theme) ? settings.theme : SITE_THEME
-const initialUiStyle = UI_STYLES.includes(settings?.uiStyle) ? settings.uiStyle : SITE_UI_STYLE
+// The season and style this browser last read from the console come first
+// (site.js rememberLook): the bundled file is a build-time snapshot and goes
+// stale as soon as the owner switches season in the editor.
+const remembered = (() => {
+  try {
+    return JSON.parse(localStorage.getItem('ss:look')) ?? {}
+  } catch {
+    return {}
+  }
+})()
+const initialTheme = [remembered.theme, settings?.theme].find((t) => SEASONS.includes(t)) ?? SITE_THEME
+const initialUiStyle = [remembered.uiStyle, settings?.uiStyle].find((s) => UI_STYLES.includes(s)) ?? SITE_UI_STYLE
 document.body.classList.add(initialTheme)
 document.body.classList.add(`style-${initialUiStyle}`)
 document.documentElement.classList.add('visible')

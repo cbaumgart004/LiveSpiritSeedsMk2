@@ -4,7 +4,7 @@ import ScrollToTop from './components/ScrollToTop'
 import PreviewBar from './components/PreviewBar'
 import { useEffect, useState } from 'react'
 import { setupButtonClickFlash } from './utils/buttonFlashHandler'
-import { applyTheme, applyUiStyle, useSettings, CONSOLE_API } from './cms/site'
+import { applyTheme, applyUiStyle, rememberLook, useSettings, CONSOLE_API } from './cms/site'
 import { initPreview, applyPreview } from './utils/preview'
 
 // The Edge of the Map console asks for a page by dispatching 'eotm:navigate'
@@ -53,6 +53,7 @@ function App() {
     if (!ready) return
     applyTheme(settings.theme)
     applyUiStyle(settings.uiStyle)
+    rememberLook(settings.theme, settings.uiStyle)
     if (preview) applyPreview(preview)
   }, [ready, settings.theme, settings.uiStyle, preview])
 
