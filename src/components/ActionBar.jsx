@@ -6,7 +6,7 @@
 // The nav is position: fixed, so this is too, pinned at --navbar-height; while
 // it is on the page <body> carries has-action-bar and the first section clears
 // both (layout.css).
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Modal from './Modal'
 import NewsletterForm from './NewsletterForm'
@@ -66,14 +66,26 @@ export default function ActionBar() {
   const buttons = (settings.actionButtons || []).filter((b) => b?.label && b?.url)
   const socials = (settings.socials || []).filter((s) => s?.label && s?.url)
 
+  // The bar wraps to two rows on a phone, so the page clears whatever height
+  // it really has (--action-bar-height, read by layout.css) rather than a guess.
+  const bar = useRef(null)
   useEffect(() => {
     document.body.classList.add('has-action-bar')
-    return () => document.body.classList.remove('has-action-bar')
+    const el = bar.current
+    const measure = () => el && document.body.style.setProperty('--action-bar-height', `${el.offsetHeight}px`)
+    measure()
+    const ro = typeof ResizeObserver === 'function' ? new ResizeObserver(measure) : null
+    ro?.observe(el)
+    return () => {
+      ro?.disconnect()
+      document.body.classList.remove('has-action-bar')
+      document.body.style.removeProperty('--action-bar-height')
+    }
   }, [])
 
   return (
     <>
-      <div className="action-bar" data-eotm-edit="settings:settings" data-eotm-label="buttons">
+      <div ref={bar} className="action-bar" data-eotm-edit="settings:settings" data-eotm-label="buttons">
         {buttons.map((b) =>
           isInternal(b.url) ? (
             <Link key={b._id ?? b.label} className="btn action-bar__btn" to={b.url}>{b.label}</Link>

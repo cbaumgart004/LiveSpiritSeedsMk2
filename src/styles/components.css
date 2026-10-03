@@ -384,7 +384,9 @@
   z-index: 40; /* under the nav (50) and its menu overlay */
   box-sizing: border-box;
   width: 100%;
-  height: var(--action-bar-height);
+  /* Its own height decides --action-bar-height (measured in ActionBar.jsx),
+     never the reverse, or a phone-sized value would stick after a resize. */
+  min-height: 3.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -403,24 +405,28 @@
   white-space: nowrap;
   text-decoration: none;
 }
-/* A phone keeps the bar one row high and lets it scroll sideways, rather
-   than wrapping into a second row that would cover the page. */
+/* A phone shows every button: two to a row (four buttons make a 2 by 2
+   grid), each half the bar wide. Scrolling sideways hid the last two.
+   ActionBar.jsx measures the wrapped height for the page below. */
 @media (max-width: 640px) {
-  :root {
-    --action-bar-height: 3.25rem;
-  }
   .action-bar {
-    justify-content: flex-start;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  .action-bar::-webkit-scrollbar {
-    display: none;
+    height: auto;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding: 0.45rem var(--space-1);
   }
   .action-bar__btn {
-    flex: 0 0 auto;
-    padding: 0.45rem 0.9rem;
+    flex: 1 1 calc(50% - 0.4rem);
+    min-width: 0;
+    padding: 0.5rem 0.4rem;
     font-size: 0.88rem;
+    text-align: center;
+    white-space: normal;
+    line-height: 1.2;
+  }
+  /* Hover grows a button (.btn:hover); in a packed grid it would overlap. */
+  .action-bar__btn:hover {
+    transform: none;
   }
 }
 
