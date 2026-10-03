@@ -8,7 +8,8 @@
          console handing back, which the loader takes. -->
     <script>
       (function (site) {
-        if (!/^preview\./.test(location.hostname)) return
+        // /reset-password is reached signed out by definition (the emailed link).
+        if (!/^preview\./.test(location.hostname) || location.pathname === '/reset-password') return
         if (/eotm-token=/.test(location.hash)) {
           try { sessionStorage.setItem('eotm:preview', '1') } catch (e) { /* private mode */ }
           return
