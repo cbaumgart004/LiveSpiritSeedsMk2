@@ -6,6 +6,7 @@
 // image, a link is a button (labelled by the text field just before it when
 // there is one), a list repeats its own fields.
 import { imageStyle, srcOf, altOf } from './photo'
+import Elements from './Elements'
 
 function Value({ field, value }) {
   if (value == null || value === '' || (Array.isArray(value) && !value.length)) return null
@@ -55,7 +56,19 @@ function Fields({ fields, data, headingIndex = -1 }) {
   })
 }
 
-export default function CustomSection({ block, def, className, marks }) {
+// The fields as parts: each alone, but a text and the link after it together.
+function groupsOf(fields, headingIndex) {
+  const groups = []
+  fields.forEach((f, i) => {
+    if (i === headingIndex) return
+    const prev = groups.at(-1)
+    if (f.kind === 'url' && prev?.length === 1 && prev[0].kind === 'text' && fields.indexOf(prev[0]) === i - 1) prev.push(f)
+    else groups.push([f])
+  })
+  return groups
+}
+
+export default function CustomSection({ block, def, className, marks, frame }) {
   const fields = def?.fields ?? []
   const headingIndex = fields.findIndex((f) => f.kind === 'text')
   const heading = headingIndex >= 0 ? block[fields[headingIndex].name] : null
@@ -63,10 +76,17 @@ export default function CustomSection({ block, def, className, marks }) {
   const colours = Object.fromEntries(fields.filter((f) => f.kind === 'color' && block[f.name]).map((f) => [`--${f.name}`, block[f.name]]))
   return (
     <section className={`${className} custom-section`} {...marks} style={{ ...marks?.style, ...colours }}>
-      <div className="panel">
-        {heading && <h2>{heading}</h2>}
-        <Fields fields={fields} data={block} headingIndex={headingIndex} />
+      <div className="panel" {...frame?.wrap}>
+        {heading && <h2 {...frame?.part(fields[headingIndex].name)}>{heading}</h2>}
+        {/* Each field its own part (cms/Frame.jsx), so Arrange can place it; a
+            text with the link after it is one part, as it is one button. */}
+        {groupsOf(fields, headingIndex).map((g) => (
+          <div key={g[0].name} {...(frame ? frame.group(g[0].name) : { 'data-eotm-group': '' })}>
+            <Fields fields={g} data={block} />
+          </div>
+        ))}
       </div>
+      <Elements data={block} frame={frame} />
     </section>
   )
 }

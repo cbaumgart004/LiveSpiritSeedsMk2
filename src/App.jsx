@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom'
 import DynamicPage from './pages/DynamicPage'
+import ClassStyles from './components/cms/ClassStyles'
 import ScrollToTop from './components/ScrollToTop'
 import PreviewBar from './components/PreviewBar'
 import { useEffect, useState } from 'react'
@@ -74,6 +75,8 @@ function App() {
     <Router>
       <ScrollToTop /> {/* 💫 Always scroll to top on route change */}
       <ConsoleNavigation />
+      {/* The owner's Classes, as CSS rules (the console's Classes document). */}
+      <ClassStyles />
       <Routes>
         <Route path="/preview" element={<ToEditor />} />
         <Route path="/reset-password" element={<ResetPassword />} />

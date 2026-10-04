@@ -12,6 +12,7 @@ import Modal from './Modal'
 import NewsletterForm from './NewsletterForm'
 import { useSettings, useSchema } from '../cms/site'
 import { buttonClass, lookToCss } from '../cms/look'
+import { frameOf } from './cms/Frame'
 
 const isInternal = (url) => url.startsWith('/') && !url.startsWith('//')
 
@@ -77,6 +78,8 @@ function barStyle(schema, look) {
 export default function ActionBar() {
   const { settings } = useSettings()
   const schema = useSchema()
+  const frame = frameOf(settings, 'actionBar')
+  const { style: frameStyle, ...frameMarks } = frame.root
   const [connecting, setConnecting] = useState(false)
   const buttons = (settings.actionButtons || []).filter((b) => b?.label && b?.url)
   const socials = (settings.socials || []).filter((s) => s?.label && s?.url)
@@ -105,9 +108,11 @@ export default function ActionBar() {
       {/* The owner's "Look of the buttons under the menu bar" (a style field):
           a width narrows the panel itself, centred under the menu; alignment,
           colours and size dress it. Blank is the full width, as before. */}
+      {/* One arranged region of Site settings (_layout_actionBar): each button
+          is a part the console's Arrange can place (cms/Frame.jsx). */}
       <div ref={bar} className={`action-bar action-bar--per-row-${['1', 'all'].includes(settings.actionButtonsPerRow) ? settings.actionButtonsPerRow : '2'}`}
-        style={barStyle(schema, settings.actionBarLook)}
-        data-eotm-edit="settings:settings" data-eotm-label="buttons" data-eotm-field="actionButtons">
+        {...frameMarks} style={{ ...barStyle(schema, settings.actionBarLook), ...frameStyle }}
+        data-eotm-edit="settings:settings" data-eotm-label="buttons" data-eotm-field="actionButtons" data-eotm-frame-key="actionBar">
         {buttons.map((b) => {
           const face = (
             <>
@@ -117,12 +122,13 @@ export default function ActionBar() {
           )
           const cls = `${buttonClass(schema, b.look)} action-bar__btn`
           return isInternal(b.url) ? (
-            <Link key={b._id ?? b.label} className={cls} to={b.url} data-eotm-in={b._id}>{face}</Link>
+            <Link key={b._id ?? b.label} className={cls} to={b.url} data-eotm-in={b._id} {...frame.part(`button:${b._id}`)}>{face}</Link>
           ) : (
-            <a key={b._id ?? b.label} className={cls} href={b.url} target="_blank" rel="noreferrer" data-eotm-in={b._id}>{face}</a>
+            <a key={b._id ?? b.label} className={cls} href={b.url} target="_blank" rel="noreferrer" data-eotm-in={b._id} {...frame.part(`button:${b._id}`)}>{face}</a>
           )
         })}
-        <button type="button" className={`${buttonClass(schema)} action-bar__btn action-bar__connect`} onClick={() => setConnecting(true)}>
+        <button type="button" className={`${buttonClass(schema)} action-bar__btn action-bar__connect`} onClick={() => setConnecting(true)}
+          data-eotm-field="connectLabel" {...frame.part('connect')}>
           {settings.connectLabel || 'Connect'}
         </button>
       </div>

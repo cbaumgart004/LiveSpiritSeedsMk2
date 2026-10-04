@@ -9,7 +9,10 @@
 // Every section is marked for the console's click-to-edit and drag-to-size
 // (data-eotm-*, see the console's Targets.jsx): pointing at a section while
 // editing shows an Edit button, and its edge (and a side image's edge) can be
-// dragged to a new width.
+// dragged to a new width. Every part of every section (heading, text, image,
+// buttons, cards...) is marked by name through frameOf (./Frame.jsx), so the
+// console's Arrange can make a section Free and place its parts, on a desktop
+// and, separately, on a phone (StoryShaped ADR-0010).
 import { useEffect, useRef } from 'react'
 import ValuesSection from '../ValuesSection/ValuesSection'
 import TaglineArt from '../TaglineArt'
@@ -20,14 +23,21 @@ import NewsletterForm from '../NewsletterForm'
 import { srcOf, altOf, imageStyle } from './photo'
 import { useSchema } from '../../cms/site'
 import { buttonClass } from '../../cms/look'
+import { frameOf, ScaleBox } from './Frame'
+import Elements from './Elements'
 
 // The attributes that make a section editable and sizable from the page, and
 // its owner-set width. `doc` is the page's id (or slug for the bundled copy).
 function editable(doc, block, extraStyle) {
-  if (!doc) return { style: extraStyle }
+  // A Free section's canvas (its arrangement, Frame.jsx) on the same element.
+  const { root } = frameOf(block)
+  const framed = root.style ? { ...extraStyle, ...root.style } : extraStyle
+  const { style: _rootStyle, ...rootMarks } = root // eslint-disable-line no-unused-vars
+  if (!doc) return { ...rootMarks, style: framed }
   const width = Number(block.width)
-  const style = width > 0 && width < 100 ? { ...extraStyle, maxWidth: `${width}%`, marginInline: 'auto' } : extraStyle
+  const style = width > 0 && width < 100 ? { ...framed, maxWidth: `${width}%`, marginInline: 'auto' } : framed
   return {
+    ...rootMarks,
     'data-eotm-edit': `page:${doc}`,
     'data-eotm-item': block._id,
     'data-eotm-label': block.title || (block._type === 'embed' ? 'embed' : 'section'),
@@ -74,10 +84,10 @@ function hasRichText(html) {
 // A rich-text field, as the HTML the console stored (sanitized when saved) or
 // the bundled content converted from Markdown. `data-eotm-richtext` lets the
 // owner drag an image inside it to a new width.
-function Body({ block, name }) {
+function Body({ block, name, frame }) {
   const html = block[name]
   if (!hasRichText(html)) return null
-  return <div className="rich-text" data-eotm-richtext={name} dangerouslySetInnerHTML={{ __html: html }} />
+  return <div className="rich-text" data-eotm-richtext={name} dangerouslySetInnerHTML={{ __html: html }} {...frame?.part(name)} />
 }
 
 // Editable image whose width is editor-controlled: `imageWidth` (a percentage,
@@ -85,14 +95,14 @@ function Body({ block, name }) {
 // image column's flex-basis on desktop. We set the CSS var (not flex-basis
 // directly) so the mobile stylesheet can still force full-width stacking.
 // `side` says which edge faces the text, so dragging that edge resizes it.
-function Media({ block, name = 'image', alt, width, side }) {
+function Media({ block, name = 'image', alt, width, side, frame }) {
   const src = srcOf(block[name])
   if (!src) return null
   const style =
     typeof width === 'number' && width > 0 ? { '--media-basis': `${width}%` } : undefined
   return (
-    <div className="media" style={style} data-eotm-size="imageWidth" data-eotm-min="20" data-eotm-max="70"
-      data-eotm-label="image" data-eotm-edge={side === 'right' ? 'left' : undefined}>
+    <div className="media" data-eotm-size="imageWidth" data-eotm-min="20" data-eotm-max="70"
+      data-eotm-label="image" data-eotm-edge={side === 'right' ? 'left' : undefined} {...(frame ? frame.part(name, style) : { style })}>
       <img src={src} alt={altOf(block[name], alt)} style={imageStyle(block[name])} />
     </div>
   )
@@ -148,11 +158,11 @@ function ButtonItem({ btn, services }) {
   )
 }
 
-function Buttons({ block, services }) {
+function Buttons({ block, services, frame }) {
   const items = block.buttons
   if (!items?.length) return null
   return (
-    <div className="button-row" data-eotm-field="buttons">
+    <div className="button-row" data-eotm-field="buttons" {...frame?.part('buttons')}>
       {items.map((btn, i) => (
         <ButtonItem key={i} btn={btn} services={services} />
       ))}
@@ -162,10 +172,10 @@ function Buttons({ block, services }) {
 
 // Optional "Home" button (links to the home page). On by default: renders
 // unless the editor explicitly turned it off (showHomeButton === false).
-function HomeButton({ block }) {
+function HomeButton({ block, frame }) {
   if (block.showHomeButton === false) return null
   return (
-    <div className="button-row">
+    <div className="button-row" {...frame?.part('homeButton')}>
       <a className="btn" href="/">
         Home
       </a>
@@ -194,6 +204,7 @@ const taglineOf = (block) => ({
 })
 
 function SplashSection({ block, isFirst, services, doc }) {
+  const frame = frameOf(block)
   const align = OVERLAY_ALIGN[block.overlayAlign] ?? ''
   // Three ways to show the tagline artwork (Tina "Tagline Artwork"):
   //   none   – ordinary splash: photo behind, the block's own type over it.
@@ -212,15 +223,16 @@ function SplashSection({ block, isFirst, services, doc }) {
       <section className={`${base} splash--lap`} {...editable(doc, block, { '--tagline-blend': blend })}>
         {/* Buttons lead the section here, not trail it — they are the first
             thing in the hero rather than a footnote under the artwork. */}
-        <Buttons block={block} services={services} />
-        <div className="splash__content">
+        <Buttons block={block} services={services} frame={frame} />
+        <div className="splash__content" {...frame.wrap}>
           {srcOf(block.image) && (
-            <img className="splash__photo" src={srcOf(block.image)} alt={altOf(block.image, block.title || '')} style={imageStyle(block.image)} />
+            <img className="splash__photo" src={srcOf(block.image)} alt={altOf(block.image, block.title || '')} {...frame.part('image', imageStyle(block.image))} />
           )}
-          <div className="splash__artwork">
+          <div className="splash__artwork" {...frame.part('tagline')}>
             <TaglineArt {...taglineOf(block)} />
           </div>
         </div>
+        <Elements data={block} frame={frame} />
       </section>
     )
   }
@@ -233,15 +245,18 @@ function SplashSection({ block, isFirst, services, doc }) {
       <section className={cls} {...editable(doc, block)}>
         <div className="splash__blend splash__blend--top" aria-hidden="true" />
         <div className="splash__blend splash__blend--bottom" aria-hidden="true" />
-        <div className="splash__content">
-          <TaglineArt {...taglineOf(block)} />
+        <div className="splash__content" {...frame.wrap}>
+          <div {...frame.group('tagline')}>
+            <TaglineArt {...taglineOf(block)} />
+          </div>
           {srcOf(block.image) && (
-            <img className="splash__photo" src={srcOf(block.image)} alt={altOf(block.image, block.title || '')} style={imageStyle(block.image)} />
+            <img className="splash__photo" src={srcOf(block.image)} alt={altOf(block.image, block.title || '')} {...frame.part('image', imageStyle(block.image))} />
           )}
         </div>
         {/* The artwork carries the words, but the call to action still needs to
             be a real link, so buttons stay below the pair. */}
-        <Buttons block={block} services={services} />
+        <Buttons block={block} services={services} frame={frame} />
+        <Elements data={block} frame={frame} />
       </section>
     )
   }
@@ -249,58 +264,63 @@ function SplashSection({ block, isFirst, services, doc }) {
   return (
     <section className={cls} {...editable(doc, block)}>
       {srcOf(block.image) && (
-        <div className="splash__media">
+        <div className="splash__media" {...frame.part('image')}>
           <img src={srcOf(block.image)} alt={altOf(block.image)} style={imageStyle(block.image)} />
         </div>
       )}
       <div className="splash__scrim" aria-hidden="true" />
-      <div className="splash__content">
+      <div className="splash__content" {...frame.wrap}>
         {block.eyebrow && (
-          <p className="splash__eyebrow" data-eotm-text="eyebrow">
+          <p className="splash__eyebrow" data-eotm-text="eyebrow" {...frame.part('eyebrow')}>
             {block.eyebrow}
           </p>
         )}
         {block.title && (
-          <h2 className="splash__title" data-eotm-text="title">
+          <h2 className="splash__title" data-eotm-text="title" {...frame.part('title')}>
             {block.title}
           </h2>
         )}
-        <div className="splash__body">
+        <div className="splash__body" {...frame.part('body')}>
           <Body block={block} name="body" />
         </div>
-        <Buttons block={block} services={services} />
+        <Buttons block={block} services={services} frame={frame} />
       </div>
+      <Elements data={block} frame={frame} />
     </section>
   )
 }
 
 function SplitSection({ block, isFirst, side, services, doc }) {
+  const frame = frameOf(block)
   return (
     <section className={sectionClass('section section--split', side, isFirst, block)} {...editable(doc, block)}>
-      <Media block={block} alt={block.title} width={block.imageWidth} side={side} />
-      <div className="panel">
-        {block.title && <h2 data-eotm-text="title">{block.title}</h2>}
-        <Body block={block} name="body" />
-        <Buttons block={block} services={services} />
-        <HomeButton block={block} />
+      <Media block={block} alt={block.title} width={block.imageWidth} side={side} frame={frame} />
+      <div className="panel" {...frame.wrap}>
+        {block.title && <h2 data-eotm-text="title" {...frame.part('title')}>{block.title}</h2>}
+        <Body block={block} name="body" frame={frame} />
+        <Buttons block={block} services={services} frame={frame} />
+        <HomeButton block={block} frame={frame} />
       </div>
+      <Elements data={block} frame={frame} />
     </section>
   )
 }
 
 function StackedSection({ block, isFirst, services, doc }) {
+  const frame = frameOf(block)
   return (
     <section className={sectionClass('section section--stack', null, isFirst, block)} {...editable(doc, block)}>
-      {block.title && <h2 data-eotm-text="title">{block.title}</h2>}
+      {block.title && <h2 data-eotm-text="title" {...frame.part('title')}>{block.title}</h2>}
       {/* Skip the panel when there's no body — an empty one renders as a bare
           bordered strip, which is what a heading-only section used to look like. */}
       {hasRichText(block.body) && (
-        <div className="panel">
+        <div className="panel" {...frame.part('body')}>
           <Body block={block} name="body" />
         </div>
       )}
-      <Buttons block={block} services={services} />
-      <HomeButton block={block} />
+      <Buttons block={block} services={services} frame={frame} />
+      <HomeButton block={block} frame={frame} />
+      <Elements data={block} frame={frame} />
     </section>
   )
 }
@@ -337,6 +357,7 @@ function AddOnButton({ addOn, services }) {
 }
 
 function ServiceBlock({ block, isFirst, side, services, doc }) {
+  const frame = frameOf(block)
   const options = block.bookingOptions || []
   const comingSoon = block.status === 'coming-soon'
   return (
@@ -345,17 +366,18 @@ function ServiceBlock({ block, isFirst, side, services, doc }) {
       className={sectionClass('section section--split', side, isFirst, block)}
       {...editable(doc, block)}
     >
-      <Media block={block} alt={block.title} width={block.imageWidth} side={side} />
-      <div className="panel">
+      <Media block={block} alt={block.title} width={block.imageWidth} side={side} frame={frame} />
+      <div className="panel" {...frame.wrap}>
         {block.title && (
-          <h2>
+          <h2 {...frame.part('title')}>
             <span data-eotm-text="title">{block.title}</span>
             {comingSoon && <span className="status-badge">Coming Soon</span>}
           </h2>
         )}
-        <Body block={block} name="description" />
+        <Body block={block} name="description" frame={frame} />
         {/* Each session gets its own row: the base booking button plus one
             "Book w/ <add-on>" button per add-on offered on that session. */}
+        <div {...frame.group('bookingOptions')}>
         {options.map((opt, i) => (
           <div key={opt._id ?? i}>
             <div className="button-row">
@@ -378,20 +400,23 @@ function ServiceBlock({ block, isFirst, side, services, doc }) {
             {opt.note && <p style={{ fontSize: '0.85rem' }}>{opt.note}</p>}
           </div>
         ))}
+        </div>
         {/* Extra call-to-action buttons beyond the booking sessions. */}
-        <Buttons block={block} services={services} />
-        <HomeButton block={block} />
+        <Buttons block={block} services={services} frame={frame} />
+        <HomeButton block={block} frame={frame} />
       </div>
+      <Elements data={block} frame={frame} />
     </section>
   )
 }
 
 function CardGrid({ block, isFirst, services, doc }) {
+  const frame = frameOf(block)
   const cards = block.cards || []
   return (
     <section className={sectionClass('section section--stack', null, isFirst, block)} {...editable(doc, block)}>
-      {block.title && <h2 data-eotm-text="title">{block.title}</h2>}
-      <div className="grid">
+      {block.title && <h2 data-eotm-text="title" {...frame.part('title')}>{block.title}</h2>}
+      <div className="grid" {...frame.part('cards')}>
         {cards.map((card, i) => (
           <div className="card" key={card._id ?? i}>
             {srcOf(card.image) &&
@@ -416,19 +441,21 @@ function CardGrid({ block, isFirst, services, doc }) {
           </div>
         ))}
       </div>
-      <Buttons block={block} services={services} />
-      <HomeButton block={block} />
+      <Buttons block={block} services={services} frame={frame} />
+      <HomeButton block={block} frame={frame} />
+      <Elements data={block} frame={frame} />
     </section>
   )
 }
 
 function EventSection({ block, isFirst, services, doc }) {
+  const frame = frameOf(block)
   return (
     <section className={sectionClass('section', null, isFirst, block)} {...editable(doc, block)}>
-      <div className="panel">
-        {block.title && <h2 data-eotm-text="title">{block.title}</h2>}
-        <Body block={block} name="body" />
-        <div>
+      <div className="panel" {...frame.wrap}>
+        {block.title && <h2 data-eotm-text="title" {...frame.part('title')}>{block.title}</h2>}
+        <Body block={block} name="body" frame={frame} />
+        <div {...frame.part('images')}>
           {(block.images || []).map((entry, i) => {
             // A console row is { _id, image }; older content is a bare path.
             const image = typeof entry === 'string' ? entry : entry?.image
@@ -439,9 +466,10 @@ function EventSection({ block, isFirst, services, doc }) {
             )
           })}
         </div>
-        <Buttons block={block} services={services} />
-        <HomeButton block={block} />
+        <Buttons block={block} services={services} frame={frame} />
+        <HomeButton block={block} frame={frame} />
       </div>
+      <Elements data={block} frame={frame} />
     </section>
   )
 }
@@ -582,6 +610,7 @@ function ScheduleEmbed({ block }) {
 // Code mode → RawEmbed (runs the snippet's scripts); Schedule mode → the
 // harvested teaching schedule (nothing to paste). Empty → an editor hint.
 function EmbedBlock({ block, isFirst, doc }) {
+  const frame = frameOf(block)
   const isSchedule = block.mode === 'schedule'
   const isNewsletter = block.mode === 'newsletter'
   const useCode = block.mode === 'code'
@@ -592,21 +621,24 @@ function EmbedBlock({ block, isFirst, doc }) {
   if (isSchedule || isNewsletter) {
     return (
       <section className={sectionClass('section section--stack', null, isFirst, block)} {...editable(doc, block)}>
-        {block.title && <h2 data-eotm-text="title">{block.title}</h2>}
-        {isSchedule ? <ScheduleEmbed block={block} /> : <NewsletterEmbed block={block} />}
+        {block.title && <h2 data-eotm-text="title" {...frame.part('title')}>{block.title}</h2>}
+        <div {...frame.group('embed')}>
+          {isSchedule ? <ScheduleEmbed block={block} /> : <NewsletterEmbed block={block} />}
+        </div>
         {block.caption && (
-          <p className="embed-caption" data-eotm-text="caption">
+          <p className="embed-caption" data-eotm-text="caption" {...frame.part('caption')}>
             {block.caption}
           </p>
         )}
-        <HomeButton block={block} />
+        <HomeButton block={block} frame={frame} />
+        <Elements data={block} frame={frame} />
       </section>
     )
   }
   return (
     <section className={sectionClass('section section--stack', null, isFirst, block)} {...editable(doc, block)}>
-      {block.title && <h2 data-eotm-text="title">{block.title}</h2>}
-      <div className="embed">
+      {block.title && <h2 data-eotm-text="title" {...frame.part('title')}>{block.title}</h2>}
+      <div className="embed" {...frame.part('embed')}>
         {hasUrl && (
           <iframe
             className="embed-frame"
@@ -628,11 +660,12 @@ function EmbedBlock({ block, isFirst, doc }) {
         )}
       </div>
       {block.caption && (
-        <p className="embed-caption" data-eotm-text="caption">
+        <p className="embed-caption" data-eotm-text="caption" {...frame.part('caption')}>
           {block.caption}
         </p>
       )}
-      <HomeButton block={block} />
+      <HomeButton block={block} frame={frame} />
+      <Elements data={block} frame={frame} />
     </section>
   )
 }
@@ -652,8 +685,9 @@ function ContentSection({ block, isFirst, side, services, doc }) {
       return (
         <div {...editable(doc, block)}>
           {/* Console rows are { _id, text }; older content is bare strings. */}
-          <ValuesSection title={block.title} words={(block.words || []).map((w) => (typeof w === 'string' ? { text: w } : w)).filter((w) => w?.text)} />
-          <HomeButton block={block} />
+          <ValuesSection title={block.title} words={(block.words || []).map((w) => (typeof w === 'string' ? { text: w } : w)).filter((w) => w?.text)} frame={frameOf(block)} />
+          <HomeButton block={block} frame={frameOf(block)} />
+          <Elements data={block} frame={frameOf(block)} />
         </div>
       )
     case 'event':
@@ -694,20 +728,23 @@ export default function Blocks({ blocks, doc }) {
         const isFirst = i === 0
         const side = usesMediaSide(block) ? resolveSide(block, mediaIndex++) : null
         const key = block._id ?? i
+        // A Free section kept whole on a phone is drawn at desktop width and
+        // zoomed to fit (Frame.jsx, ScaleBox); any other renders as it is.
+        const scaled = (el) => (frameOf(block).scale ? <ScaleBox key={key} on>{el}</ScaleBox> : el)
         switch (block._type) {
           case 'contentSection':
-            return <ContentSection key={key} block={block} isFirst={isFirst} side={side} services={services} doc={doc} />
+            return scaled(<ContentSection key={key} block={block} isFirst={isFirst} side={side} services={services} doc={doc} />)
           case 'service':
-            return <ServiceBlock key={key} block={block} isFirst={isFirst} side={side} services={services} doc={doc} />
+            return scaled(<ServiceBlock key={key} block={block} isFirst={isFirst} side={side} services={services} doc={doc} />)
           case 'embed':
-            return <EmbedBlock key={key} block={block} isFirst={isFirst} doc={doc} />
+            return scaled(<EmbedBlock key={key} block={block} isFirst={isFirst} doc={doc} />)
           case 'nextUp':
-            return <NextUp key={key} block={block} className={sectionClass('section section--stack', null, isFirst, block)} marks={editable(doc, block)} />
+            return scaled(<NextUp key={key} block={block} className={sectionClass('section section--stack', null, isFirst, block)} marks={editable(doc, block)} frame={frameOf(block)} />)
           default: {
             const def = schema?.blocks?.[block._type]
             if (!def) return null
-            return <CustomSection key={key} block={block} def={def}
-              className={sectionClass(def.className || 'section section--stack', null, isFirst, block)} marks={editable(doc, block)} />
+            return scaled(<CustomSection key={key} block={block} def={def} frame={frameOf(block)}
+              className={sectionClass(def.className || 'section section--stack', null, isFirst, block)} marks={editable(doc, block)} />)
           }
         }
       })}
