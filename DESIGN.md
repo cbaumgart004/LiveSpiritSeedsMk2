@@ -137,6 +137,15 @@ is the live preview. `DynamicPage` finds the page by slug (`home` is `/`) and pa
 - **Fallback.** Until the console holds pages, or when it cannot be reached, the bundled Tina files
   under `content/` render instead, converted by `src/cms/fromTina.js` (Markdown to HTML by
   `src/cms/markdown.js`). Settings fall back field by field.
+- **Arranging, classes and elements** (console 1.7.0+). Every part of every section type is
+  marked by name through `components/cms/Frame.jsx` (`frameOf`, the same helper as StoryShaped's),
+  so the console's Arrange can make a section Free and place its parts, on a desktop and separately
+  on a phone (`_layout`, `phoneParts`; StoryShaped ADR-0010); `styles/frame.css` draws it. The
+  header and the buttons under the menu bar are arranged regions of Site settings
+  (`_layout_header`, `_layout_actionBar`, `data-eotm-frame-key`). `components/cms/ClassStyles.jsx`
+  applies the owner's Classes (the schema's `classes`: Buttons `.btn`, section headings, body text,
+  panels, cards, the menu bar's title and buttons) as CSS; `components/cms/Elements.jsx` draws each
+  section's own elements (`_elements`: text, photo, button, box) with their class and Style.
 - **On-page editing.** Every section carries `data-eotm-edit`, `data-eotm-item` and
   `data-eotm-size="width"`; side images carry `data-eotm-size="imageWidth"`; rich text carries
   `data-eotm-richtext`; headings and the footer's values carry `data-eotm-text` (a value names its
