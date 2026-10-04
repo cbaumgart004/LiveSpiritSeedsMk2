@@ -10,7 +10,8 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Modal from './Modal'
 import NewsletterForm from './NewsletterForm'
-import { useSettings } from '../cms/site'
+import { useSettings, useSchema } from '../cms/site'
+import { buttonClass, lookToCss } from '../cms/look'
 
 const isInternal = (url) => url.startsWith('/') && !url.startsWith('//')
 
@@ -60,8 +61,22 @@ function SocialIcons({ settings }) {
   )
 }
 
+// The panel's look: a narrower one stays centred under the menu bar, and an
+// alignment places its buttons within it.
+function barStyle(schema, look) {
+  const css = lookToCss(schema, look)
+  if (!css) return undefined
+  const { textAlign, ...rest } = css
+  return {
+    ...rest,
+    ...(rest.width ? { left: '50%', translate: '-50% 0' } : {}),
+    ...(textAlign ? { justifyContent: { left: 'flex-start', center: 'center', right: 'flex-end' }[textAlign] } : {}),
+  }
+}
+
 export default function ActionBar() {
   const { settings } = useSettings()
+  const schema = useSchema()
   const [connecting, setConnecting] = useState(false)
   const buttons = (settings.actionButtons || []).filter((b) => b?.label && b?.url)
   const socials = (settings.socials || []).filter((s) => s?.label && s?.url)
@@ -87,16 +102,27 @@ export default function ActionBar() {
     <>
       {/* Site settings "Buttons per row on a phone": two (a 2 by 2 square for
           four), one, or all in one row. */}
+      {/* The owner's "Look of the buttons under the menu bar" (a style field):
+          a width narrows the panel itself, centred under the menu; alignment,
+          colours and size dress it. Blank is the full width, as before. */}
       <div ref={bar} className={`action-bar action-bar--per-row-${['1', 'all'].includes(settings.actionButtonsPerRow) ? settings.actionButtonsPerRow : '2'}`}
+        style={barStyle(schema, settings.actionBarLook)}
         data-eotm-edit="settings:settings" data-eotm-label="buttons" data-eotm-field="actionButtons">
-        {buttons.map((b) =>
-          isInternal(b.url) ? (
-            <Link key={b._id ?? b.label} className="btn action-bar__btn" to={b.url}>{b.label}</Link>
+        {buttons.map((b) => {
+          const face = (
+            <>
+              {b.icon?.src && <img className="btn-icon" src={b.icon.src} alt="" />}
+              <span data-eotm-text="label" data-eotm-in={b._id}>{b.label}</span>
+            </>
+          )
+          const cls = `${buttonClass(schema, b.look)} action-bar__btn`
+          return isInternal(b.url) ? (
+            <Link key={b._id ?? b.label} className={cls} to={b.url} data-eotm-in={b._id}>{face}</Link>
           ) : (
-            <a key={b._id ?? b.label} className="btn action-bar__btn" href={b.url} target="_blank" rel="noreferrer">{b.label}</a>
-          ),
-        )}
-        <button type="button" className="btn action-bar__btn action-bar__connect" onClick={() => setConnecting(true)}>
+            <a key={b._id ?? b.label} className={cls} href={b.url} target="_blank" rel="noreferrer" data-eotm-in={b._id}>{face}</a>
+          )
+        })}
+        <button type="button" className={`${buttonClass(schema)} action-bar__btn action-bar__connect`} onClick={() => setConnecting(true)}>
           {settings.connectLabel || 'Connect'}
         </button>
       </div>

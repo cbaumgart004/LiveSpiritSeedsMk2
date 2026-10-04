@@ -19,6 +19,7 @@ import NextUp from './NextUp'
 import NewsletterForm from '../NewsletterForm'
 import { srcOf, altOf, imageStyle } from './photo'
 import { useSchema } from '../../cms/site'
+import { buttonClass } from '../../cms/look'
 
 // The attributes that make a section editable and sizable from the page, and
 // its owner-set width. `doc` is the page's id (or slug for the bundled copy).
@@ -101,35 +102,48 @@ function Media({ block, name = 'image', alt, width, side }) {
 //  - Linked to a service (btn.service set): availability + link derive from that
 //    service's status (disabled "Coming Soon" if it's coming-soon or missing).
 //  - Plain button: uses its own manual status (coming-soon renders disabled).
+// The button's own text and icon; the text can be typed on the page in the editor.
+function ButtonFace({ btn, text }) {
+  return (
+    <>
+      {btn.icon?.src && <img className="btn-icon" src={btn.icon.src} alt="" />}
+      <span data-eotm-text="label" data-eotm-in={btn._id}>{text}</span>
+    </>
+  )
+}
+
 function ButtonItem({ btn, services }) {
+  const schema = useSchema()
+  const cls = buttonClass(schema, btn.look)
+  const mark = btn._id ? { 'data-eotm-in': btn._id } : {}
   const linked = btn.service?.trim()
   if (linked) {
     const ref = services?.[linked.toLowerCase()]
     const text = btn.label || btn.service
     if (!ref || ref.status === 'coming-soon') {
       return (
-        <span className="btn btn--disabled" aria-disabled="true">
-          Coming Soon - {text}
+        <span className={`${cls} btn--disabled`} aria-disabled="true" {...mark}>
+          Coming Soon - <ButtonFace btn={btn} text={text} />
         </span>
       )
     }
     const href = btn.url || ref.bookUrl || (ref.slug ? `#${ref.slug}` : '#')
     return (
-      <a className="btn" href={href}>
-        {text}
+      <a className={cls} href={href} {...mark}>
+        <ButtonFace btn={btn} text={text} />
       </a>
     )
   }
   if (btn.status === 'coming-soon') {
     return (
-      <span className="btn btn--disabled" aria-disabled="true">
-        Coming Soon - {btn.label}
+      <span className={`${cls} btn--disabled`} aria-disabled="true" {...mark}>
+        Coming Soon - <ButtonFace btn={btn} text={btn.label} />
       </span>
     )
   }
   return (
-    <a className="btn" href={btn.url}>
-      {btn.label}
+    <a className={cls} href={btn.url} {...mark}>
+      <ButtonFace btn={btn} text={btn.label} />
     </a>
   )
 }
@@ -138,7 +152,7 @@ function Buttons({ block, services }) {
   const items = block.buttons
   if (!items?.length) return null
   return (
-    <div className="button-row">
+    <div className="button-row" data-eotm-field="buttons">
       {items.map((btn, i) => (
         <ButtonItem key={i} btn={btn} services={services} />
       ))}

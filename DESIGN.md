@@ -415,7 +415,10 @@ each edge and centred on the bar.
 
 - **Buttons under the menu bar** (`ActionBar.jsx`): fixed at `--navbar-height` on every page, from
   Site settings `actionButtons` (on a phone, `actionButtonsPerRow`: two per row by default, one, or
-  all in one row) (bundled default: Book a Session, Practice With Me, Services), plus a
+  all in one row) (bundled default: Book a Session, Practice With Me, Services). `actionBarLook` (a
+  console Style field) narrows the panel, centred, and sets its alignment, colours and text size;
+  blank is the full width. Each button takes the owner's style from the schema's `buttonStyles` and an
+  optional icon (`cms/look.js`, `buttonClass`, `lookToCss`), as content-section buttons do; plus a
   **Connect** button opening a themed window (`Modal.jsx`, a native `<dialog>` in the panel look)
   with Facebook, Instagram and email as icons (`facebookUrl`, `instagramUrl`, each shown only with its
   `showFacebook` / `showInstagram` switch on, off by default; `contactEmail`), any

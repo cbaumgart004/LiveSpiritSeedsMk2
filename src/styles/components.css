@@ -716,3 +716,12 @@ dialog.modal input,
 .next-up__status {
   font-style: italic;
 }
+
+/* A button's icon (the editor's button "Icon"), before its text. */
+.btn-icon {
+  width: 1.2em;
+  height: 1.2em;
+  margin-right: 0.45em;
+  vertical-align: -0.2em;
+  object-fit: contain;
+}
