@@ -159,14 +159,16 @@ body.has-action-bar .first-section {
 /* -------------------------------------------- */
 /* 🖋️ Tagline artwork (components/TaglineArt)   */
 /* -------------------------------------------- */
-/* Three stacked layers in one 1230:693 box: painted washes, the flower,
-   and the lettering. Only the last two are themed — the washes are the
-   artist's original palette and stay as painted. */
+/* Stacked layers in one 1230:693 box: painted washes, the bowls, the flower,
+   and the lettering. Only the flower and the lettering are themed; the washes
+   are the artist's original palette and stay as painted. The box is a size
+   container, so the lettering is placed and sized in cqw and scales with it. */
 
 .tagline {
   position: relative;
   width: 100%;
   aspect-ratio: 1230 / 693;
+  container-type: inline-size;
 }
 
 .tagline__wash,
@@ -204,15 +206,59 @@ body.has-action-bar .first-section {
   filter: hue-rotate(var(--tagline-hue, 0deg)) saturate(1.05);
 }
 
-/* Inline SVG inherits `color`, which is the whole point of not using <img>. */
+/* The lettering, where the Canva PDF export puts it: each value is the
+   artwork's own, in its 1230-unit canvas, divided by 12.3 to give cqw. A top
+   is the baseline less 0.8 of the font size (line-height 1). --tagline-scale
+   (the editor's Tagline size) grows each piece from where it starts. The ink
+   is the season's (themes.css) unless the owner picks one. Fonts inherit the
+   site's type tokens (--font-heading, --font-subheading: Euphoria Script and
+   Farsan in variables.css, the artwork's own; a UI style that reassigns them
+   reassigns these); the owner's pick in the editor overrides both. */
 .tagline__ink {
   color: var(--tagline-ink, var(--text-color));
+  pointer-events: none;
 }
 
-.tagline__ink svg {
+.tagline__heading,
+.tagline__line {
+  position: absolute;
+  margin: 0;
+  line-height: 1;
+  pointer-events: auto;
+}
+
+/* The heading font (Euphoria Script in the artwork), 46.7 on a baseline at 186.3, from x 332.8. */
+.tagline__heading {
+  left: 27.06cqw;
+  top: 12.11cqw;
+  max-width: 70cqw;
+  font-family: var(--tagline-heading-font, var(--font-heading));
+  font-size: calc(3.8cqw * var(--tagline-scale, 1));
+  font-weight: 400;
+}
+
+/* The subheading font (Farsan in the artwork), 31 on a baseline at 247.4, from x 33.8; longer copy wraps. */
+.tagline__line {
+  left: 2.75cqw;
+  top: 18.1cqw;
+  max-width: 94cqw;
+  font-family: var(--tagline-line-font, var(--font-subheading));
+  font-size: calc(2.52cqw * var(--tagline-scale, 1));
+}
+
+/* "You are resilient", vector (BD Script is not a web font): its box in the
+   artwork is x 531.7, y 436.2, 684.6 wide. */
+.tagline__resilient {
+  position: absolute;
+  left: 43.23cqw;
+  top: 35.46cqw;
+  width: calc(55.66cqw * var(--tagline-scale, 1));
+}
+
+.tagline__resilient svg {
   display: block;
   width: 100%;
-  height: 100%;
+  height: auto;
 }
 
 /* -------------------------------------------- */

@@ -172,6 +172,13 @@ const OVERLAY_ALIGN = {
   center: '',
 }
 
+// The tagline's words and look from the editor (contentSection's tagline
+// fields); blank ones keep the artwork's own (TaglineArt).
+const taglineOf = (block) => ({
+  heading: block.taglineHeading, line: block.taglineLine, size: block.taglineSize,
+  headingFont: block.taglineHeadingFont, lineFont: block.taglineLineFont, ink: block.taglineInk,
+})
+
 function SplashSection({ block, isFirst, services, doc }) {
   const align = OVERLAY_ALIGN[block.overlayAlign] ?? ''
   // Three ways to show the tagline artwork (Tina "Tagline Artwork"):
@@ -197,7 +204,7 @@ function SplashSection({ block, isFirst, services, doc }) {
             <img className="splash__photo" src={srcOf(block.image)} alt={altOf(block.image, block.title || '')} style={imageStyle(block.image)} />
           )}
           <div className="splash__artwork">
-            <TaglineArt />
+            <TaglineArt {...taglineOf(block)} />
           </div>
         </div>
       </section>
@@ -213,7 +220,7 @@ function SplashSection({ block, isFirst, services, doc }) {
         <div className="splash__blend splash__blend--top" aria-hidden="true" />
         <div className="splash__blend splash__blend--bottom" aria-hidden="true" />
         <div className="splash__content">
-          <TaglineArt />
+          <TaglineArt {...taglineOf(block)} />
           {srcOf(block.image) && (
             <img className="splash__photo" src={srcOf(block.image)} alt={altOf(block.image, block.title || '')} style={imageStyle(block.image)} />
           )}

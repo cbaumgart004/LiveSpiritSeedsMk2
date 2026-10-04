@@ -58,7 +58,7 @@ src/
   components/
     cms/Blocks.jsx     Renders blocks[] into the CSS primitives (§6)
     Nav.jsx            Nav generated from the CMS page list; Hamburger, ScrollToTop
-    TaglineArt.jsx     The "You are Resilient" banner, in 3 themeable layers (§6)
+    TaglineArt.jsx     The "You are Resilient" banner: image layers + real-text lettering (§6)
     PreviewBar.jsx     Non-destructive style/season preview toolbar (§6 Preview mode)
     ValuesSection/     Reused by the values block
   styles/              Layered global CSS (see §6)
@@ -330,13 +330,14 @@ so two pieces are style-aware in markup rather than CSS alone:
 - **Tagline artwork** (`TaglineArt.jsx`) — the "Your Integrative Healer / You are Resilient" banner.
   The supplied `Tagline.svg` was a 26MB export with the lettering converted to outlines and the
   washes embedded as base64 rasters: unshippable, and impossible to theme as a single `<img>`. It is
-  split into three layers in `src/assets/` — `tagline-art.webp` (the painted washes + bowl photo,
-  75KB), `tagline-flower.webp` (the flower, separated so it can be tinted, 32KB) and
-  `tagline-text.svg` (the lettering as paths, `fill="currentColor"`, inlined via `?raw` so it
-  inherits the page `color`; ~174KB raw but ~23KB brotli). The ink follows `--text-color`; the
-  flower is a bitmap so it can only be **tinted**, via a per-season `--tagline-hue` token in
-  `themes.css`. The lettering carries no machine-readable text, so `TAGLINE_COPY` supplies a
-  visually-hidden accessible equivalent — **keep the two in sync**.
+  split into layers in `src/assets/`: `tagline-art.webp` (the painted washes, 75KB),
+  `tagline-bowls.webp` (the bowl photo, placed by CSS), `tagline-flower.webp` (the flower, tinted
+  per season via `--tagline-hue` in `themes.css`), and the lettering. The heading and the line are
+  **real text** in the artwork's own fonts (Euphoria Script, Farsan), placed where Canva's PDF export
+  puts them, in container units so they scale with the artwork; the owner can change their words,
+  fonts, size and ink in the editor (`contentSection`'s `tagline*` fields, blank keeps the
+  artwork's). "You are resilient" stays vector (`tagline-resilient.svg`, inlined, `currentColor`)
+  because its font, BD Script, is not a web font the site loads; a visually-hidden line reads it.
 - **Splash pair mode** — a `splash` block with `withTagline` renders the artwork beside the photo as
   a two-up banner instead of type-over-photo. In this mode the photo is a real column with
   `object-fit: contain` (never cropped), the block's heading/eyebrow/body are not shown because the
