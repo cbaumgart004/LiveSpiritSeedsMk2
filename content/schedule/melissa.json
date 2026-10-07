@@ -1,8 +1,8 @@
 {
   "_generated": "DO NOT EDIT BY HAND. Rebuilt daily by scripts/harvest-schedule.mjs.",
   "teacher": "Melissa Carey",
-  "generatedAt": "2026-10-02T12:32:39.313Z",
-  "rangeStart": "2026-10-02",
+  "generatedAt": "2026-10-07T16:24:41.726Z",
+  "rangeStart": "2026-10-07",
   "weeks": 4,
   "sources": [
     {
@@ -10,28 +10,28 @@
       "label": "Soul Tree Yoga",
       "status": "ok",
       "classes": 8,
-      "scanned": 175
+      "scanned": 169
     },
     {
       "id": "mesa",
       "label": "MESA",
       "status": "ok",
-      "classes": 4,
-      "scanned": 5
+      "classes": 3,
+      "scanned": 4
     },
     {
       "id": "allpurpose",
       "label": "All Purpose Yoga",
       "status": "ok",
       "classes": 4,
-      "scanned": 231
+      "scanned": 237
     },
     {
       "id": "cura",
       "label": "CURA Yoga Center",
       "status": "ok",
       "classes": 1,
-      "scanned": 483
+      "scanned": 246
     }
   ],
   "studios": [
@@ -58,50 +58,6 @@
   ],
   "sessions": [
     {
-      "id": "soultree:6322160",
-      "date": "2026-10-04",
-      "startTime": "6:00 PM",
-      "endTime": "7:15 PM",
-      "timezone": "MDT",
-      "name": "In-Person Yin & Restore with Sound Healing",
-      "type": "Classes",
-      "level": "",
-      "staff": "Melissa Carey",
-      "studio": "Soul Tree Yoga",
-      "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
-      "sortKey": "2026-10-04T1080"
-    },
-    {
-      "id": "soultree:6322360",
-      "date": "2026-10-05",
-      "startTime": "12:00 PM",
-      "endTime": "1:00 PM",
-      "timezone": "MDT",
-      "name": "Lunchtime Accessible Yoga",
-      "type": "Classes",
-      "level": "",
-      "staff": "Melissa Carey",
-      "studio": "Soul Tree Yoga",
-      "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
-      "sortKey": "2026-10-05T0720"
-    },
-    {
-      "id": "mesa:14741",
-      "date": "2026-10-05",
-      "startTime": "4:00 PM",
-      "endTime": "4:45 PM",
-      "timezone": "MDT",
-      "name": "Trauma-Informed Yoga Class",
-      "type": "",
-      "level": "",
-      "staff": "Melissa Carey",
-      "studio": "MESA",
-      "studioUrl": "https://movingtoendsexualassault.org/calendar/",
-      "bookUrl": "https://movingtoendsexualassault.org/calendar/trauma-informed-yoga-class/",
-      "cost": "$8",
-      "sortKey": "2026-10-05T0960"
-    },
-    {
       "id": "allpurpose:136894946",
       "date": "2026-10-07",
       "startTime": "7:00 PM",
@@ -118,7 +74,7 @@
       "sortKey": "2026-10-07T1140"
     },
     {
-      "id": "soultree:5870580",
+      "id": "soultree:203920",
       "date": "2026-10-11",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -132,7 +88,7 @@
       "sortKey": "2026-10-11T1080"
     },
     {
-      "id": "soultree:5870780",
+      "id": "soultree:204120",
       "date": "2026-10-12",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -178,7 +134,7 @@
       "sortKey": "2026-10-14T1140"
     },
     {
-      "id": "soultree:5876140",
+      "id": "soultree:2675700",
       "date": "2026-10-18",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -192,7 +148,7 @@
       "sortKey": "2026-10-18T1080"
     },
     {
-      "id": "soultree:5876340",
+      "id": "soultree:2675900",
       "date": "2026-10-19",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -238,7 +194,7 @@
       "sortKey": "2026-10-21T1140"
     },
     {
-      "id": "cura:e396bcfb-0112-44df-a242-77a8b512050c",
+      "id": "cura:ec421eea-a5df-44c6-b3b2-46342d303e6a",
       "date": "2026-10-24",
       "startTime": "2:00 PM",
       "endTime": "3:30 PM",
@@ -254,7 +210,7 @@
       "sortKey": "2026-10-24T0840"
     },
     {
-      "id": "soultree:5892840",
+      "id": "soultree:2536940",
       "date": "2026-10-25",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -268,7 +224,7 @@
       "sortKey": "2026-10-25T1080"
     },
     {
-      "id": "soultree:5893040",
+      "id": "soultree:2537140",
       "date": "2026-10-26",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -312,6 +268,34 @@
       "bookUrl": "https://momence.com/s/138130636",
       "cost": "",
       "sortKey": "2026-10-28T1140"
+    },
+    {
+      "id": "soultree:913820",
+      "date": "2026-11-01",
+      "startTime": "6:00 PM",
+      "endTime": "7:15 PM",
+      "timezone": "MDT",
+      "name": "In-Person Yin & Restore with Sound Healing",
+      "type": "Classes",
+      "level": "",
+      "staff": "Melissa Carey",
+      "studio": "Soul Tree Yoga",
+      "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
+      "sortKey": "2026-11-01T1080"
+    },
+    {
+      "id": "soultree:914020",
+      "date": "2026-11-02",
+      "startTime": "12:00 PM",
+      "endTime": "1:00 PM",
+      "timezone": "MDT",
+      "name": "Lunchtime Accessible Yoga",
+      "type": "Classes",
+      "level": "",
+      "staff": "Melissa Carey",
+      "studio": "Soul Tree Yoga",
+      "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
+      "sortKey": "2026-11-02T0720"
     }
   ]
 }
