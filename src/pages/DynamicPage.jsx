@@ -1,8 +1,9 @@
-import { useParams } from 'react-router-dom'
+import { useMemo } from 'react'
+import { useLocation, useParams } from 'react-router-dom'
 import Nav from '../components/Nav'
 import ActionBar from '../components/ActionBar'
 import Blocks from '../components/cms/Blocks'
-import { useDocuments } from '../cms/site'
+import { useDocuments, usePageLayout } from '../cms/site'
 
 // Renders one Page by slug: `/` is the page whose slug is `home`, `/:slug` the
 // page with that slug. Pages come from the Edge of the Map console (drafts
@@ -11,6 +12,12 @@ export default function DynamicPage() {
   const { slug = 'home' } = useParams()
   const { ready, docs } = useDocuments('page')
   const page = docs.find((d) => d.slug === slug)
+  // The page's Page layout (the console's pageLayout whose address is this one)
+  // orders its sections and sets their widths on 12 columns.
+  const { pathname } = useLocation()
+  const idsKey = (page?.data?.blocks ?? []).map((b) => b._id).filter(Boolean).join('|')
+  const keys = useMemo(() => (idsKey ? idsKey.split('|') : []), [idsKey])
+  const layout = usePageLayout(pathname, keys)
 
   if (!ready) {
     return (
@@ -44,7 +51,9 @@ export default function DynamicPage() {
       <ActionBar />
       {/* Click-to-edit names the page by id; a bundled copy is not in the
           console, so it names it by slug and the console finds the imported one. */}
-      <Blocks blocks={page.data?.blocks} doc={page.id?.startsWith('bundled:') ? page.slug : page.id} />
+      <main className="page-layout" data-eotm-layout>
+        <Blocks blocks={page.data?.blocks} doc={page.id?.startsWith('bundled:') ? page.slug : page.id} layout={layout} />
+      </main>
     </>
   )
 }

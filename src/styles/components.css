@@ -375,7 +375,7 @@
 /* Buttons under the menu bar (ActionBar.jsx)                     */
 /* -------------------------------------------------------------- */
 :root {
-  --action-bar-height: 3.75rem;
+  --action-bar-height: 2.75rem;
 }
 .action-bar {
   position: fixed;
@@ -386,43 +386,56 @@
   width: 100%;
   /* Its own height decides --action-bar-height (measured in ActionBar.jsx),
      never the reverse, or a phone-sized value would stick after a resize. */
-  min-height: 3.75rem;
+  min-height: 2.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-1);
-  padding: 0 var(--space-2);
+  padding: 0.3rem var(--space-2);
   background-color: var(--bg-color-light);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border-bottom: var(--panel-border) solid var(--primary-color);
+  border-bottom: 2px solid var(--primary-color);
   border-radius: 0 0 var(--radius-1) var(--radius-1);
   box-shadow: var(--shadow-1);
 }
 .action-bar__btn {
-  padding: 0.5rem 1.1rem;
-  font-size: 0.95rem;
+  padding: 0.35rem 1rem;
+  font-size: 0.9rem;
+  line-height: 1.2;
   white-space: nowrap;
   text-decoration: none;
 }
-/* A phone shows every button: two to a row (four buttons make a 2 by 2
-   grid), each half the bar wide. Scrolling sideways hid the last two.
-   ActionBar.jsx measures the wrapped height for the page below. */
+/* A phone, by Site settings "Buttons per row on a phone" (the bar's
+   --per-row-* class): two to a row by default, so four buttons make a 2 by 2
+   square, each half the bar wide; or one per row; or all in one row, shrunk to
+   fit. ActionBar.jsx measures the wrapped height for the page below. */
 @media (max-width: 640px) {
   .action-bar {
-    height: auto;
     flex-wrap: wrap;
-    gap: 0.4rem;
-    padding: 0.45rem var(--space-1);
+    gap: 0.25rem;
+    padding: 0.25rem 0.4rem;
+    min-height: 0;
   }
   .action-bar__btn {
-    flex: 1 1 calc(50% - 0.4rem);
+    flex: 1 1 calc(50% - 0.25rem);
     min-width: 0;
-    padding: 0.5rem 0.4rem;
-    font-size: 0.88rem;
+    padding: 0.25rem 0.3rem;
+    font-size: 0.8rem;
     text-align: center;
     white-space: normal;
-    line-height: 1.2;
+    line-height: 1.15;
+  }
+  .action-bar--per-row-1 .action-bar__btn {
+    flex-basis: 100%;
+  }
+  .action-bar--per-row-all {
+    flex-wrap: nowrap;
+  }
+  .action-bar--per-row-all .action-bar__btn {
+    flex: 1 1 0;
+    padding-inline: 0.15rem;
+    font-size: 0.72rem;
   }
   /* Hover grows a button (.btn:hover); in a packed grid it would overlap. */
   .action-bar__btn:hover {
@@ -702,4 +715,13 @@ dialog.modal input,
 }
 .next-up__status {
   font-style: italic;
+}
+
+/* A button's icon (the editor's button "Icon"), before its text. */
+.btn-icon {
+  width: 1.2em;
+  height: 1.2em;
+  margin-right: 0.45em;
+  vertical-align: -0.2em;
+  object-fit: contain;
 }

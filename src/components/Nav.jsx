@@ -6,6 +6,7 @@ import AccountButton from './AccountButton'
 import { hrefForSlug, navLinks, useDocuments, useSettings } from '../cms/site'
 import { useUiStyle } from '../utils/useUiStyle'
 import { srcOf } from './cms/photo'
+import { frameOf } from './cms/Frame'
 
 // The navbar's SHAPE is per UI style, not just its paint (DESIGN.md §6):
 //   watercolor — the untouched original: framed title box + hamburger only.
@@ -30,6 +31,11 @@ function Nav() {
   const headerPhoto = srcOf(settings.headerImage)
   const uiStyle = useUiStyle()
   const showInlineMenu = INLINE_MENU_STYLES.includes(uiStyle)
+  // The header is one arranged region of Site settings (_layout_header): its
+  // account button, title, menu, action button and menu toggle are parts the
+  // console's Arrange can place (cms/Frame.jsx).
+  const frame = frameOf(settings, 'header')
+  const { style: frameStyle, ...frameMarks } = frame.root
 
   const toggleMenu = () => setIsOpen((open) => !open)
 
@@ -49,13 +55,22 @@ function Nav() {
         data-nav-variant={uiStyle}
         data-eotm-edit="settings:settings"
         data-eotm-label="header"
-        style={headerPhoto ? { '--navbar-background': `url("${headerPhoto}")` } : undefined}
+        data-eotm-field="headerImage"
+        data-eotm-frame-key="header"
+        {...frameMarks}
+        style={headerPhoto || frameStyle ? { ...frameStyle, ...(headerPhoto ? { '--navbar-background': `url("${headerPhoto}")` } : {}) } : undefined}
       >
-        <div className={styles.navbarTopRow}>
-          <h1 className={styles.title} data-eotm-edit="settings:settings" data-eotm-label="site settings" data-eotm-text="siteTitle">{siteTitle}</h1>
+        <div className={styles.navbarTopRow} {...frame.wrap}>
+          {/* The account button left of the title, mirroring the menu button
+              on the right, so the bar is symmetrical. */}
+          <div className={styles.accountWrapper} {...frame.part('account')}>
+            <AccountButton />
+          </div>
+
+          <h1 className={styles.title} data-eotm-field="siteTitle" data-eotm-text="siteTitle" {...frame.part('title')}>{siteTitle}</h1>
 
           {showInlineMenu && (
-            <ul className={styles.inlineMenu}>
+            <ul className={styles.inlineMenu} {...frame.part('menu')}>
               {links.map((link) => (
                 <li key={link.slug}>
                   <Link to={hrefForSlug(link.slug)}>{link.label}</Link>
@@ -65,17 +80,16 @@ function Nav() {
           )}
 
           {showInlineMenu && cta && (
-            <a className={styles.navCta} href={cta.url}>
-              {cta.label}
+            <a className={styles.navCta} href={cta.url} data-eotm-field="navCtaLabel" {...frame.part('cta')}>
+              <span data-eotm-text="navCtaLabel">{cta.label}</span>
             </a>
           )}
 
-          {/* Desktop inline-menu styles hide the hamburger's corner, so the
-              account button sits at the end of the row there instead. */}
+          {/* Desktop inline-menu styles hide both corners, so the account
+              button sits at the end of the row there instead. */}
           {showInlineMenu && <AccountButton className={styles.inlineAccount} />}
 
-          <div className={styles.hamburgerWrapper}>
-            <AccountButton />
+          <div className={styles.hamburgerWrapper} {...frame.part('menuToggle')}>
             <Hamburger isOpen={isOpen} toggleMenu={toggleMenu} />
           </div>
         </div>

@@ -8,6 +8,7 @@
 // event half is hidden on the site; while the editor is open it stays, marked
 // hidden, so she can see where it will appear.
 import { useEffect, useState } from 'react'
+import Elements from './Elements'
 import scheduleData from '../../../content/schedule/melissa.json'
 import { useDocuments } from '../../cms/site'
 import { srcOf, altOf } from './photo'
@@ -107,7 +108,7 @@ function EventPart({ block }) {
 }
 
 // Layout, alignment and text size are the owner's (the section's own fields).
-export default function NextUp({ block, className, marks }) {
+export default function NextUp({ block, className, marks, frame }) {
   const mods = [
     block.layout === 'side' && 'next-up--side',
     block.align === 'left' && 'next-up--left',
@@ -115,10 +116,11 @@ export default function NextUp({ block, className, marks }) {
   ].filter(Boolean).join(' ')
   return (
     <section className={className} {...marks}>
-      <div className={`panel next-up ${mods}`}>
-        <ClassPart block={block} />
-        <EventPart block={block} />
+      <div className={`panel next-up ${mods}`} {...frame?.wrap}>
+        <div {...frame?.group('nextClass')}><ClassPart block={block} /></div>
+        <div {...frame?.group('nextEvent')}><EventPart block={block} /></div>
       </div>
+      <Elements data={block} frame={frame} />
     </section>
   )
 }

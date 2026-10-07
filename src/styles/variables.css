@@ -3,7 +3,7 @@
   --font-subheading: 'Farsan', cursive;
   --font-body: 'Merriweather Sans', sans-serif;
 
-  --navbar-height: 250px;
+  --navbar-height: 150px;
 
   /* spacing scale */
   --space-1: 0.5rem;
@@ -31,11 +31,11 @@
 }
 @media (max-width: 768px) {
   :root {
-    --navbar-height: 120px;
+    --navbar-height: 76px;
   }
 }
 @media (max-width: 480px) {
   :root {
-    --navbar-height: 100px;
+    --navbar-height: 64px;
   }
 }

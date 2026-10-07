@@ -58,7 +58,7 @@ src/
   components/
     cms/Blocks.jsx     Renders blocks[] into the CSS primitives (§6)
     Nav.jsx            Nav generated from the CMS page list; Hamburger, ScrollToTop
-    TaglineArt.jsx     The "You are Resilient" banner, in 3 themeable layers (§6)
+    TaglineArt.jsx     The "You are Resilient" banner: image layers + real-text lettering (§6)
     PreviewBar.jsx     Non-destructive style/season preview toolbar (§6 Preview mode)
     ValuesSection/     Reused by the values block
   styles/              Layered global CSS (see §6)
@@ -103,7 +103,8 @@ the Tina collections had; the file paths below are the Tina copies:
   - **`contentSection`** — a general section with a `layout` picker choosing the look:
     `splash` (hero photo with the type stack laid **over** it), `imageText` (image beside text),
     `centered` (centered text), `cardGrid` (heading + grid of mini-cards, e.g. home "Our Services"),
-    `values` (values list), `event` (announcement + images). `splash` additionally uses `eyebrow`
+    `values` (labelled **Footer** in the editor: the values in one small line, rendered as
+    `<footer class="section footer">`), `event` (announcement + images). `splash` additionally uses `eyebrow`
     (the small tracked line above the heading) and `overlayAlign`
     (`center`/`bottomLeft`/`bottomCenter` — where the text sits on the photo).
   - **`service`** — a bookable offering: `status` (`available`/`coming-soon`), `bookingOptions[]`
@@ -136,9 +137,22 @@ is the live preview. `DynamicPage` finds the page by slug (`home` is `/`) and pa
 - **Fallback.** Until the console holds pages, or when it cannot be reached, the bundled Tina files
   under `content/` render instead, converted by `src/cms/fromTina.js` (Markdown to HTML by
   `src/cms/markdown.js`). Settings fall back field by field.
+- **Arranging, classes and elements** (console 1.7.0+). Every part of every section type is
+  marked by name through `components/cms/Frame.jsx` (`frameOf`, the same helper as StoryShaped's),
+  so the console's Arrange can make a section Free and place its parts, on a desktop and separately
+  on a phone (`_layout`, `phoneParts`; StoryShaped ADR-0010); `styles/frame.css` draws it. The
+  header and the buttons under the menu bar are arranged regions of Site settings
+  (`_layout_header`, `_layout_actionBar`, `data-eotm-frame-key`). `components/cms/ClassStyles.jsx`
+  applies the owner's Classes (the schema's `classes`: Buttons `.btn`, section headings, body text,
+  panels, cards, the menu bar's title and buttons) as CSS; `components/cms/Elements.jsx` draws each
+  section's own elements (`_elements`: text, photo, button, box) with their class and Style.
 - **On-page editing.** Every section carries `data-eotm-edit`, `data-eotm-item` and
   `data-eotm-size="width"`; side images carry `data-eotm-size="imageWidth"`; rich text carries
-  `data-eotm-richtext`. The console turns these into an Edit button and drag handles.
+  `data-eotm-richtext`; headings and the footer's values carry `data-eotm-text` (a value names its
+  row with `data-eotm-in`). The header names `headerImage` and the action bar `actionButtons` with
+  `data-eotm-field`. The console turns these into an Edit button and drag handles; from console
+  1.2.3 one click on marked text types it in place and opens that field in the pane, and a click
+  anywhere else in a marked part opens it at its `data-eotm-field`.
 - **The owner's own section types** (console "Your own types") render through
   `components/cms/CustomSection.jsx` from their fields (`useSchema`), in the plain section style
   until given a design. Photos carry the owner's turn, mirror and fade (`components/cms/photo.js`).
@@ -325,13 +339,14 @@ so two pieces are style-aware in markup rather than CSS alone:
 - **Tagline artwork** (`TaglineArt.jsx`) — the "Your Integrative Healer / You are Resilient" banner.
   The supplied `Tagline.svg` was a 26MB export with the lettering converted to outlines and the
   washes embedded as base64 rasters: unshippable, and impossible to theme as a single `<img>`. It is
-  split into three layers in `src/assets/` — `tagline-art.webp` (the painted washes + bowl photo,
-  75KB), `tagline-flower.webp` (the flower, separated so it can be tinted, 32KB) and
-  `tagline-text.svg` (the lettering as paths, `fill="currentColor"`, inlined via `?raw` so it
-  inherits the page `color`; ~174KB raw but ~23KB brotli). The ink follows `--text-color`; the
-  flower is a bitmap so it can only be **tinted**, via a per-season `--tagline-hue` token in
-  `themes.css`. The lettering carries no machine-readable text, so `TAGLINE_COPY` supplies a
-  visually-hidden accessible equivalent — **keep the two in sync**.
+  split into layers in `src/assets/`: `tagline-art.webp` (the painted washes, 75KB),
+  `tagline-bowls.webp` (the bowl photo, placed by CSS), `tagline-flower.webp` (the flower, tinted
+  per season via `--tagline-hue` in `themes.css`), and the lettering. The heading and the line are
+  **real text** in the artwork's own fonts (Euphoria Script, Farsan), placed where Canva's PDF export
+  puts them, in container units so they scale with the artwork; the owner can change their words,
+  fonts, size and ink in the editor (`contentSection`'s `tagline*` fields, blank keeps the
+  artwork's). "You are resilient" stays vector (`tagline-resilient.svg`, inlined, `currentColor`)
+  because its font, BD Script, is not a web font the site loads; a visually-hidden line reads it.
 - **Splash pair mode** — a `splash` block with `withTagline` renders the artwork beside the photo as
   a two-up banner instead of type-over-photo. In this mode the photo is a real column with
   `object-fit: contain` (never cropped), the block's heading/eyebrow/body are not shown because the
@@ -400,19 +415,26 @@ defaults and strips the params. The owner then sets the winner as the real defau
 **Button click-flash.** `utils/buttonFlashHandler.js` (`setupButtonClickFlash`) is invoked once
 from `App`'s `useEffect` to attach a global visual flash on button clicks.
 
-**Navigation.** `components/Nav.jsx` (+ `Hamburger.jsx` for mobile) provide site nav.
+**Navigation.** `components/Nav.jsx` (+ `Hamburger.jsx` for mobile) provide site nav. The bar is
+`--navbar-height` tall (`variables.css`: 150px, 76px at 768px and under, 64px at 480px and under).
+The account button sits left of the title and the menu button right of it, the same inset from
+each edge and centred on the bar.
 
 **Under the menu bar, and the account button.** Three pieces added 2026-10-03:
 
 - **Buttons under the menu bar** (`ActionBar.jsx`): fixed at `--navbar-height` on every page, from
-  Site settings `actionButtons` (bundled default: Book a Session, Practice With Me, Services), plus a
+  Site settings `actionButtons` (on a phone, `actionButtonsPerRow`: two per row by default, one, or
+  all in one row) (bundled default: Book a Session, Practice With Me, Services). `actionBarLook` (a
+  console Style field) narrows the panel, centred, and sets its alignment, colours and text size;
+  blank is the full width. Each button takes the owner's style from the schema's `buttonStyles` and an
+  optional icon (`cms/look.js`, `buttonClass`, `lookToCss`), as content-section buttons do; plus a
   **Connect** button opening a themed window (`Modal.jsx`, a native `<dialog>` in the panel look)
   with Facebook, Instagram and email as icons (`facebookUrl`, `instagramUrl`, each shown only with its
   `showFacebook` / `showInstagram` switch on, off by default; `contactEmail`), any
   other `socials`, and the newsletter form (`newsletterFormId`) last. `<body>` carries
   `has-action-bar` while it is shown, and `.first-section` clears `--action-bar-height` as well.
 - **Account button** (`AccountButton.jsx`, `src/cms/account.js`): the person icon left of the
-  hamburger (end of the inline row on desktop alternate styles). It opens the one account window,
+  title, mirroring the hamburger (end of the inline row on desktop alternate styles). It opens the one account window,
   `AccountModal.jsx`, mounted once in `App` and opened by `openAccount()` from anywhere (the
   newsletter offers an account after a signup when nobody is signed in). Passwords have a show
   button (`PasswordField.jsx`); creating an account asks for it twice; **Can't log in?** asks Neon
