@@ -22,6 +22,27 @@ body.has-action-bar .first-section {
 }
 
 /* -------------------------------------------- */
+/* Page layout: the owner's Page layout (the     */
+/* console's pageLayout) sets each section's     */
+/* columns of 12. Below 820px sections stack as  */
+/* before. In the grid their vertical margins    */
+/* cannot collapse, so the gap carries them.     */
+/* -------------------------------------------- */
+@media (min-width: 820px) {
+  .page-layout {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--space-4);
+    row-gap: var(--space-4);
+    align-items: start;
+    padding-bottom: var(--space-4);
+  }
+  .page-layout > .page-block { grid-column: span var(--span, 12); min-width: 0; }
+  .page-layout > .page-block .section:not(.first-section) { margin-block: 0; }
+  .page-layout > .page-block .section.first-section { margin-bottom: 0; }
+}
+
+/* -------------------------------------------- */
 /* 💠 Section primitive (see ADR 0001)          */
 /* A full-width, themed-background band. Layout  */
 /* is chosen with a modifier: --split / --stack. */

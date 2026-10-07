@@ -705,8 +705,20 @@ function usesMediaSide(block) {
   return block._type === 'contentSection' && (block.layout || 'imageText') === 'imageText'
 }
 
-export default function Blocks({ blocks, doc }) {
-  const list = blocks || []
+// `layout` (DynamicPage, the page's Page layout): the order and width in
+// columns of 12 of each section, by _id. Each section is then wrapped as a
+// block of that grid (data-eotm-block), which the console sizes and moves.
+export default function Blocks({ blocks, doc, layout = null }) {
+  const byId = new Map((blocks || []).map((b) => [b._id, b]))
+  const list = layout ? layout.map((l) => byId.get(l.key)).filter(Boolean).concat((blocks || []).filter((b) => !b._id)) : blocks || []
+  const spanOf = new Map((layout ?? []).map((l) => [l.key, l.span]))
+  const cell = (block, el) => (layout && block._id ? (
+    <div key={block._id} className="page-block" style={{ '--span': spanOf.get(block._id) ?? 12 }}
+      data-eotm-block={block._id} data-eotm-label={block.title || block._type} data-eotm-span={spanOf.get(block._id) ?? 12}
+      {...(layout.docId ? { 'data-eotm-edit': `pageLayout:${layout.docId}` } : {})}>
+      {el}
+    </div>
+  ) : el)
   // Section types the owner designed in the console render from their fields.
   const schema = useSchema()
   // Map of service Heading -> { status, slug, bookUrl }, so a linked button or
@@ -730,7 +742,7 @@ export default function Blocks({ blocks, doc }) {
         const key = block._id ?? i
         // A Free section kept whole on a phone is drawn at desktop width and
         // zoomed to fit (Frame.jsx, ScaleBox); any other renders as it is.
-        const scaled = (el) => (frameOf(block).scale ? <ScaleBox key={key} on>{el}</ScaleBox> : el)
+        const scaled = (el) => cell(block, frameOf(block).scale ? <ScaleBox key={key} on>{el}</ScaleBox> : el)
         switch (block._type) {
           case 'contentSection':
             return scaled(<ContentSection key={key} block={block} isFirst={isFirst} side={side} services={services} doc={doc} />)
