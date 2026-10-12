@@ -9,6 +9,7 @@
 import { useSchema } from '../../cms/site'
 import { buttonClass, lookToCss } from '../../cms/look'
 import { imageStyle } from './photo'
+import { frameOf } from './Frame'
 
 const NO_FRAME = { part: (name, style) => ({ 'data-eotm-part': name, ...(style ? { style } : {}) }) }
 
@@ -38,6 +39,22 @@ function Element({ el, frame, schema }) {
           <span data-eotm-text="label" data-eotm-in={el._id}>{el.label}</span>
         </a>
       ) : null
+    case 'design': {
+      // A design brought in whole (a Canva PDF): its own pieces on a canvas the
+      // shape of its page, placed by its own _layout, everything measured from
+      // its width, so it scales as one at every width (styles/frame.css). It is
+      // a part of its section and a section of its own pieces at once: the
+      // editor's target is copied from the section around it.
+      const inner = frameOf(el)
+      const { style: innerStyle, ...innerMarks } = inner.root
+      return (
+        <div className={`eotm-design ${cls}`} {...marks} {...innerMarks} style={{ ...marks.style, ...innerStyle }}
+          data-eotm-item={el._id} data-eotm-label={el.label || 'Design'}
+          ref={(n) => { const edit = n?.parentElement?.closest('[data-eotm-edit]')?.dataset.eotmEdit; if (n && edit) n.dataset.eotmEdit = edit }}>
+          {(el._elements ?? []).filter((e) => e?._id && e.kind !== 'design').map((e) => <Element key={e._id} el={e} frame={inner} schema={schema} />)}
+        </div>
+      )
+    }
     default:
       return <div className={cls} {...marks} />
   }

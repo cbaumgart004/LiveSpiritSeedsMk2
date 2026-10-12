@@ -16,12 +16,27 @@ export function buttonClass(schema, look) {
   return (styles.find((s) => s.value === look) ?? styles[0])?.className ?? 'btn'
 }
 
+// A font by name (a Style's `family`, the console's FAMILY): one this site
+// already loads (index.css, index.html), or one Google Fonts serves, loaded the
+// first time something asks for it, so a font chosen in the editor shows at once.
+const LOADED = ['Euphoria Script', 'Farsan', 'Merriweather Sans', 'Fraunces', 'Playfair Display', 'Caveat', 'Cormorant Garamond', 'Assistant']
+const asked = new Set(LOADED)
+export function loadWebFont(family) {
+  if (!family || asked.has(family) || typeof document === 'undefined') return
+  asked.add(family)
+  const link = document.createElement('link')
+  link.rel = 'stylesheet'
+  link.href = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(family).replace(/%20/g, '+')}&display=swap`
+  document.head.append(link)
+}
+
 export function lookToCss(schema, look) {
   if (!look || typeof look !== 'object') return undefined
+  if (look.family) loadWebFont(look.family)
   const colour = (v) => (!v ? undefined : schema?.styleColors?.find((c) => c.value === v)?.css ?? (/^#[0-9a-f]{6}$/i.test(v) ? v : undefined))
   const css = {
     fontSize: SIZES[look.size],
-    fontFamily: FONTS[look.font],
+    fontFamily: look.family ? `'${look.family}', ${FONTS[look.font] ?? 'var(--font-body)'}` : FONTS[look.font],
     fontWeight: look.weight === 'bold' ? 700 : look.weight === 'normal' ? 400 : undefined,
     textAlign: look.align,
     color: colour(look.color),
