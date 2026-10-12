@@ -2,7 +2,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
-import { applyFonts } from './cms/site'
+import { applyFonts, applyTheme, applyUiStyle, fetchPublished } from './cms/site'
 import { SITE_THEME, SITE_UI_STYLE } from './config/siteConfig.js'
 // Content is git-backed and static, so the current theme is known at build time.
 // Importing it here bakes the correct season into the first paint — no
@@ -37,7 +37,25 @@ const initialUiStyle = [remembered.uiStyle, settings?.uiStyle].find((s) => UI_ST
 document.body.classList.add(initialTheme)
 document.body.classList.add(`style-${initialUiStyle}`)
 applyFonts(remembered)
-document.documentElement.classList.add('visible')
+// A first visit has no remembered look, only the build's snapshot, which is
+// stale once the owner changes season or style: it painted that and then
+// switched. Wait for the console's Settings instead (the same request App
+// uses), at most 1.5 s, so a slow or unreachable console still shows the page.
+const reveal = () => document.documentElement.classList.add('visible')
+if (remembered.theme) reveal()
+else {
+  const fallback = setTimeout(reveal, 1500)
+  fetchPublished('settings').then((docs) => {
+    const live = docs?.[0]?.data
+    if (live) {
+      applyTheme(live.theme)
+      applyUiStyle(live.uiStyle)
+      applyFonts(live)
+    }
+    clearTimeout(fallback)
+    reveal()
+  })
+}
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <App />

@@ -188,8 +188,14 @@ body.has-action-bar .first-section {
 .tagline {
   position: relative;
   width: 100%;
-  aspect-ratio: 1230 / 693;
   container-type: inline-size;
+}
+
+/* The painted layers and "You are resilient" keep the artwork's proportions;
+   the words (.tagline__ink) lie over them, or above them on a phone. */
+.tagline__art {
+  position: relative;
+  aspect-ratio: 1230 / 693;
 }
 
 .tagline__wash,
@@ -280,6 +286,36 @@ body.has-action-bar .first-section {
   display: block;
   width: 100%;
   height: auto;
+}
+
+/* A phone, unless the section's "Tagline on a phone" is "art": the heading and
+   line leave the artwork, where they would be a few pixels high, and sit above
+   it as ordinary text. The Tagline text size still scales them. */
+@media (max-width: 640px) {
+  .tagline--phone-stacked {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .tagline--phone-stacked .tagline__ink {
+    position: static;
+    order: -1;
+    display: grid;
+    gap: 0.4rem;
+    text-align: center;
+  }
+  .tagline--phone-stacked .tagline__heading,
+  .tagline--phone-stacked .tagline__line {
+    position: static;
+    max-width: none;
+  }
+  .tagline--phone-stacked .tagline__heading {
+    font-size: calc(1.9rem * var(--tagline-scale, 1));
+  }
+  .tagline--phone-stacked .tagline__line {
+    font-size: calc(1.15rem * var(--tagline-scale, 1));
+    line-height: 1.25;
+  }
 }
 
 /* -------------------------------------------- */
@@ -380,6 +416,33 @@ body.has-action-bar .first-section {
 
   .splash--lap .splash__photo {
     max-height: 42vh;
+  }
+}
+
+/* Site settings "Space inside sections on a phone" (App.jsx sets
+   body[data-phone-padding]): tight by default, comfortable, or roomy, which
+   keeps the computer's spacing. A splash also drops its tall minimum height,
+   which on a phone was mostly empty band around the stacked artwork. */
+@media (max-width: 640px) {
+  body:not([data-phone-padding='comfortable']):not([data-phone-padding='roomy']) .section {
+    padding: 0.75rem;
+  }
+  body[data-phone-padding='comfortable'] .section {
+    padding: 1rem 1.25rem;
+  }
+  body:not([data-phone-padding='roomy']) .section--splash,
+  body:not([data-phone-padding='roomy']) .splash--lap {
+    min-height: 0;
+  }
+  body:not([data-phone-padding='comfortable']):not([data-phone-padding='roomy']) .card {
+    padding: 1rem;
+  }
+  body[data-phone-padding='comfortable'] .card {
+    padding: 1.25rem;
+  }  /* .grid is width 100% plus its own padding; with less section padding
+     around it that ran 4px past the screen. */
+  .grid {
+    box-sizing: border-box;
   }
 }
 

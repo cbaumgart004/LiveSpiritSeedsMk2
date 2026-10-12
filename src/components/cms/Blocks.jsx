@@ -201,6 +201,7 @@ const OVERLAY_ALIGN = {
 const taglineOf = (block) => ({
   heading: block.taglineHeading, line: block.taglineLine, size: block.taglineSize,
   headingFont: block.taglineHeadingFont, lineFont: block.taglineLineFont, ink: block.taglineInk,
+  phone: block.taglinePhone,
 })
 
 function SplashSection({ block, isFirst, services, doc }) {
