@@ -60,8 +60,10 @@ function Element({ el, frame, schema }) {
   }
 }
 
-export default function Elements({ data, frame = NO_FRAME }) {
+// `only` draws one element by id, `skip` all but one: a splash draws its design
+// in the artwork's place (Blocks.jsx) and the rest after.
+export default function Elements({ data, frame = NO_FRAME, only = null, skip = null }) {
   const schema = useSchema()
-  const list = Array.isArray(data?._elements) ? data._elements.filter((e) => e?._id) : []
+  const list = Array.isArray(data?._elements) ? data._elements.filter((e) => e?._id && (!only || e._id === only) && e._id !== skip) : []
   return list.map((el) => <Element key={el._id} el={el} frame={frame} schema={schema} />)
 }
