@@ -31,7 +31,7 @@ const BUNDLED = {
 // One request per type per page load, shared by every component asking.
 // Resolves to null when the console cannot be reached.
 const published = new Map()
-function fetchPublished(type) {
+export function fetchPublished(type) {
   if (!published.has(type)) {
     published.set(type, fetch(`${CONSOLE_API}/public/${encodeURIComponent(type)}`)
       .then((res) => (res.ok ? res.json() : null))

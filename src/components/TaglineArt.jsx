@@ -54,9 +54,13 @@ function inkVars({ size, headingFont, lineFont, ink }) {
   return v
 }
 
-export default function TaglineArt({ heading, line, size, headingFont, lineFont, ink }) {
+// `phone` (contentSection's "Tagline on a phone"): "stacked", the default, sets
+// the heading and line as readable text above the artwork below 640px, where
+// the artwork's own lettering shrinks to a few pixels; "art" keeps them on it.
+export default function TaglineArt({ heading, line, size, headingFont, lineFont, ink, phone }) {
   return (
-    <div className="tagline" style={inkVars({ size, headingFont, lineFont, ink })}>
+    <div className={`tagline tagline--phone-${phone === 'art' ? 'art' : 'stacked'}`} style={inkVars({ size, headingFont, lineFont, ink })}>
+      <div className="tagline__art">
       {/* decoding="sync" is deliberate. With the default async decode these can
           land after first paint, and inside the `over` layout (where the
           wrapper carries opacity<1) the late decode did not always trigger a
@@ -67,10 +71,11 @@ export default function TaglineArt({ heading, line, size, headingFont, lineFont,
           instead of sitting dead centre over the lettering. */}
       <img className="tagline__bowls" src={bowlsUrl} alt="" decoding="sync" />
       <img className="tagline__flower" src={flowerUrl} alt="" decoding="sync" />
+        <span className="tagline__resilient" aria-hidden="true" dangerouslySetInnerHTML={{ __html: resilient }} />
+      </div>
       <div className="tagline__ink">
         <p className="tagline__heading" data-eotm-text="taglineHeading">{heading || TAGLINE_HEADING}</p>
         <p className="tagline__line" data-eotm-text="taglineLine">{line || TAGLINE_LINE}</p>
-        <span className="tagline__resilient" aria-hidden="true" dangerouslySetInnerHTML={{ __html: resilient }} />
         <span className="visually-hidden">You are resilient.</span>
       </div>
     </div>
@@ -84,4 +89,5 @@ TaglineArt.propTypes = {
   headingFont: PropTypes.string,
   lineFont: PropTypes.string,
   ink: PropTypes.string,
+  phone: PropTypes.string,
 }

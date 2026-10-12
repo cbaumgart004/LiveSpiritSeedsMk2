@@ -57,6 +57,7 @@ function App() {
     applyTheme(settings.theme)
     applyUiStyle(settings.uiStyle)
     applyFonts(settings)
+    document.body.dataset.phonePadding = settings.phonePadding || 'tight'
     rememberLook(settings)
     if (preview) applyPreview(preview)
   }, [ready, settings, preview])

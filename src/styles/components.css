@@ -418,6 +418,9 @@
     min-height: 0;
   }
   .action-bar__btn {
+    /* border-box, or each half's padding pushes two past the row and every
+       button wraps to a row of its own. */
+    box-sizing: border-box;
     flex: 1 1 calc(50% - 0.25rem);
     min-width: 0;
     padding: 0.25rem 0.3rem;
