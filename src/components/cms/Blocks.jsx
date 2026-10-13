@@ -217,6 +217,10 @@ function SplashSection({ block, isFirst, services, doc }) {
   // `withTagline` is the original boolean, kept so existing content still works.
   const placement = block.taglinePlacement || (block.withTagline ? 'beside' : 'none')
   const base = sectionClass('section section--splash', null, isFirst, block)
+  // A design brought in from Canva takes the artwork's place; the drawn-in
+  // TaglineArt is what shows without one.
+  const design = (block._elements ?? []).find((e) => e?.kind === 'design' && e._id)
+  const artwork = design ? <Elements data={block} only={design._id} /> : <TaglineArt {...taglineOf(block)} />
 
   if (placement === 'over') {
     const blend = Math.min(100, Math.max(10, block.taglineBlend || 90)) / 100
@@ -230,10 +234,10 @@ function SplashSection({ block, isFirst, services, doc }) {
             <img className="splash__photo" src={srcOf(block.image)} alt={altOf(block.image, block.title || '')} {...frame.part('image', imageStyle(block.image))} />
           )}
           <div className="splash__artwork" {...frame.part('tagline')}>
-            <TaglineArt {...taglineOf(block)} />
+            {artwork}
           </div>
         </div>
-        <Elements data={block} frame={frame} />
+        <Elements data={block} frame={frame} skip={design?._id} />
       </section>
     )
   }
@@ -248,7 +252,7 @@ function SplashSection({ block, isFirst, services, doc }) {
         <div className="splash__blend splash__blend--bottom" aria-hidden="true" />
         <div className="splash__content" {...frame.wrap}>
           <div {...frame.group('tagline')}>
-            <TaglineArt {...taglineOf(block)} />
+            {artwork}
           </div>
           {srcOf(block.image) && (
             <img className="splash__photo" src={srcOf(block.image)} alt={altOf(block.image, block.title || '')} {...frame.part('image', imageStyle(block.image))} />
@@ -257,7 +261,7 @@ function SplashSection({ block, isFirst, services, doc }) {
         {/* The artwork carries the words, but the call to action still needs to
             be a real link, so buttons stay below the pair. */}
         <Buttons block={block} services={services} frame={frame} />
-        <Elements data={block} frame={frame} />
+        <Elements data={block} frame={frame} skip={design?._id} />
       </section>
     )
   }
