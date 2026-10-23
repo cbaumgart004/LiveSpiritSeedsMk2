@@ -31,11 +31,11 @@
 }
 @media (max-width: 768px) {
   :root {
-    --navbar-height: 76px;
+    --navbar-height: 92px;
   }
 }
 @media (max-width: 480px) {
   :root {
-    --navbar-height: 64px;
+    --navbar-height: 80px;
   }
 }

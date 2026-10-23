@@ -20,6 +20,10 @@ import { frameOf } from './cms/Frame'
 // the global layer must not redefine them).
 const INLINE_MENU_STYLES = ['editorial', 'sanctuary', 'immersive']
 
+// The services offered, as plain text under the title on every page so search
+// engines (and Google Business matching) see "massage" on the home page.
+const SERVICES = ['Massage', 'Sound Healing', 'Yoga']
+
 function Nav() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -93,6 +97,12 @@ function Nav() {
             <Hamburger isOpen={isOpen} toggleMenu={toggleMenu} />
           </div>
         </div>
+
+        <ul className={styles.services}>
+          {SERVICES.map((service) => (
+            <li key={service}>{service}</li>
+          ))}
+        </ul>
       </nav>
 
       <div className={`${styles.menuOverlay} ${isOpen ? styles.show : ''}`}>
