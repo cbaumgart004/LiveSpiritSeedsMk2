@@ -1,8 +1,8 @@
 {
   "_generated": "DO NOT EDIT BY HAND. Rebuilt daily by scripts/harvest-schedule.mjs.",
   "teacher": "Melissa Carey",
-  "generatedAt": "2026-10-31T15:17:41.780Z",
-  "rangeStart": "2026-10-31",
+  "generatedAt": "2026-11-01T15:58:41.678Z",
+  "rangeStart": "2026-11-01",
   "weeks": 4,
   "sources": [
     {
@@ -10,7 +10,7 @@
       "label": "Soul Tree Yoga",
       "status": "ok",
       "classes": 8,
-      "scanned": 159
+      "scanned": 160
     },
     {
       "id": "mesa",
@@ -23,7 +23,7 @@
       "id": "allpurpose",
       "label": "All Purpose Yoga",
       "status": "ok",
-      "classes": 4,
+      "classes": 3,
       "scanned": 246
     },
     {
@@ -31,7 +31,7 @@
       "label": "CURA Yoga Center",
       "status": "ok",
       "classes": 1,
-      "scanned": 246
+      "scanned": 247
     }
   ],
   "studios": [
@@ -58,11 +58,11 @@
   ],
   "sessions": [
     {
-      "id": "soultree:1688880",
+      "id": "soultree:1650820",
       "date": "2026-11-01",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
-      "timezone": "MDT",
+      "timezone": "MST",
       "name": "In-Person Yin & Restore with Sound Healing",
       "type": "Classes",
       "level": "",
@@ -72,11 +72,11 @@
       "sortKey": "2026-11-01T1080"
     },
     {
-      "id": "soultree:1689040",
+      "id": "soultree:1650980",
       "date": "2026-11-02",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
-      "timezone": "MDT",
+      "timezone": "MST",
       "name": "Lunchtime Accessible Yoga",
       "type": "Classes",
       "level": "",
@@ -118,11 +118,11 @@
       "sortKey": "2026-11-04T1140"
     },
     {
-      "id": "soultree:9277160",
+      "id": "soultree:8560980",
       "date": "2026-11-08",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
-      "timezone": "MDT",
+      "timezone": "MST",
       "name": "In-Person Yin & Restore with Sound Healing",
       "type": "Classes",
       "level": "",
@@ -132,11 +132,11 @@
       "sortKey": "2026-11-08T1080"
     },
     {
-      "id": "soultree:9277320",
+      "id": "soultree:8561140",
       "date": "2026-11-09",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
-      "timezone": "MDT",
+      "timezone": "MST",
       "name": "Lunchtime Accessible Yoga",
       "type": "Classes",
       "level": "",
@@ -178,7 +178,7 @@
       "sortKey": "2026-11-11T1140"
     },
     {
-      "id": "cura:ff136a2d-d058-473c-8e8e-56233618d49f",
+      "id": "cura:9ab9dab4-6c55-4c46-8e16-23dde6a4b5b6",
       "date": "2026-11-14",
       "startTime": "2:00 PM",
       "endTime": "3:30 PM",
@@ -194,11 +194,11 @@
       "sortKey": "2026-11-14T0840"
     },
     {
-      "id": "soultree:9143160",
+      "id": "soultree:8624780",
       "date": "2026-11-15",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
-      "timezone": "MDT",
+      "timezone": "MST",
       "name": "In-Person Yin & Restore with Sound Healing",
       "type": "Classes",
       "level": "",
@@ -208,11 +208,11 @@
       "sortKey": "2026-11-15T1080"
     },
     {
-      "id": "soultree:9143280",
+      "id": "soultree:8624900",
       "date": "2026-11-16",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
-      "timezone": "MDT",
+      "timezone": "MST",
       "name": "Lunchtime Accessible Yoga",
       "type": "Classes",
       "level": "",
@@ -254,11 +254,11 @@
       "sortKey": "2026-11-18T1140"
     },
     {
-      "id": "soultree:9728260",
+      "id": "soultree:9176440",
       "date": "2026-11-22",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
-      "timezone": "MDT",
+      "timezone": "MST",
       "name": "In-Person Yin & Restore with Sound Healing",
       "type": "Classes",
       "level": "",
@@ -268,11 +268,11 @@
       "sortKey": "2026-11-22T1080"
     },
     {
-      "id": "soultree:9728380",
+      "id": "soultree:9176560",
       "date": "2026-11-23",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
-      "timezone": "MDT",
+      "timezone": "MST",
       "name": "Lunchtime Accessible Yoga",
       "type": "Classes",
       "level": "",
@@ -280,22 +280,6 @@
       "studio": "Soul Tree Yoga",
       "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
       "sortKey": "2026-11-23T0720"
-    },
-    {
-      "id": "allpurpose:139710555",
-      "date": "2026-11-25",
-      "startTime": "7:00 PM",
-      "endTime": "8:00 PM",
-      "timezone": "MST",
-      "name": "Restorative Yin and Sound Healing",
-      "type": "",
-      "level": "",
-      "staff": "Melissa Christine Carey",
-      "studio": "All Purpose Yoga",
-      "studioUrl": "https://allpurposeyoga.com/schedule/",
-      "bookUrl": "https://momence.com/s/139710555",
-      "cost": "",
-      "sortKey": "2026-11-25T1140"
     }
   ]
 }
