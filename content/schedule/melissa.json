@@ -1,16 +1,16 @@
 {
   "_generated": "DO NOT EDIT BY HAND. Rebuilt daily by scripts/harvest-schedule.mjs.",
   "teacher": "Melissa Carey",
-  "generatedAt": "2026-11-01T15:58:41.678Z",
-  "rangeStart": "2026-11-01",
+  "generatedAt": "2026-11-02T19:26:42.353Z",
+  "rangeStart": "2026-11-02",
   "weeks": 4,
   "sources": [
     {
       "id": "soultree",
       "label": "Soul Tree Yoga",
       "status": "ok",
-      "classes": 8,
-      "scanned": 160
+      "classes": 7,
+      "scanned": 157
     },
     {
       "id": "mesa",
@@ -24,14 +24,14 @@
       "label": "All Purpose Yoga",
       "status": "ok",
       "classes": 3,
-      "scanned": 246
+      "scanned": 245
     },
     {
       "id": "cura",
       "label": "CURA Yoga Center",
       "status": "ok",
       "classes": 1,
-      "scanned": 247
+      "scanned": 246
     }
   ],
   "studios": [
@@ -57,34 +57,6 @@
     }
   ],
   "sessions": [
-    {
-      "id": "soultree:1650820",
-      "date": "2026-11-01",
-      "startTime": "6:00 PM",
-      "endTime": "7:15 PM",
-      "timezone": "MST",
-      "name": "In-Person Yin & Restore with Sound Healing",
-      "type": "Classes",
-      "level": "",
-      "staff": "Melissa Carey",
-      "studio": "Soul Tree Yoga",
-      "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
-      "sortKey": "2026-11-01T1080"
-    },
-    {
-      "id": "soultree:1650980",
-      "date": "2026-11-02",
-      "startTime": "12:00 PM",
-      "endTime": "1:00 PM",
-      "timezone": "MST",
-      "name": "Lunchtime Accessible Yoga",
-      "type": "Classes",
-      "level": "",
-      "staff": "Melissa Carey",
-      "studio": "Soul Tree Yoga",
-      "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
-      "sortKey": "2026-11-02T0720"
-    },
     {
       "id": "mesa:14779",
       "date": "2026-11-02",
@@ -118,7 +90,7 @@
       "sortKey": "2026-11-04T1140"
     },
     {
-      "id": "soultree:8560980",
+      "id": "soultree:44348560",
       "date": "2026-11-08",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -132,7 +104,7 @@
       "sortKey": "2026-11-08T1080"
     },
     {
-      "id": "soultree:8561140",
+      "id": "soultree:45236620",
       "date": "2026-11-09",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -178,7 +150,7 @@
       "sortKey": "2026-11-11T1140"
     },
     {
-      "id": "cura:9ab9dab4-6c55-4c46-8e16-23dde6a4b5b6",
+      "id": "cura:b2ea0470-11cc-42dc-9996-50a07de78ec2",
       "date": "2026-11-14",
       "startTime": "2:00 PM",
       "endTime": "3:30 PM",
@@ -194,7 +166,7 @@
       "sortKey": "2026-11-14T0840"
     },
     {
-      "id": "soultree:8624780",
+      "id": "soultree:45238140",
       "date": "2026-11-15",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -208,7 +180,7 @@
       "sortKey": "2026-11-15T1080"
     },
     {
-      "id": "soultree:8624900",
+      "id": "soultree:44527800",
       "date": "2026-11-16",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -254,7 +226,7 @@
       "sortKey": "2026-11-18T1140"
     },
     {
-      "id": "soultree:9176440",
+      "id": "soultree:44529360",
       "date": "2026-11-22",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -268,7 +240,7 @@
       "sortKey": "2026-11-22T1080"
     },
     {
-      "id": "soultree:9176560",
+      "id": "soultree:45227420",
       "date": "2026-11-23",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -280,6 +252,20 @@
       "studio": "Soul Tree Yoga",
       "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
       "sortKey": "2026-11-23T0720"
+    },
+    {
+      "id": "soultree:45228660",
+      "date": "2026-11-29",
+      "startTime": "6:00 PM",
+      "endTime": "7:15 PM",
+      "timezone": "MST",
+      "name": "In-Person Yin & Restore with Sound Healing",
+      "type": "Classes",
+      "level": "",
+      "staff": "Melissa Carey",
+      "studio": "Soul Tree Yoga",
+      "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
+      "sortKey": "2026-11-29T1080"
     }
   ]
 }
