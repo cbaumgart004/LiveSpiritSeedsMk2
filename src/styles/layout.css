@@ -639,3 +639,14 @@ body.has-action-bar .first-section {
     max-width: 100%;
   }
 }
+
+/* The AI-training notice under every page (App.jsx). */
+.ai-notice {
+  margin: 0;
+  padding: var(--space-2) var(--space-2) var(--space-4);
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  opacity: 0.75;
+}

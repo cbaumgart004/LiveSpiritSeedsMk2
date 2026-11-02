@@ -84,6 +84,13 @@ function App() {
         <Route path="/" element={<DynamicPage />} />
         <Route path="/:slug" element={<DynamicPage />} />
       </Routes>
+      {/* Site-wide, under every page: the human-readable half of the AI-training
+          reservation; the machine-readable half is index.html, the console's
+          robots.txt (schema robots.blockTraining) and .well-known/tdmrep.json. */}
+      <p className="ai-notice">
+        No content on this site, including text, photographs and designs, may be used to train
+        artificial intelligence or machine learning models.
+      </p>
       <AccountModal />
       {preview && (
         <PreviewBar

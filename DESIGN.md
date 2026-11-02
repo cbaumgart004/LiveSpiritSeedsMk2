@@ -462,6 +462,12 @@ each edge and centred on the bar.
 - **CSS load order is load-bearing** — see §6 before reorganizing style imports.
 - No tests, no TypeScript, no state management library. Keep it simple.
 - `assetsInlineLimit: 0` in the build — assets are always emitted as files, never inlined.
+- **AI training is reserved, search is not.** The `.ai-notice` line under every page (`App.jsx`),
+  the `tdm-reservation` and `noai` meta in `index.html`, and `public/.well-known/tdmrep.json` are
+  the site's half; the console's robots.txt turns training crawlers away because the console's
+  `schema/sites/spiritseeds.json` sets `robots.blockTraining`. Search and AI-search crawlers are
+  allowed. `robots.txt` and `sitemap.xml` come from the console through Amplify rewrites, so a
+  static copy in `public/` is never served.
 
 ## 8. Decisions
 
