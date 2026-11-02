@@ -44,5 +44,5 @@ moves the content in.
   `--replace` to carry any Tina edits into the console, and merge to `main`.
 - New photos no longer land in the repo, so `optimize-uploads.yml` only covers the photos
   already there. The console resizes photos in the browser before upload instead.
-- Unverified: the console rendering on the live SpiritSeeds styles, and the photo bucket (not
+- Unverified: the console rendering on the live Spirit Seeds styles, and the photo bucket (not
   set up yet; uploads answer 503 until it is).

@@ -10,7 +10,7 @@
 // A page or the settings the console already has is skipped, so edits made in
 // the console survive a re-run; --replace overwrites them with Tina's copy.
 //
-// The token: admin.theedgeofthemap.com → Manage → SpiritSeeds → Copy an editor
+// The token: admin.theedgeofthemap.com → Manage → Spirit Seeds → Copy an editor
 // token (console 1.1.1+). It lasts 8 hours and edits only this site. Never
 // commit it or paste it into a file.
 

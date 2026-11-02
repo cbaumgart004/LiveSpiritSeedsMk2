@@ -468,6 +468,8 @@ each edge and centred on the bar.
   `schema/sites/spiritseeds.json` sets `robots.blockTraining`. Search and AI-search crawlers are
   allowed. `robots.txt` and `sitemap.xml` come from the console through Amplify rewrites, so a
   static copy in `public/` is never served.
+- **The business structured data in `index.html` mirrors the Google Business Profile** (name,
+  address, phone, booking). Change one, change the other; the plan is `docs/SEO-AND-AI-VISIBILITY.md`.
 
 ## 8. Decisions
 

@@ -1,9 +1,9 @@
-# Next steps: SpiritSeeds Wellness
+# Next steps: Spirit Seeds Wellness
 
 The platform steps (AWS, uptime monitoring, the console on a phone, DNS and SES for every project)
 live in Edge of the Map's
 [launch checklist](https://github.com/cbaumgart004/edgeOfTheMap/blob/preview/docs/launch-checklist.md).
-What is SpiritSeeds' own:
+What is Spirit Seeds' own:
 
 ## 1. Move the domain from Squarespace to Porkbun: target 2026-11-11
 
