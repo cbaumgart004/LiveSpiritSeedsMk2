@@ -55,10 +55,10 @@ page title ends with) and "Live Spirit Seeds" (older material). Use **Spirit See
 Done from the "Your business on Google" panel that appears when she searches her business name
 while signed in.
 
-1. **Book button.** Panel → **Bookings** (or Edit profile → Business information → Contact →
-   Appointment links) → paste `https://spiritseedswellnessmelissacarey.offeringtree.com/` → Save.
-   Google then shows **Book online** on the card. Today the booking site appears only as "Products
-   and Services".
+1. **Booking link (done 2026-11-02).** Panel → **Bookings** → the Offering Tree address. Google
+   chooses the label ("Book online", "Book", "Schedule") and where it shows: usually a button on
+   phones, sometimes an "Appointments" line on desktop. Allow a few days after the edit. For a
+   **Book** button in the row beside Website and Call, see Reserve with Google below.
 2. **Profile strength.** Click **Complete info** and fill everything it lists.
 3. **Hours**, including special hours for holidays. After-hours searches then see "Closed".
 4. **Categories.** Keep "Massage therapist" primary; add the secondary categories that fit, such as
@@ -71,6 +71,32 @@ while signed in.
 8. **Posts** (Panel → Posts): one a month or more, for classes, workshops and openings.
 9. **Reviews**: Panel → **Ask for reviews** gives a link and QR code; send it after each session.
    Reply to every review.
+
+## Reserve with Google (a Book button beside Website and Call)
+
+Booking systems on Google's partner list connect straight to the profile; Google then shows a
+**Book** button in the card's button row, and clients book without leaving Google. A plain booking
+link, which she has, does not get that row button.
+
+1. **Ask Offering Tree whether it integrates with Reserve with Google.** **Unverified:** a search
+   found nothing either way.
+2. **If it does:** in Offering Tree's settings, turn on the Google integration and sign in with the
+   Google account that manages the profile. The profile must be **verified** (it is: "You manage
+   this Business Profile").
+3. **Match the details exactly.** Business name, address and phone in Offering Tree must equal the
+   Google profile character for character (Spirit Seeds Wellness, 1280 Centaur Village Dr #7,
+   Lafayette, CO 80026, (303) 250-0494), or the connection is refused.
+4. **Wait for Google's review.** Google approves the connection; the button can take up to 48 hours
+   after that.
+5. **Check it:** search "Spirit Seeds Wellness" on a phone in a private window; the button row
+   should show **Book**.
+6. **If Offering Tree is not a partner,** the booking link above is the ceiling. Getting the row
+   button would mean moving bookings to a platform that is (Square Appointments, Vagaro, Mindbody,
+   among others), which also moves her waivers and client records, so weigh it before switching.
+
+Sources: [BrightLocal](https://brightlocal.com/learn/google-business-profile-bookings-and-appointments/),
+[StyleSeat](https://help.styleseat.com/articles/13612637-google-reserve),
+[resOS](https://resos.com/support/reserve-with-google-faq/).
 
 ## Other listings (citations)
 
