@@ -25,3 +25,5 @@ What is Spirit Seeds' own:
 4. Merge `main` into `preview` to pick up any Tina edits, re-run the import with `--replace`, then
    merge `preview` into `main` (ADR 0003, "Reconciling at cutover").
 5. Turn off the TinaCloud project once `main` builds without it.
+
+- Store move to Lambda and Neon, waivers, on-page editing (review of 2026-09-27): `docs/store-move-to-lambda-and-neon.md`.

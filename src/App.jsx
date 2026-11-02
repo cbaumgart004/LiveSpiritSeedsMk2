@@ -27,7 +27,7 @@ function ConsoleNavigation() {
 }
 
 // The owner's way in: /preview signs her in through the console and brings her
-// back to the home page with the editor open, as StoryShaped's /preview does.
+// back to the home page with the editor open.
 // The address she came from goes along, so a preview returns to the preview.
 function ToEditor() {
   useEffect(() => {

@@ -12,7 +12,7 @@
 // dragged to a new width. Every part of every section (heading, text, image,
 // buttons, cards...) is marked by name through frameOf (./Frame.jsx), so the
 // console's Arrange can make a section Free and place its parts, on a desktop
-// and, separately, on a phone (StoryShaped ADR-0010).
+// and, separately, on a phone (the console's SCHEMA.md, "Free sections").
 import { useEffect, useRef } from 'react'
 import ValuesSection from '../ValuesSection/ValuesSection'
 import TaglineArt from '../TaglineArt'

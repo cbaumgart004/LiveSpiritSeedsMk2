@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-// src/components/cms/Frame.jsx (the same helper as StoryShaped's components/Frame.jsx)
-// A section the owner made Free in the console (StoryShaped ADR-0010, console
+// src/components/cms/Frame.jsx
+// A section the owner made Free in the console (console
 // SCHEMA.md "Free sections"): its parts placed on
 // a canvas the section's size, from `_layout` in the section's own data. Every
 // section component marks its parts once, through frameOf; Flow sections (the

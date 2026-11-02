@@ -10,7 +10,7 @@
 TinaCMS made every deploy depend on TinaCloud indexing the branch, and the live site read its
 content from TinaCloud at runtime with no fallback (DESIGN.md §6 recorded both failures). Owner
 feedback on Tina: no click-to-edit on the page itself, and no way to size things by dragging.
-Edge of the Map now runs one owner console for every customer site (StoryShaped's ADR-0007).
+Edge of the Map now runs one owner console for every customer site (the console's README).
 
 ## Decision
 
