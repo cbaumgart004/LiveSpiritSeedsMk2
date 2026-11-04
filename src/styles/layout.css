@@ -15,6 +15,32 @@
 .first-section {
   margin-top: calc(var(--navbar-height) + 1rem);
 }
+/* The buttons under the menu bar (ActionBar.jsx) are fixed too. */
+body.has-action-bar .section.first-section,
+body.has-action-bar .first-section {
+  margin-top: calc(var(--navbar-height) + var(--action-bar-height) + var(--services-strip-height) + 0.5rem);
+}
+
+/* -------------------------------------------- */
+/* Page layout: the owner's Page layout (the     */
+/* console's pageLayout) sets each section's     */
+/* columns of 12. Below 820px sections stack as  */
+/* before. In the grid their vertical margins    */
+/* cannot collapse, so the gap carries them.     */
+/* -------------------------------------------- */
+@media (min-width: 820px) {
+  .page-layout {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--space-4);
+    row-gap: var(--space-4);
+    align-items: start;
+    padding-bottom: var(--space-4);
+  }
+  .page-layout > .page-block { grid-column: span var(--span, 12); min-width: 0; }
+  .page-layout > .page-block .section:not(.first-section) { margin-block: 0; }
+  .page-layout > .page-block .section.first-section { margin-bottom: 0; }
+}
 
 /* -------------------------------------------- */
 /* 💠 Section primitive (see ADR 0001)          */
@@ -154,13 +180,21 @@
 /* -------------------------------------------- */
 /* 🖋️ Tagline artwork (components/TaglineArt)   */
 /* -------------------------------------------- */
-/* Three stacked layers in one 1230:693 box: painted washes, the flower,
-   and the lettering. Only the last two are themed — the washes are the
-   artist's original palette and stay as painted. */
+/* Stacked layers in one 1230:693 box: painted washes, the bowls, the flower,
+   and the lettering. Only the flower and the lettering are themed; the washes
+   are the artist's original palette and stay as painted. The box is a size
+   container, so the lettering is placed and sized in cqw and scales with it. */
 
 .tagline {
   position: relative;
   width: 100%;
+  container-type: inline-size;
+}
+
+/* The painted layers and "You are resilient" keep the artwork's proportions;
+   the words (.tagline__ink) lie over them, or above them on a phone. */
+.tagline__art {
+  position: relative;
   aspect-ratio: 1230 / 693;
 }
 
@@ -199,15 +233,90 @@
   filter: hue-rotate(var(--tagline-hue, 0deg)) saturate(1.05);
 }
 
-/* Inline SVG inherits `color`, which is the whole point of not using <img>. */
+/* The lettering, where the Canva PDF export puts it: each value is the
+   artwork's own, in its 1230-unit canvas, divided by 12.3 to give cqw. A top
+   is the baseline less 0.8 of the font size (line-height 1). --tagline-scale
+   (the editor's Tagline size) grows each piece from where it starts. The ink
+   is the season's (themes.css) unless the owner picks one. Fonts inherit the
+   site's type tokens (--font-heading, --font-subheading: Euphoria Script and
+   Farsan in variables.css, the artwork's own; a UI style that reassigns them
+   reassigns these); the owner's pick in the editor overrides both. */
 .tagline__ink {
   color: var(--tagline-ink, var(--text-color));
+  pointer-events: none;
 }
 
-.tagline__ink svg {
+.tagline__heading,
+.tagline__line {
+  position: absolute;
+  margin: 0;
+  line-height: 1;
+  pointer-events: auto;
+}
+
+/* The heading font (Euphoria Script in the artwork), 46.7 on a baseline at 186.3, from x 332.8. */
+.tagline__heading {
+  left: 27.06cqw;
+  top: 12.11cqw;
+  max-width: 70cqw;
+  font-family: var(--tagline-heading-font, var(--font-heading));
+  font-size: calc(3.8cqw * var(--tagline-scale, 1));
+  font-weight: 400;
+}
+
+/* The subheading font (Farsan in the artwork), 31 on a baseline at 247.4, from x 33.8; longer copy wraps. */
+.tagline__line {
+  left: 2.75cqw;
+  top: 18.1cqw;
+  max-width: 94cqw;
+  font-family: var(--tagline-line-font, var(--font-subheading));
+  font-size: calc(2.52cqw * var(--tagline-scale, 1));
+}
+
+/* "You are resilient", vector (BD Script is not a web font): its box in the
+   artwork is x 531.7, y 436.2, 684.6 wide. */
+.tagline__resilient {
+  position: absolute;
+  left: 43.23cqw;
+  top: 35.46cqw;
+  width: calc(55.66cqw * var(--tagline-scale, 1));
+}
+
+.tagline__resilient svg {
   display: block;
   width: 100%;
-  height: 100%;
+  height: auto;
+}
+
+/* A phone or a narrow tablet (below 820px, where the splash stacks), unless the
+   section's "Tagline on a phone" is "art": the heading and line leave the
+   artwork, where they would be a few pixels high, and sit above it as ordinary
+   text that shrinks with the screen. The Tagline text size still scales them. */
+@media (max-width: 819.98px) {
+  .tagline--phone-stacked {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .tagline--phone-stacked .tagline__ink {
+    position: static;
+    order: -1;
+    display: grid;
+    gap: 0.4rem;
+    text-align: center;
+  }
+  .tagline--phone-stacked .tagline__heading,
+  .tagline--phone-stacked .tagline__line {
+    position: static;
+    max-width: none;
+  }
+  .tagline--phone-stacked .tagline__heading {
+    font-size: calc(clamp(1.2rem, 0.55rem + 3.4vw, 1.9rem) * var(--tagline-scale, 1));
+  }
+  .tagline--phone-stacked .tagline__line {
+    font-size: calc(clamp(0.8rem, 0.5rem + 1.6vw, 1.15rem) * var(--tagline-scale, 1));
+    line-height: 1.3;
+  }
 }
 
 /* -------------------------------------------- */
@@ -286,6 +395,47 @@
   border-radius: var(--radius-2);
 }
 
+/* Below 820px the lapped splash is one column in flow: the photo, then the
+   artwork, each the full width. A phone arrangement from the console
+   (data-eotm-phone='free', frame.css) placed both on a fixed-height canvas,
+   which clipped or overlapped the artwork whenever the stacked tagline text
+   ran taller than the canvas allowed; the arrangement it held was this same
+   photo-above-artwork stack, so flow keeps its order and loses nothing. */
+@media (max-width: 819.98px) {
+  .splash--lap[data-eotm-phone='free'][data-eotm-phone] {
+    display: grid;
+    gap: 0.75rem;
+    aspect-ratio: auto;
+    padding: 0.75rem;
+  }
+  .splash--lap[data-eotm-phone='free'] [data-eotm-qplaced] {
+    position: static;
+    width: 100%;
+    height: auto;
+  }
+  .splash--lap .splash__content {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .splash--lap .splash__artwork,
+  .splash--lap .splash__photo {
+    flex: 0 0 auto;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .splash--lap .splash__photo {
+    max-height: 60vh;
+    object-fit: contain;
+  }
+  /* The photo first, as on the owner's phone arrangement. */
+  .splash--lap .splash__artwork {
+    order: 0;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+
 @media (max-width: 768px) {
   /* No room to lap on a phone — stack them and drop the negative pull. */
   .splash--lap .splash__content {
@@ -308,6 +458,98 @@
 
   .splash--lap .splash__photo {
     max-height: 42vh;
+  }
+}
+
+/* Site settings "Space inside sections on a phone" (App.jsx sets
+   body[data-phone-padding]): tight by default, comfortable, or roomy, which
+   keeps the computer's spacing. A splash also drops its tall minimum height,
+   which on a phone was mostly empty band around the stacked artwork. */
+@media (max-width: 640px) {
+  body:not([data-phone-padding='comfortable']):not([data-phone-padding='roomy']) .section {
+    padding: 0.75rem;
+  }
+  body[data-phone-padding='comfortable'] .section {
+    padding: 1rem 1.25rem;
+  }
+  body:not([data-phone-padding='roomy']) .section--splash,
+  body:not([data-phone-padding='roomy']) .splash--lap {
+    min-height: 0;
+  }
+  body:not([data-phone-padding='comfortable']):not([data-phone-padding='roomy']) .panel,
+  body:not([data-phone-padding='comfortable']):not([data-phone-padding='roomy']) .card {
+    padding: 0.75rem;
+  }
+  body[data-phone-padding='comfortable'] .panel,
+  body[data-phone-padding='comfortable'] .card {
+    padding: 1rem;
+  }
+  /* Card grids (home "Our Services"), tight: every gap half of what it was
+     on 2026-11-04. Above the heading, heading to cards, between cards, beside
+     each card, and between the parts inside one. */
+  body:not([data-phone-padding='comfortable']):not([data-phone-padding='roomy']) .section--cards {
+    padding-top: 0.375rem;
+    gap: 1.5rem;
+  }
+  body:not([data-phone-padding='comfortable']):not([data-phone-padding='roomy']) .section--cards > h2 {
+    margin-top: 0.415em;
+    margin-bottom: 0.375rem;
+  }
+  body:not([data-phone-padding='comfortable']):not([data-phone-padding='roomy']) .section--cards .grid {
+    gap: 0.375rem;
+    padding-inline: 0.5rem;
+  }
+  body:not([data-phone-padding='comfortable']):not([data-phone-padding='roomy']) .section--cards .card {
+    padding-inline: 0.5rem;
+  }
+  body:not([data-phone-padding='comfortable']):not([data-phone-padding='roomy']) .section--cards .card h3 {
+    margin-bottom: 0.5rem;
+  }
+  body:not([data-phone-padding='comfortable']):not([data-phone-padding='roomy']) .section--cards .card p {
+    margin-block: 0.5em;
+  }
+  body:not([data-phone-padding='comfortable']):not([data-phone-padding='roomy']) .section--cards .card .button-row {
+    margin-top: 0.75rem;
+  }
+  .grid {
+    gap: 0.75rem;
+  }
+
+  /* "Cards per row on a phone": two (the default), a 2 by 3 grid of six.
+     Each card is a column with its button pinned to the foot, so cards in a
+     row line up and the room left by a short text sits above the button
+     rather than as a gap below it. Type steps down to fit half a phone. */
+  .section--cards[data-phone-columns='2'] .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .section--cards[data-phone-columns='2'] .card {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+  .section--cards[data-phone-columns='2'] .card:hover {
+    transform: none;
+  }
+  .section--cards[data-phone-columns='2'] .card h3 {
+    font-size: 1.15rem;
+    line-height: 1.15;
+  }
+  .section--cards[data-phone-columns='2'] .card p {
+    font-size: 0.82rem;
+    line-height: 1.4;
+  }
+  .section--cards[data-phone-columns='2'] .card .button-row {
+    margin-top: auto;
+    padding-top: 0.5rem;
+  }
+  .section--cards[data-phone-columns='2'] .card .btn {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+    line-height: 1.2;
+  }  /* .grid is width 100% plus its own padding; with less section padding
+     around it that ran 4px past the screen. */
+  .grid {
+    box-sizing: border-box;
   }
 }
 
@@ -462,8 +704,11 @@
 /* -------------------------------------------- */
 
 .grid {
+  box-sizing: border-box; /* width 100% plus its padding ran past the screen below 820px */
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  /* min(): a phone column narrower than 280px pushed every card off the
+     right edge, leaving no space beside them. */
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
   gap: var(--space-4);
   justify-content: center;
   width: 100%;
@@ -479,8 +724,10 @@
     text-align: center;
   }
 
-  /* Split sections stack vertically on mobile, image first */
-  .section--split {
+  /* Split sections stack vertically on mobile, image first. --reverse too:
+     its row-reverse (0,2,0) outranked this and kept the image beside the text. */
+  .section--split,
+  .section--split.section--reverse {
     flex-direction: column;
     text-align: center;
     padding: 1.5rem 0.5rem;
@@ -503,4 +750,23 @@
     flex: 1 1 100%;
     max-width: 100%;
   }
+
+  /* One even gap between sections on a phone (they ran 8px to 32px). */
+  .section:not(.first-section) {
+    margin-block: 0.75rem;
+  }
+  .section.first-section {
+    margin-bottom: 0.75rem;
+  }
+}
+
+/* The AI-training notice under every page (App.jsx). */
+.ai-notice {
+  margin: 0;
+  padding: var(--space-2) var(--space-2) var(--space-4);
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  opacity: 0.75;
 }

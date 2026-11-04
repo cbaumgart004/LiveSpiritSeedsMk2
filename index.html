@@ -2,6 +2,33 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <!-- A preview address is the owner's alone. Without an editor token in this
+         browser it goes to the console sign-in; a signed-in owner lands with the
+         editor open (once per tab, so closing it sticks). #eotm-token is the
+         console handing back, which the loader takes. -->
+    <script>
+      (function (site) {
+        // /reset-password is reached signed out by definition (the emailed link).
+        if (!/^preview\./.test(location.hostname) || location.pathname === '/reset-password') return
+        if (/eotm-token=/.test(location.hash)) {
+          try { sessionStorage.setItem('eotm:preview', '1') } catch (e) { /* private mode */ }
+          return
+        }
+        try {
+          var t = localStorage.getItem('eotm:token:' + site)
+          var p = t && JSON.parse(atob(t.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')))
+          if (p && p.site === site && p.exp * 1000 > Date.now()) {
+            if (!sessionStorage.getItem('eotm:preview')) {
+              sessionStorage.setItem('eotm:preview', '1')
+              sessionStorage.setItem('eotm:edit', '1')
+            }
+            return
+          }
+        } catch (e) { /* storage blocked: sign in each visit */ }
+        var back = location.pathname === '/preview' ? '/' : location.pathname + location.search
+        location.replace('https://admin.theedgeofthemap.com/?handoff=' + site + '&return=' + encodeURIComponent(back) + '&origin=' + encodeURIComponent(location.origin))
+      })('spiritseeds')
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Prevent flash before theme applies -->
@@ -31,7 +58,46 @@
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="/favicon.png" />
 
-    <title>SpiritSeeds Wellness</title>
+    <title>Spirit Seeds Wellness | Massage Therapy in Lafayette, CO</title>
+    <meta name="description" content="Integrative massage, Thai Yoga massage, Abhyanga, sound healing and trauma-informed yoga with Melissa Carey at Spirit Seeds Wellness in Lafayette, Colorado." />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Spirit Seeds Wellness" />
+    <meta property="og:title" content="Spirit Seeds Wellness | Massage Therapy in Lafayette, CO" />
+    <meta property="og:description" content="Integrative massage, Thai Yoga massage, sound healing and trauma-informed yoga in Lafayette, Colorado." />
+    <meta property="og:image" content="https://spiritseedswellness.com/uploads/SpiritSeedsLogo.jpg" />
+    <!-- The business as its Google Business Profile states it. Name, address and
+         phone must match the profile exactly (docs/SEO-AND-AI-VISIBILITY.md). -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "HealthAndBeautyBusiness",
+        "name": "Spirit Seeds Wellness",
+        "url": "https://spiritseedswellness.com/",
+        "logo": "https://spiritseedswellness.com/uploads/SpiritSeedsLogo.jpg",
+        "image": "https://spiritseedswellness.com/uploads/SpiritSeedsLogo.jpg",
+        "description": "Integrative massage, Thai Yoga massage, Abhyanga, sound healing and trauma-informed yoga with Melissa Carey.",
+        "telephone": "+1-303-250-0494",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "1280 Centaur Village Dr #7",
+          "addressLocality": "Lafayette",
+          "addressRegion": "CO",
+          "postalCode": "80026",
+          "addressCountry": "US"
+        },
+        "founder": { "@type": "Person", "name": "Melissa Carey" },
+        "potentialAction": {
+          "@type": "ReserveAction",
+          "target": "https://spiritseedswellnessmelissacarey.offeringtree.com/"
+        }
+      }
+    </script>
+
+    <!-- AI training reservation. tdm-reservation is the W3C TDM Reservation
+         Protocol, the machine-readable opt-out EU law recognises; noai/noimageai
+         are informal. None of them affect search indexing. -->
+    <meta name="tdm-reservation" content="1" />
+    <meta name="robots" content="noai, noimageai" />
 
     <!-- Preload entry script -->
     <link rel="preload" as="script" href="/src/main.jsx" />
@@ -41,6 +107,9 @@
       http-equiv="Cache-Control"
       content="public, max-age=31536000, immutable"
     />
+    <!-- Edge of the Map console: visitors get only this small loader; ?edit opens
+         the editor for a signed-in owner. Content: src/cms/site.js. -->
+    <script src="https://admin.theedgeofthemap.com/loader.js" data-site="spiritseeds" async></script>
   </head>
 
   <body>

@@ -1,50 +1,34 @@
-/* eslint-disable react/prop-types */
-import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { useTina } from 'tinacms/dist/react'
-import { client } from '../../tina/__generated__/client'
+import { useMemo } from 'react'
+import { useLocation, useParams } from 'react-router-dom'
 import Nav from '../components/Nav'
+import ActionBar from '../components/ActionBar'
 import Blocks from '../components/cms/Blocks'
+import SiteFooter, { valuesFooterOn } from '../components/SiteFooter'
+import { useDocuments, usePageLayout, useSettings } from '../cms/site'
 
-// Loads a Page content file by slug and renders its blocks.
-// `/` maps to home.json; `/:slug` maps to <slug>.json.
+// Renders one Page by slug: `/` is the page whose slug is `home`, `/:slug` the
+// page with that slug. Pages come from the Edge of the Map console (drafts
+// included while the owner edits), else from the bundled content files.
 export default function DynamicPage() {
-  const { slug } = useParams()
-  const relativePath = `${slug || 'home'}.json`
-  // Keep the full response ({ data, query, variables }) — useTina needs all three.
-  const [res, setRes] = useState(null)
-  const [notFound, setNotFound] = useState(false)
+  const { slug = 'home' } = useParams()
+  const { ready, docs } = useDocuments('page')
+  const page = docs.find((d) => d.slug === slug)
+  // The page's Page layout (the console's pageLayout whose address is this one)
+  // orders its sections and sets their widths on 12 columns.
+  const { pathname } = useLocation()
+  const idsKey = (page?.data?.blocks ?? []).map((b) => b._id).filter(Boolean).join('|')
+  const keys = useMemo(() => (idsKey ? idsKey.split('|') : []), [idsKey])
+  const layout = usePageLayout(pathname, keys)
+  // With the values footer on, a Values section is drawn once, as the footer.
+  const { settings } = useSettings()
+  const footer = valuesFooterOn(settings)
+  const blocks = footer ? (page?.data?.blocks ?? []).filter((b) => b.layout !== 'values') : page?.data?.blocks
 
-  useEffect(() => {
-    let active = true
-    setRes(null)
-    setNotFound(false)
-    client.queries
-      .page({ relativePath })
-      .then((r) => active && setRes(r))
-      .catch(() => active && setNotFound(true))
-    return () => {
-      active = false
-    }
-  }, [relativePath])
-
-  if (notFound) {
+  if (!ready) {
     return (
       <>
         <Nav />
-        <section className="section section--stack first-section">
-          <div className="panel">
-            <h2>Page not found</h2>
-          </div>
-        </section>
-      </>
-    )
-  }
-
-  if (!res) {
-    return (
-      <>
-        <Nav />
+        <ActionBar />
         <div className="page-wrapper first-section" style={{ padding: '2rem' }}>
           Loading…
         </div>
@@ -52,19 +36,31 @@ export default function DynamicPage() {
     )
   }
 
-  return <PageView payload={res} />
-}
+  if (!page) {
+    return (
+      <>
+        <Nav />
+        <ActionBar />
+        <section className="section section--stack first-section">
+          <div className="panel">
+            <h2>Page not found</h2>
+          </div>
+        </section>
+        <SiteFooter pages={docs} />
+      </>
+    )
+  }
 
-// Separate component so useTina (a hook) runs unconditionally, after the
-// loading/not-found guards above. useTina hydrates the block objects with the
-// editing metadata that tinaField(...) reads, and live-updates them while
-// editing in /admin.
-function PageView({ payload }) {
-  const { data } = useTina(payload)
   return (
     <>
       <Nav />
-      <Blocks blocks={data?.page?.blocks} />
+      <ActionBar />
+      {/* Click-to-edit names the page by id; a bundled copy is not in the
+          console, so it names it by slug and the console finds the imported one. */}
+      <main className="page-layout" data-eotm-layout>
+        <Blocks blocks={blocks} doc={page.id?.startsWith('bundled:') ? page.slug : page.id} layout={layout} />
+      </main>
+      <SiteFooter pages={docs} />
     </>
   )
 }
