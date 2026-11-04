@@ -43,6 +43,11 @@ body {
     --navbar-height: 76px;
   }
 }
+@media (max-width: 640px) {
+  :root {
+    --services-strip-height: 2.6rem; /* two rows (components.css) */
+  }
+}
 @media (max-width: 480px) {
   :root {
     --navbar-height: 64px;

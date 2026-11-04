@@ -288,10 +288,11 @@ body.has-action-bar .first-section {
   height: auto;
 }
 
-/* A phone, unless the section's "Tagline on a phone" is "art": the heading and
-   line leave the artwork, where they would be a few pixels high, and sit above
-   it as ordinary text. The Tagline text size still scales them. */
-@media (max-width: 640px) {
+/* A phone or a narrow tablet (below 820px, where the splash stacks), unless the
+   section's "Tagline on a phone" is "art": the heading and line leave the
+   artwork, where they would be a few pixels high, and sit above it as ordinary
+   text that shrinks with the screen. The Tagline text size still scales them. */
+@media (max-width: 819.98px) {
   .tagline--phone-stacked {
     display: flex;
     flex-direction: column;
@@ -310,11 +311,11 @@ body.has-action-bar .first-section {
     max-width: none;
   }
   .tagline--phone-stacked .tagline__heading {
-    font-size: calc(1.9rem * var(--tagline-scale, 1));
+    font-size: calc(clamp(1.2rem, 0.55rem + 3.4vw, 1.9rem) * var(--tagline-scale, 1));
   }
   .tagline--phone-stacked .tagline__line {
-    font-size: calc(1.15rem * var(--tagline-scale, 1));
-    line-height: 1.25;
+    font-size: calc(clamp(0.8rem, 0.5rem + 1.6vw, 1.15rem) * var(--tagline-scale, 1));
+    line-height: 1.3;
   }
 }
 
@@ -392,6 +393,47 @@ body.has-action-bar .first-section {
   max-height: 68vh;
   object-fit: contain;
   border-radius: var(--radius-2);
+}
+
+/* Below 820px the lapped splash is one column in flow: the photo, then the
+   artwork, each the full width. A phone arrangement from the console
+   (data-eotm-phone='free', frame.css) placed both on a fixed-height canvas,
+   which clipped or overlapped the artwork whenever the stacked tagline text
+   ran taller than the canvas allowed; the arrangement it held was this same
+   photo-above-artwork stack, so flow keeps its order and loses nothing. */
+@media (max-width: 819.98px) {
+  .splash--lap[data-eotm-phone='free'][data-eotm-phone] {
+    display: grid;
+    gap: 0.75rem;
+    aspect-ratio: auto;
+    padding: 0.75rem;
+  }
+  .splash--lap[data-eotm-phone='free'] [data-eotm-qplaced] {
+    position: static;
+    width: 100%;
+    height: auto;
+  }
+  .splash--lap .splash__content {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .splash--lap .splash__artwork,
+  .splash--lap .splash__photo {
+    flex: 0 0 auto;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .splash--lap .splash__photo {
+    max-height: 60vh;
+    object-fit: contain;
+  }
+  /* The photo first, as on the owner's phone arrangement. */
+  .splash--lap .splash__artwork {
+    order: 0;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
 }
 
 @media (max-width: 768px) {
@@ -662,6 +704,7 @@ body.has-action-bar .first-section {
 /* -------------------------------------------- */
 
 .grid {
+  box-sizing: border-box; /* width 100% plus its padding ran past the screen below 820px */
   display: grid;
   /* min(): a phone column narrower than 280px pushed every card off the
      right edge, leaving no space beside them. */
