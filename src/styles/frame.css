@@ -1,4 +1,4 @@
-/* Free sections (components/cms/Frame.jsx; StoryShaped ADR-0010). A Flow section is untouched:
+/* Free sections (components/cms/Frame.jsx; console SCHEMA.md, "Free sections"). A Flow section is untouched:
    a group is no box of its own, so marking parts changes nothing. */
 [data-eotm-group] {
   display: contents;

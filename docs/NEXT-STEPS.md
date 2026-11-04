@@ -1,9 +1,9 @@
-# Next steps: SpiritSeeds Wellness
+# Next steps: Spirit Seeds Wellness
 
 The platform steps (AWS, uptime monitoring, the console on a phone, DNS and SES for every project)
 live in Edge of the Map's
 [launch checklist](https://github.com/cbaumgart004/edgeOfTheMap/blob/preview/docs/launch-checklist.md).
-What is SpiritSeeds' own:
+What is Spirit Seeds' own:
 
 ## 1. Move the domain from Squarespace to Porkbun: target 2026-11-11
 
@@ -25,3 +25,5 @@ What is SpiritSeeds' own:
 4. Merge `main` into `preview` to pick up any Tina edits, re-run the import with `--replace`, then
    merge `preview` into `main` (ADR 0003, "Reconciling at cutover").
 5. Turn off the TinaCloud project once `main` builds without it.
+
+- Store move to Lambda and Neon, waivers, on-page editing (review of 2026-09-27): `docs/store-move-to-lambda-and-neon.md`.

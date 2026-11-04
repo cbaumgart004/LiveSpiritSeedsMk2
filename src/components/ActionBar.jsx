@@ -16,6 +16,11 @@ import { frameOf } from './cms/Frame'
 
 const isInternal = (url) => url.startsWith('/') && !url.startsWith('//')
 
+// The services offered, as plain text on every page so search engines (and
+// Google Business matching) see "massage" on the home page. It sits in the gap
+// between this bar and the first section and scrolls with the page.
+const SERVICES = ['Massage', 'Sound Healing', 'Yoga']
+
 const ICONS = {
   facebook: (
     <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" fill="currentColor">
@@ -132,6 +137,12 @@ export default function ActionBar() {
           {settings.connectLabel || 'Connect'}
         </button>
       </div>
+
+      <ul className="services-strip" aria-label="Services">
+        {SERVICES.map((service) => (
+          <li key={service}>{service}</li>
+        ))}
+      </ul>
 
       <Modal open={connecting} onClose={() => setConnecting(false)} title={settings.connectLabel || 'Connect'}>
         {settings.connectIntro && <p className="modal__intro">{settings.connectIntro}</p>}

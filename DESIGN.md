@@ -138,9 +138,9 @@ is the live preview. `DynamicPage` finds the page by slug (`home` is `/`) and pa
   under `content/` render instead, converted by `src/cms/fromTina.js` (Markdown to HTML by
   `src/cms/markdown.js`). Settings fall back field by field.
 - **Arranging, classes and elements** (console 1.7.0+). Every part of every section type is
-  marked by name through `components/cms/Frame.jsx` (`frameOf`, the same helper as StoryShaped's),
+  marked by name through `components/cms/Frame.jsx` (`frameOf`),
   so the console's Arrange can make a section Free and place its parts, on a desktop and separately
-  on a phone (`_layout`, `phoneParts`; StoryShaped ADR-0010); `styles/frame.css` draws it. The
+  on a phone (`_layout`, `phoneParts`; the console's SCHEMA.md, "Free sections"); `styles/frame.css` draws it. The
   header and the buttons under the menu bar are arranged regions of Site settings
   (`_layout_header`, `_layout_actionBar`, `data-eotm-frame-key`). `components/cms/ClassStyles.jsx`
   applies the owner's Classes (the schema's `classes`: Buttons `.btn`, section headings, body text,
@@ -433,6 +433,12 @@ each edge and centred on the bar.
   `showFacebook` / `showInstagram` switch on, off by default; `contactEmail`), any
   other `socials`, and the newsletter form (`newsletterFormId`) last. `<body>` carries
   `has-action-bar` while it is shown, and `.first-section` clears `--action-bar-height` as well.
+  Under the bar, `ActionBar.jsx` also renders the **services strip** (Massage, Sound Healing, Yoga,
+  plain text for search and Google Business matching): absolute, so it scrolls with the page, in a
+  `--services-strip-height` gap that `.first-section` clears too.
+- **Text outline** (`--outline-shadow`, `variables.css`) is declared on `body` as well as `:root`.
+  A custom property resolves its `var()` where it is declared, so on `:root` alone every season
+  got spring's green `--text-outline-color`; the season class is on `<body>`.
 - **Account button** (`AccountButton.jsx`, `src/cms/account.js`): the person icon left of the
   title, mirroring the hamburger (end of the inline row on desktop alternate styles). It opens the one account window,
   `AccountModal.jsx`, mounted once in `App` and opened by `openAccount()` from anywhere (the
@@ -462,6 +468,14 @@ each edge and centred on the bar.
 - **CSS load order is load-bearing** — see §6 before reorganizing style imports.
 - No tests, no TypeScript, no state management library. Keep it simple.
 - `assetsInlineLimit: 0` in the build — assets are always emitted as files, never inlined.
+- **AI training is reserved, search is not.** The `.ai-notice` line under every page (`App.jsx`),
+  the `tdm-reservation` and `noai` meta in `index.html`, and `public/.well-known/tdmrep.json` are
+  the site's half; the console's robots.txt turns training crawlers away because the console's
+  `schema/sites/spiritseeds.json` sets `robots.blockTraining`. Search and AI-search crawlers are
+  allowed. `robots.txt` and `sitemap.xml` come from the console through Amplify rewrites, so a
+  static copy in `public/` is never served.
+- **The business structured data in `index.html` mirrors the Google Business Profile** (name,
+  address, phone, booking). Change one, change the other; the plan is `docs/SEO-AND-AI-VISIBILITY.md`.
 
 ## 8. Decisions
 

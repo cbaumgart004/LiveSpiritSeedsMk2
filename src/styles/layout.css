@@ -18,7 +18,7 @@
 /* The buttons under the menu bar (ActionBar.jsx) are fixed too. */
 body.has-action-bar .section.first-section,
 body.has-action-bar .first-section {
-  margin-top: calc(var(--navbar-height) + var(--action-bar-height) + 1rem);
+  margin-top: calc(var(--navbar-height) + var(--action-bar-height) + var(--services-strip-height) + 0.5rem);
 }
 
 /* -------------------------------------------- */
@@ -434,11 +434,20 @@ body.has-action-bar .first-section {
   body:not([data-phone-padding='roomy']) .splash--lap {
     min-height: 0;
   }
+  body:not([data-phone-padding='comfortable']):not([data-phone-padding='roomy']) .panel,
   body:not([data-phone-padding='comfortable']):not([data-phone-padding='roomy']) .card {
+    padding: 0.75rem;
+  }
+  body[data-phone-padding='comfortable'] .panel,
+  body[data-phone-padding='comfortable'] .card {
     padding: 1rem;
   }
-  body[data-phone-padding='comfortable'] .card {
-    padding: 1.25rem;
+  /* The home page's service cards keep room at their sides. */
+  body:not([data-phone-padding='roomy']) .grid .card {
+    padding-inline: 1rem;
+  }
+  .grid {
+    gap: 0.75rem;
   }  /* .grid is width 100% plus its own padding; with less section padding
      around it that ran 4px past the screen. */
   .grid {
@@ -598,7 +607,9 @@ body.has-action-bar .first-section {
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  /* min(): a phone column narrower than 280px pushed every card off the
+     right edge, leaving no space beside them. */
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
   gap: var(--space-4);
   justify-content: center;
   width: 100%;
@@ -614,8 +625,10 @@ body.has-action-bar .first-section {
     text-align: center;
   }
 
-  /* Split sections stack vertically on mobile, image first */
-  .section--split {
+  /* Split sections stack vertically on mobile, image first. --reverse too:
+     its row-reverse (0,2,0) outranked this and kept the image beside the text. */
+  .section--split,
+  .section--split.section--reverse {
     flex-direction: column;
     text-align: center;
     padding: 1.5rem 0.5rem;
@@ -638,4 +651,23 @@ body.has-action-bar .first-section {
     flex: 1 1 100%;
     max-width: 100%;
   }
+
+  /* One even gap between sections on a phone (they ran 8px to 32px). */
+  .section:not(.first-section) {
+    margin-block: 0.75rem;
+  }
+  .section.first-section {
+    margin-bottom: 0.75rem;
+  }
+}
+
+/* The AI-training notice under every page (App.jsx). */
+.ai-notice {
+  margin: 0;
+  padding: var(--space-2) var(--space-2) var(--space-4);
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  opacity: 0.75;
 }
