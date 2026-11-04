@@ -16,11 +16,10 @@
   font-family: var(--font-heading);
   font-size: 1.6rem;
   line-height: 1.1;
-  /* Reversed from the other headings: the theme's outline colour fills the
-     letters and the text colour outlines them. */
-  color: var(--text-outline-color);
-  text-shadow: -1px -1px 0 var(--text-color), 1px -1px 0 var(--text-color),
-    -1px 1px 0 var(--text-color), 1px 1px 0 var(--text-color);
+  /* Coloured and outlined as every other section heading (index.css h2),
+     only smaller. */
+  color: var(--primary-color);
+  text-shadow: var(--outline-shadow);
 }
 
 .inlineList {
