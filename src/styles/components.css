@@ -491,6 +491,19 @@
   color: var(--primary-color);
   white-space: nowrap;
 }
+/* A phone: two by two, so each word has room around it. */
+@media (max-width: 640px) {
+  .services-strip {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-items: center;
+    align-content: center;
+    gap: 0.2rem 1rem;
+    padding: 0.25rem var(--space-2);
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+  }
+}
 
 /* -------------------------------------------------------------- */
 /* Themed window (Modal.jsx): the Connect and account windows     */
