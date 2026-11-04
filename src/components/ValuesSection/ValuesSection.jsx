@@ -8,10 +8,11 @@ import styles from './ValuesSection.module.css'
 // while the editor is open (data-eotm-text; a word names its row).
 // `frame` (cms/Frame.jsx): the section's parts, for the console's Arrange.
 const NO_FRAME = { wrap: {}, part: () => ({}) }
-const ValuesSection = ({ title = 'Our Core Values', words = [{ text: 'Growth' }, { text: 'Acceptance' }, { text: 'Service' }], frame = NO_FRAME }) => {
+// `titleField` names the heading's field for typing in place (null: none).
+const ValuesSection = ({ title = 'Our Core Values', words = [{ text: 'Growth' }, { text: 'Acceptance' }, { text: 'Service' }], frame = NO_FRAME, titleField = 'title' }) => {
   return (
     <footer className={`section footer ${styles.footer}`} {...frame.wrap}>
-      <h2 className={styles.title} data-eotm-text="title" {...frame.part('title')}>{title}</h2>
+      <h2 className={styles.title} data-eotm-text={titleField ?? undefined} {...frame.part('title')}>{title}</h2>
       <div className={styles.inlineList} {...frame.part('words')}>
         {words.map((word, i) => (
           <Fragment key={word._id ?? i}>
@@ -28,6 +29,7 @@ ValuesSection.propTypes = {
   title: PropTypes.string,
   words: PropTypes.arrayOf(PropTypes.shape({ _id: PropTypes.string, text: PropTypes.string })),
   frame: PropTypes.object,
+  titleField: PropTypes.string,
 }
 
 export default ValuesSection

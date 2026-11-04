@@ -102,9 +102,12 @@ the Tina collections had; the file paths below are the Tina copies:
   `blocks[]`. The palette is **three** block types:
   - **`contentSection`** — a general section with a `layout` picker choosing the look:
     `splash` (hero photo with the type stack laid **over** it), `imageText` (image beside text),
-    `centered` (centered text), `cardGrid` (heading + grid of mini-cards, e.g. home "Our Services"),
-    `values` (labelled **Footer** in the editor: the values in one small line, rendered as
-    `<footer class="section footer">`), `event` (announcement + images). `splash` additionally uses `eyebrow`
+    `centered` (centered text), `cardGrid` (heading + grid of mini-cards, e.g. home "Our Services";
+    `phoneColumns` "2", the default, or "1" cards per row on a phone, `data-phone-columns`),
+    `values` (the values in one small line, rendered as `<footer class="section footer">`; while
+    Site settings `valuesFooter` is on, the default, `components/SiteFooter.jsx` draws it under every
+    page from `footerTitle`/`footerValues`, falling back to the home page's `values` section, and
+    `DynamicPage` leaves `values` sections out of the page), `event` (announcement + images). `splash` additionally uses `eyebrow`
     (the small tracked line above the heading) and `overlayAlign`
     (`center`/`bottomLeft`/`bottomCenter` — where the text sits on the photo).
   - **`service`** — a bookable offering: `status` (`available`/`coming-soon`), `bookingOptions[]`

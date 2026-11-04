@@ -471,6 +471,39 @@ body.has-action-bar .first-section {
   }
   .grid {
     gap: 0.75rem;
+  }
+
+  /* "Cards per row on a phone": two (the default), a 2 by 3 grid of six.
+     Each card is a column with its button pinned to the foot, so cards in a
+     row line up and the room left by a short text sits above the button
+     rather than as a gap below it. Type steps down to fit half a phone. */
+  .section--cards[data-phone-columns='2'] .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .section--cards[data-phone-columns='2'] .card {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+  .section--cards[data-phone-columns='2'] .card:hover {
+    transform: none;
+  }
+  .section--cards[data-phone-columns='2'] .card h3 {
+    font-size: 1.15rem;
+    line-height: 1.15;
+  }
+  .section--cards[data-phone-columns='2'] .card p {
+    font-size: 0.82rem;
+    line-height: 1.4;
+  }
+  .section--cards[data-phone-columns='2'] .card .button-row {
+    margin-top: auto;
+    padding-top: 0.5rem;
+  }
+  .section--cards[data-phone-columns='2'] .card .btn {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+    line-height: 1.2;
   }  /* .grid is width 100% plus its own padding; with less section padding
      around it that ran 4px past the screen. */
   .grid {

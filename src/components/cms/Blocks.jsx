@@ -419,7 +419,9 @@ function CardGrid({ block, isFirst, services, doc }) {
   const frame = frameOf(block)
   const cards = block.cards || []
   return (
-    <section className={sectionClass('section section--stack section--cards', null, isFirst, block)} {...editable(doc, block)}>
+    // "Cards per row on a phone" (phoneColumns): two by default, a 2 by 3 grid of six.
+    <section className={sectionClass('section section--stack section--cards', null, isFirst, block)} {...editable(doc, block)}
+      data-phone-columns={block.phoneColumns === '1' ? '1' : '2'}>
       {block.title && <h2 data-eotm-text="title" {...frame.part('title')}>{block.title}</h2>}
       <div className="grid" {...frame.part('cards')}>
         {cards.map((card, i) => (
