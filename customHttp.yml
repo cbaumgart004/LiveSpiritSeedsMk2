@@ -1,0 +1,14 @@
+# Amplify Hosting reads this file for response headers.
+# Pages: the browser checks with the host before reusing a copy. The host's
+# default (max-age=0 with stale-while-revalidate) let Safari reuse a copy from
+# an earlier deploy, whose bundle no longer exists, and the page came up blank.
+# /assets/ files carry a content hash in their names, so a copy never goes stale.
+customHeaders:
+  - pattern: '**'
+    headers:
+      - key: 'Cache-Control'
+        value: 'no-cache'
+  - pattern: '/assets/**'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=31536000, immutable'
