@@ -459,16 +459,23 @@
   }
 }
 
-/* Massage, Sound Healing, Yoga (ActionBar.jsx): in the gap between the bar
-   and the first section, which clears --services-strip-height for it
-   (layout.css). Absolute, so it scrolls away with the page. */
+/* Massage, Sound Healing, Yoga, Music (ActionBar.jsx): fixed under the
+   buttons as they are under the menu, in the same panel look; the first
+   section clears --services-strip-height for it (layout.css). */
 .services-strip {
-  position: absolute;
+  position: fixed;
   top: calc(var(--navbar-height) + var(--action-bar-height));
   left: 0;
   right: 0;
+  z-index: 39; /* under the action bar (40) */
   box-sizing: border-box;
   height: var(--services-strip-height);
+  background-color: var(--bg-color-light);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 2px solid var(--primary-color);
+  border-radius: 0 0 var(--radius-1) var(--radius-1);
+  box-shadow: var(--shadow-1);
   display: flex;
   justify-content: space-evenly;
   align-items: center;

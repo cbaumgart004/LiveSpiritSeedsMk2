@@ -17,9 +17,10 @@ import { frameOf } from './cms/Frame'
 const isInternal = (url) => url.startsWith('/') && !url.startsWith('//')
 
 // The services offered, as plain text on every page so search engines (and
-// Google Business matching) see "massage" on the home page. It sits in the gap
-// between this bar and the first section and scrolls with the page.
-const SERVICES = ['Massage', 'Sound Healing', 'Yoga']
+// Google Business matching) see "massage" on the home page. Site settings
+// "Services under the buttons" (servicesStrip); these while it is blank. Fixed
+// under this bar, as the bar is under the menu.
+const SERVICES = ['Massage', 'Sound Healing', 'Yoga', 'Music']
 
 const ICONS = {
   facebook: (
@@ -88,6 +89,8 @@ export default function ActionBar() {
   const [connecting, setConnecting] = useState(false)
   const buttons = (settings.actionButtons || []).filter((b) => b?.label && b?.url)
   const socials = (settings.socials || []).filter((s) => s?.label && s?.url)
+  const ownServices = (settings.servicesStrip || []).filter((s) => s?.text)
+  const services = ownServices.length ? ownServices : SERVICES.map((text) => ({ text }))
 
   // The bar wraps to two rows on a phone, so the page clears whatever height
   // it really has (--action-bar-height, read by layout.css) rather than a guess.
@@ -138,9 +141,10 @@ export default function ActionBar() {
         </button>
       </div>
 
-      <ul className="services-strip" aria-label="Services">
-        {SERVICES.map((service) => (
-          <li key={service}>{service}</li>
+      <ul className="services-strip" aria-label="Services"
+        data-eotm-edit="settings:settings" data-eotm-label="services" data-eotm-field="servicesStrip">
+        {services.map((s) => (
+          <li key={s._id ?? s.text} data-eotm-text={s._id ? 'text' : undefined} data-eotm-in={s._id}>{s.text}</li>
         ))}
       </ul>
 

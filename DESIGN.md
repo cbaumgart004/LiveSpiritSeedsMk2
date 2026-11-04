@@ -436,9 +436,10 @@ each edge and centred on the bar.
   `showFacebook` / `showInstagram` switch on, off by default; `contactEmail`), any
   other `socials`, and the newsletter form (`newsletterFormId`) last. `<body>` carries
   `has-action-bar` while it is shown, and `.first-section` clears `--action-bar-height` as well.
-  Under the bar, `ActionBar.jsx` also renders the **services strip** (Massage, Sound Healing, Yoga,
-  plain text for search and Google Business matching): absolute, so it scrolls with the page, in a
-  `--services-strip-height` gap that `.first-section` clears too.
+  Under the bar, `ActionBar.jsx` also renders the **services strip** (Site settings `servicesStrip`;
+  blank is Massage, Sound Healing, Yoga, Music: plain text for search and Google Business matching):
+  fixed under the bar in the same panel look, `--services-strip-height` tall, which `.first-section`
+  clears too (immersive's own clearance rules included).
 - **Text outline** (`--outline-shadow`, `variables.css`) is declared on `body` as well as `:root`.
   A custom property resolves its `var()` where it is declared, so on `:root` alone every season
   got spring's green `--text-outline-color`; the season class is on `<body>`.
