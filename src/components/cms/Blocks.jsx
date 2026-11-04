@@ -419,7 +419,7 @@ function CardGrid({ block, isFirst, services, doc }) {
   const frame = frameOf(block)
   const cards = block.cards || []
   return (
-    <section className={sectionClass('section section--stack', null, isFirst, block)} {...editable(doc, block)}>
+    <section className={sectionClass('section section--stack section--cards', null, isFirst, block)} {...editable(doc, block)}>
       {block.title && <h2 data-eotm-text="title" {...frame.part('title')}>{block.title}</h2>}
       <div className="grid" {...frame.part('cards')}>
         {cards.map((card, i) => (
