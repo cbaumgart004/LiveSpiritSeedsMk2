@@ -29,6 +29,23 @@
         location.replace('https://admin.theedgeofthemap.com/?handoff=' + site + '&return=' + encodeURIComponent(back) + '&origin=' + encodeURIComponent(location.origin))
       })('spiritseeds')
     </script>
+    <script>
+      // A copy of this page kept from an earlier deploy (the host sends it with
+      // stale-while-revalidate) names a bundle that the current deploy no longer
+      // serves. The page then never loses visibility:hidden below and shows blank.
+      // When a bundle or stylesheet fails to load, reload for a fresh page,
+      // once per missing address, so a later deploy can heal the same way.
+      addEventListener('error', function (e) {
+        var t = e.target
+        var u = t && (t.src || t.href)
+        if (!u || u.indexOf('/assets/') < 0) return
+        try {
+          if (sessionStorage.getItem('ss:healed:' + u)) return
+          sessionStorage.setItem('ss:healed:' + u, '1')
+        } catch (x) { return }
+        location.reload()
+      }, true)
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Prevent flash before theme applies -->
