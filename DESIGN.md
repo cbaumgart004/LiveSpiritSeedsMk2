@@ -433,6 +433,12 @@ each edge and centred on the bar.
   `showFacebook` / `showInstagram` switch on, off by default; `contactEmail`), any
   other `socials`, and the newsletter form (`newsletterFormId`) last. `<body>` carries
   `has-action-bar` while it is shown, and `.first-section` clears `--action-bar-height` as well.
+  Under the bar, `ActionBar.jsx` also renders the **services strip** (Massage, Sound Healing, Yoga,
+  plain text for search and Google Business matching): absolute, so it scrolls with the page, in a
+  `--services-strip-height` gap that `.first-section` clears too.
+- **Text outline** (`--outline-shadow`, `variables.css`) is declared on `body` as well as `:root`.
+  A custom property resolves its `var()` where it is declared, so on `:root` alone every season
+  got spring's green `--text-outline-color`; the season class is on `<body>`.
 - **Account button** (`AccountButton.jsx`, `src/cms/account.js`): the person icon left of the
   title, mirroring the hamburger (end of the inline row on desktop alternate styles). It opens the one account window,
   `AccountModal.jsx`, mounted once in `App` and opened by `openAccount()` from anywhere (the

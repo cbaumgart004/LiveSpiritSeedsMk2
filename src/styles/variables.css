@@ -24,18 +24,27 @@
   /* panel border width (see ADR 0001) */
   --panel-border: 4px;
 
-  /* reusable 4-way text outline; resolves --text-outline-color per theme at use time */
+  /* height of the services strip under the action bar (ActionBar.jsx) */
+  --services-strip-height: 1.75rem;
+}
+
+/* Reusable 4-way text outline. Declared on body as well as :root because a
+   custom property resolves its var() where it is declared: on :root alone it
+   took spring's --text-outline-color (green) under every season, since the
+   season class sits on <body>. */
+:root,
+body {
   --outline-shadow: -1px -1px 0 var(--text-outline-color),
     1px -1px 0 var(--text-outline-color), -1px 1px 0 var(--text-outline-color),
     1px 1px 0 var(--text-outline-color);
 }
 @media (max-width: 768px) {
   :root {
-    --navbar-height: 92px;
+    --navbar-height: 76px;
   }
 }
 @media (max-width: 480px) {
   :root {
-    --navbar-height: 80px;
+    --navbar-height: 64px;
   }
 }
