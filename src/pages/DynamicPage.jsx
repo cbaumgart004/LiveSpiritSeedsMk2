@@ -3,7 +3,8 @@ import { useLocation, useParams } from 'react-router-dom'
 import Nav from '../components/Nav'
 import ActionBar from '../components/ActionBar'
 import Blocks from '../components/cms/Blocks'
-import { useDocuments, usePageLayout } from '../cms/site'
+import SiteFooter, { valuesFooterOn } from '../components/SiteFooter'
+import { useDocuments, usePageLayout, useSettings } from '../cms/site'
 
 // Renders one Page by slug: `/` is the page whose slug is `home`, `/:slug` the
 // page with that slug. Pages come from the Edge of the Map console (drafts
@@ -18,6 +19,10 @@ export default function DynamicPage() {
   const idsKey = (page?.data?.blocks ?? []).map((b) => b._id).filter(Boolean).join('|')
   const keys = useMemo(() => (idsKey ? idsKey.split('|') : []), [idsKey])
   const layout = usePageLayout(pathname, keys)
+  // With the values footer on, a Values section is drawn once, as the footer.
+  const { settings } = useSettings()
+  const footer = valuesFooterOn(settings)
+  const blocks = footer ? (page?.data?.blocks ?? []).filter((b) => b.layout !== 'values') : page?.data?.blocks
 
   if (!ready) {
     return (
@@ -41,6 +46,7 @@ export default function DynamicPage() {
             <h2>Page not found</h2>
           </div>
         </section>
+        <SiteFooter pages={docs} />
       </>
     )
   }
@@ -52,8 +58,9 @@ export default function DynamicPage() {
       {/* Click-to-edit names the page by id; a bundled copy is not in the
           console, so it names it by slug and the console finds the imported one. */}
       <main className="page-layout" data-eotm-layout>
-        <Blocks blocks={page.data?.blocks} doc={page.id?.startsWith('bundled:') ? page.slug : page.id} layout={layout} />
+        <Blocks blocks={blocks} doc={page.id?.startsWith('bundled:') ? page.slug : page.id} layout={layout} />
       </main>
+      <SiteFooter pages={docs} />
     </>
   )
 }

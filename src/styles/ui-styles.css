@@ -505,6 +505,14 @@ body.style-immersive .section--splash {
 body.style-immersive .section--splash.first-section {
   margin-top: calc(var(--navbar-height) + var(--space-4));
 }
+/* With the buttons and the services strip under the menu (ActionBar.jsx),
+   both fixed, the first band clears them too. */
+body.style-immersive.has-action-bar .first-section {
+  margin-top: calc(var(--navbar-height) + var(--action-bar-height) + var(--services-strip-height) + 1rem);
+}
+body.style-immersive.has-action-bar .section--splash.first-section {
+  margin-top: calc(var(--navbar-height) + var(--action-bar-height) + var(--services-strip-height) + var(--space-4));
+}
 
 body.style-immersive .splash__eyebrow {
   letter-spacing: 0.42em;

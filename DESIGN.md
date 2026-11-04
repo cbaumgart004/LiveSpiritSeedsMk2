@@ -102,9 +102,12 @@ the Tina collections had; the file paths below are the Tina copies:
   `blocks[]`. The palette is **three** block types:
   - **`contentSection`** — a general section with a `layout` picker choosing the look:
     `splash` (hero photo with the type stack laid **over** it), `imageText` (image beside text),
-    `centered` (centered text), `cardGrid` (heading + grid of mini-cards, e.g. home "Our Services"),
-    `values` (labelled **Footer** in the editor: the values in one small line, rendered as
-    `<footer class="section footer">`), `event` (announcement + images). `splash` additionally uses `eyebrow`
+    `centered` (centered text), `cardGrid` (heading + grid of mini-cards, e.g. home "Our Services";
+    `phoneColumns` "2", the default, or "1" cards per row on a phone, `data-phone-columns`),
+    `values` (the values in one small line, rendered as `<footer class="section footer">`; while
+    Site settings `valuesFooter` is on, the default, `components/SiteFooter.jsx` draws it under every
+    page from `footerTitle`/`footerValues`, falling back to the home page's `values` section, and
+    `DynamicPage` leaves `values` sections out of the page), `event` (announcement + images). `splash` additionally uses `eyebrow`
     (the small tracked line above the heading) and `overlayAlign`
     (`center`/`bottomLeft`/`bottomCenter` — where the text sits on the photo).
   - **`service`** — a bookable offering: `status` (`available`/`coming-soon`), `bookingOptions[]`
@@ -433,9 +436,10 @@ each edge and centred on the bar.
   `showFacebook` / `showInstagram` switch on, off by default; `contactEmail`), any
   other `socials`, and the newsletter form (`newsletterFormId`) last. `<body>` carries
   `has-action-bar` while it is shown, and `.first-section` clears `--action-bar-height` as well.
-  Under the bar, `ActionBar.jsx` also renders the **services strip** (Massage, Sound Healing, Yoga,
-  plain text for search and Google Business matching): absolute, so it scrolls with the page, in a
-  `--services-strip-height` gap that `.first-section` clears too.
+  Under the bar, `ActionBar.jsx` also renders the **services strip** (Site settings `servicesStrip`;
+  blank is Massage, Sound Healing, Yoga, Music: plain text for search and Google Business matching):
+  fixed under the bar in the same panel look, `--services-strip-height` tall, which `.first-section`
+  clears too (immersive's own clearance rules included).
 - **Text outline** (`--outline-shadow`, `variables.css`) is declared on `body` as well as `:root`.
   A custom property resolves its `var()` where it is declared, so on `:root` alone every season
   got spring's green `--text-outline-color`; the season class is on `<body>`.
