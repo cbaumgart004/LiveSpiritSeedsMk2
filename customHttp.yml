@@ -12,3 +12,12 @@ customHeaders:
     headers:
       - key: 'Cache-Control'
         value: 'public, max-age=31536000, immutable'
+  # Photos and the icon keep their names when replaced: a day's copy, then a check.
+  - pattern: '/uploads/**'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=86400'
+  - pattern: '/favicon.png'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=86400'
