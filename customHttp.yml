@@ -12,12 +12,14 @@ customHeaders:
     headers:
       - key: 'Cache-Control'
         value: 'public, max-age=31536000, immutable'
-  # Photos and the icon keep their names when replaced: a day's copy, then a check.
+  # Photos: a year. The site puts each one's fingerprint on its address
+  # (photo.js versioned), so a replaced photo is a new address, fetched once.
   - pattern: '/uploads/**'
     headers:
       - key: 'Cache-Control'
-        value: 'public, max-age=86400'
+        value: 'public, max-age=31536000'
+  # The icon keeps its name: a week, then a check.
   - pattern: '/favicon.png'
     headers:
       - key: 'Cache-Control'
-        value: 'public, max-age=86400'
+        value: 'public, max-age=604800'

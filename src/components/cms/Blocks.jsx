@@ -116,7 +116,7 @@ function Media({ block, name = 'image', alt, width, side, frame }) {
 function ButtonFace({ btn, text }) {
   return (
     <>
-      {btn.icon?.src && <img className="btn-icon" src={btn.icon.src} alt="" />}
+      {btn.icon?.src && <img className="btn-icon" src={srcOf(btn.icon)} alt="" />}
       <span data-eotm-text="label" data-eotm-in={btn._id}>{text}</span>
     </>
   )
