@@ -411,6 +411,16 @@ draft until published, so there is no separate preview mode. The URL preview mod
 > a migration to it (deleting the globally-imported component CSS files, deduping the panel/button
 > variants) is pending.
 
+**Spacing is one symmetric step.** Between objects and inside them the primitives use
+`--space-2` (16px) on a computer: `.section` margin and padding, `.section--stack`/`--split`
+gap, `.grid` gap, `.page-layout` row and column gap, `.panel`/`.card` padding. A phone's tight
+setting uses 0.75rem (cards 0.5rem). A panel's first child has no top margin and its last no bottom
+margin, so the padding alone is the space inside. Card text is 0.9rem (0.85rem on a phone), `h2`
+line-height 1.1 with no top margin, `.button-row` 0.75rem above. Larger token gaps (48px section
+gaps, 24px panel padding, 128px heading line boxes) stacked into dead space and were removed
+2026-11-06; do not reintroduce them in a new block. The menu button and the account button
+(`Hamburger.css`, `.account-button`) are both border-box `clamp(40px, 6vw, 50px)` squares.
+
 **Button click-flash.** `utils/buttonFlashHandler.js` (`setupButtonClickFlash`) is invoked once
 from `App`'s `useEffect` to attach a global visual flash on button clicks.
 
@@ -472,7 +482,7 @@ each edge and centred on the bar.
   pauses on mouse hover, focus or a tap; swipe and dots move it; never advances under reduced
   motion. Only the showing and next slides load. With `scroll` "over" (the default) the frame holds
   still once its middle reaches the middle of the screen, at 80% opacity, while the blocks after it and the footer
-  (raised by `:has(.slideshow-stage--over)`) slide over it, their watercolor at 45% and cards frosted
+  (raised by `:has(.slideshow-stage--over)`) slide over it; a section overlapping the held frame (marked `.is-over-show` each frame) has its watercolor at 45% and cards frosted, every other section keeps full watercolor
   (72% with a 14px backdrop blur; **unverified**, headless WebKit on Windows draws no backdrop blur); the page clips it at its end. The frame is full screen width
   with no watercolor behind it, shaped like its first photo (natural ratio, learned on load, then
   fixed so a slide change never moves the blocks over it) unless the block sets `shape`, capped at the space under the bars; the picture overscans 3% for

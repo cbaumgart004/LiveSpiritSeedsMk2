@@ -96,6 +96,15 @@ export default function Slideshow({ block, className, marks, frame }) {
       el.style.setProperty('--shift', (p * 3).toFixed(2))
       el.style.transform = d ? `translate3d(0, ${d}px, 0)` : ''
       el.style.opacity = d ? '0.8' : ''
+      // Mark the sections after the show that overlap it where it is held;
+      // slideshow.css makes only those see-through.
+      const top = r.top + d
+      const bottom = top + r.height
+      document.querySelectorAll('.section').forEach((s) => {
+        if (!(el.compareDocumentPosition(s) & Node.DOCUMENT_POSITION_FOLLOWING) || el.contains(s)) return
+        const b = s.getBoundingClientRect()
+        s.classList.toggle('is-over-show', d > 0 && b.top < bottom && b.bottom > top)
+      })
     }
     const onScroll = () => { if (!frame) frame = requestAnimationFrame(update) }
     update()
@@ -113,6 +122,7 @@ export default function Slideshow({ block, className, marks, frame }) {
       el.style.transform = ''
       el.style.opacity = ''
       el.style.removeProperty('--shift')
+      document.querySelectorAll('.is-over-show').forEach((s) => s.classList.remove('is-over-show'))
     }
   }, [over, still, count])
 
