@@ -19,6 +19,7 @@ const TOKEN_KEY = `eotm:token:${SITE}`
 // and takes it out of the address bar), the same hand-off the console's admin
 // page uses. The live address keeps no token, so it never shows Edit site.
 const EDIT_ORIGIN = 'https://preview.spiritseedswellness.com'
+const LIVE_ORIGIN = 'https://spiritseedswellness.com'
 export const isLive = () => /^(www\.)?spiritseedswellness\.com$/.test(location.hostname)
 if (typeof location !== 'undefined' && isLive()) {
   try {
@@ -138,14 +139,56 @@ async function noteRefusal(res) {
 // loader's Edit site button stays while she is signed in (the token lasts 8
 // hours, the session up to 7 days). On the live address she gets the site's
 // own Edit site button, which hands her to the preview address.
+//
+// The preview address has no sign-in of its own after a hand-off, only the
+// editor token, so the token counts as signed in there. When it runs out the
+// owner is sent to the live address with #eotm-renew, where her session (up
+// to 7 days) trades for a fresh token and hands her straight back; with no
+// session there she is asked to sign in. Each address keeps its own sign-in,
+// so carrying it over is the only way to keep it.
+const HANDED = 'ss:handed'
+const RENEWING = 'ss:renewing'
 export async function restoreLogin() {
-  if (!hinted()) return
+  if (isLive()) return restoreLive()
+  if (hasEditor()) {
+    try { localStorage.setItem(HANDED, '1'); sessionStorage.removeItem(RENEWING) } catch { /* private mode */ }
+    const who = hinted() ? await currentLogin() : null
+    return setLogin(who ? { ...who, editor: true } : { ...tokenLogin(), editor: true })
+  }
+  const who = hinted() ? await currentLogin() : null
+  if (who) return setLogin({ ...who, editor: await claimEditor(who.jwt) })
+  // Handed off before and run out: renew on the live address, once a minute at most.
+  let handed = false
+  try {
+    handed = localStorage.getItem(HANDED) === '1' && Date.now() - Number(sessionStorage.getItem(RENEWING) ?? 0) > 60_000
+    if (handed) { sessionStorage.setItem(RENEWING, String(Date.now())); localStorage.removeItem(HANDED) }
+  } catch { /* private mode */ }
+  if (handed) return location.assign(`${LIVE_ORIGIN}${location.pathname}#eotm-renew`)
+  setLogin(null)
+}
+async function restoreLive() {
+  const renew = /(?:^#|&)eotm-renew/.test(location.hash)
+  if (renew) history.replaceState(history.state, '', location.pathname + location.search)
+  if (!renew && !hinted()) return
   const who = await currentLogin()
-  if (!who) return setLogin(null)
-  let editor = false
-  if (isLive()) editor = await edits(who.jwt)
-  else editor = hasEditor() || (await claimEditor(who.jwt))
+  if (!who) {
+    setLogin(null)
+    if (renew) openAccount({ mode: 'in' })
+    return
+  }
+  const editor = await edits(who.jwt)
   setLogin({ ...who, editor })
+  if (renew && editor) await claimEditor(who.jwt)
+}
+// Who the editor token names (its email), for the Welcome line on the preview address.
+function tokenLogin() {
+  try {
+    const token = localStorage.getItem(TOKEN_KEY) ?? sessionStorage.getItem(TOKEN_KEY)
+    const p = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')))
+    return { email: p.email ?? null, name: '', jwt: null }
+  } catch {
+    return { email: null, name: '', jwt: null }
+  }
 }
 export const openEditor = () => (login?.jwt ? claimEditor(login.jwt) : Promise.resolve(false))
 
@@ -190,6 +233,7 @@ export function hasEditor() {
 
 function forgetEditor() {
   try {
+    localStorage.removeItem(HANDED)
     localStorage.removeItem(TOKEN_KEY)
     sessionStorage.removeItem(TOKEN_KEY)
   } catch { /* private mode */ }

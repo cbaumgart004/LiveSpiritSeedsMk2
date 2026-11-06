@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react'
 import Modal from './Modal'
 import PasswordField from './PasswordField'
 import {
-  ACCOUNT_EVENT, claimEditor, currentLogin, editorRefusal, hasEditor, isLive, requestReset, setLogin as announce, signIn, signOut, signUp,
+  ACCOUNT_EVENT, claimEditor, currentLogin, editorRefusal, getLogin, hasEditor, isLive, requestReset, setLogin as announce, signIn, signOut, signUp,
 } from '../cms/account'
 
 const TITLES = { in: 'Welcome back', up: 'Create an account', reset: 'Can’t log in?' }
@@ -121,7 +121,10 @@ export default function AccountModal() {
   // address that trade moves to the preview address (account.js), so it runs
   // only on a sign-in or the Edit site button there, not on opening this window.
   async function refresh({ claim = !isLive() } = {}) {
-    const who = await currentLogin()
+    // On the preview address after a hand-off the editor token is the sign-in
+    // (account.js, restoreLogin): there is no session there to read.
+    let who = await currentLogin()
+    if (!who && !isLive() && hasEditor()) who = getLogin()
     setLogin(who)
     let editor = hasEditor()
     if (who && claim && !editor) editor = await claimEditor(who.jwt)
