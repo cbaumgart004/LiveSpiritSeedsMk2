@@ -20,6 +20,7 @@ import TaglineArt from '../TaglineArt'
 import CustomSection from './CustomSection'
 import NextUp from './NextUp'
 import Slideshow from './Slideshow'
+import Testimonials from './Testimonials'
 import { PLACEHOLDER_MEDIA } from './placeholderMedia'
 import NewsletterForm from '../NewsletterForm'
 import { srcOf, altOf, imageStyle } from './photo'
@@ -765,6 +766,11 @@ export default function Blocks({ blocks, doc, layout = null, placeholder = null 
   // Counts image-bearing sections so resolveSide can alternate them independently
   // of any interleaved text-only blocks.
   let mediaIndex = 0
+  // A slideshow with no photos of its own shows the four placeholder photos,
+  // which is right for the first one on a page and wrong for another: a second
+  // empty one repeats them further down. Only the first is drawn.
+  const firstShow = list.find((b) => b._type === 'slideshow')
+  const hidden = new Set(list.filter((b) => b._type === 'slideshow' && b !== firstShow && !(b.media || []).some(srcOf)))
   return (
     <>
       {list.map((block, i) => {
@@ -783,7 +789,10 @@ export default function Blocks({ blocks, doc, layout = null, placeholder = null 
             return scaled(<EmbedBlock key={key} block={block} isFirst={isFirst} doc={doc} />)
           case 'nextUp':
             return scaled(<NextUp key={key} block={block} className={sectionClass('section section--stack', null, isFirst, block)} marks={editable(doc, block)} frame={frameOf(block)} />)
+          case 'testimonials':
+            return scaled(<Testimonials key={key} block={block} className={sectionClass('section section--stack', null, isFirst, block)} marks={editable(doc, block)} frame={frameOf(block)} />)
           case 'slideshow':
+            if (hidden.has(block)) return null
             return scaled(<Slideshow key={key} block={block} className={sectionClass('section section--stack', null, isFirst, block)} marks={block === placeholder ? addable(doc, blocks, ordered[0]) : editable(doc, block)} frame={frameOf(block)} />)
           default: {
             const def = schema?.blocks?.[block._type]

@@ -8,6 +8,7 @@ import { setupButtonClickFlash } from './utils/buttonFlashHandler'
 import { applyFonts, applyTheme, applyUiStyle, rememberLook, useSettings } from './cms/site'
 import { openAccount } from './cms/account'
 import AccountModal from './components/AccountModal'
+import SignedIn from './components/SignedIn'
 import ResetPassword from './pages/ResetPassword'
 
 // The Edge of the Map console asks for a page by dispatching 'eotm:navigate'
@@ -77,6 +78,7 @@ function App() {
         artificial intelligence or machine learning models.
       </p>
       <AccountModal />
+      <SignedIn />
     </Router>
   )
 }
