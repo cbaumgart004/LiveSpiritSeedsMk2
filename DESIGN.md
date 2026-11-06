@@ -474,8 +474,8 @@ each edge and centred on the bar.
   still once its middle reaches the middle of the screen, at 80% opacity, while the blocks after it and the footer
   (raised by `:has(.slideshow-stage--over)`) slide over it, their watercolor at 45% and cards frosted
   (72% with a 14px backdrop blur; **unverified**, headless WebKit on Windows draws no backdrop blur); the page clips it at its end. The frame is full screen width
-  with no watercolor behind it, shaped like the photo showing (its natural ratio, learned on load)
-  unless the block sets `shape`, capped at the space under the bars; the picture overscans 3% for
+  with no watercolor behind it, shaped like its first photo (natural ratio, learned on load, then
+  fixed so a slide change never moves the blocks over it) unless the block sets `shape`, capped at the space under the bars; the picture overscans 3% for
   its inner parallax. Sticky
   was rejected: a block sits in its own grid row, which would leave it nothing to stick in.
   Until Home has a Slideshow section of its own, `DynamicPage.jsx` shows one under the opening

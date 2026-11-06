@@ -38,8 +38,9 @@ export default function Slideshow({ block, className, marks, frame }) {
   const [paused, setPaused] = useState(false)
   const [still] = useState(reducedMotion)
   const [seen, setSeen] = useState(() => new Set([0, 1]))
-  // Each slide's own width / height, learned as it loads, so the frame takes
-  // the shape of the photo showing unless the owner chose a shape.
+  // The first slide's width / height, learned as it loads: the frame keeps that
+  // one shape for the whole show (unless the owner chose a shape), so changing
+  // slides never changes its height and the blocks over it never jump.
   const [ratios, setRatios] = useState({})
   const learn = (i, w, h) => w && h && setRatios((r) => (r[i] ? r : { ...r, [i]: `${w} / ${h}` }))
   const videos = useRef({})
@@ -100,7 +101,12 @@ export default function Slideshow({ block, className, marks, frame }) {
     update()
     addEventListener('scroll', onScroll, { passive: true })
     addEventListener('resize', onScroll)
+    // A change of the frame's own size (its first photo loading) re-places it
+    // at once rather than on the next scroll.
+    const sized = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(onScroll)
+    sized?.observe(el)
     return () => {
+      sized?.disconnect()
       cancelAnimationFrame(frame)
       removeEventListener('scroll', onScroll)
       removeEventListener('resize', onScroll)
@@ -126,7 +132,7 @@ export default function Slideshow({ block, className, marks, frame }) {
     <section className={`${className} slideshow-stage${over ? ' slideshow-stage--over' : ''}`} {...marks}>
       {block.title && <h2 data-eotm-text="title">{block.title}</h2>}
       <div ref={stage} className="slideshow" {...frame?.wrap}
-        style={{ aspectRatio: SHAPES[block.shape] || ratios[index] || ratios[0] || SHAPES.photo }}
+        style={{ aspectRatio: SHAPES[block.shape] || ratios[0] || SHAPES.photo }}
         role="region" aria-roledescription="carousel" aria-label={block.title || 'Featured photos and videos'}
         onPointerEnter={(e) => e.pointerType === 'mouse' && setPaused(true)} onPointerLeave={(e) => e.pointerType === 'mouse' && setPaused(false)}
         onFocus={() => setPaused(true)} onBlur={() => setPaused(false)}
