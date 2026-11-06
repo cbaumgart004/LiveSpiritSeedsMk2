@@ -136,8 +136,9 @@ main:has(.slideshow-stage--over) ~ * {
 main:has(.slideshow-stage--over) {
   overflow-y: clip;
 }
-/* What rides over the show is see-through, so the picture shows through the
-   watercolor and the cards; text stays fully opaque. */
+/* What rides over the show is see-through: the watercolor faintly, the cards
+   frosted (blurred behind, so the picture reads as soft color, not detail).
+   Photos and text stay fully opaque. */
 .page-block:has(> .slideshow-stage--over) ~ * .section::before,
 .page-block:has(> .slideshow-stage--over) ~ .section::before,
 .slideshow-stage--over ~ .section::before,
@@ -148,6 +149,8 @@ main:has(.slideshow-stage--over) {
 .slideshow-stage--over ~ * :is(.panel, .card),
 .slideshow-stage--over ~ :is(.panel, .card) {
   background-color: color-mix(in srgb, var(--bg-color-light) 72%, transparent);
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  backdrop-filter: blur(14px) saturate(1.15);
 }
 
 @media (prefers-reduced-motion: reduce) {

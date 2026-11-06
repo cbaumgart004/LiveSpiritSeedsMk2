@@ -788,3 +788,14 @@ dialog.modal input,
   vertical-align: -0.2em;
   object-fit: contain;
 }
+
+/* The social icons at the foot of every page (SiteFooter.jsx). */
+.site-footer {
+  position: relative;
+  z-index: 1;
+  padding: var(--space-3) var(--space-2) var(--space-4);
+  text-align: center;
+}
+.site-footer .social-icons {
+  margin: 0;
+}

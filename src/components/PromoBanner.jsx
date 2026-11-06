@@ -63,7 +63,7 @@ export default function PromoBanner() {
           {get('promoText') && <p className="promo__text" data-eotm-text="promoText">{get('promoText')}</p>}
         </div>
         {url && (
-          <a className="promo__link" href={url} target={url.startsWith('/') ? undefined : '_blank'} rel="noreferrer"
+          <a className="btn promo__link" href={url} target={url.startsWith('/') ? undefined : '_blank'} rel="noreferrer"
             data-eotm-text="promoLabel">
             {get('promoLabel') || 'Learn more'}
           </a>

@@ -6,6 +6,7 @@
 // (DynamicPage), so the values appear once, at the foot.
 import { Link, useLocation } from 'react-router-dom'
 import ValuesSection from './ValuesSection/ValuesSection'
+import SocialIcons from './SocialIcons'
 import { useSettings } from '../cms/site'
 
 export const valuesFooterOn = (settings) => settings.valuesFooter !== false
@@ -26,9 +27,21 @@ function FooterConnect({ settings }) {
   )
 }
 
+// Her social icons (SocialIcons.jsx) as the last thing on every page but the
+// Connect page, which shows them itself.
+function FooterSocial({ settings }) {
+  const { pathname } = useLocation()
+  if (pathname === '/connect') return null
+  return (
+    <footer className="site-footer" data-eotm-edit="settings:settings" data-eotm-label="social links" data-eotm-field="instagramUrl">
+      <SocialIcons settings={settings} />
+    </footer>
+  )
+}
+
 export default function SiteFooter({ pages }) {
   const { settings } = useSettings()
-  if (!valuesFooterOn(settings)) return <FooterConnect settings={settings} />
+  if (!valuesFooterOn(settings)) return <><FooterConnect settings={settings} /><FooterSocial settings={settings} /></>
   const home = pages.find((p) => p.slug === 'home')
   const block = (home?.data?.blocks ?? []).find((b) => b.layout === 'values')
   const own = rows(settings.footerValues)
@@ -45,6 +58,7 @@ export default function SiteFooter({ pages }) {
       />
     </div>
     <FooterConnect settings={settings} />
+    <FooterSocial settings={settings} />
     </>
   )
 }

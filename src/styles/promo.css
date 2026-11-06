@@ -1,8 +1,8 @@
 /* The announcement strip (components/PromoBanner.jsx): the season's
-   watercolor alone, its deepest color for the text, a gold edge, and a soft light sweep on load and every twelve seconds after, none
+   watercolor alone, its deepest color for the text, an edge in its primary
+   color, a plain badge, the site's own button (.btn), and a soft light sweep on load and every twelve seconds after, none
    under reduced motion. */
 .promo {
-  --promo-gold: #d4af37;
   position: relative;
   box-sizing: border-box;
   overflow: hidden;
@@ -13,7 +13,7 @@
   color: var(--text-outline-color);
   text-shadow: 0 0 10px rgb(255 255 255 / 0.7);
   background: var(--section-bg-image, none) center / cover, var(--bg-color-light, #fff);
-  border: 1px solid var(--promo-gold);
+  border: 1px solid var(--primary-color);
   border-left-width: 4px;
   border-radius: 10px;
   box-shadow: 0 4px 16px rgb(0 0 0 / 0.18);
@@ -48,8 +48,9 @@
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--text-outline-color);
-  background: var(--promo-gold);
+  color: var(--bg-color);
+  text-shadow: none;
+  background: var(--primary-color);
   border-radius: 999px;
 }
 .promo__copy {
@@ -74,15 +75,7 @@
   flex: none;
   padding: 0.55rem 1.1rem;
   font-weight: 700;
-  color: var(--text-outline-color);
-  text-decoration: none;
-  background: var(--promo-gold);
-  border-radius: 999px;
-  transition: filter 0.2s;
-}
-.promo__link:hover,
-.promo__link:focus-visible {
-  filter: brightness(1.1);
+  text-shadow: none;
 }
 .promo__close {
   position: absolute;

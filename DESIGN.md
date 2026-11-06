@@ -106,7 +106,8 @@ the Tina collections had; the file paths below are the Tina copies:
     `values` (the values in one small line, rendered as `<footer class="section footer">`; while
     Site settings `valuesFooter` is on, the default, `components/SiteFooter.jsx` draws it under every
     page from `footerTitle`/`footerValues`, falling back to the home page's `values` section, and
-    `DynamicPage` leaves `values` sections out of the page), `event` (announcement + images). `splash` additionally uses `eyebrow`
+    `DynamicPage` leaves `values` sections out of the page; `SiteFooter` then ends every page
+    but Connect with `SocialIcons`), `event` (announcement + images). `splash` additionally uses `eyebrow`
     (the small tracked line above the heading) and `overlayAlign`
     (`center`/`bottomLeft`/`bottomCenter` — where the text sits on the photo).
   - **`service`** — a bookable offering: `status` (`available`/`coming-soon`), `bookingOptions[]`
@@ -461,15 +462,16 @@ each edge and centred on the bar.
   `promoUntil`; the component's defaults (the OfferingTree memberships) show until she saves her own.
   Hidden when off, after its end date, or once a visitor closes it (remembered per title in
   `localStorage`). While it shows, `body.has-promo` moves the fixed-bar clearance from the first
-  section onto the banner.
+  section onto the banner. Its edge and badge are the season's `--primary-color`; the link is the
+  site's own `.btn` (gradient that shifts on hover).
 - **Slideshow** (`slideshow` block, `cms/Slideshow.jsx`, `styles/slideshow.css`): the block's
   `media` photos and videos (a photos field with `video: true`; a video item carries
   `kind: 'video'`). Crossfades (2.5s) every `seconds`; inside the frame the picture moves slower than the page; a video plays muted and moves on when it ends;
   pauses on mouse hover, focus or a tap; swipe and dots move it; never advances under reduced
   motion. Only the showing and next slides load. With `scroll` "over" (the default) the frame holds
   still once its middle reaches the middle of the screen, at 80% opacity, while the blocks after it and the footer
-  (raised by `:has(.slideshow-stage--over)`) slide over it, their watercolor at 45% and cards at
-  72% so the picture shows through; the page clips it at its end. The frame is full screen width
+  (raised by `:has(.slideshow-stage--over)`) slide over it, their watercolor at 45% and cards frosted
+  (72% with a 14px backdrop blur; **unverified**, headless WebKit on Windows draws no backdrop blur); the page clips it at its end. The frame is full screen width
   with no watercolor behind it, between 60% of the screen tall and the space under the bars. Sticky
   was rejected: a block sits in its own grid row, which would leave it nothing to stick in.
   Until Home has a Slideshow section of its own, `DynamicPage.jsx` shows one under the opening
