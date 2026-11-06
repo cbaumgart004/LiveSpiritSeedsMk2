@@ -11,6 +11,7 @@ import { useSettings, useSchema } from '../cms/site'
 import { buttonClass, lookToCss } from '../cms/look'
 import { frameOf } from './cms/Frame'
 import { srcOf } from './cms/photo'
+import PromoBanner from './PromoBanner'
 
 const isInternal = (url) => url.startsWith('/') && !url.startsWith('//')
 
@@ -98,6 +99,7 @@ export default function ActionBar() {
         ))}
       </ul>
 
+      <PromoBanner />
     </>
   )
 }

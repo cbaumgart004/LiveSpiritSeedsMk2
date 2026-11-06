@@ -24,6 +24,12 @@ const ICONS = {
   ),
 }
 
+// One icon alone ('facebook', 'instagram' or 'mail'), for the footer buttons
+// (SiteFooter.jsx).
+export function SocialIcon({ name }) {
+  return ICONS[name] ?? null
+}
+
 export function socialItems(settings) {
   return [
     settings.showFacebook === true && settings.facebookUrl && { key: 'facebook', label: 'Facebook', href: settings.facebookUrl },

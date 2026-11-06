@@ -13,6 +13,22 @@ const AUTH = '/_edit/auth'
 export const SITE = 'spiritseeds'
 const TOKEN_KEY = `eotm:token:${SITE}`
 
+// Editing happens on the preview address, never on the live one. An owner who
+// signs in on the live address is sent there with the editor token in the
+// address's #fragment (never sent to a server; the console's loader keeps it
+// and takes it out of the address bar), the same hand-off the console's admin
+// page uses. The live address keeps no token, so it never shows Edit site.
+const EDIT_ORIGIN = 'https://preview.spiritseedswellness.com'
+export const isLive = () => /^(www\.)?spiritseedswellness\.com$/.test(location.hostname)
+if (typeof location !== 'undefined' && isLive()) {
+  try {
+    if (localStorage.getItem(TOKEN_KEY) || sessionStorage.getItem(TOKEN_KEY)) {
+      localStorage.removeItem(TOKEN_KEY)
+      sessionStorage.removeItem(TOKEN_KEY)
+    }
+  } catch { /* private mode */ }
+}
+
 async function post(path, body) {
   const res = await fetch(`${AUTH}${path}`, {
     method: 'POST',
@@ -65,6 +81,10 @@ export async function claimEditor(jwt) {
   const res = await fetch(`${CONSOLE_API}/handoff`, { method: 'POST', headers: { authorization: `Bearer ${jwt}` } }).catch(() => null)
   if (!res?.ok) return false
   const { token } = await res.json()
+  if (isLive()) {
+    location.assign(`${EDIT_ORIGIN}${location.pathname}#eotm-token=${token}`)
+    return true
+  }
   try {
     localStorage.setItem(TOKEN_KEY, token)
   } catch {

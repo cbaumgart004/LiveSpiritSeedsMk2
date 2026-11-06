@@ -1,0 +1,144 @@
+/* The announcement strip (components/PromoBanner.jsx): the season's
+   watercolor alone, its deepest color for the text, the width, corners and
+   shadow of a section, no border, a plain badge, the site's own button (.btn), and a soft light sweep on load and every twelve seconds after, none
+   under reduced motion. */
+.promo {
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+  isolation: isolate;
+  margin: calc(var(--navbar-height) + var(--action-bar-height, 0px) + var(--services-strip-height) + 0.5rem) auto 0;
+  width: 100%;
+  padding: 0.85rem 3rem 0.85rem 1.25rem;
+  color: var(--text-outline-color);
+  text-shadow: 0 0 10px rgb(255 255 255 / 0.7);
+  background: var(--section-bg-image, none) center / cover, var(--bg-color-light, #fff);
+  border-radius: var(--radius-2);
+  box-shadow: var(--shadow-1);
+}
+.promo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(105deg, transparent 35%, rgb(255 236 170 / 0.16) 50%, transparent 65%);
+  transform: translateX(-100%);
+  animation: promo-shimmer 12s ease-in-out 0.8s infinite;
+  pointer-events: none;
+}
+@keyframes promo-shimmer {
+  0% { transform: translateX(-100%); }
+  25%, 100% { transform: translateX(100%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .promo::after { animation: none; display: none; }
+}
+
+.promo__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.promo__eyebrow {
+  flex: none;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bg-color);
+  text-shadow: none;
+  background: var(--primary-color);
+  border-radius: 999px;
+}
+.promo__copy {
+  flex: 1;
+  min-width: 0;
+}
+/* Set like a card heading (.panel h2, components.css), smaller to fit. */
+.promo__title {
+  margin: 0;
+  font-family: var(--font-subheading);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--primary-color);
+  text-shadow: var(--outline-shadow);
+}
+.promo__text {
+  margin: 0.2rem 0 0;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: var(--text-outline-color);
+}
+.promo__link {
+  flex: none;
+  box-sizing: border-box;
+  padding: 0.55rem 1.5rem;
+  font-weight: 700;
+  text-shadow: none;
+}
+.promo__close {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.5rem;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  font-size: 1.4rem;
+  line-height: 1;
+  color: var(--text-outline-color);
+  opacity: 0.7;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.promo__close:hover {
+  opacity: 1;
+}
+
+/* On a phone: the label and title on one line, the message under them, and
+   the link as a full-width button. */
+@media (max-width: 640px) {
+  .promo {
+    padding: 0.7rem 0.9rem 0.75rem;
+  }
+  .promo__inner {
+    flex-wrap: wrap;
+    gap: 0.4rem 0.6rem;
+  }
+  .promo__copy {
+    display: contents;
+  }
+  .promo__title {
+    flex: 1;
+    padding-right: 1.6rem;
+    font-size: 1.6rem;
+  }
+  .promo__text {
+    flex-basis: 100%;
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+  .promo__link {
+    flex-basis: 100%;
+    padding: 0.45rem 1.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+  .promo__close {
+    top: 0.2rem;
+    right: 0.2rem;
+  }
+}
+
+/* The banner clears the fixed bars, so the first section only needs a gap.
+   Each rule outranks the clearance rule it replaces (layout.css, ui-styles.css). */
+body.has-promo.has-action-bar .section.first-section,
+body.has-promo.has-action-bar .first-section,
+body.style-immersive.has-promo.has-action-bar .first-section,
+body.style-immersive.has-promo.has-action-bar .section--splash.first-section {
+  margin-top: var(--space-3);
+}
