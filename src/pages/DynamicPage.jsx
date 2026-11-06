@@ -22,6 +22,10 @@ export default function DynamicPage() {
   // With the values footer on, a Values section is drawn once, as the footer.
   const { settings } = useSettings()
   const footer = valuesFooterOn(settings)
+  // Home shows a slideshow of her photos under the opening section until she
+  // adds a Slideshow section of her own (Slideshow.jsx, PLACEHOLDER_MEDIA).
+  const placeholder = useMemo(() => (slug === 'home' && !(page?.data?.blocks ?? []).some((b) => b._type === 'slideshow')
+    ? { _type: 'slideshow', _placeholder: true } : null), [slug, page])
   const blocks = footer ? (page?.data?.blocks ?? []).filter((b) => b.layout !== 'values') : page?.data?.blocks
 
   if (!ready) {
@@ -57,8 +61,8 @@ export default function DynamicPage() {
       <ActionBar />
       {/* Click-to-edit names the page by id; a bundled copy is not in the
           console, so it names it by slug and the console finds the imported one. */}
-      <main className="page-layout" data-eotm-layout>
-        <Blocks blocks={blocks} doc={page.id?.startsWith('bundled:') ? page.slug : page.id} layout={layout} />
+      <main className="page-layout" data-eotm-layout data-cards={layout.cards}>
+        <Blocks blocks={blocks} doc={page.id?.startsWith('bundled:') ? page.slug : page.id} layout={layout} placeholder={placeholder} />
       </main>
       <SiteFooter pages={docs} />
     </>

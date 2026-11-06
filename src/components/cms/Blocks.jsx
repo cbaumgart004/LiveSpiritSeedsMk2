@@ -19,6 +19,7 @@ import TaglineArt from '../TaglineArt'
 
 import CustomSection from './CustomSection'
 import NextUp from './NextUp'
+import Slideshow from './Slideshow'
 import NewsletterForm from '../NewsletterForm'
 import { srcOf, altOf, imageStyle } from './photo'
 import { useSchema } from '../../cms/site'
@@ -715,11 +716,16 @@ function usesMediaSide(block) {
 // `layout` (DynamicPage, the page's Page layout): the order and width in
 // columns of 12 of each section, by _id. Each section is then wrapped as a
 // block of that grid (data-eotm-block), which the console sizes and moves.
-export default function Blocks({ blocks, doc, layout = null }) {
+// `placeholder` (DynamicPage): a section the owner has not added yet, shown
+// second, full width and not editable, until she adds her own.
+export default function Blocks({ blocks, doc, layout = null, placeholder = null }) {
   const byId = new Map((blocks || []).map((b) => [b._id, b]))
-  const list = layout ? layout.map((l) => byId.get(l.key)).filter(Boolean).concat((blocks || []).filter((b) => !b._id)) : blocks || []
+  const ordered = layout ? layout.map((l) => byId.get(l.key)).filter(Boolean).concat((blocks || []).filter((b) => !b._id)) : blocks || []
+  const list = placeholder ? [...ordered.slice(0, 1), placeholder, ...ordered.slice(1)] : ordered
   const spanOf = new Map((layout ?? []).map((l) => [l.key, l.span]))
-  const cell = (block, el) => (layout && block._id ? (
+  const cell = (block, el) => (block === placeholder ? (
+    <div key="placeholder" className="page-block" style={{ '--span': 12 }}>{el}</div>
+  ) : layout && block._id ? (
     <div key={block._id} className="page-block" style={{ '--span': spanOf.get(block._id) ?? 12 }}
       data-eotm-block={block._id} data-eotm-label={block.title || block._type} data-eotm-span={spanOf.get(block._id) ?? 12}
       {...(layout.docId ? { 'data-eotm-edit': `pageLayout:${layout.docId}` } : {})}>
@@ -759,6 +765,8 @@ export default function Blocks({ blocks, doc, layout = null }) {
             return scaled(<EmbedBlock key={key} block={block} isFirst={isFirst} doc={doc} />)
           case 'nextUp':
             return scaled(<NextUp key={key} block={block} className={sectionClass('section section--stack', null, isFirst, block)} marks={editable(doc, block)} frame={frameOf(block)} />)
+          case 'slideshow':
+            return scaled(<Slideshow key={key} block={block} className={sectionClass('section section--stack', null, isFirst, block)} marks={editable(block === placeholder ? null : doc, block)} frame={frameOf(block)} />)
           default: {
             const def = schema?.blocks?.[block._type]
             if (!def) return null

@@ -8,8 +8,11 @@
   gap: clamp(3px, 0.5vw, 6px); /* Responsive gap between lines */
   padding: clamp(6px, 1vw, 10px); /* Responsive padding */
   border-radius: 10px;
-  width: clamp(30px, 6vw, 50px); /* ✨ Smooth scaling */
-  height: clamp(30px, 6vw, 50px);
+  /* Border-box and the same size as the account button beside it
+     (components.css .account-button): content-box padding made it 40% bigger. */
+  box-sizing: border-box;
+  width: clamp(40px, 6vw, 50px);
+  height: clamp(40px, 6vw, 50px);
   align-items: center;
   justify-content: center;
   z-index: 100;

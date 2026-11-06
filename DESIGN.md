@@ -106,7 +106,9 @@ the Tina collections had; the file paths below are the Tina copies:
     `values` (the values in one small line, rendered as `<footer class="section footer">`; while
     Site settings `valuesFooter` is on, the default, `components/SiteFooter.jsx` draws it under every
     page from `footerTitle`/`footerValues`, falling back to the home page's `values` section, and
-    `DynamicPage` leaves `values` sections out of the page), `event` (announcement + images). `splash` additionally uses `eyebrow`
+    `DynamicPage` leaves `values` sections out of the page; `SiteFooter` then ends every page but Connect
+    with one row of small buttons: Connect, when `footerConnect` is on, and each social link from
+    `socialItems`, icon plus label, the label dropped under 400px; spread with space-between across the cards' width), `event` (announcement + images). `splash` additionally uses `eyebrow`
     (the small tracked line above the heading) and `overlayAlign`
     (`center`/`bottomLeft`/`bottomCenter` — where the text sits on the photo).
   - **`service`** — a bookable offering: `status` (`available`/`coming-soon`), `bookingOptions[]`
@@ -409,6 +411,16 @@ draft until published, so there is no separate preview mode. The URL preview mod
 > a migration to it (deleting the globally-imported component CSS files, deduping the panel/button
 > variants) is pending.
 
+**Spacing is one symmetric step.** Between objects and inside them the primitives use
+`--space-2` (16px) on a computer: `.section` margin and padding, `.section--stack`/`--split`
+gap, `.grid` gap, `.page-layout` row and column gap, `.panel`/`.card` padding. A phone's tight
+setting uses 0.75rem (cards 0.5rem). A panel's first child has no top margin and its last no bottom
+margin, so the padding alone is the space inside. Card text is 0.9rem (0.85rem on a phone), `h2`
+line-height 1.1 with no top margin, `.button-row` 0.75rem above. Larger token gaps (48px section
+gaps, 24px panel padding, 128px heading line boxes) stacked into dead space and were removed
+2026-11-06; do not reintroduce them in a new block. The menu button and the account button
+(`Hamburger.css`, `.account-button`) are both border-box `clamp(40px, 6vw, 50px)` squares.
+
 **Button click-flash.** `utils/buttonFlashHandler.js` (`setupButtonClickFlash`) is invoked once
 from `App`'s `useEffect` to attach a global visual flash on button clicks.
 
@@ -433,7 +445,8 @@ each edge and centred on the bar.
   Under the bar, `ActionBar.jsx` also renders the **services strip** (Site settings `servicesStrip`;
   blank is Massage, Sound Healing, Yoga, Music: plain text for search and Google Business matching):
   fixed under the bar in the same panel look, `--services-strip-height` tall, which `.first-section`
-  clears too (immersive's own clearance rules included).
+  clears too (immersive's own clearance rules included). On a phone it is two by two, staggered:
+  the first two out at the edges, the last two drawn in close under the middle.
 - **Text outline** (`--outline-shadow`, `variables.css`) is declared on `body` as well as `:root`.
   A custom property resolves its `var()` where it is declared, so on `:root` alone every season
   got spring's green `--text-outline-color`; the season class is on `<body>`.
@@ -446,15 +459,44 @@ each edge and centred on the bar.
   through Neon Auth at `/_edit/auth` on the site's own address; then `POST <console>/handoff` asks
   whether that login edits the site. A member gets an editor token (kept where the loader reads it)
   and **Edit site**; anyone else is a signed-in visitor.
+- **Editing happens on the preview address.** A member who signs in on the live address is sent to
+  the preview address with the editor token in `#eotm-token=` (the console's own hand-off; the loader
+  keeps it and strips it from the address bar), and the live address forgets any token it holds, so it
+  never shows Edit site. Already signed in there, the account window offers **Edit site**, which does
+  the same (`isLive`, `claimEditor` in `cms/account.js`).
 - **Editing: one way in.** Sign in on the site (the account button). A member then sees the site as a
   visitor does plus the loader's **Edit site** button, which opens the editor. `index.html` loads the
   console loader with `data-entry="sign-in"`, so `?edit`, a remembered edit session and Ctrl+Shift+E
   open nothing until signed in. `account.js` fires a `storage` event when the token is stored or
   forgotten, so the button appears or goes at once. `/preview` opens the sign-in window; the preview
   address is the same site, marked `noindex`. Retired 2026-11-05: the preview address's redirect to
-  the console, the URL preview mode, and the account window's own Edit site button. **Verified
-  2026-11-05 by request:** Neon Auth rejects sign-in from both site addresses with `INVALID_ORIGIN`
-  (403) and accepts the console's, so sign-in fails until both are trusted domains in Neon Auth.
+  the console, the URL preview mode, and the account window's own Edit site button. Both site addresses are trusted domains in Neon Auth
+  (**verified 2026-11-05 by request:** a wrong password from each answers 401
+  `INVALID_EMAIL_OR_PASSWORD`, no longer 403 `INVALID_ORIGIN`).
+- **Announcement banner** (`components/PromoBanner.jsx`, `styles/promo.css`, rendered by
+  `ActionBar.jsx`): one strip under the services strip on every page, in the page flow, from Site
+  settings `promoOn`, `promoEyebrow`, `promoTitle`, `promoText`, `promoLabel`, `promoUrl`,
+  `promoUntil`; the component's defaults (the OfferingTree memberships) show until she saves her own.
+  Hidden when off, after its end date, or once a visitor closes it (remembered per title in
+  `localStorage`). While it shows, `body.has-promo` moves the fixed-bar clearance from the first
+  section onto the banner. It has a section's width, corners and shadow and no border; its title is set like a card heading
+  (`.panel h2`: `--font-subheading`, `--primary-color`, `--outline-shadow`), smaller; its badge is the season's `--primary-color`; the link is the
+  site's own `.btn` (gradient that shifts on hover).
+- **Slideshow** (`slideshow` block, `cms/Slideshow.jsx`, `styles/slideshow.css`): the block's
+  `media` photos and videos (a photos field with `video: true`; a video item carries
+  `kind: 'video'`). Crossfades (2.5s) every `seconds`; inside the frame the picture moves slower than the page; a video plays muted and moves on when it ends;
+  pauses on mouse hover, focus or a tap; swipe and dots move it; never advances under reduced
+  motion. Only the showing and next slides load. With `scroll` "over" (the default) the frame holds
+  still once its middle reaches the middle of the screen, at 80% opacity, while the blocks after it and the footer
+  (raised by `:has(.slideshow-stage--over)`) slide over it. The block just before the show (the opening card) scrolls up as usual until the show is held, then stops one gap above the show while the next block slides up over the show; once that block is one gap under it the two scroll on together. The page layout's "Cards around a slideshow" (`cards`, put on `<main data-cards>`; blank means `join`) turns this off with `apart`. Whatever is held is `position: fixed` with a placeholder keeping its place (a transform written each frame landed a frame late on a phone, and shook), and the middle of the screen is taken from a 100svh probe, so Safari's toolbar showing and hiding does not move it (**unverified** on a real iPhone; checked in headless WebKit). Where the room runs out it falls back to a transform ( `overflow-anchor: none` on it, or WebKit scrolls the page back as it moves); a section overlapping the held frame (marked `.is-over-show` each frame) has its watercolor at 45% and cards frosted, every other section keeps full watercolor
+  (72% with a 14px backdrop blur; **unverified**, headless WebKit on Windows draws no backdrop blur); the page clips it at its end. The frame is full screen width
+  with no watercolor behind it, shaped like its first photo (natural ratio, learned on load, then
+  fixed so a slide change never moves the blocks over it) unless the block sets `shape`, capped at the space under the bars; the picture overscans 3% for
+  its inner parallax. Sticky
+  was rejected: a block sits in its own grid row, which would leave it nothing to stick in.
+  Until Home has a Slideshow section of its own, `DynamicPage.jsx` shows one under the opening
+  section, not editable, of four site photos (`PLACEHOLDER_MEDIA`); a slideshow with no media
+  shows the same four. Verified headlessly with a test section injected into Home.
 - **Next class and event banner** (`nextUp` block, `cms/NextUp.jsx`): the class the owner typed, or
   with no class name the next class on the teaching schedule; below it the earliest `event`
   document dated today or later. With no such event that half is hidden on the site and shown

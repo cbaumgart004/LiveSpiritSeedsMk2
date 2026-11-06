@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react'
 import Modal from './Modal'
 import PasswordField from './PasswordField'
 import {
-  ACCOUNT_EVENT, claimEditor, currentLogin, hasEditor, requestReset, signIn, signOut, signUp,
+  ACCOUNT_EVENT, claimEditor, currentLogin, hasEditor, isLive, requestReset, signIn, signOut, signUp,
 } from '../cms/account'
 
 const TITLES = { in: 'Welcome back', up: 'Create an account', reset: 'Can’t log in?' }
@@ -109,13 +109,16 @@ export default function AccountModal() {
   // undefined while checking, null when signed out.
   const [login, setLogin] = useState(undefined)
 
-  async function refresh() {
+  // A login that edits this site trades for an editor token once; the
+  // console answers a visitor's with 403 and nothing changes. On the live
+  // address that trade moves to the preview address (account.js), so it runs
+  // only on a sign-in or the Edit site button there, not on opening this window.
+  async function refresh({ claim = !isLive() } = {}) {
     const who = await currentLogin()
     setLogin(who)
-    // A login that edits this site trades for an editor token once; the
-    // console answers a visitor's with 403 and nothing changes.
-    if (who && !hasEditor()) await claimEditor(who.jwt)
+    if (who && claim && !hasEditor()) await claimEditor(who.jwt)
   }
+  const [editing, setEditing] = useState('')
 
   useEffect(() => {
     const onAsk = (e) => {
@@ -131,7 +134,7 @@ export default function AccountModal() {
   }, [])
 
   async function afterSignIn() {
-    await refresh()
+    await refresh({ claim: true })
     setOpen(false)
   }
 
@@ -144,7 +147,16 @@ export default function AccountModal() {
           <p className="modal__intro">
             Signed in as <strong>{login.email}</strong>
           </p>
+          {editing && <p className="modal__intro">{editing}</p>}
           <div className="modal__links">
+            {isLive() && (
+              <button type="button" className="btn" onClick={async () => {
+                setEditing('')
+                if (!(await claimEditor(login.jwt))) setEditing('This account does not edit the site.')
+              }}>
+                Edit site
+              </button>
+            )}
             <button type="button" className="btn" onClick={async () => { await signOut(); setLogin(null); setMode('in') }}>
               Sign out
             </button>

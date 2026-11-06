@@ -143,9 +143,42 @@
   }
 }
 
-/* The Connect buttons in the menu and the footer (Nav.jsx, SiteFooter.jsx). */
-.footer-connect {
+/* The footer's row of small buttons (SiteFooter.jsx FooterLinks): Connect and
+   each social link, side by side, close under the values. Two classes so
+   they outrank .btn, which loads later. On a narrow phone the social buttons
+   drop their words and keep the icon. */
+.footer-links {
   display: flex;
-  justify-content: center;
-  margin: var(--space-4) auto;
+  flex-wrap: nowrap;
+  /* Spread across the cards' width (their edge: 1rem in on a desktop, the
+     footer's own edge on a phone). */
+  justify-content: space-between;
+  gap: 0.4rem;
+  margin: 0.6rem auto 0;
+  padding: 0 1rem;
+}
+@media (max-width: 640px) {
+  .footer-links { padding: 0; }
+}
+.footer-links .footer-links__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.85rem;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.footer-links__btn svg {
+  width: 0.95rem;
+  height: 0.95rem;
+}
+@media (max-width: 400px) {
+  .footer-links__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
 }
