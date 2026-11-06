@@ -17,8 +17,9 @@
   position: relative;
 }
 
-/* A part's own text size (a corner drag or a pinch in Arrange), % of the site's. */
-[data-eotm-frame='free'] [data-eotm-placed] {
+/* A part's own text size (a corner drag or a pinch in Arrange), % of the site's,
+   only where one was set; a part with none keeps its own (a heading's). */
+[data-eotm-frame='free'] [data-eotm-placed][data-eotm-fs] {
   font-size: calc(var(--fs, 100) * 1%);
 }
 
@@ -94,6 +95,10 @@
     aspect-ratio: 100 / var(--frame-qh, 150);
     padding: 0;
   }
+  /* A part's own text size on the phone, where one was set. */
+  [data-eotm-phone='free'] [data-eotm-qplaced][data-eotm-qfs] {
+    font-size: calc(var(--qfs, 100) * 1%);
+  }
   [data-eotm-phone='free'] [data-eotm-wrap] {
     display: contents;
   }
@@ -108,7 +113,6 @@
     height: var(--qph, auto);
     z-index: var(--qz, auto);
     opacity: var(--qo, 1);
-    font-size: calc(var(--qfs, 100) * 1%);
     max-width: none;
     margin: 0;
     box-sizing: border-box;
