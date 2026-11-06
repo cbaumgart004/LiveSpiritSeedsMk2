@@ -458,6 +458,11 @@ each edge and centred on the bar.
   through Neon Auth at `/_edit/auth` on the site's own address; then `POST <console>/handoff` asks
   whether that login edits the site. A member gets an editor token (kept where the loader reads it)
   and **Edit site**; anyone else is a signed-in visitor.
+- **Editing happens on the preview address.** A member who signs in on the live address is sent to
+  the preview address with the editor token in `#eotm-token=` (the console's own hand-off; the loader
+  keeps it and strips it from the address bar), and the live address forgets any token it holds, so it
+  never shows Edit site. Already signed in there, the account window offers **Edit site**, which does
+  the same (`isLive`, `claimEditor` in `cms/account.js`).
 - **Editing: one way in.** Sign in on the site (the account button). A member then sees the site as a
   visitor does plus the loader's **Edit site** button, which opens the editor. `index.html` loads the
   console loader with `data-entry="sign-in"`, so `?edit`, a remembered edit session and Ctrl+Shift+E
@@ -482,7 +487,7 @@ each edge and centred on the bar.
   pauses on mouse hover, focus or a tap; swipe and dots move it; never advances under reduced
   motion. Only the showing and next slides load. With `scroll` "over" (the default) the frame holds
   still once its middle reaches the middle of the screen, at 80% opacity, while the blocks after it and the footer
-  (raised by `:has(.slideshow-stage--over)`) slide over it; a section overlapping the held frame (marked `.is-over-show` each frame) has its watercolor at 45% and cards frosted, every other section keeps full watercolor
+  (raised by `:has(.slideshow-stage--over)`) slide over it. The block just before the show (the opening card) stops one page gap under the fixed bars and waits there until the next block is one gap under it, then the two scroll on together (a transform set each frame; `overflow-anchor: none` on it, or WebKit scrolls the page back as it moves); a section overlapping the held frame (marked `.is-over-show` each frame) has its watercolor at 45% and cards frosted, every other section keeps full watercolor
   (72% with a 14px backdrop blur; **unverified**, headless WebKit on Windows draws no backdrop blur); the page clips it at its end. The frame is full screen width
   with no watercolor behind it, shaped like its first photo (natural ratio, learned on load, then
   fixed so a slide change never moves the blocks over it) unless the block sets `shape`, capped at the space under the bars; the picture overscans 3% for

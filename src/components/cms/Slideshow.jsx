@@ -11,7 +11,11 @@
 // With "When the page scrolls" on "over" (the default) the page slides up over
 // the show: once its middle reaches the middle of the screen it stays there,
 // at 80% opacity, while the blocks after it (raised above it in slideshow.css)
-// scroll over it. Reduced motion keeps it in the page flow.
+// scroll over it. The opening card (the block just before the show) stops one
+// gap under the fixed bars and waits there until the next card arrives one gap
+// under it; then the two scroll on together, so the cards close up rather than
+// leaving the show's height of empty page. Reduced motion keeps it all in the
+// page flow.
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Elements from './Elements'
 import { altOf, imageStyle, srcOf } from './photo'
@@ -85,9 +89,13 @@ export default function Slideshow({ block, className, marks, frame }) {
     const el = stage.current
     if (still || !el) return undefined
     let frame = 0
+    const block = el.closest('.page-block')
+    const prev = over ? block?.previousElementSibling : null
+    const next = prev ? block.nextElementSibling : null
     const update = () => {
       frame = 0
       el.style.transform = ''
+      if (prev) prev.style.transform = ''
       const r = el.getBoundingClientRect()
       // How far the frame's middle has passed the middle of the screen.
       const d = over ? Math.max(0, innerHeight / 2 - (r.top + r.height / 2)) : 0
@@ -98,10 +106,22 @@ export default function Slideshow({ block, className, marks, frame }) {
       el.style.opacity = d ? '0.8' : ''
       // Mark the sections after the show that overlap it where it is held;
       // slideshow.css makes only those see-through.
+      // The opening card: held at the bars plus one gap until the next card
+      // is one gap under it, then kept that gap above the next card.
+      if (next) {
+        // The page's own gap, as laid out between the show and the next card
+        // (16px on a desktop, 12px on a phone).
+        const n = next.getBoundingClientRect().top
+        const gap = Math.max(0, n - block.getBoundingClientRect().bottom) || 16
+        const clear = (document.querySelector('.services-strip')?.getBoundingClientRect().bottom ?? 0) + gap
+        const a = prev.getBoundingClientRect()
+        const hold = Math.max(0, Math.min(clear - a.top, n - gap - a.bottom))
+        prev.style.transform = hold ? `translate3d(0, ${hold}px, 0)` : ''
+      }
       const top = r.top + d
       const bottom = top + r.height
       document.querySelectorAll('.section').forEach((s) => {
-        if (!(el.compareDocumentPosition(s) & Node.DOCUMENT_POSITION_FOLLOWING) || el.contains(s)) return
+        if (!(prev?.contains(s) || el.compareDocumentPosition(s) & Node.DOCUMENT_POSITION_FOLLOWING) || el.contains(s)) return
         const b = s.getBoundingClientRect()
         s.classList.toggle('is-over-show', d > 0 && b.top < bottom && b.bottom > top)
       })
@@ -122,6 +142,7 @@ export default function Slideshow({ block, className, marks, frame }) {
       el.style.transform = ''
       el.style.opacity = ''
       el.style.removeProperty('--shift')
+      if (prev) prev.style.transform = ''
       document.querySelectorAll('.is-over-show').forEach((s) => s.classList.remove('is-over-show'))
     }
   }, [over, still, count])

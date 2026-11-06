@@ -136,6 +136,15 @@ main:has(.slideshow-stage--over) ~ * {
 main:has(.slideshow-stage--over) {
   overflow-y: clip;
 }
+/* The opening card, held at the top while the show passes (Slideshow.jsx),
+   stays above the show. It is never the browser's scroll anchor: moving it
+   would otherwise make the browser scroll the page back to keep it in place. */
+.page-block:has(+ .page-block > .slideshow-stage--over) {
+  position: relative;
+  z-index: 1;
+  will-change: transform;
+  overflow-anchor: none;
+}
 /* Only a section actually over the held show (Slideshow.jsx marks it
    .is-over-show) is see-through: the watercolor faintly, the cards frosted
    (blurred behind, so the picture reads as soft color, not detail). Every
