@@ -17,14 +17,25 @@ const rows = (words) => (words || [])
 
 // One row of small buttons under the values, on every page but Connect (which
 // shows its own): Connect (Site settings "Connect button in the footer") and
-// each social link she has switched on (SocialIcons.jsx socialItems).
+// each social link she has switched on (SocialIcons.jsx socialItems). Under
+// it, on every page but Home, a Home button back to the start.
 function FooterLinks({ settings }) {
   const { pathname } = useLocation()
-  if (pathname === '/connect') return null
+  const home = pathname !== '/' && (
+    <nav className="footer-home" aria-label="Back to home">
+      <Link className="btn footer-links__btn" to="/">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M3 11 12 3l9 8" /><path d="M5 10v10h14V10" />
+        </svg>
+        Home
+      </Link>
+    </nav>
+  )
   const social = socialItems(settings)
   const connect = settings.footerConnect === true
-  if (!connect && !social.length) return null
+  if (pathname === '/connect' || (!connect && !social.length)) return home || null
   return (
+    <>
     <footer className="footer-links" data-eotm-edit="settings:settings" data-eotm-label="footer links" data-eotm-field="footerConnect">
       {connect && <Link className="btn footer-links__btn" to="/connect">{settings.connectLabel || 'Connect'}</Link>}
       {social.map((i) => (
@@ -35,6 +46,8 @@ function FooterLinks({ settings }) {
         </a>
       ))}
     </footer>
+    {home}
+    </>
   )
 }
 

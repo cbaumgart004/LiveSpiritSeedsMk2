@@ -97,14 +97,19 @@ export function useSchema() {
 
 // The owner's arrangement of one page (the console's pageLayout, whose `blocks`
 // is [{ key, span }]: page order, width in columns of 12), keyed by section _id.
-// Sections it does not name follow in the page's order at full width; names the
-// page no longer has are ignored. `keys` must be a stable array.
+// A section it does not name (one added since) goes in after the section before
+// it in the page's order, at full width; names the page no longer has are
+// ignored. `keys` must be a stable array.
 export function usePageLayout(path, keys) {
   const { docs } = useDocuments('pageLayout')
   return useMemo(() => {
     const doc = docs.find((d) => d.data?.path === path)
     const out = (doc?.data?.blocks ?? []).filter((b) => keys.includes(b?.key))
-    for (const key of keys) if (!out.some((b) => b.key === key)) out.push({ key, span: 12 })
+    keys.forEach((key, i) => {
+      if (out.some((b) => b.key === key)) return
+      const before = i ? out.findIndex((b) => b.key === keys[i - 1]) : -1
+      out.splice(before + 1, 0, { key, span: 12 })
+    })
     // Which console document a block opens for click-to-edit.
     out.docId = doc?.id ?? null
     // Cards around a slideshow (Slideshow.jsx): 'join' unless set to 'apart'.

@@ -10,18 +10,15 @@
   min-height: 75vh;
   min-height: 75svh;
   padding: var(--space-6) var(--space-4);
-  color: #fff;
+  color: var(--text-color);
   text-align: left;
+  /* The photo or watercolor as it is, no tint over it, in a card's corners;
+     the text takes the cards' colors to read on it. */
+  border-radius: var(--radius-2);
+  overflow: hidden;
   background-image: var(--connect-photo, var(--section-bg-image));
   background-size: cover;
   background-position: center;
-}
-.connect::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: color-mix(in srgb, var(--text-outline-color) 62%, transparent);
 }
 
 .connect__inner {
@@ -47,15 +44,15 @@
   font-family: var(--font-heading);
   font-size: clamp(2.2rem, 4.5vw, 3.5rem);
   line-height: 1.15;
-  color: #fff;
-  text-shadow: 0 2px 10px rgb(0 0 0 / 0.35);
+  color: var(--primary-color);
+  text-shadow: var(--outline-shadow);
 }
 .connect__intro {
   margin: 0;
   font-family: var(--font-body);
   font-size: 1.1rem;
   line-height: 1.6;
-  color: #fff;
+  color: var(--text-color);
 }
 
 /* The signup stacks like Kit's: the address, then a full-width button, then
@@ -89,7 +86,7 @@
 }
 .connect .newsletter__fine,
 .connect .newsletter__note {
-  color: rgb(255 255 255 / 0.85);
+  color: var(--text-color);
   text-align: center;
 }
 
@@ -104,10 +101,10 @@
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #fff;
+  color: var(--primary-color);
 }
 .connect .social-icons__link {
-  color: #fff;
+  color: var(--text-color);
 }
 .connect .social-icons__link svg {
   color: var(--primary-color);
@@ -159,6 +156,24 @@
 }
 @media (max-width: 640px) {
   .footer-links { padding: 0; }
+}
+/* Home, centered under the row (SiteFooter.jsx), sized like its buttons. */
+.footer-home {
+  display: flex;
+  justify-content: center;
+  margin: 0.5rem auto 0;
+}
+.footer-home .footer-links__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.85rem;
+  line-height: 1.2;
+}
+.footer-home svg {
+  width: 0.95rem;
+  height: 0.95rem;
 }
 .footer-links .footer-links__btn {
   display: inline-flex;
