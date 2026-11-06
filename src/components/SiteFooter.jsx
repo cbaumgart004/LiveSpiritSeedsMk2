@@ -6,7 +6,7 @@
 // (DynamicPage), so the values appear once, at the foot.
 import { Link, useLocation } from 'react-router-dom'
 import ValuesSection from './ValuesSection/ValuesSection'
-import SocialIcons, { ConnectIcons } from './SocialIcons'
+import { SocialIcon, socialItems } from './SocialIcons'
 import { useSettings } from '../cms/site'
 
 export const valuesFooterOn = (settings) => settings.valuesFooter !== false
@@ -15,38 +15,32 @@ const rows = (words) => (words || [])
   .map((w) => (typeof w === 'string' ? { text: w } : w))
   .filter((w) => w?.text)
 
-// Site settings "Connect button in the footer": a button to the Connect page
-// under the values, on every page but the Connect page itself, showing the
-// Facebook, Instagram and envelope icons of the Connect page.
-function FooterConnect({ settings }) {
+// One row of small buttons under the values, on every page but Connect (which
+// shows its own): Connect (Site settings "Connect button in the footer") and
+// each social link she has switched on (SocialIcons.jsx socialItems).
+function FooterLinks({ settings }) {
   const { pathname } = useLocation()
-  if (settings.footerConnect !== true || pathname === '/connect') return null
+  if (pathname === '/connect') return null
+  const social = socialItems(settings)
+  const connect = settings.footerConnect === true
+  if (!connect && !social.length) return null
   return (
-    <div className="footer-connect" data-eotm-edit="settings:settings" data-eotm-label="footer button" data-eotm-field="footerConnect">
-      <Link className="btn footer-connect__btn" to="/connect">
-        <ConnectIcons className="footer-connect__icons" />
-        {settings.connectLabel || 'Connect'}
-      </Link>
-    </div>
-  )
-}
-
-// Her social icons (SocialIcons.jsx) as the last thing on every page but the
-// Connect page, which shows them itself, while the footer Connect button
-// (which carries the same icons) is off.
-function FooterSocial({ settings }) {
-  const { pathname } = useLocation()
-  if (pathname === '/connect' || settings.footerConnect === true) return null
-  return (
-    <footer className="site-footer" data-eotm-edit="settings:settings" data-eotm-label="social links" data-eotm-field="instagramUrl">
-      <SocialIcons settings={settings} />
+    <footer className="footer-links" data-eotm-edit="settings:settings" data-eotm-label="footer links" data-eotm-field="footerConnect">
+      {connect && <Link className="btn footer-links__btn" to="/connect">{settings.connectLabel || 'Connect'}</Link>}
+      {social.map((i) => (
+        <a key={i.key} className="btn footer-links__btn" href={i.href} aria-label={i.label}
+          target={i.key === 'mail' ? undefined : '_blank'} rel="noreferrer">
+          <SocialIcon name={i.key} />
+          <span className="footer-links__label">{i.label}</span>
+        </a>
+      ))}
     </footer>
   )
 }
 
 export default function SiteFooter({ pages }) {
   const { settings } = useSettings()
-  if (!valuesFooterOn(settings)) return <><FooterConnect settings={settings} /><FooterSocial settings={settings} /></>
+  if (!valuesFooterOn(settings)) return <FooterLinks settings={settings} />
   const home = pages.find((p) => p.slug === 'home')
   const block = (home?.data?.blocks ?? []).find((b) => b.layout === 'values')
   const own = rows(settings.footerValues)
@@ -62,8 +56,7 @@ export default function SiteFooter({ pages }) {
         words={words.length ? words : undefined}
       />
     </div>
-    <FooterConnect settings={settings} />
-    <FooterSocial settings={settings} />
+    <FooterLinks settings={settings} />
     </>
   )
 }

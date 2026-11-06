@@ -106,9 +106,9 @@ the Tina collections had; the file paths below are the Tina copies:
     `values` (the values in one small line, rendered as `<footer class="section footer">`; while
     Site settings `valuesFooter` is on, the default, `components/SiteFooter.jsx` draws it under every
     page from `footerTitle`/`footerValues`, falling back to the home page's `values` section, and
-    `DynamicPage` leaves `values` sections out of the page; `SiteFooter`'s Connect button carries the
-    Facebook, Instagram and envelope icons, and while that button is off every page but Connect
-    ends with `SocialIcons` instead), `event` (announcement + images). `splash` additionally uses `eyebrow`
+    `DynamicPage` leaves `values` sections out of the page; `SiteFooter` then ends every page but Connect
+    with one row of small buttons: Connect, when `footerConnect` is on, and each social link from
+    `socialItems`, icon plus label, the label dropped under 400px), `event` (announcement + images). `splash` additionally uses `eyebrow`
     (the small tracked line above the heading) and `overlayAlign`
     (`center`/`bottomLeft`/`bottomCenter` — where the text sits on the photo).
   - **`service`** — a bookable offering: `status` (`available`/`coming-soon`), `bookingOptions[]`

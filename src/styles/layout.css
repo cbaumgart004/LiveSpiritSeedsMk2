@@ -763,7 +763,7 @@ body.has-action-bar .first-section {
 /* The AI-training notice under every page (App.jsx). */
 .ai-notice {
   margin: 0;
-  padding: var(--space-2) var(--space-2) var(--space-4);
+  padding: 0.6rem var(--space-2) 0.75rem;
   text-align: center;
   font-family: var(--font-body);
   font-size: 0.72rem;
