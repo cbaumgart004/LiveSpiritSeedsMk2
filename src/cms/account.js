@@ -19,7 +19,12 @@ const TOKEN_KEY = `eotm:token:${SITE}`
 // and takes it out of the address bar), the same hand-off the console's admin
 // page uses. The live address keeps no token, so it never shows Edit site.
 const EDIT_ORIGIN = 'https://preview.spiritseedswellness.com'
+const LIVE_ORIGIN = 'https://spiritseedswellness.com'
 export const isLive = () => /^(www\.)?spiritseedswellness\.com$/.test(location.hostname)
+// The preview address signs in only through the live one: its editor token is
+// handed over from the live session, and signing out here ends that session.
+export const isPreview = () => typeof location !== 'undefined' && location.origin === EDIT_ORIGIN
+const toLive = (hash) => location.assign(`${LIVE_ORIGIN}${location.pathname}#${hash}`)
 if (typeof location !== 'undefined' && isLive()) {
   try {
     if (localStorage.getItem(TOKEN_KEY) || sessionStorage.getItem(TOKEN_KEY)) {
@@ -77,6 +82,12 @@ export async function signOut() {
   forgetEditor()
   setLogin(null)
   await post('/sign-out', {}).catch(() => {})
+  // The live address holds the session; it is ended there (#eotm-signout).
+  if (isPreview()) toLive('eotm-signout')
+}
+// The editor's own Sign out (console App.jsx) asks first; here it is ours.
+if (typeof window !== 'undefined' && isPreview()) {
+  window.addEventListener('eotm:signout', (e) => { e.preventDefault(); signOut() })
 }
 
 // Who is signed in, for the navbar's Welcome and the live address's Edit site
@@ -138,14 +149,63 @@ async function noteRefusal(res) {
 // loader's Edit site button stays while she is signed in (the token lasts 8
 // hours, the session up to 7 days). On the live address she gets the site's
 // own Edit site button, which hands her to the preview address.
+//
+// The preview address has no sign-in of its own after a hand-off, only the
+// editor token, so the token counts as signed in there. When it runs out the
+// owner is sent to the live address with #eotm-renew, where her session (up
+// to 7 days) trades for a fresh token and hands her straight back; with no
+// session there she is asked to sign in. Each address keeps its own sign-in,
+// so carrying it over is the only way to keep it.
+const HANDED = 'ss:handed'
+const RENEWING = 'ss:renewing'
 export async function restoreLogin() {
-  if (!hinted()) return
+  if (isLive()) return restoreLive()
+  if (hasEditor()) {
+    try { localStorage.setItem(HANDED, '1'); sessionStorage.removeItem(RENEWING) } catch { /* private mode */ }
+    return setLogin({ ...tokenLogin(), editor: true })
+  }
+  // Anywhere but the preview address (a dev server): its own session, as before.
+  if (!isPreview()) {
+    const who = hinted() ? await currentLogin() : null
+    if (who) return setLogin({ ...who, editor: await claimEditor(who.jwt) })
+  }
+  // Handed off before and run out: renew on the live address, once a minute at most.
+  let handed = false
+  try {
+    handed = localStorage.getItem(HANDED) === '1' && Date.now() - Number(sessionStorage.getItem(RENEWING) ?? 0) > 60_000
+    if (handed) { sessionStorage.setItem(RENEWING, String(Date.now())); localStorage.removeItem(HANDED) }
+  } catch { /* private mode */ }
+  if (handed) return toLive('eotm-renew')
+  setLogin(null)
+}
+async function restoreLive() {
+  // Signed out on the preview address: end the session here too.
+  if (/(?:^#|&)eotm-signout/.test(location.hash)) {
+    history.replaceState(history.state, '', location.pathname + location.search)
+    return signOut()
+  }
+  const renew = /(?:^#|&)eotm-renew/.test(location.hash)
+  if (renew) history.replaceState(history.state, '', location.pathname + location.search)
+  if (!renew && !hinted()) return
   const who = await currentLogin()
-  if (!who) return setLogin(null)
-  let editor = false
-  if (isLive()) editor = await edits(who.jwt)
-  else editor = hasEditor() || (await claimEditor(who.jwt))
+  if (!who) {
+    setLogin(null)
+    if (renew) openAccount({ mode: 'in' })
+    return
+  }
+  const editor = await edits(who.jwt)
   setLogin({ ...who, editor })
+  if (renew && editor) await claimEditor(who.jwt)
+}
+// Who the editor token names (its email), for the Welcome line on the preview address.
+function tokenLogin() {
+  try {
+    const token = localStorage.getItem(TOKEN_KEY) ?? sessionStorage.getItem(TOKEN_KEY)
+    const p = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')))
+    return { email: p.email ?? null, name: '', jwt: null }
+  } catch {
+    return { email: null, name: '', jwt: null }
+  }
 }
 export const openEditor = () => (login?.jwt ? claimEditor(login.jwt) : Promise.resolve(false))
 
@@ -190,6 +250,7 @@ export function hasEditor() {
 
 function forgetEditor() {
   try {
+    localStorage.removeItem(HANDED)
     localStorage.removeItem(TOKEN_KEY)
     sessionStorage.removeItem(TOKEN_KEY)
   } catch { /* private mode */ }
@@ -216,5 +277,7 @@ export const resetPassword = (token, newPassword) => post('/reset-password', { t
 // AccountModal, mounted once in App, answers. mode: 'in' | 'up' | 'reset'.
 export const ACCOUNT_EVENT = 'ss:account'
 export function openAccount(detail = {}) {
+  // Signed out on the preview address: sign in on the live one, which hands back.
+  if (isPreview() && !hasEditor() && detail.mode !== 'reset') return toLive('eotm-renew')
   window.dispatchEvent(new CustomEvent(ACCOUNT_EVENT, { detail }))
 }
