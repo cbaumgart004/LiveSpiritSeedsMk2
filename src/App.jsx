@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom'
 import DynamicPage from './pages/DynamicPage'
+import ConnectPage from './pages/ConnectPage'
 import ClassStyles from './components/cms/ClassStyles'
 import ScrollToTop from './components/ScrollToTop'
 import PreviewBar from './components/PreviewBar'
@@ -82,6 +83,7 @@ function App() {
         <Route path="/preview" element={<ToEditor />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/" element={<DynamicPage />} />
+        <Route path="/connect" element={<ConnectPage />} />
         <Route path="/:slug" element={<DynamicPage />} />
       </Routes>
       {/* Site-wide, under every page: the human-readable half of the AI-training
