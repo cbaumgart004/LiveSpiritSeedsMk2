@@ -11,11 +11,13 @@
 // With "When the page scrolls" on "over" (the default) the page slides up over
 // the show: once its middle reaches the middle of the screen it stays there,
 // at 80% opacity, while the blocks after it (raised above it in slideshow.css)
-// scroll over it. The opening card (the block just before the show) stops one
-// gap under the fixed bars and waits there until the next card arrives one gap
-// under it; then the two scroll on together, so the cards close up rather than
-// leaving the show's height of empty page. Reduced motion keeps it all in the
-// page flow.
+// scroll over it. The opening card (the block just before the show) scrolls
+// up as usual until the show is held, then stops where it is, one gap above the
+// show, while the next card slides up over the show; once that card is one gap
+// under it the two scroll on together, so the cards close up rather than
+// leaving the show's height of empty page. That joining is the page layout's
+// "Cards around a slideshow" (data-cards on <main>); 'apart' leaves the cards
+// where they are. Reduced motion keeps it all in the page flow.
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Elements from './Elements'
 import { altOf, imageStyle, srcOf } from './photo'
@@ -106,16 +108,14 @@ export default function Slideshow({ block, className, marks, frame }) {
       el.style.opacity = d ? '0.8' : ''
       // Mark the sections after the show that overlap it where it is held;
       // slideshow.css makes only those see-through.
-      // The opening card: held at the bars plus one gap until the next card
-      // is one gap under it, then kept that gap above the next card.
-      if (next) {
+      // The opening card: held with the show (by the same d) until the next
+      // card is one gap under it, then kept that gap above the next card.
+      if (next && d && el.closest('[data-cards]')?.dataset.cards !== 'apart') {
         // The page's own gap, as laid out between the show and the next card
         // (16px on a desktop, 12px on a phone).
         const n = next.getBoundingClientRect().top
         const gap = Math.max(0, n - block.getBoundingClientRect().bottom) || 16
-        const clear = (document.querySelector('.services-strip')?.getBoundingClientRect().bottom ?? 0) + gap
-        const a = prev.getBoundingClientRect()
-        const hold = Math.max(0, Math.min(clear - a.top, n - gap - a.bottom))
+        const hold = Math.max(0, Math.min(d, n - gap - prev.getBoundingClientRect().bottom))
         prev.style.transform = hold ? `translate3d(0, ${hold}px, 0)` : ''
       }
       const top = r.top + d

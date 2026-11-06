@@ -107,6 +107,8 @@ export function usePageLayout(path, keys) {
     for (const key of keys) if (!out.some((b) => b.key === key)) out.push({ key, span: 12 })
     // Which console document a block opens for click-to-edit.
     out.docId = doc?.id ?? null
+    // Cards around a slideshow (Slideshow.jsx): 'join' unless set to 'apart'.
+    out.cards = doc?.data?.cards === 'apart' ? 'apart' : 'join'
     return out
   }, [docs, path, keys])
 }
