@@ -108,7 +108,7 @@ the Tina collections had; the file paths below are the Tina copies:
     page from `footerTitle`/`footerValues`, falling back to the home page's `values` section, and
     `DynamicPage` leaves `values` sections out of the page; `SiteFooter` then ends every page but Connect
     with one row of small buttons: Connect, when `footerConnect` is on, and each social link from
-    `socialItems`, icon plus label, the label dropped under 400px; spread with space-between across the cards' width), `event` (announcement + images). `splash` additionally uses `eyebrow`
+    `socialItems`, icon plus label, the label dropped under 400px; spread with space-between across the cards' width), and under that a centered Home button on every page but home, Connect included, `event` (announcement + images). `splash` additionally uses `eyebrow`
     (the small tracked line above the heading) and `overlayAlign`
     (`center`/`bottomLeft`/`bottomCenter` — where the text sits on the photo).
   - **`service`** — a bookable offering: `status` (`available`/`coming-soon`), `bookingOptions[]`
@@ -481,7 +481,9 @@ each edge and centred on the bar.
   `localStorage`). While it shows, `body.has-promo` moves the fixed-bar clearance from the first
   section onto the banner. It has a section's width, corners and shadow and no border; its title is set like a card heading
   (`.panel h2`: `--font-subheading`, `--primary-color`, `--outline-shadow`), smaller; its badge is the season's `--primary-color`; the link is the
-  site's own `.btn` (gradient that shifts on hover).
+  site's own `.btn` (gradient that shifts on hover). It fades up on load, and a white sweep crosses it every
+  8s; the sweep is `::after` at `z-index: 0` under `.promo__inner` at `z-index: 1` (at `-1` WebKit
+  painted it under the banner's own background, where it never showed). Reduced motion drops both.
 - **Slideshow** (`slideshow` block, `cms/Slideshow.jsx`, `styles/slideshow.css`): the block's
   `media` photos and videos (a photos field with `video: true`; a video item carries
   `kind: 'video'`). Crossfades (2.5s) every `seconds`; inside the frame the picture moves slower than the page; a video plays muted and moves on when it ends;
@@ -495,8 +497,13 @@ each edge and centred on the bar.
   its inner parallax. Sticky
   was rejected: a block sits in its own grid row, which would leave it nothing to stick in.
   Until Home has a Slideshow section of its own, `DynamicPage.jsx` shows one under the opening
-  section, not editable, of four site photos (`PLACEHOLDER_MEDIA`); a slideshow with no media
-  shows the same four. Verified headlessly with a test section injected into Home.
+  section, of four site photos (`PLACEHOLDER_MEDIA`, `cms/placeholderMedia.js`); a slideshow with no media
+  shows the same four. Verified headlessly with a test section injected into Home. In the console
+  the placeholder carries `data-eotm-add` (`Blocks.jsx` `addable`): tapping it adds a real Slideshow
+  after the opening section, seeded with those four, opened at its photos, where "Add photos or videos"
+  is a file input that iOS offers as the photo library (console 1.17.0; verified in the console demo,
+  **unverified** on a real iPhone). The page layout puts a section it does not list yet after the one
+  before it in the page, not at the end (`site.js` `usePageLayout`).
 - **Next class and event banner** (`nextUp` block, `cms/NextUp.jsx`): the class the owner typed, or
   with no class name the next class on the teaching schedule; below it the earliest `event`
   document dated today or later. With no such event that half is hidden on the site and shown

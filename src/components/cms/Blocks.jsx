@@ -20,6 +20,7 @@ import TaglineArt from '../TaglineArt'
 import CustomSection from './CustomSection'
 import NextUp from './NextUp'
 import Slideshow from './Slideshow'
+import { PLACEHOLDER_MEDIA } from './placeholderMedia'
 import NewsletterForm from '../NewsletterForm'
 import { srcOf, altOf, imageStyle } from './photo'
 import { useSchema } from '../../cms/site'
@@ -47,6 +48,23 @@ function editable(doc, block, extraStyle) {
     'data-eotm-max': 100,
     'data-eotm-centered': '',
     style,
+  }
+}
+
+// The placeholder slideshow (DynamicPage) as the console sees it: selecting it
+// adds a Slideshow section of her own after the opening one (`first`), filled
+// with the same four photos, and opens it at its photos (data-eotm-add, the
+// console's Arrange.jsx), so "Add photos" takes her photo library from there.
+function addable(doc, blocks, first) {
+  if (!doc) return {}
+  const at = first ? (blocks ?? []).indexOf(first) + 1 : 0
+  return {
+    'data-eotm-edit': `page:${doc}`,
+    'data-eotm-label': 'slideshow',
+    'data-eotm-add': 'slideshow',
+    'data-eotm-at': at,
+    'data-eotm-field': 'media',
+    'data-eotm-seed': JSON.stringify({ media: PLACEHOLDER_MEDIA }),
   }
 }
 
@@ -766,7 +784,7 @@ export default function Blocks({ blocks, doc, layout = null, placeholder = null 
           case 'nextUp':
             return scaled(<NextUp key={key} block={block} className={sectionClass('section section--stack', null, isFirst, block)} marks={editable(doc, block)} frame={frameOf(block)} />)
           case 'slideshow':
-            return scaled(<Slideshow key={key} block={block} className={sectionClass('section section--stack', null, isFirst, block)} marks={editable(block === placeholder ? null : doc, block)} frame={frameOf(block)} />)
+            return scaled(<Slideshow key={key} block={block} className={sectionClass('section section--stack', null, isFirst, block)} marks={block === placeholder ? addable(doc, blocks, ordered[0]) : editable(doc, block)} frame={frameOf(block)} />)
           default: {
             const def = schema?.blocks?.[block._type]
             if (!def) return null
