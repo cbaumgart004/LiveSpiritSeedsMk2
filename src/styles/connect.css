@@ -149,3 +149,16 @@
   justify-content: center;
   margin: var(--space-4) auto;
 }
+.footer-connect__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.footer-connect__icons {
+  display: inline-flex;
+  gap: 0.35rem;
+}
+.footer-connect__icons svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}

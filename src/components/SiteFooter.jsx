@@ -6,7 +6,7 @@
 // (DynamicPage), so the values appear once, at the foot.
 import { Link, useLocation } from 'react-router-dom'
 import ValuesSection from './ValuesSection/ValuesSection'
-import SocialIcons from './SocialIcons'
+import SocialIcons, { ConnectIcons } from './SocialIcons'
 import { useSettings } from '../cms/site'
 
 export const valuesFooterOn = (settings) => settings.valuesFooter !== false
@@ -16,22 +16,27 @@ const rows = (words) => (words || [])
   .filter((w) => w?.text)
 
 // Site settings "Connect button in the footer": a button to the Connect page
-// under the values, on every page but the Connect page itself.
+// under the values, on every page but the Connect page itself, showing the
+// Facebook, Instagram and envelope icons of the Connect page.
 function FooterConnect({ settings }) {
   const { pathname } = useLocation()
   if (settings.footerConnect !== true || pathname === '/connect') return null
   return (
     <div className="footer-connect" data-eotm-edit="settings:settings" data-eotm-label="footer button" data-eotm-field="footerConnect">
-      <Link className="btn" to="/connect">{settings.connectLabel || 'Connect'}</Link>
+      <Link className="btn footer-connect__btn" to="/connect">
+        <ConnectIcons className="footer-connect__icons" />
+        {settings.connectLabel || 'Connect'}
+      </Link>
     </div>
   )
 }
 
 // Her social icons (SocialIcons.jsx) as the last thing on every page but the
-// Connect page, which shows them itself.
+// Connect page, which shows them itself, while the footer Connect button
+// (which carries the same icons) is off.
 function FooterSocial({ settings }) {
   const { pathname } = useLocation()
-  if (pathname === '/connect') return null
+  if (pathname === '/connect' || settings.footerConnect === true) return null
   return (
     <footer className="site-footer" data-eotm-edit="settings:settings" data-eotm-label="social links" data-eotm-field="instagramUrl">
       <SocialIcons settings={settings} />

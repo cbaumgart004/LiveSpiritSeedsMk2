@@ -24,6 +24,11 @@ const ICONS = {
   ),
 }
 
+// The three icons alone, for the footer Connect button (SiteFooter.jsx).
+export function ConnectIcons({ className }) {
+  return <span className={className} aria-hidden="true">{ICONS.facebook}{ICONS.instagram}{ICONS.mail}</span>
+}
+
 export function socialItems(settings) {
   return [
     settings.showFacebook === true && settings.facebookUrl && { key: 'facebook', label: 'Facebook', href: settings.facebookUrl },
