@@ -29,5 +29,8 @@
   "instagramUrl": "https://www.instagram.com/melissa.spiritseedswellness/",
   "navConnect": true,
   "footerConnect": true,
-  "newsletterFormId": "7800435"
+  "newsletterFormId": "7800435",
+  "footerCardTitle": "Connect With Us",
+  "newsletterLabel": "Newsletter",
+  "reviewLabel": "Add a Review"
 }

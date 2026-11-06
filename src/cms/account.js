@@ -59,13 +59,81 @@ export async function currentLogin() {
   }
 }
 
-export const signIn = (email, password) => post('/sign-in/email', { email, password })
-export const signUp = (name, email, password) => post('/sign-up/email', { name: name || email.split('@')[0], email, password })
+// keep: "Keep me signed in". Better Auth's rememberMe: true keeps the session
+// cookie for the auth server's session length (7 days by Better Auth's default;
+// UNVERIFIED what Neon Auth sets), false ends it when the browser closes.
+export async function signIn(email, password, keep = true) {
+  const r = await post('/sign-in/email', { email, password, rememberMe: keep })
+  keepHint(keep)
+  return r
+}
+export async function signUp(name, email, password, keep = true) {
+  const r = await post('/sign-up/email', { name: name || email.split('@')[0], email, password, rememberMe: keep })
+  keepHint(keep)
+  return r
+}
 
 export async function signOut() {
   forgetEditor()
+  setLogin(null)
   await post('/sign-out', {}).catch(() => {})
 }
+
+// Who is signed in, for the navbar's Welcome and the live address's Edit site
+// button: { name, editor } or null. A hint in storage (localStorage when kept,
+// else this tab's sessionStorage) says a session may exist, so a visitor who
+// never signed in costs no request to the auth server on page load.
+const HINT = 'ss:login'
+export const LOGIN_EVENT = 'ss:login'
+let login = null
+function keepHint(keep) {
+  try {
+    localStorage.removeItem(HINT)
+    sessionStorage.removeItem(HINT)
+    ;(keep ? localStorage : sessionStorage).setItem(HINT, '1')
+  } catch { /* private mode */ }
+}
+function hinted() {
+  try { return localStorage.getItem(HINT) === '1' || sessionStorage.getItem(HINT) === '1' } catch { return false }
+}
+export function getLogin() { return login }
+export function setLogin(next) {
+  login = next
+  if (!next) {
+    try { localStorage.removeItem(HINT); sessionStorage.removeItem(HINT) } catch { /* private mode */ }
+  }
+  window.dispatchEvent(new CustomEvent(LOGIN_EVENT, { detail: next }))
+}
+export const firstName = (who) => {
+  const name = String(who?.name ?? '').trim()
+  // A name made from the email (sign-up without one) is not a name.
+  if (!name || (who.email && name === who.email.split('@')[0])) return ''
+  return name.split(/\s+/)[0]
+}
+
+// Whether this login edits the site, without keeping a token (the live
+// address keeps none; its Edit site button asks claimEditor for the hand-off).
+async function edits(jwt) {
+  if (!jwt) return false
+  const res = await fetch(`${CONSOLE_API}/handoff`, { method: 'POST', headers: { authorization: `Bearer ${jwt}` } }).catch(() => null)
+  return Boolean(res?.ok)
+}
+
+// On every page load with a hint: the session is checked once. On the preview
+// address an owner's expired editor token is traded for a new one, so the
+// loader's Edit site button stays while she is signed in (the token lasts 8
+// hours, the session up to 7 days). On the live address she gets the site's
+// own Edit site button, which hands her to the preview address.
+export async function restoreLogin() {
+  if (!hinted()) return
+  const who = await currentLogin()
+  if (!who) return setLogin(null)
+  let editor = false
+  if (isLive()) editor = await edits(who.jwt)
+  else editor = hasEditor() || (await claimEditor(who.jwt))
+  setLogin({ ...who, editor })
+}
+export const openEditor = () => (login?.jwt ? claimEditor(login.jwt) : Promise.resolve(false))
 
 // The loader shows its Edit site button while this browser holds an editor
 // token; it rereads on a storage event, which another tab's write fires and

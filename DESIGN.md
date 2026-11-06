@@ -106,9 +106,12 @@ the Tina collections had; the file paths below are the Tina copies:
     `values` (the values in one small line, rendered as `<footer class="section footer">`; while
     Site settings `valuesFooter` is on, the default, `components/SiteFooter.jsx` draws it under every
     page from `footerTitle`/`footerValues`, falling back to the home page's `values` section, and
-    `DynamicPage` leaves `values` sections out of the page; `SiteFooter` then ends every page but Connect
-    with one row of small buttons: Connect, when `footerConnect` is on, and each social link from
-    `socialItems`, icon plus label, the label dropped under 400px; spread with space-between across the cards' width), and under that a centered Home button on every page but home, Connect included, `event` (announcement + images). `splash` additionally uses `eyebrow`
+    `DynamicPage` leaves `values` sections out of the page; above the values, on every page but Connect,
+    `SiteFooter` draws the **Connect With Us** card (`ConnectCard`, on the season's watercolor under a
+    pale wash): `footerCardTitle` at the left, then in the same row Newsletter (`newsletterLabel`, to
+    `/connect`, when `footerConnect` is on), each social link from `socialItems` and **Add a Review**
+    (`reviewLabel`), shown once `reviewUrl` holds her Google Business Profile review link, so a review
+    is written on Google itself; under 640px the social and review buttons keep only their icon), and under the values a centered Home button on every page but home, Connect included, `event` (announcement + images). `splash` additionally uses `eyebrow`
     (the small tracked line above the heading) and `overlayAlign`
     (`center`/`bottomLeft`/`bottomCenter` — where the text sits on the photo).
   - **`service`** — a bookable offering: `status` (`available`/`coming-soon`), `bookingOptions[]`
@@ -459,6 +462,15 @@ each edge and centred on the bar.
   through Neon Auth at `/_edit/auth` on the site's own address; then `POST <console>/handoff` asks
   whether that login edits the site. A member gets an editor token (kept where the loader reads it)
   and **Edit site**; anyone else is a signed-in visitor.
+- **Staying signed in** (`SignedIn.jsx`, `restoreLogin` in `cms/account.js`): sign-in and sign-up
+  carry **Keep me signed in** (`rememberMe` to Better Auth; on by default). A hint `ss:login` in
+  localStorage (kept) or sessionStorage (this tab) says a session may exist, so a visitor who never
+  signed in costs no auth request; the preview address checks without one. On load the session is
+  read once: on preview an owner whose 8-hour editor token ran out gets a new one, so the loader's
+  Edit site stays for the session's life; on live she gets the site's own Edit site pill, which hands
+  her to preview. The navbar shows **Welcome, {first name}** under the title for every signed-in
+  login (`Welcome`, from Neon's `user.name`). **Unverified:** the session length Neon Auth gives a
+  kept login (Better Auth's default is 7 days) and whether it honors `rememberMe: false`.
 - **Editing happens on the preview address.** A member who signs in on the live address is sent to
   the preview address with the editor token in `#eotm-token=` (the console's own hand-off; the loader
   keeps it and strips it from the address bar), and the live address forgets any token it holds, so it

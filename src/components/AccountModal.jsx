@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react'
 import Modal from './Modal'
 import PasswordField from './PasswordField'
 import {
-  ACCOUNT_EVENT, claimEditor, currentLogin, hasEditor, isLive, requestReset, signIn, signOut, signUp,
+  ACCOUNT_EVENT, claimEditor, currentLogin, hasEditor, isLive, requestReset, setLogin as announce, signIn, signOut, signUp,
 } from '../cms/account'
 
 const TITLES = { in: 'Welcome back', up: 'Create an account', reset: 'Can’t log in?' }
@@ -46,8 +46,9 @@ function AccountForm({ mode, setMode, email, notice, onSignedIn }) {
         setSent(f.get('email'))
         return
       }
-      if (mode === 'in') await signIn(f.get('email'), f.get('password'))
-      else await signUp(f.get('name'), f.get('email'), f.get('password'))
+      const keep = f.get('keep') === 'on'
+      if (mode === 'in') await signIn(f.get('email'), f.get('password'), keep)
+      else await signUp(f.get('name'), f.get('email'), f.get('password'), keep)
       await onSignedIn()
     } catch (err) {
       setError(err.message)
@@ -91,6 +92,12 @@ function AccountForm({ mode, setMode, email, notice, onSignedIn }) {
           <PasswordField label="Confirm password" name="confirm" autoComplete="new-password" />
         </>
       )}
+      {mode !== 'reset' && (
+        <label className="account__keep">
+          <input type="checkbox" name="keep" defaultChecked />
+          <span>Keep me signed in for 7 days</span>
+        </label>
+      )}
       {error && <p className="newsletter__note newsletter__note--error" role="alert">{error}</p>}
       <button className="btn" type="submit" disabled={busy}>
         {busy ? 'One moment…' : mode === 'in' ? 'Sign in' : mode === 'up' ? 'Create account' : 'Send the link'}
@@ -116,7 +123,9 @@ export default function AccountModal() {
   async function refresh({ claim = !isLive() } = {}) {
     const who = await currentLogin()
     setLogin(who)
-    if (who && claim && !hasEditor()) await claimEditor(who.jwt)
+    let editor = hasEditor()
+    if (who && claim && !editor) editor = await claimEditor(who.jwt)
+    if (who) announce({ ...who, editor })
   }
   const [editing, setEditing] = useState('')
 

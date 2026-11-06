@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import styles from './Nav.module.css'
 import Hamburger from './Hamburger'
 import AccountButton from './AccountButton'
+import { Welcome } from './SignedIn'
 import { hrefForSlug, navLinks, useDocuments, useSettings } from '../cms/site'
 import { useUiStyle } from '../utils/useUiStyle'
 import { srcOf } from './cms/photo'
@@ -70,6 +71,9 @@ function Nav() {
           </div>
 
           <h1 className={styles.title} data-eotm-field="siteTitle" data-eotm-text="siteTitle" {...frame.part('title')}>{siteTitle}</h1>
+
+          {/* Signed in: Welcome and her first name, under the title (SignedIn.jsx). */}
+          <Welcome className={styles.welcome} />
 
           {showInlineMenu && (
             <ul className={styles.inlineMenu} {...frame.part('menu')}>

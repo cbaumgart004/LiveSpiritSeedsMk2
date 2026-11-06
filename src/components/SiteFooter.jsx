@@ -15,13 +15,53 @@ const rows = (words) => (words || [])
   .map((w) => (typeof w === 'string' ? { text: w } : w))
   .filter((w) => w?.text)
 
-// One row of small buttons under the values, on every page but Connect (which
-// shows its own): Connect (Site settings "Connect button in the footer") and
-// each social link she has switched on (SocialIcons.jsx socialItems). Under
-// it, on every page but Home, a Home button back to the start.
-function FooterLinks({ settings }) {
+const REVIEW_ICON = (
+  <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z" />
+  </svg>
+)
+
+// The Connect With Us card, above the values on every page but Connect (which
+// shows its own): one row with the heading at the left, then Newsletter (Site
+// settings "Newsletter button in the footer", to /connect), each social link
+// she has switched on (SocialIcons.jsx socialItems) and Add a Review, which
+// opens her Google review link (reviewUrl) so the review lands on her Google
+// Business Profile. The card's ground is the season's watercolor.
+function ConnectCard({ settings }) {
   const { pathname } = useLocation()
-  const home = pathname !== '/' && (
+  if (pathname === '/connect') return null
+  const social = socialItems(settings)
+  const newsletter = settings.footerConnect === true
+  const review = settings.reviewUrl
+  if (!newsletter && !social.length && !review) return null
+  return (
+    <footer className="connect-card" data-eotm-edit="settings:settings" data-eotm-label="Connect With Us card" data-eotm-field="footerCardTitle">
+      <h2 className="connect-card__title" data-eotm-text="footerCardTitle">{settings.footerCardTitle || 'Connect With Us'}</h2>
+      <div className="connect-card__buttons">
+        {newsletter && <Link className="btn footer-links__btn" to="/connect">{settings.newsletterLabel || 'Newsletter'}</Link>}
+        {social.map((i) => (
+          <a key={i.key} className="btn footer-links__btn" href={i.href} aria-label={i.label}
+            target={i.key === 'mail' ? undefined : '_blank'} rel="noreferrer">
+            <SocialIcon name={i.key} />
+            <span className="footer-links__label">{i.label}</span>
+          </a>
+        ))}
+        {review && (
+          <a className="btn footer-links__btn" href={review} target="_blank" rel="noreferrer" aria-label={settings.reviewLabel || 'Add a Review'}>
+            {REVIEW_ICON}
+            <span className="footer-links__label">{settings.reviewLabel || 'Add a Review'}</span>
+          </a>
+        )}
+      </div>
+    </footer>
+  )
+}
+
+// On every page but Home, a Home button back to the start, under the values.
+function HomeButton() {
+  const { pathname } = useLocation()
+  if (pathname === '/') return null
+  return (
     <nav className="footer-home" aria-label="Back to home">
       <Link className="btn footer-links__btn" to="/">
         <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -31,29 +71,11 @@ function FooterLinks({ settings }) {
       </Link>
     </nav>
   )
-  const social = socialItems(settings)
-  const connect = settings.footerConnect === true
-  if (pathname === '/connect' || (!connect && !social.length)) return home || null
-  return (
-    <>
-    <footer className="footer-links" data-eotm-edit="settings:settings" data-eotm-label="footer links" data-eotm-field="footerConnect">
-      {connect && <Link className="btn footer-links__btn" to="/connect">{settings.connectLabel || 'Connect'}</Link>}
-      {social.map((i) => (
-        <a key={i.key} className="btn footer-links__btn" href={i.href} aria-label={i.label}
-          target={i.key === 'mail' ? undefined : '_blank'} rel="noreferrer">
-          <SocialIcon name={i.key} />
-          <span className="footer-links__label">{i.label}</span>
-        </a>
-      ))}
-    </footer>
-    {home}
-    </>
-  )
 }
 
 export default function SiteFooter({ pages }) {
   const { settings } = useSettings()
-  if (!valuesFooterOn(settings)) return <FooterLinks settings={settings} />
+  if (!valuesFooterOn(settings)) return <><ConnectCard settings={settings} /><HomeButton /></>
   const home = pages.find((p) => p.slug === 'home')
   const block = (home?.data?.blocks ?? []).find((b) => b.layout === 'values')
   const own = rows(settings.footerValues)
@@ -62,6 +84,7 @@ export default function SiteFooter({ pages }) {
   const words = own.length ? own : rows(block?.words).map(({ text }) => ({ text }))
   return (
     <>
+    <ConnectCard settings={settings} />
     <div data-eotm-edit="settings:settings" data-eotm-label="values footer" data-eotm-field="footerValues">
       <ValuesSection
         title={settings.footerTitle || block?.title || undefined}
@@ -69,7 +92,7 @@ export default function SiteFooter({ pages }) {
         words={words.length ? words : undefined}
       />
     </div>
-    <FooterLinks settings={settings} />
+    <HomeButton />
     </>
   )
 }
