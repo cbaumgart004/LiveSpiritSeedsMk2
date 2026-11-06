@@ -116,7 +116,21 @@ export const firstName = (who) => {
 async function edits(jwt) {
   if (!jwt) return false
   const res = await fetch(`${CONSOLE_API}/handoff`, { method: 'POST', headers: { authorization: `Bearer ${jwt}` } }).catch(() => null)
+  await noteRefusal(res)
   return Boolean(res?.ok)
+}
+
+// Why the console refused an owner's login, for the account window to say:
+// a member whose password must be changed first, an expired sign-in, the
+// console unreachable. A visitor's refusal ("cannot edit this site") is not one.
+let refusal = ''
+export const editorRefusal = () => refusal
+async function noteRefusal(res) {
+  refusal = ''
+  if (res?.ok) return
+  if (!res) { refusal = 'The editor could not be reached. Please try again.'; return }
+  const msg = (await res.clone().json().catch(() => null))?.message ?? ''
+  if (!/cannot edit this site/i.test(msg)) refusal = msg || `The editor answered ${res.status}.`
 }
 
 // On every page load with a hint: the session is checked once. On the preview
@@ -147,6 +161,7 @@ function tokenChanged() {
 export async function claimEditor(jwt) {
   if (!jwt) return false
   const res = await fetch(`${CONSOLE_API}/handoff`, { method: 'POST', headers: { authorization: `Bearer ${jwt}` } }).catch(() => null)
+  await noteRefusal(res)
   if (!res?.ok) return false
   const { token } = await res.json()
   if (isLive()) {

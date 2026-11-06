@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react'
 import Modal from './Modal'
 import PasswordField from './PasswordField'
 import {
-  ACCOUNT_EVENT, claimEditor, currentLogin, hasEditor, isLive, requestReset, setLogin as announce, signIn, signOut, signUp,
+  ACCOUNT_EVENT, claimEditor, currentLogin, editorRefusal, hasEditor, isLive, requestReset, setLogin as announce, signIn, signOut, signUp,
 } from '../cms/account'
 
 const TITLES = { in: 'Welcome back', up: 'Create an account', reset: 'Can’t log in?' }
@@ -126,6 +126,7 @@ export default function AccountModal() {
     let editor = hasEditor()
     if (who && claim && !editor) editor = await claimEditor(who.jwt)
     if (who) announce({ ...who, editor })
+    return editorRefusal()
   }
   const [editing, setEditing] = useState('')
 
@@ -134,6 +135,7 @@ export default function AccountModal() {
       setMode(e.detail?.mode || 'in')
       setEmail(e.detail?.email || '')
       setNotice(e.detail?.notice || '')
+      setEditing('')
       setLogin(undefined)
       setOpen(true)
       refresh()
@@ -142,9 +144,11 @@ export default function AccountModal() {
     return () => window.removeEventListener(ACCOUNT_EVENT, onAsk)
   }, [])
 
+  // An owner the console turned away stays in the window and is told why.
   async function afterSignIn() {
-    await refresh({ claim: true })
-    setOpen(false)
+    const why = await refresh({ claim: true })
+    if (why) setEditing(why)
+    else setOpen(false)
   }
 
   return (
@@ -161,7 +165,7 @@ export default function AccountModal() {
             {isLive() && (
               <button type="button" className="btn" onClick={async () => {
                 setEditing('')
-                if (!(await claimEditor(login.jwt))) setEditing('This account does not edit the site.')
+                if (!(await claimEditor(login.jwt))) setEditing(editorRefusal() || 'This account does not edit the site.')
               }}>
                 Edit site
               </button>

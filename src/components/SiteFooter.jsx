@@ -27,7 +27,7 @@ const REVIEW_ICON = (
 // settings "Newsletter button in the footer", to /connect), each social link
 // she has switched on (SocialIcons.jsx socialItems) and Add a Review, which
 // opens her Google review link (reviewUrl) so the review lands on her Google
-// Business Profile. The card's ground is the season's watercolor. Above it,
+// Business Profile. The card is a .section band, as Values is. Above it,
 // her reels (Reels.jsx), when she has added any.
 function ConnectCard({ settings }) {
   const { pathname } = useLocation()
@@ -41,7 +41,7 @@ function Card({ settings }) {
   const review = settings.reviewUrl
   if (!newsletter && !social.length && !review) return null
   return (
-    <footer className="connect-card" data-eotm-edit="settings:settings" data-eotm-label="Connect With Us card" data-eotm-field="footerCardTitle">
+    <footer className="section connect-card" data-eotm-edit="settings:settings" data-eotm-label="Connect With Us card" data-eotm-field="footerCardTitle">
       <h2 className="connect-card__title" data-eotm-text="footerCardTitle">{settings.footerCardTitle || 'Connect With Us'}</h2>
       <div className="connect-card__buttons">
         {newsletter && <Link className="btn footer-links__btn" to="/connect">{settings.newsletterLabel || 'Newsletter'}</Link>}
