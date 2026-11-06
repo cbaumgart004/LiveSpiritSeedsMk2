@@ -51,6 +51,13 @@ export async function signOut() {
   await post('/sign-out', {}).catch(() => {})
 }
 
+// The loader shows its Edit site button while this browser holds an editor
+// token; it rereads on a storage event, which another tab's write fires and
+// this tab's does not, so this tab announces its own.
+function tokenChanged() {
+  try { window.dispatchEvent(new StorageEvent('storage', { key: TOKEN_KEY })) } catch { /* old browser: the loader rechecks within a minute */ }
+}
+
 // Asks the console whether this login edits the site. True when it does (and
 // the editor token is now kept), false for a visitor.
 export async function claimEditor(jwt) {
@@ -63,6 +70,7 @@ export async function claimEditor(jwt) {
   } catch {
     sessionStorage.setItem(TOKEN_KEY, token)
   }
+  tokenChanged()
   return true
 }
 
@@ -83,9 +91,8 @@ function forgetEditor() {
     sessionStorage.removeItem(TOKEN_KEY)
   } catch { /* private mode */ }
   window.EOTM?.close?.()
+  tokenChanged()
 }
-
-export const openEditor = () => window.EOTM?.open?.()
 
 // The password link: Neon Auth emails a link back to this site's
 // /reset-password with ?token=. Better Auth renamed the endpoint; try the

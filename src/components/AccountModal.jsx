@@ -1,13 +1,14 @@
 /* eslint-disable react/prop-types */
 // The one account window (mounted in App): sign in, create an account, or ask
-// for a password link; signed in, who you are, Edit site for the site's own
-// editors, and Sign out. Anything can open it with openAccount() from
+// for a password link; signed in, who you are and Sign out. An owner who signs
+// in sees the site as a visitor does plus the loader's Edit site button, the one
+// way into the editor. Anything can open it with openAccount() from
 // src/cms/account.js: the person icon, the newsletter's offer, a reset link.
 import { useEffect, useState } from 'react'
 import Modal from './Modal'
 import PasswordField from './PasswordField'
 import {
-  ACCOUNT_EVENT, claimEditor, currentLogin, hasEditor, openEditor, requestReset, signIn, signOut, signUp,
+  ACCOUNT_EVENT, claimEditor, currentLogin, hasEditor, requestReset, signIn, signOut, signUp,
 } from '../cms/account'
 
 const TITLES = { in: 'Welcome back', up: 'Create an account', reset: 'Can’t log in?' }
@@ -107,7 +108,6 @@ export default function AccountModal() {
   const [notice, setNotice] = useState('')
   // undefined while checking, null when signed out.
   const [login, setLogin] = useState(undefined)
-  const [editor, setEditor] = useState(hasEditor())
 
   async function refresh() {
     const who = await currentLogin()
@@ -115,7 +115,6 @@ export default function AccountModal() {
     // A login that edits this site trades for an editor token once; the
     // console answers a visitor's with 403 and nothing changes.
     if (who && !hasEditor()) await claimEditor(who.jwt)
-    setEditor(hasEditor())
   }
 
   useEffect(() => {
@@ -133,10 +132,7 @@ export default function AccountModal() {
 
   async function afterSignIn() {
     await refresh()
-    if (hasEditor()) {
-      setOpen(false)
-      openEditor()
-    }
+    setOpen(false)
   }
 
   return (
@@ -149,12 +145,7 @@ export default function AccountModal() {
             Signed in as <strong>{login.email}</strong>
           </p>
           <div className="modal__links">
-            {editor && (
-              <button type="button" className="btn" onClick={() => { setOpen(false); openEditor() }}>
-                Edit site
-              </button>
-            )}
-            <button type="button" className="btn" onClick={async () => { await signOut(); setLogin(null); setEditor(false); setMode('in') }}>
+            <button type="button" className="btn" onClick={async () => { await signOut(); setLogin(null); setMode('in') }}>
               Sign out
             </button>
           </div>

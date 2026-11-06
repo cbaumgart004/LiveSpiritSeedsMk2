@@ -7,7 +7,7 @@ A token-efficient map of this repo. Read this first; open source only for the fi
 A static marketing/brochure website for the **Live Spirit Seeds** wellness & massage-therapy
 practice. It's a client-side React SPA — no backend, no database, no auth. Page content is
 **data, not code**: documents in the Edge of the Map console, which the owner edits on the live
-page with `?edit` (ADR 0003), rendered by a single dynamic route (§4). The TinaCMS files under
+page after signing in on the site (ADR 0003, §6 Editing), rendered by a single dynamic route (§4). The TinaCMS files under
 `content/` are the import source and the offline fallback. Adding a page means adding a content file,
 not writing a component.
 
@@ -18,8 +18,9 @@ not writing a component.
   layers (in order) and applies the theme class to `<body>`.
 - Routing lives in `src/App.jsx`.
 - `@` is aliased to `src/` (see `vite.config.js`).
-- Deployed on **Vercel** (`vercel.json`). Production build emits brotli (`.br`) + gzip (`.gz`)
-  compressed assets and sets long-lived immutable cache headers.
+- Deployed on **AWS Amplify** (`customHttp.yml` sets the cache headers). The `preview` branch deploys
+  preview.spiritseedswellness.com, the `production` branch the live address. Production build emits
+  brotli (`.br`) + gzip (`.gz`) compressed assets.
 
 ### Scripts
 - `npm run dev` — Vite dev server on port 5173 (`host: true`, so reachable over LAN/mobile).
@@ -59,11 +60,9 @@ src/
     cms/Blocks.jsx     Renders blocks[] into the CSS primitives (§6)
     Nav.jsx            Nav generated from the CMS page list; Hamburger, ScrollToTop
     TaglineArt.jsx     The "You are Resilient" banner: image layers + real-text lettering (§6)
-    PreviewBar.jsx     Non-destructive style/season preview toolbar (§6 Preview mode)
     ValuesSection/     Reused by the values block
   styles/              Layered global CSS (see §6)
   utils/               buttonFlashHandler.js — global click-flash effect
-                       preview.js — non-destructive style/season preview state (§6)
                        useUiStyle.js — watches the <body> style class (§6 UX styles)
   assets/              Seasonal logos/backgrounds (referenced by CSS themes)
 public/
@@ -86,7 +85,7 @@ Routing is **dynamic** (`src/App.jsx`): content, not code, defines the pages.
 | `/`       | `DynamicPage` → `content/pages/home.json`                     |
 | `/:slug`  | `DynamicPage` → the console Page with that slug (404 panel if missing) |
 
-Adding a page = a new Page in the console (`?edit`); it appears in the nav automatically.
+Adding a page = a new Page in the editor; it appears in the nav automatically.
 `<ScrollToTop>` resets scroll on every route change.
 
 ## 5. Domain model
@@ -178,7 +177,7 @@ console, rendered as-is; the Tina files hold Markdown, converted by `src/cms/mar
 `service` blocks additionally carry their own `status` (coming-soon shows a badge and disables
 booking) and `bookingOptions[]`; each **booking option** (session) can list `addOns[]`, so every
 session gets its own "Book w/ &lt;add-on&gt;" button derived from the referenced service's status
-(owner-editable in the editor (`?edit`); no code flag). Every block has a `showHomeButton` toggle (default on).
+(owner-editable in the editor; no code flag). Every block has a `showHomeButton` toggle (default on).
 New pages/blocks start from `ui.defaultItem` presets rather than a blank form. Reusable setup +
 gotchas, including the block-model design patterns: [TinaCMS Vite playbook](./docs/tinacms-vite-playbook.md) (§8).
 
@@ -189,7 +188,7 @@ hand you a snippet. Two modes: **`url`** renders a themed `<iframe>` (radius/sha
 reads as part of the site under every UI style) — simplest, best for Canva "smart embed" links and
 OfferingTree share URLs; **`code`** renders `RawEmbed`, which sets the snippet as innerHTML **and
 re-executes its `<script>` tags** (a script inserted via innerHTML does not run per spec — this is
-required for Kit's JS form embeds). Empty blocks show an the editor (`?edit`) hint instead of breaking. The
+required for Kit's JS form embeds). Empty blocks show an the editor hint instead of breaking. The
 "Practice With Me" page (`content/pages/practice-with-me.json`) is built from these. OfferingTree has
 no public REST API; embed widgets, Zapier, and Google-Calendar sync are the integration surfaces.
 
@@ -202,7 +201,7 @@ wire contract; everything else (heading, intro, button label, thank-you, fine pr
 Success swaps the form for the thank-you; a non-200, a `status` other than `success`, or a network
 failure surfaces a visible error — a silent failure would cost a subscriber with nobody noticing.
 Only the **form ID** lives in content (`newsletterFormId`), so pointing at a different Kit form is an
-the editor (`?edit`) change.
+the editor change.
 
 > **Why not Kit's own embed?** Same reason as the schedule: Kit's JS embed brings Kit's stylesheet
 > and can only match **one** season, but the season is owner-switchable at runtime (§6), so a
@@ -368,7 +367,7 @@ so two pieces are style-aware in markup rather than CSS alone:
 > (background, borders, display font) stays in `ui-styles.css` via `nav:has(h1)`. Don't try to reach
 > a hashed module class from the global sheet.
 
-Owner-selectable in the editor (`?edit`) (Settings → **UI Style**). Applied like the season: `main.jsx` bakes
+Owner-selectable in the editor (Settings → **UI Style**). Applied like the season: `main.jsx` bakes
 `style-<uiStyle>` onto `<body>` from the build-time Settings import (no flash); `App.jsx` re-applies
 it from the CMS on load via `applyUiStyle` (`cms/site.js`) for live editing. Fonts are imported once
 in `index.css`. **Motion safety:** reveal/parallax live inside a
@@ -392,14 +391,9 @@ SVG swash (a hand-drawn sparkle/underline set would elevate it), and a paper-gra
 optional; `editorial` uses the season's light background flat (a full-bleed hero photo would need a
 hero/media DOM change, not just CSS). None of these block shipping — they're upgrades.
 
-**Preview mode.** A non-destructive way to try a UX style + season on the live content *before*
-publishing — the owner's "preview before going live" for styles (content edits are already previewed
-on-page in the editor (`?edit`)). Opened by URL (`?preview`, or `?style=immersive&season=winter`),
-so ordinary visitors never see it. `utils/preview.js` seeds the choice from those params, holds it in
-`sessionStorage` (survives navigation between pages), and **never writes to the CMS**; `App.jsx`
-applies any override *after* the saved defaults so it wins, and renders `components/PreviewBar.jsx` —
-a tap-friendly bottom toolbar (Style + Season chips) sized for mobile. Exiting restores the saved
-defaults and strips the params. The owner then sets the winner as the real default in the editor (`?edit`).
+**Trying a style or season.** The editor's Season and UX Style fields preview on the page as a
+draft until published, so there is no separate preview mode. The URL preview mode (`?preview`,
+`?style=`, `?season=`, `PreviewBar.jsx`) was retired 2026-11-05 with the other ways in (§6 Editing).
 
 **Global CSS layers.** Loaded in this order in `main.jsx` — order matters for cascade:
 `variables.css` → `themes.css` → `index.css` (base elements) → `layout.css` (shared layout)
@@ -451,9 +445,16 @@ each edge and centred on the bar.
   Auth for a link back to `/reset-password` (`pages/ResetPassword.jsx`). Sign in or create an account
   through Neon Auth at `/_edit/auth` on the site's own address; then `POST <console>/handoff` asks
   whether that login edits the site. A member gets an editor token (kept where the loader reads it)
-  and **Edit site**; anyone else is a signed-in visitor. **Unverified:** Neon Auth answered
-  `INVALID_ORIGIN` for the preview address on 2026-10-03, so sign-in fails until the address is a
-  trusted domain in Neon Auth.
+  and **Edit site**; anyone else is a signed-in visitor.
+- **Editing: one way in.** Sign in on the site (the account button). A member then sees the site as a
+  visitor does plus the loader's **Edit site** button, which opens the editor. `index.html` loads the
+  console loader with `data-entry="sign-in"`, so `?edit`, a remembered edit session and Ctrl+Shift+E
+  open nothing until signed in. `account.js` fires a `storage` event when the token is stored or
+  forgotten, so the button appears or goes at once. `/preview` opens the sign-in window; the preview
+  address is the same site, marked `noindex`. Retired 2026-11-05: the preview address's redirect to
+  the console, the URL preview mode, and the account window's own Edit site button. **Verified
+  2026-11-05 by request:** Neon Auth rejects sign-in from both site addresses with `INVALID_ORIGIN`
+  (403) and accepts the console's, so sign-in fails until both are trusted domains in Neon Auth.
 - **Next class and event banner** (`nextUp` block, `cms/NextUp.jsx`): the class the owner typed, or
   with no class name the next class on the teaching schedule; below it the earliest `event`
   document dated today or later. With no such event that half is hidden on the site and shown
@@ -463,11 +464,11 @@ each edge and centred on the bar.
 
 - **Content, not code, drives availability:** season, UI style (both Settings doc) and
   service/add-on/button status (per `service` block, referenced by name) are owner-editable in
-  the editor (`?edit`). `siteConfig.js` now holds only the `SITE_THEME` + `SITE_UI_STYLE` fallbacks.
+  the editor. `siteConfig.js` now holds only the `SITE_THEME` + `SITE_UI_STYLE` fallbacks.
 - **Season and UI style are two independent axes:** season = color, UI style = structure/type.
   A UI style must never set a color token, so any season works under any look (see §6).
 - **`content/schedule/*.json` is generated** — edit `scripts/lib/schedule-sources.mjs` instead. It is
-  deliberately *not* a Tina collection, so nothing in the editor (`?edit`) can be overwritten by the nightly run.
+  deliberately *not* a Tina collection, so nothing in the editor can be overwritten by the nightly run.
 - **Two styling systems coexist:** global CSS + CSS Modules. Match the component you're editing.
 - **CSS load order is load-bearing** — see §6 before reorganizing style imports.
 - No tests, no TypeScript, no state management library. Keep it simple.
