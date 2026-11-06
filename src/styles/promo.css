@@ -1,6 +1,7 @@
-/* The announcement strip (components/PromoBanner.jsx): the season's deepest
-   color with a gold edge, and a light sweep across it on load and every nine
-   seconds after, none under reduced motion. */
+/* The announcement strip (components/PromoBanner.jsx): the season's
+   watercolor under a tint of its deepest color (so white text reads), a gold
+   edge, and a soft light sweep on load and every twelve seconds after, none
+   under reduced motion. */
 .promo {
   --promo-gold: #d4af37;
   position: relative;
@@ -11,7 +12,10 @@
   width: min(1100px, calc(100% - 2rem));
   padding: 0.85rem 3rem 0.85rem 1.25rem;
   color: #fff;
-  background: linear-gradient(135deg, var(--text-outline-color), color-mix(in srgb, var(--text-outline-color) 78%, #000));
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--text-outline-color) 72%, transparent), color-mix(in srgb, var(--text-outline-color) 50%, transparent)),
+    var(--section-bg-image, none) center / cover,
+    var(--text-outline-color);
   border: 1px solid var(--promo-gold);
   border-left-width: 4px;
   border-radius: 10px;
@@ -22,14 +26,14 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(105deg, transparent 35%, rgb(255 236 170 / 0.28) 50%, transparent 65%);
+  background: linear-gradient(105deg, transparent 35%, rgb(255 236 170 / 0.16) 50%, transparent 65%);
   transform: translateX(-100%);
-  animation: promo-shimmer 9s ease-in-out 0.6s infinite;
+  animation: promo-shimmer 12s ease-in-out 0.8s infinite;
   pointer-events: none;
 }
 @keyframes promo-shimmer {
   0% { transform: translateX(-100%); }
-  18%, 100% { transform: translateX(100%); }
+  25%, 100% { transform: translateX(100%); }
 }
 @media (prefers-reduced-motion: reduce) {
   .promo::after { animation: none; display: none; }

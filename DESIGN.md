@@ -464,7 +464,7 @@ each edge and centred on the bar.
   section onto the banner.
 - **Slideshow** (`slideshow` block, `cms/Slideshow.jsx`, `styles/slideshow.css`): the block's
   `media` photos and videos (a photos field with `video: true`; a video item carries
-  `kind: 'video'`). Crossfades every `seconds`; a video plays muted and moves on when it ends;
+  `kind: 'video'`). Crossfades (2.5s) every `seconds`; inside the frame the picture moves slower than the page; a video plays muted and moves on when it ends;
   pauses on mouse hover, focus or a tap; swipe and dots move it; never advances under reduced
   motion. Only the showing and next slides load. With `scroll` "over" (the default) the media
   drifts down at half the scroll speed and fades to 15%, while the blocks after it and the footer

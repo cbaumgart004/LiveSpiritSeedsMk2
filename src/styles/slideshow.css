@@ -1,5 +1,5 @@
 /* The slideshow block (components/cms/Slideshow.jsx): slides stacked in one
-   frame, the one showing faded in over 1.2s; no fade under reduced motion. */
+   frame, the one showing faded in over 2.5s; no fade under reduced motion. */
 .slideshow {
   position: relative;
   overflow: hidden;
@@ -16,12 +16,20 @@
   inset: 0;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 1.2s ease, visibility 0s linear 1.2s;
+  transition: opacity 2.5s ease, visibility 0s linear 2.5s;
 }
 .slideshow__slide.is-on {
   opacity: 1;
   visibility: visible;
-  transition: opacity 1.2s ease, visibility 0s;
+  transition: opacity 2.5s ease, visibility 0s;
+}
+/* The picture is cropped 8% taller than the frame each way so it can move
+   inside it as the page scrolls (Slideshow.jsx sets --shift). */
+.slideshow__media {
+  position: absolute;
+  inset: -8% 0;
+  transform: translate3d(0, calc(var(--shift, 0) * 1%), 0);
+  will-change: transform;
 }
 .slideshow__slide img,
 .slideshow__slide video {

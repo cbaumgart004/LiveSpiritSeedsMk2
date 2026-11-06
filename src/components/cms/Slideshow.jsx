@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 // "Slideshow (photos and videos)": the owner's photos and short videos, one at
-// a time, crossfading every `seconds`. A video plays muted and inline and the
+// a time, crossfading slowly (2.5s) every `seconds`. A video plays muted and inline and the
 // show moves on when it ends. Hovering, focusing or tapping the show pauses it;
 // a swipe on a phone or a dot moves it. Under reduced motion it never moves on
 // its own and a video waits for its play button.
@@ -71,16 +71,21 @@ export default function Slideshow({ block, className, marks, frame }) {
     })
   }, [index, paused, still])
 
-  // The drift and fade, written straight to the element each frame rather than
-  // through React state, so scrolling never re-renders the show.
+  // Written straight to the element each frame rather than through React
+  // state, so scrolling never re-renders the show. Inside the frame the picture
+  // moves slower than the page (--shift, -6 to 6, read by slideshow.css); with
+  // "over" the frame also drifts and fades once it reaches the fixed bars.
   useEffect(() => {
     const el = stage.current
-    if (!over || !el) return undefined
+    if (still || !el) return undefined
     let frame = 0
     const update = () => {
       frame = 0
       el.style.transform = ''
       const r = el.getBoundingClientRect()
+      const p = Math.max(-1, Math.min(1, (r.top + r.height / 2 - innerHeight / 2) / (innerHeight / 2 + r.height / 2)))
+      el.style.setProperty('--shift', (p * 6).toFixed(2))
+      if (!over) return
       const top = document.querySelector('.services-strip')?.getBoundingClientRect().bottom ?? 0
       const d = Math.max(0, top - r.top)
       el.style.transform = d ? `translate3d(0, ${d * 0.5}px, 0)` : ''
@@ -96,8 +101,9 @@ export default function Slideshow({ block, className, marks, frame }) {
       removeEventListener('resize', onScroll)
       el.style.transform = ''
       el.style.opacity = ''
+      el.style.removeProperty('--shift')
     }
-  }, [over, count])
+  }, [over, still, count])
 
   if (!count) return null
 
@@ -127,6 +133,7 @@ export default function Slideshow({ block, className, marks, frame }) {
           return (
             <div key={m._id ?? i} className={`slideshow__slide${on ? ' is-on' : ''}`}
               aria-hidden={!on} role="group" aria-roledescription="slide" aria-label={`${i + 1} of ${count}`}>
+              <div className="slideshow__media">
               {!load ? null : m.kind === 'video' ? (
                 <video ref={(el) => { videos.current[i] = el }} src={srcOf(m)} muted playsInline loop={count === 1}
                   preload={on ? 'auto' : 'metadata'} controls={still} aria-label={altOf(m) || undefined}
@@ -134,6 +141,7 @@ export default function Slideshow({ block, className, marks, frame }) {
               ) : (
                 <img src={srcOf(m)} alt={altOf(m)} style={imageStyle(m)} loading={i === 0 ? 'eager' : 'lazy'} decoding="async" />
               )}
+              </div>
             </div>
           )
         })}
