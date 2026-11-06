@@ -119,7 +119,7 @@ export default function Slideshow({ block, className, marks, frame }) {
   }
 
   return (
-    <section className={`${className}${over ? ' slideshow-stage--over' : ''}`} {...marks}>
+    <section className={`${className} slideshow-stage${over ? ' slideshow-stage--over' : ''}`} {...marks}>
       {block.title && <h2 data-eotm-text="title">{block.title}</h2>}
       <div ref={stage} className="slideshow" {...frame?.wrap}
         style={{ aspectRatio: SHAPES[block.shape] || SHAPES.wide }}

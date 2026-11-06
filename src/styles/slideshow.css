@@ -1,14 +1,29 @@
 /* The slideshow block (components/cms/Slideshow.jsx): slides stacked in one
    frame, the one showing faded in over 2.5s; no fade under reduced motion. */
+/* The section is bare (no watercolor, shadow or side padding) and the frame
+   runs the full width of the screen, as tall as its shape gives but never
+   shorter than 60% of the screen nor taller than the space under the bars. */
+.section.slideshow-stage {
+  padding-inline: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: none;
+}
+.section.slideshow-stage::before {
+  display: none;
+}
+main:has(.slideshow-stage) {
+  overflow-x: clip;
+}
 .slideshow {
   position: relative;
   overflow: hidden;
-  width: 100%;
-  max-width: 1100px;
-  margin-inline: auto;
-  border-radius: 14px;
+  width: 100vw;
+  max-width: none;
+  min-height: 60svh;
+  max-height: calc(100svh - 8rem);
+  margin-inline: calc(50% - 50vw);
   background: color-mix(in srgb, var(--text-outline-color) 85%, #000);
-  box-shadow: 0 6px 24px rgb(0 0 0 / 0.18);
   touch-action: pan-y;
 }
 .slideshow__slide {
@@ -120,6 +135,19 @@ main:has(.slideshow-stage--over) ~ * {
 }
 main:has(.slideshow-stage--over) {
   overflow-y: clip;
+}
+/* What rides over the show is see-through, so the picture shows through the
+   watercolor and the cards; text stays fully opaque. */
+.page-block:has(> .slideshow-stage--over) ~ * .section::before,
+.page-block:has(> .slideshow-stage--over) ~ .section::before,
+.slideshow-stage--over ~ .section::before,
+.slideshow-stage--over ~ * .section::before {
+  opacity: 0.45;
+}
+.page-block:has(> .slideshow-stage--over) ~ * :is(.panel, .card),
+.slideshow-stage--over ~ * :is(.panel, .card),
+.slideshow-stage--over ~ :is(.panel, .card) {
+  background-color: color-mix(in srgb, var(--bg-color-light) 72%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {

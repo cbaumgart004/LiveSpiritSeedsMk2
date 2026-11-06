@@ -468,7 +468,9 @@ each edge and centred on the bar.
   pauses on mouse hover, focus or a tap; swipe and dots move it; never advances under reduced
   motion. Only the showing and next slides load. With `scroll` "over" (the default) the frame holds
   still once its middle reaches the middle of the screen, at 80% opacity, while the blocks after it and the footer
-  (raised by `:has(.slideshow-stage--over)`) slide over it; the page clips it at its end. Sticky
+  (raised by `:has(.slideshow-stage--over)`) slide over it, their watercolor at 45% and cards at
+  72% so the picture shows through; the page clips it at its end. The frame is full screen width
+  with no watercolor behind it, between 60% of the screen tall and the space under the bars. Sticky
   was rejected: a block sits in its own grid row, which would leave it nothing to stick in.
   Until Home has a Slideshow section of its own, `DynamicPage.jsx` shows one under the opening
   section, not editable, of four site photos (`PLACEHOLDER_MEDIA`); a slideshow with no media
