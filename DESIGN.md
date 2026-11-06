@@ -466,8 +466,8 @@ each edge and centred on the bar.
   `media` photos and videos (a photos field with `video: true`; a video item carries
   `kind: 'video'`). Crossfades (2.5s) every `seconds`; inside the frame the picture moves slower than the page; a video plays muted and moves on when it ends;
   pauses on mouse hover, focus or a tap; swipe and dots move it; never advances under reduced
-  motion. Only the showing and next slides load. With `scroll` "over" (the default) the media
-  drifts down at half the scroll speed and fades to 15%, while the blocks after it and the footer
+  motion. Only the showing and next slides load. With `scroll` "over" (the default) the frame holds
+  still once its middle reaches the middle of the screen, at 80% opacity, while the blocks after it and the footer
   (raised by `:has(.slideshow-stage--over)`) slide over it; the page clips it at its end. Sticky
   was rejected: a block sits in its own grid row, which would leave it nothing to stick in.
   Until Home has a Slideshow section of its own, `DynamicPage.jsx` shows one under the opening

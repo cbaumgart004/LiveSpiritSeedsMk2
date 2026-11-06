@@ -9,9 +9,9 @@
 // costs the page nothing until it gets there.
 //
 // With "When the page scrolls" on "over" (the default) the page slides up over
-// the show: once it passes under the fixed bars it drifts down at half the
-// scroll speed and fades to 15%, so the blocks after it (raised above it in
-// slideshow.css) carry on over a faint picture. Reduced motion keeps it still.
+// the show: once its middle reaches the middle of the screen it stays there,
+// at 80% opacity, while the blocks after it (raised above it in slideshow.css)
+// scroll over it. Reduced motion keeps it in the page flow.
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Elements from './Elements'
 import { altOf, imageStyle, srcOf } from './photo'
@@ -74,7 +74,8 @@ export default function Slideshow({ block, className, marks, frame }) {
   // Written straight to the element each frame rather than through React
   // state, so scrolling never re-renders the show. Inside the frame the picture
   // moves slower than the page (--shift, -6 to 6, read by slideshow.css); with
-  // "over" the frame also drifts and fades once it reaches the fixed bars.
+  // "over" the frame holds still at the middle of the screen, and so does the
+  // picture in it.
   useEffect(() => {
     const el = stage.current
     if (still || !el) return undefined
@@ -83,13 +84,13 @@ export default function Slideshow({ block, className, marks, frame }) {
       frame = 0
       el.style.transform = ''
       const r = el.getBoundingClientRect()
-      const p = Math.max(-1, Math.min(1, (r.top + r.height / 2 - innerHeight / 2) / (innerHeight / 2 + r.height / 2)))
+      // How far the frame's middle has passed the middle of the screen.
+      const d = over ? Math.max(0, innerHeight / 2 - (r.top + r.height / 2)) : 0
+      const middle = r.top + d + r.height / 2
+      const p = Math.max(-1, Math.min(1, (middle - innerHeight / 2) / (innerHeight / 2 + r.height / 2)))
       el.style.setProperty('--shift', (p * 6).toFixed(2))
-      if (!over) return
-      const top = document.querySelector('.services-strip')?.getBoundingClientRect().bottom ?? 0
-      const d = Math.max(0, top - r.top)
-      el.style.transform = d ? `translate3d(0, ${d * 0.5}px, 0)` : ''
-      el.style.opacity = d ? String(Math.max(0.15, 1 - (d / r.height) * 0.85)) : ''
+      el.style.transform = d ? `translate3d(0, ${d}px, 0)` : ''
+      el.style.opacity = d ? '0.8' : ''
     }
     const onScroll = () => { if (!frame) frame = requestAnimationFrame(update) }
     update()
