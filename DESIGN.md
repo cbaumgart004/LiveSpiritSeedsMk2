@@ -452,9 +452,25 @@ each edge and centred on the bar.
   open nothing until signed in. `account.js` fires a `storage` event when the token is stored or
   forgotten, so the button appears or goes at once. `/preview` opens the sign-in window; the preview
   address is the same site, marked `noindex`. Retired 2026-11-05: the preview address's redirect to
-  the console, the URL preview mode, and the account window's own Edit site button. **Verified
-  2026-11-05 by request:** Neon Auth rejects sign-in from both site addresses with `INVALID_ORIGIN`
-  (403) and accepts the console's, so sign-in fails until both are trusted domains in Neon Auth.
+  the console, the URL preview mode, and the account window's own Edit site button. Both site addresses are trusted domains in Neon Auth
+  (**verified 2026-11-05 by request:** a wrong password from each answers 401
+  `INVALID_EMAIL_OR_PASSWORD`, no longer 403 `INVALID_ORIGIN`).
+- **Announcement banner** (`components/PromoBanner.jsx`, `styles/promo.css`, rendered by
+  `ActionBar.jsx`): one strip under the services strip on every page, in the page flow, from Site
+  settings `promoOn`, `promoEyebrow`, `promoTitle`, `promoText`, `promoLabel`, `promoUrl`,
+  `promoUntil`; the component's defaults (the OfferingTree memberships) show until she saves her own.
+  Hidden when off, after its end date, or once a visitor closes it (remembered per title in
+  `localStorage`). While it shows, `body.has-promo` moves the fixed-bar clearance from the first
+  section onto the banner.
+- **Slideshow** (`slideshow` block, `cms/Slideshow.jsx`, `styles/slideshow.css`): the block's
+  `media` photos and videos (a photos field with `video: true`; a video item carries
+  `kind: 'video'`). Crossfades every `seconds`; a video plays muted and moves on when it ends;
+  pauses on mouse hover, focus or a tap; swipe and dots move it; never advances under reduced
+  motion. Only the showing and next slides load. With `scroll` "over" (the default) the media
+  drifts down at half the scroll speed and fades to 15%, while the blocks after it and the footer
+  (raised by `:has(.slideshow-stage--over)`) slide over it; the page clips it at its end. Sticky
+  was rejected: a block sits in its own grid row, which would leave it nothing to stick in.
+  **Unverified:** no slideshow content exists yet, so it has been built but not run.
 - **Next class and event banner** (`nextUp` block, `cms/NextUp.jsx`): the class the owner typed, or
   with no class name the next class on the teaching schedule; below it the earliest `event`
   document dated today or later. With no such event that half is hidden on the site and shown

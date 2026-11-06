@@ -19,6 +19,7 @@ import TaglineArt from '../TaglineArt'
 
 import CustomSection from './CustomSection'
 import NextUp from './NextUp'
+import Slideshow from './Slideshow'
 import NewsletterForm from '../NewsletterForm'
 import { srcOf, altOf, imageStyle } from './photo'
 import { useSchema } from '../../cms/site'
@@ -759,6 +760,8 @@ export default function Blocks({ blocks, doc, layout = null }) {
             return scaled(<EmbedBlock key={key} block={block} isFirst={isFirst} doc={doc} />)
           case 'nextUp':
             return scaled(<NextUp key={key} block={block} className={sectionClass('section section--stack', null, isFirst, block)} marks={editable(doc, block)} frame={frameOf(block)} />)
+          case 'slideshow':
+            return scaled(<Slideshow key={key} block={block} className={sectionClass('section section--stack', null, isFirst, block)} marks={editable(doc, block)} frame={frameOf(block)} />)
           default: {
             const def = schema?.blocks?.[block._type]
             if (!def) return null
