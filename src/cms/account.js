@@ -21,6 +21,10 @@ const TOKEN_KEY = `eotm:token:${SITE}`
 const EDIT_ORIGIN = 'https://preview.spiritseedswellness.com'
 const LIVE_ORIGIN = 'https://spiritseedswellness.com'
 export const isLive = () => /^(www\.)?spiritseedswellness\.com$/.test(location.hostname)
+// The preview address signs in only through the live one: its editor token is
+// handed over from the live session, and signing out here ends that session.
+export const isPreview = () => typeof location !== 'undefined' && location.origin === EDIT_ORIGIN
+const toLive = (hash) => location.assign(`${LIVE_ORIGIN}${location.pathname}#${hash}`)
 if (typeof location !== 'undefined' && isLive()) {
   try {
     if (localStorage.getItem(TOKEN_KEY) || sessionStorage.getItem(TOKEN_KEY)) {
@@ -78,6 +82,12 @@ export async function signOut() {
   forgetEditor()
   setLogin(null)
   await post('/sign-out', {}).catch(() => {})
+  // The live address holds the session; it is ended there (#eotm-signout).
+  if (isPreview()) toLive('eotm-signout')
+}
+// The editor's own Sign out (console App.jsx) asks first; here it is ours.
+if (typeof window !== 'undefined' && isPreview()) {
+  window.addEventListener('eotm:signout', (e) => { e.preventDefault(); signOut() })
 }
 
 // Who is signed in, for the navbar's Welcome and the live address's Edit site
@@ -152,21 +162,28 @@ export async function restoreLogin() {
   if (isLive()) return restoreLive()
   if (hasEditor()) {
     try { localStorage.setItem(HANDED, '1'); sessionStorage.removeItem(RENEWING) } catch { /* private mode */ }
-    const who = hinted() ? await currentLogin() : null
-    return setLogin(who ? { ...who, editor: true } : { ...tokenLogin(), editor: true })
+    return setLogin({ ...tokenLogin(), editor: true })
   }
-  const who = hinted() ? await currentLogin() : null
-  if (who) return setLogin({ ...who, editor: await claimEditor(who.jwt) })
+  // Anywhere but the preview address (a dev server): its own session, as before.
+  if (!isPreview()) {
+    const who = hinted() ? await currentLogin() : null
+    if (who) return setLogin({ ...who, editor: await claimEditor(who.jwt) })
+  }
   // Handed off before and run out: renew on the live address, once a minute at most.
   let handed = false
   try {
     handed = localStorage.getItem(HANDED) === '1' && Date.now() - Number(sessionStorage.getItem(RENEWING) ?? 0) > 60_000
     if (handed) { sessionStorage.setItem(RENEWING, String(Date.now())); localStorage.removeItem(HANDED) }
   } catch { /* private mode */ }
-  if (handed) return location.assign(`${LIVE_ORIGIN}${location.pathname}#eotm-renew`)
+  if (handed) return toLive('eotm-renew')
   setLogin(null)
 }
 async function restoreLive() {
+  // Signed out on the preview address: end the session here too.
+  if (/(?:^#|&)eotm-signout/.test(location.hash)) {
+    history.replaceState(history.state, '', location.pathname + location.search)
+    return signOut()
+  }
   const renew = /(?:^#|&)eotm-renew/.test(location.hash)
   if (renew) history.replaceState(history.state, '', location.pathname + location.search)
   if (!renew && !hinted()) return
@@ -260,5 +277,7 @@ export const resetPassword = (token, newPassword) => post('/reset-password', { t
 // AccountModal, mounted once in App, answers. mode: 'in' | 'up' | 'reset'.
 export const ACCOUNT_EVENT = 'ss:account'
 export function openAccount(detail = {}) {
+  // Signed out on the preview address: sign in on the live one, which hands back.
+  if (isPreview() && !hasEditor() && detail.mode !== 'reset') return toLive('eotm-renew')
   window.dispatchEvent(new CustomEvent(ACCOUNT_EVENT, { detail }))
 }
