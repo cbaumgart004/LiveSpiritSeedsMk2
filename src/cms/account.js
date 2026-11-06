@@ -24,7 +24,8 @@ export const isLive = () => /^(www\.)?spiritseedswellness\.com$/.test(location.h
 // The preview address signs in only through the live one: its editor token is
 // handed over from the live session, and signing out here ends that session.
 export const isPreview = () => typeof location !== 'undefined' && location.origin === EDIT_ORIGIN
-const toLive = (hash) => location.assign(`${LIVE_ORIGIN}${location.pathname}#${hash}`)
+// replace: Back from the live sign-in does not land on a page that leaves again.
+const toLive = (hash) => location.replace(`${LIVE_ORIGIN}${location.pathname}#${hash}`)
 if (typeof location !== 'undefined' && isLive()) {
   try {
     if (localStorage.getItem(TOKEN_KEY) || sessionStorage.getItem(TOKEN_KEY)) {
@@ -160,6 +161,10 @@ const HANDED = 'ss:handed'
 const RENEWING = 'ss:renewing'
 export async function restoreLogin() {
   if (isLive()) return restoreLive()
+  // A token arriving in the address counts now: the loader (async) may not
+  // have kept it yet, and sending her back to renew would cost a round trip.
+  const arriving = location.hash.match(/(?:^#|&)eotm-token=([\w.-]+)/)
+  if (arriving) try { localStorage.setItem(TOKEN_KEY, arriving[1]) } catch { /* private mode: the loader keeps it in this tab */ }
   if (hasEditor()) {
     try { localStorage.setItem(HANDED, '1'); sessionStorage.removeItem(RENEWING) } catch { /* private mode */ }
     return setLogin({ ...tokenLogin(), editor: true })
@@ -227,7 +232,7 @@ export async function claimEditor(jwt) {
   if (!res?.ok) return false
   const { token } = await res.json()
   if (isLive()) {
-    location.assign(`${EDIT_ORIGIN}${location.pathname}#eotm-token=${token}`)
+    location.replace(`${EDIT_ORIGIN}${location.pathname}#eotm-token=${token}`)
     return true
   }
   try {
