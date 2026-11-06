@@ -8,6 +8,7 @@ import { Link, useLocation } from 'react-router-dom'
 import ValuesSection from './ValuesSection/ValuesSection'
 import { SocialIcon, socialItems } from './SocialIcons'
 import { useSettings } from '../cms/site'
+import Reels from './Reels'
 
 export const valuesFooterOn = (settings) => settings.valuesFooter !== false
 
@@ -26,10 +27,15 @@ const REVIEW_ICON = (
 // settings "Newsletter button in the footer", to /connect), each social link
 // she has switched on (SocialIcons.jsx socialItems) and Add a Review, which
 // opens her Google review link (reviewUrl) so the review lands on her Google
-// Business Profile. The card's ground is the season's watercolor.
+// Business Profile. The card's ground is the season's watercolor. Above it,
+// her reels (Reels.jsx), when she has added any.
 function ConnectCard({ settings }) {
   const { pathname } = useLocation()
   if (pathname === '/connect') return null
+  return <><Reels settings={settings} /><Card settings={settings} /></>
+}
+
+function Card({ settings }) {
   const social = socialItems(settings)
   const newsletter = settings.footerConnect === true
   const review = settings.reviewUrl

@@ -20,6 +20,7 @@ import TaglineArt from '../TaglineArt'
 import CustomSection from './CustomSection'
 import NextUp from './NextUp'
 import Slideshow from './Slideshow'
+import Testimonials from './Testimonials'
 import { PLACEHOLDER_MEDIA } from './placeholderMedia'
 import NewsletterForm from '../NewsletterForm'
 import { srcOf, altOf, imageStyle } from './photo'
@@ -783,6 +784,8 @@ export default function Blocks({ blocks, doc, layout = null, placeholder = null 
             return scaled(<EmbedBlock key={key} block={block} isFirst={isFirst} doc={doc} />)
           case 'nextUp':
             return scaled(<NextUp key={key} block={block} className={sectionClass('section section--stack', null, isFirst, block)} marks={editable(doc, block)} frame={frameOf(block)} />)
+          case 'testimonials':
+            return scaled(<Testimonials key={key} block={block} className={sectionClass('section section--stack', null, isFirst, block)} marks={editable(doc, block)} frame={frameOf(block)} />)
           case 'slideshow':
             return scaled(<Slideshow key={key} block={block} className={sectionClass('section section--stack', null, isFirst, block)} marks={block === placeholder ? addable(doc, blocks, ordered[0]) : editable(doc, block)} frame={frameOf(block)} />)
           default: {

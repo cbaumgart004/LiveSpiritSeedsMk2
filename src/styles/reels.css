@@ -1,0 +1,74 @@
+/* "Watch on Reels" (components/Reels.jsx): upright clips in one sideways row
+   that scrolls and snaps, centered when they all fit. Each carries its
+   platform's icon in a corner. */
+.reels {
+  box-sizing: border-box;
+  width: calc(100% - 2rem);
+  max-width: 1100px;
+  margin: 1.5rem auto 0;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+.reels__title {
+  margin: 0 0 0.6rem;
+  font-family: var(--font-heading);
+  font-size: clamp(1.3rem, 1.5vw + 1rem, 2rem);
+  color: var(--primary-color);
+}
+.reels__row {
+  display: flex;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0.25rem 0.25rem 0.75rem;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  /* Centered while they fit; from the start once they scroll. */
+  justify-content: safe center;
+}
+.reels__item {
+  flex: 0 0 clamp(150px, 22vw, 210px);
+  scroll-snap-align: center;
+}
+.reels__link {
+  position: relative;
+  display: block;
+  aspect-ratio: 9 / 16;
+  border: var(--panel-border) solid var(--primary-color);
+  border-radius: var(--radius-2);
+  overflow: hidden;
+  background: var(--bg-color-light);
+  box-shadow: var(--shadow-2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+a.reels__link:hover,
+a.reels__link:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-3);
+}
+.reels__link video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+.reels__badge {
+  position: absolute;
+  right: 0.45rem;
+  bottom: 0.45rem;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--secondary-color) 88%, transparent);
+  color: var(--primary-color);
+}
+.reels__badge svg { width: 1.1rem; height: 1.1rem; }
+@media (max-width: 640px) {
+  .reels { width: 100%; }
+  .reels__item { flex-basis: 42vw; }
+}

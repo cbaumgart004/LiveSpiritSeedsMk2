@@ -111,7 +111,7 @@ the Tina collections had; the file paths below are the Tina copies:
     pale wash): `footerCardTitle` at the left, then in the same row Newsletter (`newsletterLabel`, to
     `/connect`, when `footerConnect` is on), each social link from `socialItems` and **Add a Review**
     (`reviewLabel`), shown once `reviewUrl` holds her Google Business Profile review link, so a review
-    is written on Google itself; under 640px the social and review buttons keep only their icon), and under the values a centered Home button on every page but home, Connect included, `event` (announcement + images). `splash` additionally uses `eyebrow`
+    is written on Google itself; under 640px the social and review buttons keep only their icon). Above that card, a **reels row** (`Reels.jsx`, `styles/reels.css`) shows the videos in `instagramReels` and `facebookReels` (Site settings) as 9:16 clips that play muted once 60% in view and pause out of view (still under reduced motion), each linking to her Reels page (`<instagramUrl>/reels/`, `<facebookUrl>/reels`); real Facebook or Instagram embeds are not used because they do not autoplay muted in view (**unverified**), and under the values a centered Home button on every page but home, Connect included, `event` (announcement + images). `splash` additionally uses `eyebrow`
     (the small tracked line above the heading) and `overlayAlign`
     (`center`/`bottomLeft`/`bottomCenter` — where the text sits on the photo).
   - **`service`** — a bookable offering: `status` (`available`/`coming-soon`), `bookingOptions[]`
@@ -516,6 +516,7 @@ each edge and centred on the bar.
   is a file input that iOS offers as the photo library (console 1.17.0; verified in the console demo,
   **unverified** on a real iPhone). The page layout puts a section it does not list yet after the one
   before it in the page, not at the end (`site.js` `usePageLayout`).
+- **Reviews and testimonials** (`testimonials` block, `cms/Testimonials.jsx`, `styles/testimonials.css`): small cards of a quote, a name, a source ("Sound Bath at CURA") and optional stars, typed in by the owner. A quote taller than its card scrolls slowly down and back inside a window with faded edges (travel measured by ResizeObserver into `--travel`), pausing on hover or focus; under reduced motion it scrolls by hand. Under the cards, Add a Review links to `reviewUrl` when `showReviewButton` is on. Google reviews are not pulled in automatically.
 - **Next class and event banner** (`nextUp` block, `cms/NextUp.jsx`): the class the owner typed, or
   with no class name the next class on the teaching schedule; below it the earliest `event`
   document dated today or later. With no such event that half is hidden on the site and shown

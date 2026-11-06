@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 // The signed-in login for any component (useLogin), the navbar's Welcome line
 // (Welcome, in Nav.jsx), and on the live address, for the site's owner, an
 // Edit site button that hands her to the preview address (the loader shows
