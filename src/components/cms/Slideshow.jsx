@@ -17,12 +17,21 @@ import Elements from './Elements'
 import { altOf, imageStyle, srcOf } from './photo'
 import '../../styles/slideshow.css'
 
+// Her own photos already on the site, shown until she adds media of her own.
+const PLACEHOLDER_MEDIA = [
+  { src: '/uploads/thai.jpg', alt: 'Melissa giving a Thai yoga massage stretch outdoors among red rock cliffs' },
+  { src: '/uploads/tuningForks.jpg', alt: 'Weighted tuning forks and a sage bundle laid out on blue velvet for sound healing' },
+  { src: '/uploads/abhyanga.jpg', alt: 'Hands giving a back and shoulder massage on a patterned table cover' },
+  { src: '/uploads/Warrior.jpg', alt: 'Melissa in warrior two pose on a green yoga mat in a sunlit studio' },
+]
+
 const SHAPES = { wide: '16 / 9', photo: '4 / 3', square: '1 / 1', tall: '4 / 5' }
 
 const reducedMotion = () => typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
 export default function Slideshow({ block, className, marks, frame }) {
-  const slides = (block.media || []).filter((m) => srcOf(m))
+  const own = (block.media || []).filter((m) => srcOf(m))
+  const slides = own.length ? own : PLACEHOLDER_MEDIA
   const count = slides.length
   const seconds = Math.min(20, Math.max(3, Number(block.seconds) || 6))
   const [index, setIndex] = useState(0)

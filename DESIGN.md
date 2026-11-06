@@ -470,7 +470,9 @@ each edge and centred on the bar.
   drifts down at half the scroll speed and fades to 15%, while the blocks after it and the footer
   (raised by `:has(.slideshow-stage--over)`) slide over it; the page clips it at its end. Sticky
   was rejected: a block sits in its own grid row, which would leave it nothing to stick in.
-  **Unverified:** no slideshow content exists yet, so it has been built but not run.
+  Until Home has a Slideshow section of its own, `DynamicPage.jsx` shows one under the opening
+  section, not editable, of four site photos (`PLACEHOLDER_MEDIA`); a slideshow with no media
+  shows the same four. Verified headlessly with a test section injected into Home.
 - **Next class and event banner** (`nextUp` block, `cms/NextUp.jsx`): the class the owner typed, or
   with no class name the next class on the teaching schedule; below it the earliest `event`
   document dated today or later. With no such event that half is hidden on the site and shown
