@@ -44,7 +44,13 @@ function Card({ settings }) {
     <footer className="section connect-card" data-eotm-edit="settings:settings" data-eotm-label="Connect With Us card" data-eotm-field="footerCardTitle">
       <h2 className="connect-card__title" data-eotm-text="footerCardTitle">{settings.footerCardTitle || 'Connect With Us'}</h2>
       <div className="connect-card__buttons">
-        {newsletter && <Link className="btn footer-links__btn" to="/connect">{settings.newsletterLabel || 'Newsletter'}</Link>}
+        {newsletter && (
+          <Link className="btn footer-links__btn footer-links__news" to="/connect">
+            {/* A phone shows the short word (connect.css). */}
+            <span className="footer-links__long">{settings.newsletterLabel || 'Newsletter'}</span>
+            <span className="footer-links__short">Connect</span>
+          </Link>
+        )}
         {social.map((i) => (
           <a key={i.key} className="btn footer-links__btn" href={i.href} aria-label={i.label}
             target={i.key === 'mail' ? undefined : '_blank'} rel="noreferrer">

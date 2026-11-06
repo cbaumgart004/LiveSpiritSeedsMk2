@@ -210,13 +210,19 @@
   }
 }
 
+/* Newsletter's short word shows only on a phone. */
+.footer-links__short { display: none; }
+
 /* The Connect With Us card on a phone (after its desktop rules, which it overrides). */
 @media (max-width: 640px) {
   .connect-card.section { padding: 0.6rem; gap: 0.4rem; }
   /* Two short lines beside the buttons rather than one long one. */
   .connect-card__title { white-space: normal; font-size: 1.05rem; line-height: 1.1; min-width: 0; }
   .connect-card__buttons { gap: 0.25rem; flex: 0 0 auto; }
-  .connect-card .footer-links__btn { padding: 0.35rem 0.55rem; font-size: 0.8rem; }
+  .connect-card .footer-links__btn { padding: 0.3rem 0.5rem; font-size: 0.72rem; }
+  /* Newsletter reads Connect on a phone, the band being tight. */
+  .connect-card .footer-links__news .footer-links__long { display: none; }
+  .connect-card .footer-links__news .footer-links__short { display: inline; }
   /* Icon-only on a phone: a square big enough to tap. */
   .connect-card a.footer-links__btn[aria-label] { justify-content: center; width: 2.1rem; height: 2.1rem; padding: 0; }
   .connect-card .footer-links__label {

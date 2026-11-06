@@ -838,3 +838,27 @@ dialog.modal input,
   cursor: pointer;
 }
 .edit-site:disabled { opacity: 0.7; cursor: wait; }
+
+/* Buttons inside cards and sections on a phone: smaller words and padding so
+   a long label (Explore Memberships, Practice With Me) stays inside its card.
+   The header's own button bar sizes itself (layout.css). body raises these
+   over .btn and the per-component rules that load after this file. */
+@media (max-width: 640px) {
+  body main .btn {
+    max-width: 100%;
+    padding: 0.4rem 0.85rem;
+    font-size: 0.8rem;
+    line-height: 1.25;
+    white-space: normal;
+  }
+  body main .card .btn {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.75rem;
+  }
+  body .promo .promo__link {
+    flex-basis: auto;
+    margin-inline: auto;
+    padding: 0.4rem 1rem;
+    font-size: 0.8rem;
+  }
+}

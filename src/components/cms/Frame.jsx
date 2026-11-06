@@ -44,6 +44,10 @@ function mark(name, p, q, style) {
     'data-eotm-part': name,
     ...(p ? { 'data-eotm-placed': '' } : {}),
     ...(q ? { 'data-eotm-qplaced': '' } : {}),
+    // Sized only where a size was set (Frame.css): a heading with none keeps
+    // its own, not its parent's.
+    ...(p?.fs != null ? { 'data-eotm-fs': '' } : {}),
+    ...(q?.fs != null ? { 'data-eotm-qfs': '' } : {}),
     style: { ...style, ...(p ? varsOf(p) : {}), ...(q ? varsOf(q, 'q') : {}) },
   }
 }
