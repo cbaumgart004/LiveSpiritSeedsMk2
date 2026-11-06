@@ -499,7 +499,8 @@
   color: var(--primary-color);
   white-space: nowrap;
 }
-/* A phone: two by two, so each word has room around it. */
+/* A phone: two by two, staggered: the first row out at the edges, the second
+   drawn in close together under the middle. */
 @media (max-width: 640px) {
   .services-strip {
     display: grid;
@@ -512,6 +513,12 @@
     font-size: 0.7rem;
     letter-spacing: 0.16em;
   }
+  .services-strip > li:nth-child(odd) { justify-self: end; }
+  .services-strip > li:nth-child(even) { justify-self: start; }
+  .services-strip > li:nth-child(1) { justify-self: start; }
+  .services-strip > li:nth-child(2) { justify-self: end; }
+  .services-strip > li:nth-child(3) { margin-right: 5.4vw; }
+  .services-strip > li:nth-child(4) { margin-left: 5.4vw; }
 }
 
 /* -------------------------------------------------------------- */

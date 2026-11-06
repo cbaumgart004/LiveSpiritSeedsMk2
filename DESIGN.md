@@ -108,7 +108,7 @@ the Tina collections had; the file paths below are the Tina copies:
     page from `footerTitle`/`footerValues`, falling back to the home page's `values` section, and
     `DynamicPage` leaves `values` sections out of the page; `SiteFooter` then ends every page but Connect
     with one row of small buttons: Connect, when `footerConnect` is on, and each social link from
-    `socialItems`, icon plus label, the label dropped under 400px), `event` (announcement + images). `splash` additionally uses `eyebrow`
+    `socialItems`, icon plus label, the label dropped under 400px; spread with space-between across the cards' width), `event` (announcement + images). `splash` additionally uses `eyebrow`
     (the small tracked line above the heading) and `overlayAlign`
     (`center`/`bottomLeft`/`bottomCenter` — where the text sits on the photo).
   - **`service`** — a bookable offering: `status` (`available`/`coming-soon`), `bookingOptions[]`
@@ -445,7 +445,8 @@ each edge and centred on the bar.
   Under the bar, `ActionBar.jsx` also renders the **services strip** (Site settings `servicesStrip`;
   blank is Massage, Sound Healing, Yoga, Music: plain text for search and Google Business matching):
   fixed under the bar in the same panel look, `--services-strip-height` tall, which `.first-section`
-  clears too (immersive's own clearance rules included).
+  clears too (immersive's own clearance rules included). On a phone it is two by two, staggered:
+  the first two out at the edges, the last two drawn in close under the middle.
 - **Text outline** (`--outline-shadow`, `variables.css`) is declared on `body` as well as `:root`.
   A custom property resolves its `var()` where it is declared, so on `:root` alone every season
   got spring's green `--text-outline-color`; the season class is on `<body>`.
@@ -487,7 +488,7 @@ each edge and centred on the bar.
   pauses on mouse hover, focus or a tap; swipe and dots move it; never advances under reduced
   motion. Only the showing and next slides load. With `scroll` "over" (the default) the frame holds
   still once its middle reaches the middle of the screen, at 80% opacity, while the blocks after it and the footer
-  (raised by `:has(.slideshow-stage--over)`) slide over it. The block just before the show (the opening card) scrolls up as usual until the show is held, then stops one gap above the show while the next block slides up over the show; once that block is one gap under it the two scroll on together. The page layout's "Cards around a slideshow" (`cards`, put on `<main data-cards>`; blank means `join`) turns this off with `apart` (a transform set each frame; `overflow-anchor: none` on it, or WebKit scrolls the page back as it moves); a section overlapping the held frame (marked `.is-over-show` each frame) has its watercolor at 45% and cards frosted, every other section keeps full watercolor
+  (raised by `:has(.slideshow-stage--over)`) slide over it. The block just before the show (the opening card) scrolls up as usual until the show is held, then stops one gap above the show while the next block slides up over the show; once that block is one gap under it the two scroll on together. The page layout's "Cards around a slideshow" (`cards`, put on `<main data-cards>`; blank means `join`) turns this off with `apart`. Whatever is held is `position: fixed` with a placeholder keeping its place (a transform written each frame landed a frame late on a phone, and shook), and the middle of the screen is taken from a 100svh probe, so Safari's toolbar showing and hiding does not move it (**unverified** on a real iPhone; checked in headless WebKit). Where the room runs out it falls back to a transform ( `overflow-anchor: none` on it, or WebKit scrolls the page back as it moves); a section overlapping the held frame (marked `.is-over-show` each frame) has its watercolor at 45% and cards frosted, every other section keeps full watercolor
   (72% with a 14px backdrop blur; **unverified**, headless WebKit on Windows draws no backdrop blur); the page clips it at its end. The frame is full screen width
   with no watercolor behind it, shaped like its first photo (natural ratio, learned on load, then
   fixed so a slide change never moves the blocks over it) unless the block sets `shape`, capped at the space under the bars; the picture overscans 3% for

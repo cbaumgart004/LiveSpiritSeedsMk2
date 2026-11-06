@@ -92,53 +92,121 @@ export default function Slideshow({ block, className, marks, frame }) {
     if (still || !el) return undefined
     let frame = 0
     const block = el.closest('.page-block')
+    const main = el.closest('main')
     const prev = over ? block?.previousElementSibling : null
     const next = prev ? block.nextElementSibling : null
+    // The height the show centers in: the small viewport (100svh), which does
+    // not change as Safari's toolbar shows and hides, so the held show never
+    // jumps when it does.
+    const probe = document.createElement('div')
+    probe.style.cssText = 'position:fixed;top:0;left:0;width:0;visibility:hidden;pointer-events:none;height:100vh;height:100svh'
+    document.body.append(probe)
+    let screen = probe.offsetHeight || innerHeight
+    // Something held still is position: fixed, so the browser holds it while
+    // it scrolls the page (a transform written each frame lands a frame late
+    // on a phone, and shakes); a placeholder keeps its place in the page.
+    const where = (node) => (node.$hold ?? node).getBoundingClientRect()
+    // A new placeholder can move what was measured before it; place it all again.
+    let again = false
+    const fix = (node, top) => {
+      if (!node.$hold) {
+        const r = node.getBoundingClientRect()
+        const cs = getComputedStyle(node)
+        // What follows it, to check the placeholder left it where it was (a
+        // child's margin can reach outside the card, and the card's box).
+        const after = node.nextElementSibling ?? node.parentElement
+        const was = after.getBoundingClientRect()[node.nextElementSibling ? 'top' : 'bottom']
+        const ph = document.createElement('div')
+        ph.setAttribute('aria-hidden', 'true')
+        ph.style.cssText = `height:${r.height}px;margin-top:${cs.marginTop};margin-bottom:${cs.marginBottom};grid-column:${cs.gridColumn};grid-row:${cs.gridRow}`
+        node.before(ph)
+        node.$hold = ph
+        Object.assign(node.style, { position: 'fixed', left: `${r.left}px`, width: `${r.width}px`, margin: '0', transform: '' })
+        const moved = was - after.getBoundingClientRect()[node.nextElementSibling ? 'top' : 'bottom']
+        if (moved) ph.style.height = `${r.height + moved}px`
+        again = true
+      }
+      node.style.top = `${top}px`
+    }
+    const unfix = (node) => {
+      if (!node?.$hold) return
+      node.$hold.remove()
+      node.$hold = null
+      Object.assign(node.style, { position: '', left: '', width: '', margin: '', top: '' })
+    }
     const update = () => {
       frame = 0
-      el.style.transform = ''
-      if (prev) prev.style.transform = ''
-      const r = el.getBoundingClientRect()
-      // How far the frame's middle has passed the middle of the screen.
-      const d = over ? Math.max(0, innerHeight / 2 - (r.top + r.height / 2)) : 0
-      const middle = r.top + d + r.height / 2
-      const p = Math.max(-1, Math.min(1, (middle - innerHeight / 2) / (innerHeight / 2 + r.height / 2)))
+      if (!el.$hold) el.style.transform = ''
+      if (prev && !prev.$hold) prev.style.transform = ''
+      const r = where(el)
+      // How far the frame's middle has passed the middle of the screen, kept
+      // so its bottom never passes the end of the page's content.
+      const d = over ? Math.max(0, screen / 2 - (r.top + r.height / 2)) : 0
+      const room = main ? Math.max(0, main.getBoundingClientRect().bottom - r.bottom) : Infinity
+      const t = Math.min(d, room)
+      if (t > 0 && t === d) fix(el, r.top + t)
+      else {
+        unfix(el)
+        el.style.transform = t ? `translate3d(0, ${t}px, 0)` : ''
+      }
+      const middle = r.top + t + r.height / 2
+      const p = Math.max(-1, Math.min(1, (middle - screen / 2) / (screen / 2 + r.height / 2)))
       el.style.setProperty('--shift', (p * 3).toFixed(2))
-      el.style.transform = d ? `translate3d(0, ${d}px, 0)` : ''
-      el.style.opacity = d ? '0.8' : ''
-      // Mark the sections after the show that overlap it where it is held;
-      // slideshow.css makes only those see-through.
-      // The opening card: held with the show (by the same d) until the next
-      // card is one gap under it, then kept that gap above the next card.
-      if (next && d && el.closest('[data-cards]')?.dataset.cards !== 'apart') {
+      el.style.opacity = t ? '0.8' : ''
+      // The opening card: held with the show (by the same distance) until the
+      // next card is one gap under it, then kept that gap above the next card.
+      if (next && t && el.closest('[data-cards]')?.dataset.cards !== 'apart') {
         // The page's own gap, as laid out between the show and the next card
         // (16px on a desktop, 12px on a phone).
         const n = next.getBoundingClientRect().top
         const gap = Math.max(0, n - block.getBoundingClientRect().bottom) || 16
-        const hold = Math.max(0, Math.min(d, n - gap - prev.getBoundingClientRect().bottom))
-        prev.style.transform = hold ? `translate3d(0, ${hold}px, 0)` : ''
+        const a = where(prev)
+        const hold = Math.min(t, n - gap - a.bottom)
+        if (hold > 0 && hold === t && el.$hold) fix(prev, a.top + hold)
+        else {
+          unfix(prev)
+          prev.style.transform = hold > 0 ? `translate3d(0, ${hold}px, 0)` : ''
+        }
+      } else if (prev) {
+        unfix(prev)
+        prev.style.transform = ''
       }
-      const top = r.top + d
+      // Mark the sections after the show (and in the opening card) that
+      // overlap it where it is held; slideshow.css makes only those see-through.
+      const top = r.top + t
       const bottom = top + r.height
       document.querySelectorAll('.section').forEach((s) => {
         if (!(prev?.contains(s) || el.compareDocumentPosition(s) & Node.DOCUMENT_POSITION_FOLLOWING) || el.contains(s)) return
         const b = s.getBoundingClientRect()
-        s.classList.toggle('is-over-show', d > 0 && b.top < bottom && b.bottom > top)
+        s.classList.toggle('is-over-show', t > 0 && b.top < bottom && b.bottom > top)
       })
+      if (again) {
+        again = false
+        update()
+      }
     }
     const onScroll = () => { if (!frame) frame = requestAnimationFrame(update) }
+    // A new screen size, or the frame's own size changing (its first photo
+    // loading), lets go of what is held and places it all again.
+    const onResize = () => {
+      unfix(el)
+      unfix(prev)
+      screen = probe.offsetHeight || innerHeight
+      onScroll()
+    }
     update()
     addEventListener('scroll', onScroll, { passive: true })
-    addEventListener('resize', onScroll)
-    // A change of the frame's own size (its first photo loading) re-places it
-    // at once rather than on the next scroll.
-    const sized = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(onScroll)
+    addEventListener('resize', onResize)
+    const sized = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(() => { if (!el.$hold) onResize() })
     sized?.observe(el)
     return () => {
       sized?.disconnect()
       cancelAnimationFrame(frame)
       removeEventListener('scroll', onScroll)
-      removeEventListener('resize', onScroll)
+      removeEventListener('resize', onResize)
+      unfix(el)
+      unfix(prev)
+      probe.remove()
       el.style.transform = ''
       el.style.opacity = ''
       el.style.removeProperty('--shift')

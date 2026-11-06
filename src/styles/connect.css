@@ -150,10 +150,15 @@
 .footer-links {
   display: flex;
   flex-wrap: nowrap;
-  justify-content: center;
+  /* Spread across the cards' width (their edge: 1rem in on a desktop, the
+     footer's own edge on a phone). */
+  justify-content: space-between;
   gap: 0.4rem;
   margin: 0.6rem auto 0;
-  padding: 0 0.5rem;
+  padding: 0 1rem;
+}
+@media (max-width: 640px) {
+  .footer-links { padding: 0; }
 }
 .footer-links .footer-links__btn {
   display: inline-flex;
