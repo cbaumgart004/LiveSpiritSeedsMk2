@@ -8,7 +8,7 @@
 // sanitized by the console API on save.
 import { useSchema } from '../../cms/site'
 import { buttonClass, lookToCss } from '../../cms/look'
-import { imageStyle } from './photo'
+import { imageStyle, srcOf } from './photo'
 import { frameOf } from './Frame'
 
 const NO_FRAME = { part: (name, style) => ({ 'data-eotm-part': name, ...(style ? { style } : {}) }) }
@@ -31,11 +31,11 @@ function Element({ el, frame, schema }) {
     case 'richtext':
       return <div className={`rich-text ${cls}`} data-eotm-richtext="html" dangerouslySetInnerHTML={{ __html: el.html ?? '' }} {...marks} />
     case 'image':
-      return el.image?.src ? <img className={cls} src={el.image.src} alt={el.image.alt ?? ''} {...marks} style={{ ...marks.style, ...imageStyle(el.image) }} /> : null
+      return el.image?.src ? <img className={cls} src={srcOf(el.image)} alt={el.image.alt ?? ''} {...marks} style={{ ...marks.style, ...imageStyle(el.image) }} /> : null
     case 'button':
       return el.url ? (
         <a className={`${buttonClass(schema, el.look)} ${cls}`} href={el.url} {...marks}>
-          {el.icon?.src && <img className="btn-icon" src={el.icon.src} alt="" />}
+          {el.icon?.src && <img className="btn-icon" src={srcOf(el.icon)} alt="" />}
           <span data-eotm-text="label" data-eotm-in={el._id}>{el.label}</span>
         </a>
       ) : null

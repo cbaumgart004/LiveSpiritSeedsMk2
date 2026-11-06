@@ -13,6 +13,7 @@ import NewsletterForm from './NewsletterForm'
 import { useSettings, useSchema } from '../cms/site'
 import { buttonClass, lookToCss } from '../cms/look'
 import { frameOf } from './cms/Frame'
+import { srcOf } from './cms/photo'
 
 const isInternal = (url) => url.startsWith('/') && !url.startsWith('//')
 
@@ -124,7 +125,7 @@ export default function ActionBar() {
         {buttons.map((b) => {
           const face = (
             <>
-              {b.icon?.src && <img className="btn-icon" src={b.icon.src} alt="" />}
+              {b.icon?.src && <img className="btn-icon" src={srcOf(b.icon)} alt="" />}
               <span data-eotm-text="label" data-eotm-in={b._id}>{b.label}</span>
             </>
           )
