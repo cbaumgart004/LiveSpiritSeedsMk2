@@ -1,0 +1,151 @@
+/* The Connect page (pages/ConnectPage.jsx), after the owner's Kit landing page:
+   a photo across the page under a tint, white text, the signup in a column of
+   its own. The photo is hers (--connect-photo) or the season's watercolor; the
+   tint is the season's deepest color, so each season reads as its own. */
+.connect {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  min-height: 75vh;
+  min-height: 75svh;
+  padding: var(--space-6) var(--space-4);
+  color: #fff;
+  text-align: left;
+  background-image: var(--connect-photo, var(--section-bg-image));
+  background-size: cover;
+  background-position: center;
+}
+.connect::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: color-mix(in srgb, var(--text-outline-color) 62%, transparent);
+}
+
+.connect__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: var(--space-6);
+  width: 100%;
+  max-width: 1100px;
+}
+
+.connect__portrait {
+  display: block;
+  width: 150px;
+  height: 150px;
+  margin-bottom: var(--space-3);
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 4px 18px rgb(0 0 0 / 0.3);
+}
+.connect__title {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-heading);
+  font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+  line-height: 1.15;
+  color: #fff;
+  text-shadow: 0 2px 10px rgb(0 0 0 / 0.35);
+}
+.connect__intro {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #fff;
+}
+
+/* The signup stacks like Kit's: the address, then a full-width button, then
+   the fine print, centered. */
+.connect .newsletter {
+  max-width: none;
+}
+.connect .newsletter__form {
+  flex-direction: column;
+}
+.connect .newsletter__field {
+  flex: none;
+}
+.connect .newsletter__input {
+  background: #fff;
+  color: #222;
+  border-color: transparent;
+}
+.connect .newsletter__input::placeholder {
+  color: #666;
+  opacity: 1;
+}
+.connect .newsletter__form .btn {
+  width: 100%;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.connect .newsletter__form .btn:hover {
+  transform: none;
+}
+.connect .newsletter__fine,
+.connect .newsletter__note {
+  color: rgb(255 255 255 / 0.85);
+  text-align: center;
+}
+
+.connect__social {
+  margin-top: var(--space-4);
+  text-align: center;
+}
+.connect__social-title {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-subheading, var(--font-body));
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.connect .social-icons__link {
+  color: #fff;
+}
+.connect .social-icons__link svg {
+  color: var(--primary-color);
+  background: #fff;
+  border-color: #fff;
+}
+.connect__links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+  list-style: none;
+  margin: var(--space-2) 0 0;
+  padding: 0;
+}
+
+@media (max-width: 820px) {
+  .connect {
+    min-height: 0;
+    padding: var(--space-4) var(--space-3);
+  }
+  .connect__inner {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+  .connect__about {
+    text-align: center;
+  }
+  .connect__portrait {
+    width: 120px;
+    height: 120px;
+    margin-inline: auto;
+  }
+}
+
+/* The Connect buttons in the menu and the footer (Nav.jsx, SiteFooter.jsx). */
+.footer-connect {
+  display: flex;
+  justify-content: center;
+  margin: var(--space-4) auto;
+}

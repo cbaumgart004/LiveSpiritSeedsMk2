@@ -21,6 +21,13 @@
     }
   ],
   "connectLabel": "Connect",
-  "connectIntro": "Find me on social media, or get first word of new classes and events.",
+  "connectIntro": "Welcome to a journey of healing and transformation! Subscribe to our newsletter for insights on trauma-informed yoga, neuroscience-based massage practices, and holistic wellness tips. Join our community today!",
+  "connectTitle": "Subscribe to our newsletter",
+  "showFacebook": true,
+  "facebookUrl": "https://www.facebook.com/SpiritSeedsWellness",
+  "showInstagram": true,
+  "instagramUrl": "https://www.instagram.com/melissa.spiritseedswellness/",
+  "navConnect": true,
+  "footerConnect": true,
   "newsletterFormId": "7800435"
 }
