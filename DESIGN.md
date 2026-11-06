@@ -463,7 +463,8 @@ each edge and centred on the bar.
   `promoUntil`; the component's defaults (the OfferingTree memberships) show until she saves her own.
   Hidden when off, after its end date, or once a visitor closes it (remembered per title in
   `localStorage`). While it shows, `body.has-promo` moves the fixed-bar clearance from the first
-  section onto the banner. It has a section's width, corners and shadow and no border; its badge is the season's `--primary-color`; the link is the
+  section onto the banner. It has a section's width, corners and shadow and no border; its title is set like a card heading
+  (`.panel h2`: `--font-subheading`, `--primary-color`, `--outline-shadow`), smaller; its badge is the season's `--primary-color`; the link is the
   site's own `.btn` (gradient that shifts on hover).
 - **Slideshow** (`slideshow` block, `cms/Slideshow.jsx`, `styles/slideshow.css`): the block's
   `media` photos and videos (a photos field with `video: true`; a video item carries
@@ -473,7 +474,9 @@ each edge and centred on the bar.
   still once its middle reaches the middle of the screen, at 80% opacity, while the blocks after it and the footer
   (raised by `:has(.slideshow-stage--over)`) slide over it, their watercolor at 45% and cards frosted
   (72% with a 14px backdrop blur; **unverified**, headless WebKit on Windows draws no backdrop blur); the page clips it at its end. The frame is full screen width
-  with no watercolor behind it, between 60% of the screen tall and the space under the bars. Sticky
+  with no watercolor behind it, shaped like the photo showing (its natural ratio, learned on load)
+  unless the block sets `shape`, capped at the space under the bars; the picture overscans 3% for
+  its inner parallax. Sticky
   was rejected: a block sits in its own grid row, which would leave it nothing to stick in.
   Until Home has a Slideshow section of its own, `DynamicPage.jsx` shows one under the opening
   section, not editable, of four site photos (`PLACEHOLDER_MEDIA`); a slideshow with no media

@@ -1,8 +1,8 @@
 /* The slideshow block (components/cms/Slideshow.jsx): slides stacked in one
    frame, the one showing faded in over 2.5s; no fade under reduced motion. */
 /* The section is bare (no watercolor, shadow or side padding) and the frame
-   runs the full width of the screen, as tall as its shape gives but never
-   shorter than 60% of the screen nor taller than the space under the bars. */
+   runs the full width of the screen, as tall as the photo showing (or the
+   owner's chosen shape) but never taller than the space under the bars. */
 .section.slideshow-stage {
   padding-inline: 0;
   border-radius: 0;
@@ -20,7 +20,6 @@ main:has(.slideshow-stage) {
   overflow: hidden;
   width: 100vw;
   max-width: none;
-  min-height: 60svh;
   max-height: calc(100svh - 8rem);
   margin-inline: calc(50% - 50vw);
   background: color-mix(in srgb, var(--text-outline-color) 85%, #000);
@@ -38,11 +37,12 @@ main:has(.slideshow-stage) {
   visibility: visible;
   transition: opacity 2.5s ease, visibility 0s;
 }
-/* The picture is cropped 8% taller than the frame each way so it can move
-   inside it as the page scrolls (Slideshow.jsx sets --shift). */
+/* The picture is 3% taller than the frame each way so it can move inside it
+   as the page scrolls (Slideshow.jsx sets --shift); little enough that a
+   photo loses almost nothing to the crop. */
 .slideshow__media {
   position: absolute;
-  inset: -8% 0;
+  inset: -3% 0;
   transform: translate3d(0, calc(var(--shift, 0) * 1%), 0);
   will-change: transform;
 }

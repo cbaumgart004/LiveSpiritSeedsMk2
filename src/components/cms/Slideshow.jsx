@@ -38,6 +38,10 @@ export default function Slideshow({ block, className, marks, frame }) {
   const [paused, setPaused] = useState(false)
   const [still] = useState(reducedMotion)
   const [seen, setSeen] = useState(() => new Set([0, 1]))
+  // Each slide's own width / height, learned as it loads, so the frame takes
+  // the shape of the photo showing unless the owner chose a shape.
+  const [ratios, setRatios] = useState({})
+  const learn = (i, w, h) => w && h && setRatios((r) => (r[i] ? r : { ...r, [i]: `${w} / ${h}` }))
   const videos = useRef({})
   const touch = useRef(null)
   const stage = useRef(null)
@@ -73,7 +77,7 @@ export default function Slideshow({ block, className, marks, frame }) {
 
   // Written straight to the element each frame rather than through React
   // state, so scrolling never re-renders the show. Inside the frame the picture
-  // moves slower than the page (--shift, -6 to 6, read by slideshow.css); with
+  // moves slower than the page (--shift, -3 to 3, read by slideshow.css); with
   // "over" the frame holds still at the middle of the screen, and so does the
   // picture in it.
   useEffect(() => {
@@ -88,7 +92,7 @@ export default function Slideshow({ block, className, marks, frame }) {
       const d = over ? Math.max(0, innerHeight / 2 - (r.top + r.height / 2)) : 0
       const middle = r.top + d + r.height / 2
       const p = Math.max(-1, Math.min(1, (middle - innerHeight / 2) / (innerHeight / 2 + r.height / 2)))
-      el.style.setProperty('--shift', (p * 6).toFixed(2))
+      el.style.setProperty('--shift', (p * 3).toFixed(2))
       el.style.transform = d ? `translate3d(0, ${d}px, 0)` : ''
       el.style.opacity = d ? '0.8' : ''
     }
@@ -122,7 +126,7 @@ export default function Slideshow({ block, className, marks, frame }) {
     <section className={`${className} slideshow-stage${over ? ' slideshow-stage--over' : ''}`} {...marks}>
       {block.title && <h2 data-eotm-text="title">{block.title}</h2>}
       <div ref={stage} className="slideshow" {...frame?.wrap}
-        style={{ aspectRatio: SHAPES[block.shape] || SHAPES.wide }}
+        style={{ aspectRatio: SHAPES[block.shape] || ratios[index] || ratios[0] || SHAPES.photo }}
         role="region" aria-roledescription="carousel" aria-label={block.title || 'Featured photos and videos'}
         onPointerEnter={(e) => e.pointerType === 'mouse' && setPaused(true)} onPointerLeave={(e) => e.pointerType === 'mouse' && setPaused(false)}
         onFocus={() => setPaused(true)} onBlur={() => setPaused(false)}
@@ -138,9 +142,11 @@ export default function Slideshow({ block, className, marks, frame }) {
               {!load ? null : m.kind === 'video' ? (
                 <video ref={(el) => { videos.current[i] = el }} src={srcOf(m)} muted playsInline loop={count === 1}
                   preload={on ? 'auto' : 'metadata'} controls={still} aria-label={altOf(m) || undefined}
-                  style={imageStyle(m)} onEnded={() => !paused && go(i + 1)} />
+                  style={imageStyle(m)} onEnded={() => !paused && go(i + 1)}
+                  onLoadedMetadata={(e) => learn(i, e.currentTarget.videoWidth, e.currentTarget.videoHeight)} />
               ) : (
-                <img src={srcOf(m)} alt={altOf(m)} style={imageStyle(m)} loading={i === 0 ? 'eager' : 'lazy'} decoding="async" />
+                <img src={srcOf(m)} alt={altOf(m)} style={imageStyle(m)} loading={i === 0 ? 'eager' : 'lazy'} decoding="async"
+                  onLoad={(e) => learn(i, e.currentTarget.naturalWidth, e.currentTarget.naturalHeight)} />
               )}
               </div>
             </div>
