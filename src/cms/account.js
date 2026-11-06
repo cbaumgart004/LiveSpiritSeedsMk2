@@ -169,10 +169,12 @@ export async function restoreLogin() {
     const who = hinted() ? await currentLogin() : null
     if (who) return setLogin({ ...who, editor: await claimEditor(who.jwt) })
   }
-  // Handed off before and run out: renew on the live address, once a minute at most.
+  // No editor token on the preview address (never handed one, run out, signed
+  // out): it is reached only through the live sign-in, which hands one back.
+  // Elsewhere (a dev server) only after a hand-off. Once a minute at most.
   let handed = false
   try {
-    handed = localStorage.getItem(HANDED) === '1' && Date.now() - Number(sessionStorage.getItem(RENEWING) ?? 0) > 60_000
+    handed = (isPreview() || localStorage.getItem(HANDED) === '1') && Date.now() - Number(sessionStorage.getItem(RENEWING) ?? 0) > 60_000
     if (handed) { sessionStorage.setItem(RENEWING, String(Date.now())); localStorage.removeItem(HANDED) }
   } catch { /* private mode */ }
   if (handed) return toLive('eotm-renew')
