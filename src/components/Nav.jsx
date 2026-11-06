@@ -29,6 +29,8 @@ function Nav() {
   const siteTitle = settings.siteTitle || 'Spirit Seeds Wellness'
   const cta = settings.navCtaLabel ? { label: settings.navCtaLabel, url: settings.navCtaUrl || '/' } : null
   const headerPhoto = srcOf(settings.headerImage)
+  // Site settings "Connect in the menu": the Connect page after the pages.
+  const connect = settings.navConnect === true ? settings.connectLabel || 'Connect' : null
   const uiStyle = useUiStyle()
   const showInlineMenu = INLINE_MENU_STYLES.includes(uiStyle)
   // The header is one arranged region of Site settings (_layout_header): its
@@ -76,6 +78,11 @@ function Nav() {
                   <Link to={hrefForSlug(link.slug)}>{link.label}</Link>
                 </li>
               ))}
+              {connect && (
+                <li>
+                  <Link to="/connect" data-eotm-field="navConnect">{connect}</Link>
+                </li>
+              )}
             </ul>
           )}
 
@@ -105,6 +112,11 @@ function Nav() {
                 </Link>
               </li>
             ))}
+            {connect && (
+              <li>
+                <Link to="/connect" onClick={() => setIsOpen(false)}>{connect}</Link>
+              </li>
+            )}
           </ul>
         </nav>
       </div>
