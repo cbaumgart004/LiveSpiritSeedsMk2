@@ -204,12 +204,12 @@ async function restoreLive() {
   setLogin({ ...who, editor })
   if (renew && editor) await claimEditor(who.jwt)
 }
-// Who the editor token names (its email), for the Welcome line on the preview address.
+// Who the editor token names (email and name), for the Welcome line on the preview address.
 function tokenLogin() {
   try {
     const token = localStorage.getItem(TOKEN_KEY) ?? sessionStorage.getItem(TOKEN_KEY)
     const p = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')))
-    return { email: p.email ?? null, name: '', jwt: null }
+    return { email: p.email ?? null, name: p.name ?? '', jwt: null }
   } catch {
     return { email: null, name: '', jwt: null }
   }
