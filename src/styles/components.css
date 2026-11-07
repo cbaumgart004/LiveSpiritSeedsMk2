@@ -862,3 +862,6 @@ dialog.modal input,
     font-size: 0.8rem;
   }
 }
+
+/* The owner's own objects inside a card (Blocks.jsx CardGrid): after its button, in a row that wraps. */
+.card-elements { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; justify-content: center; margin-top: 0.5rem; }

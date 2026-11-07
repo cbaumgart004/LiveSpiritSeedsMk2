@@ -445,7 +445,9 @@ function CardGrid({ block, isFirst, services, doc }) {
       {block.title && <h2 data-eotm-text="title" {...frame.part('title')}>{block.title}</h2>}
       <div className="grid" {...frame.part('cards')}>
         {cards.map((card, i) => (
-          <div className="card" key={card._id ?? i}>
+          // data-eotm-holds: the console offers a card as a place to add an
+          // object (its own _elements, drawn after its button).
+          <div className="card" key={card._id ?? i} data-eotm-holds={card._id}>
             {srcOf(card.image) &&
               (card.buttonUrl ? (
                 <a className="card-thumb" href={card.buttonUrl}>
@@ -465,6 +467,7 @@ function CardGrid({ block, isFirst, services, doc }) {
                 </a>
               </div>
             )}
+            {card._elements?.length > 0 && <div className="card-elements"><Elements data={card} /></div>}
           </div>
         ))}
       </div>
