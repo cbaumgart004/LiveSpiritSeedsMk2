@@ -444,32 +444,40 @@ function CardGrid({ block, isFirst, services, doc }) {
       data-phone-columns={block.phoneColumns === '1' ? '1' : '2'}>
       {block.title && <h2 data-eotm-text="title" {...frame.part('title')}>{block.title}</h2>}
       <div className="grid" {...frame.part('cards')}>
-        {cards.map((card, i) => (
+        {cards.map((card, i) => {
           // data-eotm-holds: the console offers a card as a place to add an
-          // object (its own _elements, drawn after its button).
-          <div className="card" key={card._id ?? i} data-eotm-holds={card._id}>
+          // object (its own _elements, drawn after its button). A card is also
+          // a canvas of its own (like a design element, Elements.jsx): its
+          // picture, title, text and button are parts the console's Arrange
+          // moves and sizes within it, kept in the card's own _layout.
+          const cf = frameOf(card)
+          const { style: cardStyle, ...cardMarks } = cf.root
+          const own = doc && card._id ? { 'data-eotm-edit': `page:${doc}`, 'data-eotm-item': card._id, 'data-eotm-label': card.title || 'Card' } : {}
+          return (
+          <div className="card" key={card._id ?? i} data-eotm-holds={card._id} {...own} {...cardMarks} style={cardStyle}>
             {srcOf(card.image) &&
               (card.buttonUrl ? (
-                <a className="card-thumb" href={card.buttonUrl}>
+                <a className="card-thumb" href={card.buttonUrl} {...cf.part('image')}>
                   <img src={srcOf(card.image)} alt={altOf(card.image, card.title || '')} loading="lazy" style={imageStyle(card.image)} />
                 </a>
               ) : (
-                <div className="card-thumb">
+                <div className="card-thumb" {...cf.part('image')}>
                   <img src={srcOf(card.image)} alt={altOf(card.image, card.title || '')} loading="lazy" style={imageStyle(card.image)} />
                 </div>
               ))}
-            {card.title && <h3 data-eotm-text="title" data-eotm-in={card._id}>{card.title}</h3>}
-            {card.description && <p data-eotm-text="description" data-eotm-in={card._id}>{card.description}</p>}
+            {card.title && <h3 data-eotm-text="title" data-eotm-in={card._id} {...cf.part('title')}>{card.title}</h3>}
+            {card.description && <p data-eotm-text="description" data-eotm-in={card._id} {...cf.part('description')}>{card.description}</p>}
             {card.buttonLabel && (
-              <div className="button-row">
+              <div className="button-row" {...cf.part('button')}>
                 <a className="btn" href={card.buttonUrl}>
                   {card.buttonLabel}
                 </a>
               </div>
             )}
-            {card._elements?.length > 0 && <div className="card-elements"><Elements data={card} /></div>}
+            {card._elements?.length > 0 && <div className="card-elements" {...cf.wrap}><Elements data={card} frame={cf} /></div>}
           </div>
-        ))}
+          )
+        })}
       </div>
       <Buttons block={block} services={services} frame={frame} />
       <HomeButton block={block} frame={frame} />
