@@ -1,7 +1,7 @@
 {
   "_generated": "DO NOT EDIT BY HAND. Rebuilt daily by scripts/harvest-schedule.mjs.",
   "teacher": "Melissa Carey",
-  "generatedAt": "2026-11-08T01:12:08.376Z",
+  "generatedAt": "2026-11-08T01:19:43.807Z",
   "rangeStart": "2026-11-08",
   "weeks": 4,
   "sources": [
@@ -130,7 +130,7 @@
       "sortKey": "2026-11-11T1140"
     },
     {
-      "id": "cura:91957bdb-d59b-458c-a0d0-e22a068ab0c0",
+      "id": "cura:aaa54784-7469-4af9-bf9e-9848fc9c3c80",
       "date": "2026-11-14",
       "startTime": "2:00 PM",
       "endTime": "3:30 PM",
