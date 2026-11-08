@@ -44,7 +44,9 @@ const ScrollToTop = () => {
     const look = () => {
       const el = findAnchor(hash)
       if (el) {
-        window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - barsHeight() - 12, behavior: 'smooth' })
+        // An instant jump: a scripted smooth scroll on iOS Safari leaves the
+        // fixed bars drawn mid-page until the next repaint.
+        window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - barsHeight() - 12, behavior: 'instant' })
         return
       }
       if (tries++ === 0) window.scrollTo(0, 0)
