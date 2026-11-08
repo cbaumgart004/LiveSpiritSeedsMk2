@@ -524,10 +524,16 @@
 /* -------------------------------------------------------------- */
 /* Themed window (Modal.jsx): the Connect and account windows     */
 /* -------------------------------------------------------------- */
+/* Fixed to the screen: .panel sets position: relative, which overrides the
+   browser's fixed position for an open dialog and left the window at the top
+   of the page while only the backdrop covered the screen. */
 dialog.modal {
+  position: fixed;
+  inset: 0;
   box-sizing: border-box;
   width: min(92vw, 34rem);
   max-height: 88vh;
+  max-height: 88dvh;
   overflow-y: auto;
   padding: var(--space-4) var(--space-3) var(--space-3);
   margin: auto;
