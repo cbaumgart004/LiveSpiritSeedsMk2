@@ -386,16 +386,51 @@
   }
 }
 
-/* Welcome, {first name} when signed in (SignedIn.jsx Welcome): small, under
-   the title, inside the bar so it shows in every style and at every width. */
-.welcome {
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  translate: -50% 0;
+/* The title and Welcome together: the flex item the title used to be, so
+   Welcome can be placed against the title's own edges. The title's max-width
+   moves here. */
+.titleWrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+  max-width: calc(100% - 9rem);
   z-index: 55;
+}
+
+@media (max-width: 768px) {
+  .titleWrap {
+    max-width: calc(100% - 6.5rem);
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 901px) {
+  .navbar[data-nav-variant='editorial'] .titleWrap,
+  .navbar[data-nav-variant='sanctuary'] .titleWrap,
+  .navbar[data-nav-variant='immersive'] .titleWrap {
+    max-width: none;
+  }
+}
+
+.navbarTopRow > .titleWrap > .title {
+  max-width: 100%;
+}
+
+/* Welcome, {first name} when signed in (SignedIn.jsx Welcome). Wide: right of
+   the title, centered on it. Narrowing, it drops to the title's bottom corner
+   (--pv, 1200px to 1040px), then slides inward (--ph, 1040px to 480px) until
+   its right edge meets the title's. Without tan/atan2 it steps at 1040px. */
+.welcome {
+  --pv: 0;
+  --ph: 0;
+  position: absolute;
+  left: 100%;
+  top: calc(50% + 50% * var(--pv));
+  translate: calc(0.75rem * (1 - var(--ph)) - 100% * var(--ph)) calc(-50% * (1 - var(--pv)) - 30% * var(--pv));
+  z-index: 56;
   margin: 0;
-  max-width: calc(100% - 8rem);
+  max-width: 14rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -408,4 +443,18 @@
   border-radius: 999px;
   background: color-mix(in srgb, var(--secondary-color) 85%, transparent);
   pointer-events: none;
+}
+
+@media (max-width: 1040px) {
+  .welcome {
+    --pv: 1;
+    --ph: 1;
+  }
+}
+
+@supports (width: calc(tan(atan2(1px, 1px)) * 1px)) {
+  .welcome {
+    --pv: clamp(0, tan(atan2(1200px - 100vw, 160px)), 1);
+    --ph: clamp(0, tan(atan2(1040px - 100vw, 560px)), 1);
+  }
 }

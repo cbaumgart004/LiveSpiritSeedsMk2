@@ -19,6 +19,8 @@ import TaglineArt from '../TaglineArt'
 
 import CustomSection from './CustomSection'
 import NextUp from './NextUp'
+import EventList from './EventList'
+import { SocialIcon } from '../SocialIcons'
 import Slideshow from './Slideshow'
 import Testimonials from './Testimonials'
 import { PLACEHOLDER_MEDIA } from './placeholderMedia'
@@ -133,10 +135,12 @@ function Media({ block, name = 'image', alt, width, side, frame }) {
 //    service's status (disabled "Coming Soon" if it's coming-soon or missing).
 //  - Plain button: uses its own manual status (coming-soon renders disabled).
 // The button's own text and icon; the text can be typed on the page in the editor.
+// An email button (a mailto: link) with no icon of its own shows an envelope.
 function ButtonFace({ btn, text }) {
   return (
     <>
-      {btn.icon?.src && <img className="btn-icon" src={srcOf(btn.icon)} alt="" />}
+      {btn.icon?.src ? <img className="btn-icon" src={srcOf(btn.icon)} alt="" />
+        : /^mailto:/i.test(btn.url || '') && <span className="btn-icon btn-icon--svg"><SocialIcon name="mail" /></span>}
       <span data-eotm-text="label" data-eotm-in={btn._id}>{text}</span>
     </>
   )
@@ -444,29 +448,40 @@ function CardGrid({ block, isFirst, services, doc }) {
       data-phone-columns={block.phoneColumns === '1' ? '1' : '2'}>
       {block.title && <h2 data-eotm-text="title" {...frame.part('title')}>{block.title}</h2>}
       <div className="grid" {...frame.part('cards')}>
-        {cards.map((card, i) => (
-          <div className="card" key={card._id ?? i}>
+        {cards.map((card, i) => {
+          // data-eotm-holds: the console offers a card as a place to add an
+          // object (its own _elements, drawn after its button). A card is also
+          // a canvas of its own (like a design element, Elements.jsx): its
+          // picture, title, text and button are parts the console's Arrange
+          // moves and sizes within it, kept in the card's own _layout.
+          const cf = frameOf(card)
+          const { style: cardStyle, ...cardMarks } = cf.root
+          const own = doc && card._id ? { 'data-eotm-edit': `page:${doc}`, 'data-eotm-item': card._id, 'data-eotm-label': card.title || 'Card' } : {}
+          return (
+          <div className="card" key={card._id ?? i} data-eotm-holds={card._id} {...own} {...cardMarks} style={cardStyle}>
             {srcOf(card.image) &&
               (card.buttonUrl ? (
-                <a className="card-thumb" href={card.buttonUrl}>
+                <a className="card-thumb" href={card.buttonUrl} {...cf.part('image')}>
                   <img src={srcOf(card.image)} alt={altOf(card.image, card.title || '')} loading="lazy" style={imageStyle(card.image)} />
                 </a>
               ) : (
-                <div className="card-thumb">
+                <div className="card-thumb" {...cf.part('image')}>
                   <img src={srcOf(card.image)} alt={altOf(card.image, card.title || '')} loading="lazy" style={imageStyle(card.image)} />
                 </div>
               ))}
-            {card.title && <h3 data-eotm-text="title" data-eotm-in={card._id}>{card.title}</h3>}
-            {card.description && <p data-eotm-text="description" data-eotm-in={card._id}>{card.description}</p>}
+            {card.title && <h3 data-eotm-text="title" data-eotm-in={card._id} {...cf.part('title')}>{card.title}</h3>}
+            {card.description && <p data-eotm-text="description" data-eotm-in={card._id} {...cf.part('description')}>{card.description}</p>}
             {card.buttonLabel && (
-              <div className="button-row">
+              <div className="button-row" {...cf.part('button')}>
                 <a className="btn" href={card.buttonUrl}>
                   {card.buttonLabel}
                 </a>
               </div>
             )}
+            {card._elements?.length > 0 && <div className="card-elements" {...cf.wrap}><Elements data={card} frame={cf} /></div>}
           </div>
-        ))}
+          )
+        })}
       </div>
       <Buttons block={block} services={services} frame={frame} />
       <HomeButton block={block} frame={frame} />
@@ -787,6 +802,9 @@ export default function Blocks({ blocks, doc, layout = null, placeholder = null 
             return scaled(<ServiceBlock key={key} block={block} isFirst={isFirst} side={side} services={services} doc={doc} />)
           case 'embed':
             return scaled(<EmbedBlock key={key} block={block} isFirst={isFirst} doc={doc} />)
+          case 'eventList':
+            // The one DynamicPage puts on the events page until she adds her own is not hers to edit.
+            return scaled(<EventList key={key} block={block} className={sectionClass('section section--stack', null, isFirst, block)} marks={block._auto ? {} : editable(doc, block)} frame={frameOf(block)} />)
           case 'nextUp':
             return scaled(<NextUp key={key} block={block} className={sectionClass('section section--stack', null, isFirst, block)} marks={editable(doc, block)} frame={frameOf(block)} />)
           case 'testimonials':

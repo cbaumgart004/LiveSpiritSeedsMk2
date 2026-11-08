@@ -22,7 +22,7 @@ main:has(.slideshow-stage) {
   max-width: none;
   max-height: calc(100svh - 8rem);
   margin-inline: calc(50% - 50vw);
-  background: color-mix(in srgb, var(--text-outline-color) 85%, #000);
+  background: transparent;
   touch-action: pan-y;
 }
 .slideshow__slide {
@@ -37,21 +37,18 @@ main:has(.slideshow-stage) {
   visibility: visible;
   transition: opacity 2.5s ease, visibility 0s;
 }
-/* The picture is 3% taller than the frame each way so it can move inside it
-   as the page scrolls (Slideshow.jsx sets --shift); little enough that a
-   photo loses almost nothing to the crop. */
+/* The whole photo always shows: it is fitted inside the frame, never cropped,
+   and a photo of another shape leaves the rest of the frame transparent. */
 .slideshow__media {
   position: absolute;
-  inset: -3% 0;
-  transform: translate3d(0, calc(var(--shift, 0) * 1%), 0);
-  will-change: transform;
+  inset: 0;
 }
 .slideshow__slide img,
 .slideshow__slide video {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .slideshow__arrow {
@@ -79,41 +76,6 @@ main:has(.slideshow-stage) {
 }
 @media (hover: none) {
   .slideshow__arrow { display: none; }
-}
-
-.slideshow__dots {
-  position: absolute;
-  bottom: 0.75rem;
-  left: 50%;
-  translate: -50% 0;
-  display: flex;
-  gap: 0.5rem;
-  padding: 0.35rem 0.6rem;
-  background: rgb(0 0 0 / 0.25);
-  border-radius: 999px;
-}
-.slideshow__dot {
-  width: 0.6rem;
-  height: 0.6rem;
-  padding: 0;
-  background: rgb(255 255 255 / 0.55);
-  border: 0;
-  border-radius: 50%;
-  cursor: pointer;
-}
-.slideshow__dot.is-on {
-  background: #fff;
-}
-/* A bigger target on a phone without a bigger dot. */
-@media (hover: none) {
-  .slideshow__dot {
-    position: relative;
-  }
-  .slideshow__dot::after {
-    content: '';
-    position: absolute;
-    inset: -0.6rem;
-  }
 }
 
 /* "The page slides over it" (Slideshow.jsx moves and fades the show): every

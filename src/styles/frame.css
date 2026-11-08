@@ -183,3 +183,14 @@ img[data-eotm-qplaced] {
     font-size: calc(var(--qfs, 100) * 0.04cqw);
   }
 }
+
+/* A card arranged as its own canvas (Blocks.jsx CardGrid): its picture fills
+   the box it is given, and a placed button row keeps only its button's width. */
+.card[data-eotm-frame='free'] .card-thumb[data-eotm-placed] img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.card[data-eotm-frame='free'] .button-row[data-eotm-placed] {
+  margin: 0;
+}

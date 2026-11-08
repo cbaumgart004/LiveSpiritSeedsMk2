@@ -35,7 +35,8 @@ export default function SignedIn() {
 
 export function Welcome({ className = '' }) {
   const who = useLogin()
-  if (!who) return null
-  const first = firstName(who)
-  return <p className={`welcome ${className}`} aria-live="polite">{first ? `Welcome, ${first}` : 'Welcome'}</p>
+  const first = who ? firstName(who) : ''
+  // No one signed in, or no name to greet: nothing, not a bare "Welcome".
+  if (!first) return null
+  return <p className={`welcome ${className}`} aria-live="polite">{`Welcome, ${first}`}</p>
 }

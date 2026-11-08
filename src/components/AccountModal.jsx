@@ -48,7 +48,7 @@ function AccountForm({ mode, setMode, email, notice, onSignedIn }) {
       }
       const keep = f.get('keep') === 'on'
       if (mode === 'in') await signIn(f.get('email'), f.get('password'), keep)
-      else await signUp(f.get('name'), f.get('email'), f.get('password'), keep)
+      else await signUp(`${String(f.get('first')).trim()} ${String(f.get('last')).trim()}`, f.get('email'), f.get('password'), keep)
       await onSignedIn()
     } catch (err) {
       setError(err.message)
@@ -76,10 +76,16 @@ function AccountForm({ mode, setMode, email, notice, onSignedIn }) {
       )}
       {notice && <p className="modal__intro">{notice}</p>}
       {mode === 'up' && (
-        <label className="account__field">
-          <span>Name</span>
-          <input className="newsletter__input" name="name" autoComplete="name" />
-        </label>
+        <div className="account__names">
+          <label className="account__field">
+            <span>First name</span>
+            <input className="newsletter__input" name="first" required autoComplete="given-name" />
+          </label>
+          <label className="account__field">
+            <span>Last name</span>
+            <input className="newsletter__input" name="last" required autoComplete="family-name" />
+          </label>
+        </div>
       )}
       <label className="account__field">
         <span>Email</span>

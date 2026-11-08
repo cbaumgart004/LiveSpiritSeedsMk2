@@ -7,6 +7,27 @@
       if (/^preview./.test(location.hostname)) document.write('<meta name="robots" content="noindex, nofollow" />')
     </script>
     <script>
+      // The preview address is reached only through the live sign-in
+      // (src/cms/account.js, restoreLogin). Leaving before anything is drawn
+      // saves a flash of the page: with no editor token, and none arriving in
+      // the address (#eotm-token=), go to the live address to sign in or be
+      // handed one. Once a minute at most, so the two can never bounce.
+      (function () {
+        if (location.origin !== 'https://preview.spiritseedswellness.com') return
+        if (/(?:^#|&)eotm-token=/.test(location.hash)) return
+        try {
+          var t = localStorage.getItem('eotm:token:spiritseeds') || sessionStorage.getItem('eotm:token:spiritseeds')
+          if (t) {
+            var p = JSON.parse(atob(t.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')))
+            if (p.site === 'spiritseeds' && p.exp * 1000 > Date.now()) return
+          }
+          if (Date.now() - Number(sessionStorage.getItem('ss:renewing') || 0) < 60000) return
+          sessionStorage.setItem('ss:renewing', String(Date.now()))
+        } catch (e) { return }
+        location.replace('https://spiritseedswellness.com' + location.pathname + '#eotm-renew')
+      })()
+    </script>
+    <script>
       // A copy of this page kept from an earlier deploy (the host sends it with
       // stale-while-revalidate) names a bundle that the current deploy no longer
       // serves. The page then never loses visibility:hidden below and shows blank.

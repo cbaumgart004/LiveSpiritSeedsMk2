@@ -71,6 +71,20 @@ export const SOURCES = [
     enabled: true,
   },
 
+  {
+    id: 'prenatal',
+    label: 'Community Roots Midwife Collective',
+    adapter: 'offeringtree',
+    // Her own OfferingTree storefront: the class's booking page and schedule.
+    scheduleUrl: 'https://spiritseedswellnessmelissacarey.offeringtree.com/schedule',
+    bookUrl: 'https://spiritseedswellnessmelissacarey.offeringtree.com/offerings/book?offering=dce1d1ab-739c-45ce-b658-2b42013469cc',
+    // "Prenatal Yoga Class with Community Roots Midwife Collective", Sundays 11 AM.
+    offeringId: 'dce1d1ab-739c-45ce-b658-2b42013469cc',
+    teacherName: TEACHER,
+    timeZone: 'America/Denver',
+    enabled: true,
+  },
+
   // --- Add further studios here. -------------------------------------------
   // Healcode/Mindbody template (see the how-to at the top of this file):
   //
