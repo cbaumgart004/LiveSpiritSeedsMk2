@@ -924,3 +924,9 @@ dialog.modal input,
   .event-card__icon { width: 5rem; }
   .event-card__buttons { justify-content: center; }
 }
+
+/* An empty Content Section (Blocks.jsx, isBlank): hidden from visitors, kept
+   for the editor, whose .eotm-root is on the page while signed in. */
+.blank-block { display: contents; }
+body:not(:has(.eotm-root)) .blank-block,
+body:not(:has(.eotm-root)) .page-block:has(> .blank-block) { display: none; }
