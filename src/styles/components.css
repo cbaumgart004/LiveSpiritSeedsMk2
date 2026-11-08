@@ -910,6 +910,8 @@ dialog.modal input,
 .event-card__facts > div { display: grid; grid-template-columns: 4.5rem 1fr; gap: 0.5rem; }
 .event-card__facts dt { font-family: var(--font-subheading); color: var(--primary-color); font-weight: 600; }
 .event-card__facts dd { margin: 0; }
+.event-card__date { display: block; }
+.event-card__date + .event-card__date { margin-top: 0.4rem; }
 .event-card__buttons { justify-content: flex-start; }
 @media (max-width: 640px) {
   .event-card { grid-template-columns: 1fr; text-align: left; }

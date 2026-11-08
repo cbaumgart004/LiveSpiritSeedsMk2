@@ -83,8 +83,8 @@ function expand(slides, pages, events) {
     const base = hrefForSlug(eventsSlug(s))
     return coming.slice(0, Math.max(1, Number(s.count) || 3)).map((d) => ({
       _id: s._id, _key: `${s._id || 'events'}:${d.id || d.slug}`, kind: 'event', eyebrow: s.eyebrow,
-      title: d.data.title, when: [formatDay(d.data.date, { weekday: 'short', month: 'short' }), d.data.startTime].filter(Boolean).join(' · '),
-      fullWhen: [formatDay(d.data.date), timeText(d.data)].filter(Boolean).join(', '),
+      title: d.data.title, when: [formatDay(d.next.date, { weekday: 'short', month: 'short' }), d.next.startTime].filter(Boolean).join(' · '),
+      fullWhen: [formatDay(d.next.date), timeText(d.next)].filter(Boolean).join(', '),
       image: d.data.image, icon: d.data.icon, label: 'Details', url: `${base}#${eventAnchor(d)}`,
     }))
   })

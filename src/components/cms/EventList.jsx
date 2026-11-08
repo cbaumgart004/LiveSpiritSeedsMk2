@@ -32,7 +32,7 @@ const external = (url) => !url.startsWith('/') && !url.startsWith('#')
 
 function EventCard({ doc, showHome }) {
   const e = doc.data
-  const time = timeText(e)
+  const dates = doc.dates?.length ? doc.dates : [e]
   const url = e.linkUrl || ''
   return (
     <article className="card event-card" id={eventAnchor(doc)}
@@ -43,7 +43,8 @@ function EventCard({ doc, showHome }) {
       <div className="event-card__body">
         <h3>{e.title}</h3>
         <dl className="event-card__facts">
-          <div><dt>When</dt><dd>{formatDay(e.date)}{time && <><br />{time}</>}</dd></div>
+          <div><dt>When</dt><dd>{dates.map((o, i) => (
+            <span key={o.date + i} className="event-card__date">{formatDay(o.date)}{timeText(o) && <><br />{timeText(o)}</>}</span>))}</dd></div>
           {e.location && <div><dt>Where</dt><dd>{e.location}</dd></div>}
           {e.cost && <div><dt>Cost</dt><dd>{e.cost}</dd></div>}
         </dl>

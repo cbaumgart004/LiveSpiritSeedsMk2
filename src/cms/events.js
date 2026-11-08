@@ -25,9 +25,21 @@ export function timeText(e) {
 // The id of an event's card on the events page, for /upcoming#<anchor>.
 export const eventAnchor = (doc) => `event-${doc.slug || slugify(doc.data?.title)}`
 
-// Events dated today or later, soonest first; undated ones are left out.
+// An event's dates from today on, soonest first: its Date, then each of More
+// dates, whose blank times are the event's own.
+export function eventDates(e, now = today()) {
+  const main = { date: e.date, startTime: e.startTime, endTime: e.endTime }
+  const more = (e.moreDates || []).map((m) => ({ date: m.date, startTime: m.startTime || e.startTime, endTime: m.endTime || e.endTime }))
+  return [main, ...more].filter((o) => o.date && o.date >= now)
+    .sort((a, b) => a.date.localeCompare(b.date) || String(a.startTime || '').localeCompare(String(b.startTime || '')))
+}
+
+// Events with a date today or later, by their next one; undated ones are left
+// out. Each carries `dates` (every one still to come) and `next`, the first.
 export function upcomingEvents(docs) {
   const now = today()
-  return (docs || []).filter((d) => d.data?.title && d.data.date && d.data.date >= now)
-    .sort((a, b) => a.data.date.localeCompare(b.data.date) || String(a.data.startTime || '').localeCompare(String(b.data.startTime || '')))
+  return (docs || []).filter((d) => d.data?.title)
+    .map((d) => { const dates = eventDates(d.data, now); return { ...d, dates, next: dates[0] } })
+    .filter((d) => d.next)
+    .sort((a, b) => a.next.date.localeCompare(b.next.date) || String(a.next.startTime || '').localeCompare(String(b.next.startTime || '')))
 }
