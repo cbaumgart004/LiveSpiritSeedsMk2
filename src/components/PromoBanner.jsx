@@ -15,17 +15,25 @@
 // Until she saves her own: Memberships, Upcoming events, Book a Massage (from
 // the first service on the services page) and Connect.
 //
+// Each slide is a canvas of its own (Frame.jsx, like a card in Blocks.jsx
+// CardGrid): its picture, tag, title, words and button are parts the console's
+// Arrange moves and sizes. A saved slide keeps its arrangement in its own row
+// of promoSlides (_layout); an event's slide in that Event (_layout_banner), so
+// each event can be arranged differently.
+//
 // The slides share one grid cell, so the banner keeps the height of the
 // tallest and nothing below it moves as they turn. It pauses while pointed at
-// or focused, and holds the first slide under reduced motion.
+// or focused, while the owner arranges, and holds the first slide under
+// reduced motion.
 //
-// Hidden when switched off, after its end date, or once a visitor closes it.
-// Closing is remembered per set of headings in this browser, so a new
-// announcement shows again to everyone.
+// Hidden when switched off or after its end date. Visitors cannot close it;
+// they swipe between slides. The slide picker at the foot shows only while
+// the owner arranges, so she can reach each slide.
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useDocuments, useSettings, hrefForSlug, slugify } from '../cms/site'
 import { upcomingEvents, formatDay, timeText, eventAnchor } from '../cms/events'
 import { EventIcon } from './cms/EventList'
+import { frameOf } from './cms/Frame'
 import '../styles/promo.css'
 
 const CONNECT_INTRO = 'Welcome to a journey of healing and transformation! Subscribe to our newsletter for insights on trauma-informed yoga, neuroscience-based massage practices, and holistic wellness tips. Join our community today!'
@@ -40,10 +48,8 @@ function today() {
 const plain = (html) => String(html || '').replace(/<\/(p|h[1-6]|li|div)>|<br\s*\/?>/gi, ' ').replace(/<[^>]*>/g, '')
   .replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim()
 
-const storeKey = (key) => `promo-closed:${key}`
-function wasClosed(key) {
-  try { return localStorage.getItem(storeKey(key)) === '1' } catch { return false }
-}
+// The banner once had a close button that hid it per browser. Forget those.
+try { Object.keys(localStorage).filter((k) => k.startsWith('promo-closed:')).forEach((k) => localStorage.removeItem(k)) } catch { /* storage blocked */ }
 
 function defaultSlides(settings, pages) {
   const services = pages.find((p) => p.slug === 'services')
@@ -85,7 +91,7 @@ function expand(slides, pages, events) {
       _id: s._id, _key: `${s._id || 'events'}:${d.id || d.slug}`, kind: 'event', eyebrow: s.eyebrow,
       title: d.data.title, when: [formatDay(d.next.date, { weekday: 'short', month: 'short' }), d.next.startTime].filter(Boolean).join(' · '),
       fullWhen: [formatDay(d.next.date), timeText(d.next)].filter(Boolean).join(', '),
-      image: d.data.image, icon: d.data.icon, label: 'Details', url: `${base}#${eventAnchor(d)}`,
+      image: d.data.image, icon: d.data.icon, label: 'Details', url: `${base}#${eventAnchor(d)}`, doc: d,
     }))
   })
 }
@@ -93,29 +99,43 @@ function expand(slides, pages, events) {
 const external = (url) => !url.startsWith('/') && !url.startsWith('#')
 const newTab = (url) => (external(url) ? { target: '_blank', rel: 'noreferrer' } : {})
 
+// What the console edits a slide as, and where its arrangement is kept.
+function canvasOf(slide, saved) {
+  const doc = slide.doc
+  if (slide.kind === 'event') {
+    const own = doc?.id && !String(doc.id).startsWith('bundled:')
+    return { frame: frameOf(doc?.data, 'banner'), marks: own ? { 'data-eotm-edit': `event:${doc.id}`, 'data-eotm-frame-key': 'banner', 'data-eotm-label': slide.title } : {}, text: own ? {} : null }
+  }
+  const own = saved && slide._id
+  return { frame: frameOf(slide), marks: own ? { 'data-eotm-edit': 'settings:settings', 'data-eotm-item': slide._id, 'data-eotm-label': slide.title } : {}, text: own ? { 'data-eotm-in': slide._id } : null }
+}
+
 function Slide({ slide, on, out, saved }) {
   const url = slide.url || ''
   const links = slide.links || []
+  const { frame, marks, text } = canvasOf(slide, saved)
+  const { style: rootStyle, ...rootMarks } = frame.root
+  const typed = (field) => (text ? { 'data-eotm-text': field, ...text } : {})
   return (
     <div className={`promo__slide${on ? ' is-on' : ''}${out ? ' is-out' : ''}`} aria-hidden={!on} inert={on ? undefined : ''}
-      {...(saved && slide._id ? { 'data-eotm-item': slide._id } : {})}>
-      <div className="promo__inner">
-        {slide.image?.src ? <img className="promo__thumb" src={slide.image.src} alt={slide.image.alt || ''} loading="lazy" />
-          : slide.kind === 'event' && <span className="promo__thumb promo__thumb--icon"><EventIcon name={slide.icon} /></span>}
-        {slide.eyebrow && <span className="promo__eyebrow">{slide.eyebrow}</span>}
-        <div className="promo__copy">
-          <p className="promo__title">{slide.title}</p>
+      {...marks} {...rootMarks} style={rootStyle}>
+      <div className="promo__inner" {...frame.wrap}>
+        {slide.image?.src ? <img className="promo__thumb" src={slide.image.src} alt={slide.image.alt || ''} loading="lazy" {...frame.part('thumb')} />
+          : slide.kind === 'event' && <span className="promo__thumb promo__thumb--icon" {...frame.part('thumb')}><EventIcon name={slide.icon} /></span>}
+        {slide.eyebrow && <span className="promo__eyebrow" {...frame.part('eyebrow')}>{slide.eyebrow}</span>}
+        <div className="promo__copy" {...frame.wrap}>
+          <p className="promo__title" {...typed('title')} {...frame.part('title')}>{slide.title}</p>
           {slide.kind === 'event' ? (
-            <p className="promo__text promo__when"><time title={slide.fullWhen}>{slide.when}</time></p>
+            <p className="promo__text promo__when" {...frame.part('text')}><time title={slide.fullWhen}>{slide.when}</time></p>
           ) : slide.kind === 'events' ? (
             links.length > 0 && (
-              <ul className="promo__events">
+              <ul className="promo__events" {...frame.part('text')}>
                 {links.map((l) => <li key={l.key}><a href={l.href} {...newTab(l.href)}>{l.title}</a></li>)}
               </ul>
             )
-          ) : slide.text && <p className="promo__text">{slide.text}</p>}
+          ) : slide.text && <p className="promo__text" {...typed('text')} {...frame.part('text')}>{slide.text}</p>}
         </div>
-        {url && <a className="btn promo__link" href={url} {...newTab(url)}>{slide.label || 'Learn more'}</a>}
+        {url && <a className="btn promo__link" href={url} {...newTab(url)} {...frame.part('button')}>{slide.label || 'Learn more'}</a>}
       </div>
     </div>
   )
@@ -132,13 +152,11 @@ export default function PromoBanner() {
   const fade = Math.min(4, Math.max(0.3, Number(settings.promoFade) || 1.5))
   const seconds = Math.min(30, Math.max(4, Number(settings.promoSeconds) || 8))
 
-  const closeKey = slides.map((s) => s.title).join('|')
-  const [closed, setClosed] = useState(() => wasClosed(closeKey))
-  useEffect(() => setClosed(wasClosed(closeKey)), [closeKey])
-
   const [cur, setCur] = useState(0)
   const [prev, setPrev] = useState(null)
   const [paused, setPaused] = useState(false)
+  // While the owner arranges (the console's Arrange mode), the slide showing stays.
+  const [, setWait] = useState(0)
   const box = useRef(null)
   const index = slides.length ? cur % slides.length : 0
   const go = (n) => {
@@ -147,7 +165,7 @@ export default function PromoBanner() {
   }
 
   const expired = settings.promoUntil && today() > settings.promoUntil
-  const show = settings.promoOn !== false && !expired && !closed && slides.length > 0
+  const show = settings.promoOn !== false && !expired && slides.length > 0
 
   useEffect(() => {
     if (!show) return undefined
@@ -158,15 +176,19 @@ export default function PromoBanner() {
   useEffect(() => {
     if (!show || paused || slides.length < 2) return undefined
     if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return undefined
-    const t = setTimeout(() => go(index + 1), seconds * 1000)
+    const t = setTimeout(() => (document.documentElement.classList.contains('eotm-arranging') ? setWait((w) => w + 1) : go(index + 1)), seconds * 1000)
     return () => clearTimeout(t)
-  }, [show, paused, index, slides.length, seconds]) // eslint-disable-line react-hooks/exhaustive-deps
+  })
 
   if (!show) return null
 
-  const close = () => {
-    try { localStorage.setItem(storeKey(closeKey), '1') } catch { /* private window: closes for this visit only */ }
-    setClosed(true)
+  // A horizontal swipe moves a slide; arranging owns the pointer, so not then.
+  const swipe = (e) => {
+    const start = box.current?.swipeX
+    if (box.current) box.current.swipeX = null
+    if (start == null || slides.length < 2 || document.documentElement.classList.contains('eotm-arranging')) return
+    const dx = e.changedTouches[0].clientX - start
+    if (Math.abs(dx) > 40) go(index + (dx < 0 ? 1 : -1))
   }
   // Pointing or focus inside pauses it; leaving resumes, unless the other still holds.
   const leave = (e) => {
@@ -179,6 +201,7 @@ export default function PromoBanner() {
     <aside ref={box} className="promo" aria-label="Announcement" aria-roledescription="carousel"
       data-transition={transition} data-moved={prev != null ? '' : undefined} style={{ '--promo-fade': `${fade}s` }}
       onMouseEnter={() => setPaused(true)} onMouseLeave={leave} onFocus={() => setPaused(true)} onBlur={leave}
+      onTouchStart={(e) => { box.current.swipeX = e.touches[0].clientX }} onTouchEnd={swipe}
       data-eotm-edit="settings:settings" data-eotm-label="announcement banner" data-eotm-field="promoSlides">
       <div className="promo__stage">
         {slides.map((s, i) => (
@@ -193,7 +216,6 @@ export default function PromoBanner() {
           ))}
         </div>
       )}
-      <button type="button" className="promo__close" aria-label="Close announcement" onClick={close}>×</button>
     </aside>
   )
 }

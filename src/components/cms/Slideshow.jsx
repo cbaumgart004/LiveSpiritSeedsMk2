@@ -2,7 +2,7 @@
 // "Slideshow (photos and videos)": the owner's photos and short videos, one at
 // a time, crossfading slowly (2.5s) every `seconds`. A video plays muted and inline and the
 // show moves on when it ends. Hovering, focusing or tapping the show pauses it;
-// a swipe on a phone or a dot moves it. Under reduced motion it never moves on
+// a swipe on a phone or an arrow moves it. Under reduced motion it never moves on
 // its own and a video waits for its play button.
 //
 // Only the slide showing and the next one load; the rest wait, so a long show
@@ -254,12 +254,6 @@ export default function Slideshow({ block, className, marks, frame }) {
           <>
             <button type="button" className="slideshow__arrow slideshow__arrow--prev" aria-label="Previous" onClick={() => go(index - 1)}>‹</button>
             <button type="button" className="slideshow__arrow slideshow__arrow--next" aria-label="Next" onClick={() => go(index + 1)}>›</button>
-            <div className="slideshow__dots">
-              {slides.map((m, i) => (
-                <button key={m._id ?? i} type="button" className={`slideshow__dot${i === index ? ' is-on' : ''}`}
-                  aria-label={`Show ${i + 1} of ${count}`} aria-current={i === index} onClick={() => go(i)} />
-              ))}
-            </div>
           </>
         )}
       </div>

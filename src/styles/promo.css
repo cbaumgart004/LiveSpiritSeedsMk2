@@ -91,25 +91,6 @@
   font-weight: 700;
   text-shadow: none;
 }
-.promo__close {
-  position: absolute;
-  z-index: 2; /* above the sweep */
-  top: 0.35rem;
-  right: 0.5rem;
-  width: 2rem;
-  height: 2rem;
-  padding: 0;
-  font-size: 1.4rem;
-  line-height: 1;
-  color: var(--text-outline-color);
-  opacity: 0.7;
-  background: none;
-  border: 0;
-  cursor: pointer;
-}
-.promo__close:hover {
-  opacity: 1;
-}
 
 /* The slides (PromoBanner.jsx) share one cell of a grid, so the banner keeps
    the height of the tallest. Only the showing one is visible; the one it
@@ -171,6 +152,7 @@
   flex: none;
   width: 4rem;
   height: 4rem;
+  aspect-ratio: 1;
   object-fit: cover;
   border-radius: var(--radius-2);
   box-shadow: var(--shadow-1);
@@ -199,8 +181,11 @@
   color: var(--primary-color);
 }
 
-/* Which slide shows, and a way to pick one: small dots at the foot. */
+/* Slide picker: only while the owner arranges. Visitors swipe. */
 .promo__dots {
+  display: none;
+}
+html.eotm-arranging .promo__dots {
   position: absolute;
   z-index: 2;
   bottom: 0.3rem;
@@ -266,10 +251,6 @@
     text-align: center;
     font-size: 0.9rem;
   }
-  .promo__close {
-    top: 0.2rem;
-    right: 0.2rem;
-  }
 }
 
 /* The banner clears the fixed bars, so the first section only needs a gap.
@@ -290,3 +271,12 @@ body.style-immersive.has-promo.has-action-bar .section--splash.first-section {
 }
 .promo__thumb--icon svg { width: 60%; height: 60%; }
 .promo__when { font-weight: 600; }
+
+/* A slide the owner arranged (Arrange, Frame.jsx): its picture keeps its
+   shape at the width she gave it, unless she set a height too. */
+.promo__slide[data-eotm-frame='free'] .promo__thumb[data-eotm-placed]:not([style*='--ph']) {
+  height: auto;
+}
+.promo__slide[data-eotm-frame='free'] .promo__link[data-eotm-placed] {
+  text-align: center;
+}
