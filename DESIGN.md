@@ -116,6 +116,12 @@ the Tina collections had; the file paths below are the Tina copies:
     (`center`/`bottomLeft`/`bottomCenter` — where the text sits on the photo).
   - **`service`** — a bookable offering: `status` (`available`/`coming-soon`), `bookingOptions[]`
     (each with `addOns[]`), plus the shared fields below.
+  - **`eventList`** — "Upcoming events" (`cms/EventList.jsx`, helpers in `cms/events.js`): each
+    `event` document dated today or later, soonest first, as a `.card.event-card` (console class
+    "Event cards"): photo or `icon`, name, When (date and times), Where, `cost`, description, then
+    Book a Spot (`linkUrl`, `linkLabel`) and Home. Fields `title`, `intro`, `count`, `emptyText`,
+    `showHomeButton`, `spacing`. Until the `upcoming` page has one of its own, `DynamicPage` puts one
+    first on that page (`_auto`, not editable).
   - **`embed`** — a generic third-party widget: `source` (offeringtree/canva/kit/teaching-schedule/
     other, a label), `mode` (`url` iframe link, `code` raw snippet, **or `schedule`** — the harvested
     teaching schedule, which needs nothing pasted), `url`/`code`, `height`, `caption`, plus
@@ -487,8 +493,10 @@ each edge and centred on the bar.
   `INVALID_EMAIL_OR_PASSWORD`, no longer 403 `INVALID_ORIGIN`).
 - **Announcement banner** (`components/PromoBanner.jsx`, `styles/promo.css`, rendered by
   `ActionBar.jsx`): under the services strip on every page, in the page flow, turning through Site
-  settings `promoSlides` (each a picture and words, or `kind: events`: dated events still to come,
-  then the section headings of its `eventsPage`, each linked as `/<slug>#<slugified heading>`), with
+  settings `promoSlides` (each a picture and words, or `kind: events`: one slide per `event` document
+  from today on, `count` at most, showing its picture or icon, name and date and linking to its card
+  `/<eventsPage>#event-<slug>`, before the next slide; with no such event, the section headings of
+  its `eventsPage`, each linked as `/<slug>#<slugified heading>`), with
   `promoTransition` (fade out then in, crossfade, slide, none), `promoFade` and `promoSeconds`, plus
   `promoOn` and `promoUntil`. Until she saves slides: Memberships, Upcoming events, Book a Massage
   (text and picture from the first service on `services`) and Connect (`connectTitle`/`connectIntro`).

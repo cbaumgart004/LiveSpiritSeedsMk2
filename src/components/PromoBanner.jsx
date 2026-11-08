@@ -6,8 +6,10 @@
 // stops clearing the fixed bars itself, since the banner already does
 // (promo.css).
 //
-// A slide is a picture and words, or the upcoming events: the section headings
-// of the events page (and any dated event still to come), each a link to it.
+// A slide is a picture and words, or the upcoming events: each Event from today
+// on in turn (its picture, name and date, linked to its card on the events
+// page), before the next slide. With no such event it lists the section
+// headings of the events page instead, each a link to it.
 // The console copies a slide from a section on the site and the owner changes
 // it from there, so the banner shows what she saved, not the section live.
 // Until she saves her own: Memberships, Upcoming events, Book a Massage (from
@@ -22,6 +24,8 @@
 // announcement shows again to everyone.
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useDocuments, useSettings, hrefForSlug, slugify } from '../cms/site'
+import { upcomingEvents, formatDay, timeText, eventAnchor } from '../cms/events'
+import { EventIcon } from './cms/EventList'
 import '../styles/promo.css'
 
 const CONNECT_INTRO = 'Welcome to a journey of healing and transformation! Subscribe to our newsletter for insights on trauma-informed yoga, neuroscience-based massage practices, and holistic wellness tips. Join our community today!'
@@ -56,35 +60,54 @@ function defaultSlides(settings, pages) {
   ]
 }
 
-// What an events slide lists: dated events still to come, then the section
-// headings of its events page, `count` at most.
-function eventLinks(slide, pages, events) {
-  const slug = String(slide.eventsPage || 'upcoming').replace(/^\/+|\/+$/g, '')
+const eventsSlug = (slide) => String(slide.eventsPage || 'upcoming').replace(/^\/+|\/+$/g, '')
+
+// An events slide with no Event to come: the section headings of its events
+// page, `count` at most.
+function sectionLinks(slide, pages) {
+  const slug = eventsSlug(slide)
   const page = pages.find((p) => p.slug === slug)
   const base = hrefForSlug(slug)
-  const dated = events.filter((e) => e.data?.title && (!e.data.date || e.data.date >= today()))
-    .sort((a, b) => String(a.data.date || '').localeCompare(String(b.data.date || '')))
-    .map((e) => ({ key: e.id || e.slug, title: e.data.title, href: e.data.linkUrl || base }))
-  const sections = (page?.data?.blocks || []).filter((b) => typeof b.title === 'string' && b.title.trim())
+  return (page?.data?.blocks || []).filter((b) => typeof b.title === 'string' && b.title.trim())
     .map((b) => ({ key: b._id || b.title, title: b.title.trim(), href: `${base}#${slugify(b.title)}` }))
-  const seen = new Set()
-  return [...dated, ...sections].filter((l) => !seen.has(l.title) && seen.add(l.title)).slice(0, Math.max(1, Number(slide.count) || 3))
+    .slice(0, Math.max(1, Number(slide.count) || 3))
+}
+
+// The slides as shown: an events slide becomes one slide per Event to come
+// (`count` at most), keeping its tag; each links to the event's card.
+function expand(slides, pages, events) {
+  const coming = upcomingEvents(events)
+  return slides.flatMap((s) => {
+    if (s.kind !== 'events') return [s]
+    if (!coming.length) return [{ ...s, links: sectionLinks(s, pages) }]
+    const base = hrefForSlug(eventsSlug(s))
+    return coming.slice(0, Math.max(1, Number(s.count) || 3)).map((d) => ({
+      _id: s._id, _key: `${s._id || 'events'}:${d.id || d.slug}`, kind: 'event', eyebrow: s.eyebrow,
+      title: d.data.title, when: [formatDay(d.data.date, { weekday: 'short', month: 'short' }), d.data.startTime].filter(Boolean).join(' · '),
+      fullWhen: [formatDay(d.data.date), timeText(d.data)].filter(Boolean).join(', '),
+      image: d.data.image, icon: d.data.icon, label: 'Details', url: `${base}#${eventAnchor(d)}`,
+    }))
+  })
 }
 
 const external = (url) => !url.startsWith('/') && !url.startsWith('#')
 const newTab = (url) => (external(url) ? { target: '_blank', rel: 'noreferrer' } : {})
 
-function Slide({ slide, links, on, out, saved }) {
+function Slide({ slide, on, out, saved }) {
   const url = slide.url || ''
+  const links = slide.links || []
   return (
     <div className={`promo__slide${on ? ' is-on' : ''}${out ? ' is-out' : ''}`} aria-hidden={!on} inert={on ? undefined : ''}
       {...(saved && slide._id ? { 'data-eotm-item': slide._id } : {})}>
       <div className="promo__inner">
-        {slide.image?.src && <img className="promo__thumb" src={slide.image.src} alt={slide.image.alt || ''} loading="lazy" />}
+        {slide.image?.src ? <img className="promo__thumb" src={slide.image.src} alt={slide.image.alt || ''} loading="lazy" />
+          : slide.kind === 'event' && <span className="promo__thumb promo__thumb--icon"><EventIcon name={slide.icon} /></span>}
         {slide.eyebrow && <span className="promo__eyebrow">{slide.eyebrow}</span>}
         <div className="promo__copy">
           <p className="promo__title">{slide.title}</p>
-          {slide.kind === 'events' ? (
+          {slide.kind === 'event' ? (
+            <p className="promo__text promo__when"><time title={slide.fullWhen}>{slide.when}</time></p>
+          ) : slide.kind === 'events' ? (
             links.length > 0 && (
               <ul className="promo__events">
                 {links.map((l) => <li key={l.key}><a href={l.href} {...newTab(l.href)}>{l.title}</a></li>)}
@@ -103,8 +126,8 @@ export default function PromoBanner() {
   const { docs: pages } = useDocuments('page')
   const { docs: events } = useDocuments('event')
   const saved = Array.isArray(settings.promoSlides) && settings.promoSlides.length > 0
-  const slides = useMemo(() => (saved ? settings.promoSlides : defaultSlides(settings, pages)).filter((s) => s?.title),
-    [saved, settings, pages])
+  const slides = useMemo(() => expand((saved ? settings.promoSlides : defaultSlides(settings, pages)).filter((s) => s?.title), pages, events),
+    [saved, settings, pages, events])
   const transition = TRANSITIONS.includes(settings.promoTransition) ? settings.promoTransition : 'fade'
   const fade = Math.min(4, Math.max(0.3, Number(settings.promoFade) || 1.5))
   const seconds = Math.min(30, Math.max(4, Number(settings.promoSeconds) || 8))
@@ -159,14 +182,13 @@ export default function PromoBanner() {
       data-eotm-edit="settings:settings" data-eotm-label="announcement banner" data-eotm-field="promoSlides">
       <div className="promo__stage">
         {slides.map((s, i) => (
-          <Slide key={s._id || i} slide={s} on={i === index} out={i === prev && i !== index} saved={saved}
-            links={s.kind === 'events' ? eventLinks(s, pages, events) : []} />
+          <Slide key={s._key || s._id || i} slide={s} on={i === index} out={i === prev && i !== index} saved={saved} />
         ))}
       </div>
       {slides.length > 1 && (
         <div className="promo__dots">
           {slides.map((s, i) => (
-            <button key={s._id || i} type="button" className={`promo__dot${i === index ? ' is-on' : ''}`}
+            <button key={s._key || s._id || i} type="button" className={`promo__dot${i === index ? ' is-on' : ''}`}
               aria-label={`Show ${s.title}`} aria-current={i === index ? 'true' : undefined} onClick={() => i !== index && go(i)} />
           ))}
         </div>

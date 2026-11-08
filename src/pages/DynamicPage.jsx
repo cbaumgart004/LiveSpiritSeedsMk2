@@ -9,6 +9,8 @@ import { useDocuments, usePageLayout, useSettings } from '../cms/site'
 // Renders one Page by slug: `/` is the page whose slug is `home`, `/:slug` the
 // page with that slug. Pages come from the Edge of the Map console (drafts
 // included while the owner edits), else from the bundled content files.
+const EVENTS_PAGE = 'upcoming'
+
 export default function DynamicPage() {
   const { slug = 'home' } = useParams()
   const { ready, docs } = useDocuments('page')
@@ -26,7 +28,11 @@ export default function DynamicPage() {
   // adds a Slideshow section of her own (Slideshow.jsx, PLACEHOLDER_MEDIA).
   const placeholder = useMemo(() => (slug === 'home' && !(page?.data?.blocks ?? []).some((b) => b._type === 'slideshow')
     ? { _type: 'slideshow', _placeholder: true } : null), [slug, page])
-  const blocks = footer ? (page?.data?.blocks ?? []).filter((b) => b.layout !== 'values') : page?.data?.blocks
+  const own = footer ? (page?.data?.blocks ?? []).filter((b) => b.layout !== 'values') : page?.data?.blocks ?? []
+  // The events page lists the Events (EventList.jsx) first until she adds an
+  // Upcoming events section of her own.
+  const blocks = slug === EVENTS_PAGE && !own.some((b) => b._type === 'eventList')
+    ? [{ _type: 'eventList', _auto: true }, ...own] : own
 
   if (!ready) {
     return (

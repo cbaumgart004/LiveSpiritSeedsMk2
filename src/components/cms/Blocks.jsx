@@ -19,6 +19,7 @@ import TaglineArt from '../TaglineArt'
 
 import CustomSection from './CustomSection'
 import NextUp from './NextUp'
+import EventList from './EventList'
 import Slideshow from './Slideshow'
 import Testimonials from './Testimonials'
 import { PLACEHOLDER_MEDIA } from './placeholderMedia'
@@ -798,6 +799,9 @@ export default function Blocks({ blocks, doc, layout = null, placeholder = null 
             return scaled(<ServiceBlock key={key} block={block} isFirst={isFirst} side={side} services={services} doc={doc} />)
           case 'embed':
             return scaled(<EmbedBlock key={key} block={block} isFirst={isFirst} doc={doc} />)
+          case 'eventList':
+            // The one DynamicPage puts on the events page until she adds her own is not hers to edit.
+            return scaled(<EventList key={key} block={block} className={sectionClass('section section--stack', null, isFirst, block)} marks={block._auto ? {} : editable(doc, block)} frame={frameOf(block)} />)
           case 'nextUp':
             return scaled(<NextUp key={key} block={block} className={sectionClass('section section--stack', null, isFirst, block)} marks={editable(doc, block)} frame={frameOf(block)} />)
           case 'testimonials':

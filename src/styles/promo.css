@@ -280,3 +280,13 @@ body.style-immersive.has-promo.has-action-bar .first-section,
 body.style-immersive.has-promo.has-action-bar .section--splash.first-section {
   margin-top: var(--space-3);
 }
+
+/* An event slide with no picture: the event's icon in the picture's place. */
+.promo__thumb--icon {
+  display: grid;
+  place-items: center;
+  color: var(--primary-color);
+  background: var(--bg-color-light);
+}
+.promo__thumb--icon svg { width: 60%; height: 60%; }
+.promo__when { font-weight: 600; }
