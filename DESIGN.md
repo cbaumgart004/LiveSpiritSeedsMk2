@@ -66,7 +66,8 @@ src/
                        useUiStyle.js — watches the <body> style class (§6 UX styles)
   assets/              Seasonal logos/backgrounds (referenced by CSS themes)
 public/
-  uploads/             CMS-uploaded images (repo-based media); favicon
+  uploads/             Original repo images, kept as a fallback; the logo (index.html) and
+                       connect-portrait (ConnectPage.jsx) still load from here
 marketplace/           SEPARATE package — the online store (not part of the SPA)
 ```
 
@@ -163,8 +164,9 @@ is the live preview. `DynamicPage` finds the page by slug (`home` is `/`) and pa
 - **The owner's own section types** (console "Your own types") render through
   `components/cms/CustomSection.jsx` from their fields (`useSchema`), in the plain section style
   until given a design. Photos carry the owner's turn, mirror and fade (`components/cms/photo.js`).
-- **Photos.** New ones upload to the site's photo bucket through the console; existing ones stay in
-  `public/uploads` and are reused by path.
+- **Photos.** Every content image lives in the site's own bucket `eotm-spiritseeds-media` under
+  `pageAssets/`, served from `https://d3qx5ofdyxjv09.cloudfront.net/pageAssets/`; console uploads
+  land there too (`pageAssets/<yyyy-mm>/`). Content no longer references `/uploads/`.
 
 Block-renderer behaviors (`Blocks.jsx`): a `contentSection` dispatches on its `layout`; a `service`
 renders the bookable card; an `embed` renders a third-party widget (see **Live embeds** below).
