@@ -147,10 +147,10 @@ function ButtonFace({ btn, text }) {
   )
 }
 
-function ButtonItem({ btn, services }) {
+function ButtonItem({ btn, services, part }) {
   const schema = useSchema()
   const cls = buttonClass(schema, btn.look)
-  const mark = btn._id ? { 'data-eotm-in': btn._id } : {}
+  const mark = { ...(btn._id ? { 'data-eotm-in': btn._id } : {}), ...part }
   const linked = btn.service?.trim()
   if (linked) {
     const ref = services?.[linked.toLowerCase()]
@@ -187,9 +187,11 @@ function Buttons({ block, services, frame }) {
   const items = block.buttons
   if (!items?.length) return null
   return (
-    <div className="button-row" data-eotm-field="buttons" {...frame?.part('buttons')}>
+    // Each button is its own part, so Arrange moves and sizes them one by one;
+    // the row is only a wrapper (no box of its own while the section is Free).
+    <div className="button-row" data-eotm-field="buttons" {...frame?.wrap}>
       {items.map((btn, i) => (
-        <ButtonItem key={i} btn={btn} services={services} />
+        <ButtonItem key={btn._id ?? i} btn={btn} services={services} part={frame?.part(`button:${btn._id ?? i}`)} />
       ))}
     </div>
   )
