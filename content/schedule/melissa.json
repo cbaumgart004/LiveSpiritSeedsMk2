@@ -1,8 +1,8 @@
 {
   "_generated": "DO NOT EDIT BY HAND. Rebuilt daily by scripts/harvest-schedule.mjs.",
   "teacher": "Melissa Carey",
-  "generatedAt": "2026-11-07T15:38:18.828Z",
-  "rangeStart": "2026-11-07",
+  "generatedAt": "2026-11-08T15:56:05.843Z",
+  "rangeStart": "2026-11-08",
   "weeks": 4,
   "sources": [
     {
@@ -24,7 +24,7 @@
       "label": "All Purpose Yoga",
       "status": "ok",
       "classes": 3,
-      "scanned": 247
+      "scanned": 246
     },
     {
       "id": "cura",
@@ -32,6 +32,13 @@
       "status": "ok",
       "classes": 1,
       "scanned": 246
+    },
+    {
+      "id": "prenatal",
+      "label": "Community Roots Midwife Collective",
+      "status": "ok",
+      "classes": 3,
+      "scanned": 10
     }
   ],
   "studios": [
@@ -54,11 +61,16 @@
       "id": "cura",
       "label": "CURA Yoga Center",
       "scheduleUrl": "https://curayogacenter.com/schedule/"
+    },
+    {
+      "id": "prenatal",
+      "label": "Community Roots Midwife Collective",
+      "scheduleUrl": "https://spiritseedswellnessmelissacarey.offeringtree.com/schedule"
     }
   ],
   "sessions": [
     {
-      "id": "soultree:10896720",
+      "id": "soultree:9915820",
       "date": "2026-11-08",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -72,7 +84,7 @@
       "sortKey": "2026-11-08T1080"
     },
     {
-      "id": "soultree:10896880",
+      "id": "soultree:9915980",
       "date": "2026-11-09",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -118,7 +130,7 @@
       "sortKey": "2026-11-11T1140"
     },
     {
-      "id": "cura:01bfb4be-d0a4-42e0-b909-a9c93a8894ae",
+      "id": "cura:c2e187e3-39a1-43c0-8fdf-ecda708dd214",
       "date": "2026-11-14",
       "startTime": "2:00 PM",
       "endTime": "3:30 PM",
@@ -134,7 +146,23 @@
       "sortKey": "2026-11-14T0840"
     },
     {
-      "id": "soultree:11092200",
+      "id": "prenatal:75ed6e50-e652-4c85-9d8b-62ed85d4b8e2_1794765600",
+      "date": "2026-11-15",
+      "startTime": "11:00 AM",
+      "endTime": "12:00 PM",
+      "timezone": "MST",
+      "name": "Prenatal Yoga Class with Community Roots Midwife Collective",
+      "type": "",
+      "level": "",
+      "staff": "Melissa Carey",
+      "studio": "Community Roots Midwife Collective",
+      "studioUrl": "https://spiritseedswellnessmelissacarey.offeringtree.com/schedule",
+      "bookUrl": "https://spiritseedswellnessmelissacarey.offeringtree.com/offerings/book?offering=dce1d1ab-739c-45ce-b658-2b42013469cc",
+      "cost": "",
+      "sortKey": "2026-11-15T0660"
+    },
+    {
+      "id": "soultree:38859280",
       "date": "2026-11-15",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -148,7 +176,7 @@
       "sortKey": "2026-11-15T1080"
     },
     {
-      "id": "soultree:11092320",
+      "id": "soultree:38859400",
       "date": "2026-11-16",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -194,7 +222,23 @@
       "sortKey": "2026-11-18T1140"
     },
     {
-      "id": "soultree:2228100",
+      "id": "prenatal:75ed6e50-e652-4c85-9d8b-62ed85d4b8e2_1795370400",
+      "date": "2026-11-22",
+      "startTime": "11:00 AM",
+      "endTime": "12:00 PM",
+      "timezone": "MST",
+      "name": "Prenatal Yoga Class with Community Roots Midwife Collective",
+      "type": "",
+      "level": "",
+      "staff": "Melissa Carey",
+      "studio": "Community Roots Midwife Collective",
+      "studioUrl": "https://spiritseedswellnessmelissacarey.offeringtree.com/schedule",
+      "bookUrl": "https://spiritseedswellnessmelissacarey.offeringtree.com/offerings/book?offering=dce1d1ab-739c-45ce-b658-2b42013469cc",
+      "cost": "",
+      "sortKey": "2026-11-22T0660"
+    },
+    {
+      "id": "soultree:51256620",
       "date": "2026-11-22",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -208,7 +252,7 @@
       "sortKey": "2026-11-22T1080"
     },
     {
-      "id": "soultree:2228220",
+      "id": "soultree:51256740",
       "date": "2026-11-23",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -222,7 +266,23 @@
       "sortKey": "2026-11-23T0720"
     },
     {
-      "id": "soultree:10944820",
+      "id": "prenatal:75ed6e50-e652-4c85-9d8b-62ed85d4b8e2_1795975200",
+      "date": "2026-11-29",
+      "startTime": "11:00 AM",
+      "endTime": "12:00 PM",
+      "timezone": "MST",
+      "name": "Prenatal Yoga Class with Community Roots Midwife Collective",
+      "type": "",
+      "level": "",
+      "staff": "Melissa Carey",
+      "studio": "Community Roots Midwife Collective",
+      "studioUrl": "https://spiritseedswellnessmelissacarey.offeringtree.com/schedule",
+      "bookUrl": "https://spiritseedswellnessmelissacarey.offeringtree.com/offerings/book?offering=dce1d1ab-739c-45ce-b658-2b42013469cc",
+      "cost": "",
+      "sortKey": "2026-11-29T0660"
+    },
+    {
+      "id": "soultree:50331100",
       "date": "2026-11-29",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -236,7 +296,7 @@
       "sortKey": "2026-11-29T1080"
     },
     {
-      "id": "soultree:10944980",
+      "id": "soultree:50331260",
       "date": "2026-11-30",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
