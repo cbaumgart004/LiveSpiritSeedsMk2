@@ -745,6 +745,18 @@ function ContentSection({ block, isFirst, side, services, doc }) {
   }
 }
 
+// A Content Section with nothing in it: no words, picture, card, button or
+// element. On the home page, where the Home button is never drawn, one added and
+// left empty showed as a bare outlined card. Visitors never see it; the editor
+// still does (.eotm-root is on the page), so it can be filled or deleted.
+const plainText = (html) => String(html || '').replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim()
+function isBlank(block) {
+  if (block._type !== 'contentSection') return false
+  const has = (v) => (Array.isArray(v) ? v.length > 0 : !!v)
+  return ![block.title, block.eyebrow, plainText(block.body), srcOf(block.image), (block.images || []).some(srcOf),
+    block.cards, block.words, block.buttons, block._elements, block.taglineHeading, block.taglineLine].some(has)
+}
+
 // Layouts that consume an alternating image side (so mediaIndex only advances
 // for blocks that actually show a side-by-side image).
 function usesMediaSide(block) {
@@ -799,7 +811,8 @@ export default function Blocks({ blocks, doc, layout = null, placeholder = null 
         const key = block._id ?? i
         // A Free section kept whole on a phone is drawn at desktop width and
         // zoomed to fit (Frame.jsx, ScaleBox); any other renders as it is.
-        const scaled = (el) => cell(block, frameOf(block).scale ? <ScaleBox key={key} on>{el}</ScaleBox> : el)
+        const framed = (el) => (frameOf(block).scale ? <ScaleBox key={key} on>{el}</ScaleBox> : el)
+        const scaled = (el) => cell(block, isBlank(block) ? <div key={key} className="blank-block">{framed(el)}</div> : framed(el))
         switch (block._type) {
           case 'contentSection':
             return scaled(<ContentSection key={key} block={block} isFirst={isFirst} side={side} services={services} doc={doc} />)
