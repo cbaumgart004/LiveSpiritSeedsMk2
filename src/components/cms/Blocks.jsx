@@ -14,6 +14,7 @@
 // console's Arrange can make a section Free and place its parts, on a desktop
 // and, separately, on a phone (the console's SCHEMA.md, "Free sections").
 import { useEffect, useRef } from 'react'
+import { useLocation } from 'react-router-dom'
 import ValuesSection from '../ValuesSection/ValuesSection'
 import TaglineArt from '../TaglineArt'
 
@@ -196,8 +197,10 @@ function Buttons({ block, services, frame }) {
 
 // Optional "Home" button (links to the home page). On by default: renders
 // unless the editor explicitly turned it off (showHomeButton === false).
+// Never on the home page itself, where it would link to the page it is on.
 function HomeButton({ block, frame }) {
-  if (block.showHomeButton === false) return null
+  const { pathname } = useLocation()
+  if (block.showHomeButton === false || pathname === '/') return null
   return (
     <div className="button-row" {...frame?.part('homeButton')}>
       <a className="btn" href="/">
