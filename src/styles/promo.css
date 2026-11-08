@@ -13,7 +13,7 @@
   isolation: isolate;
   margin: calc(var(--navbar-height) + var(--action-bar-height, 0px) + var(--services-strip-height) + 0.5rem) auto 0;
   width: 100%;
-  padding: 0.85rem 3rem 0.85rem 1.25rem;
+  padding: 0.85rem 3rem 1.2rem 1.25rem;
   color: var(--text-outline-color);
   text-shadow: 0 0 10px rgb(255 255 255 / 0.7);
   background: var(--section-bg-image, none) center / cover, var(--bg-color-light, #fff);
@@ -91,31 +91,141 @@
   font-weight: 700;
   text-shadow: none;
 }
-.promo__close {
-  position: absolute;
-  z-index: 2; /* above the sweep */
-  top: 0.35rem;
-  right: 0.5rem;
-  width: 2rem;
-  height: 2rem;
+
+/* The slides (PromoBanner.jsx) share one cell of a grid, so the banner keeps
+   the height of the tallest. Only the showing one is visible; the one it
+   replaced stays visible until its own animation has taken it away. The
+   first slide does not animate: the banner fading up is its entrance.
+   --promo-fade is the owner's transition length; a fade out then in spends
+   it on each half. */
+.promo__stage {
+  position: relative;
+  z-index: 1;
+  display: grid;
+}
+.promo__slide {
+  grid-area: 1 / 1;
+  min-width: 0;
+  visibility: hidden;
+}
+.promo__slide.is-on,
+.promo__slide.is-out {
+  visibility: visible;
+}
+.promo__slide.is-out {
+  pointer-events: none;
+}
+.promo[data-moved] .promo__slide.is-out {
+  animation: promo-out var(--promo-fade, 1.5s) ease both;
+}
+.promo[data-moved] .promo__slide.is-on {
+  animation: promo-on var(--promo-fade, 1.5s) ease both;
+}
+.promo[data-moved][data-transition='fade'] .promo__slide.is-on {
+  animation-delay: var(--promo-fade, 1.5s);
+}
+.promo[data-moved][data-transition='slide'] .promo__slide.is-out {
+  animation-name: promo-slide-out;
+}
+.promo[data-moved][data-transition='slide'] .promo__slide.is-on {
+  animation-name: promo-slide-on;
+}
+.promo[data-transition='none'] .promo__slide.is-out {
+  visibility: hidden;
+  animation: none;
+}
+.promo[data-transition='none'] .promo__slide.is-on {
+  animation: none;
+}
+@keyframes promo-out { from { opacity: 1; } to { opacity: 0; visibility: hidden; } }
+@keyframes promo-on { from { opacity: 0; } to { opacity: 1; } }
+@keyframes promo-slide-out { from { transform: none; opacity: 1; } to { transform: translateX(-60%); opacity: 0; visibility: hidden; } }
+@keyframes promo-slide-on { from { transform: translateX(60%); opacity: 0; } to { transform: none; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .promo .promo__slide.is-on,
+  .promo .promo__slide.is-out { animation: none; }
+  .promo .promo__slide.is-out { visibility: hidden; }
+}
+
+/* A slide's optional picture, small beside its words. */
+.promo__thumb {
+  flex: none;
+  width: 4rem;
+  height: 4rem;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: var(--radius-2);
+  box-shadow: var(--shadow-1);
+}
+
+/* An events slide: the headings of the events page, as links in one line. */
+.promo__events {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 1.1rem;
+  margin: 0.25rem 0 0;
   padding: 0;
-  font-size: 1.4rem;
-  line-height: 1;
+  list-style: none;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+.promo__events a {
   color: var(--text-outline-color);
-  opacity: 0.7;
-  background: none;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.promo__events a:hover {
+  color: var(--primary-color);
+}
+
+/* Slide picker: only while the owner arranges. Visitors swipe. */
+.promo__dots {
+  display: none;
+}
+html.eotm-arranging .promo__dots {
+  position: absolute;
+  z-index: 2;
+  bottom: 0.3rem;
+  left: 50%;
+  display: flex;
+  gap: 0.35rem;
+  transform: translateX(-50%);
+}
+.promo__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  padding: 0;
+  background: var(--text-outline-color);
   border: 0;
+  border-radius: 50%;
+  opacity: 0.3;
   cursor: pointer;
 }
-.promo__close:hover {
-  opacity: 1;
+.promo__dot.is-on {
+  opacity: 0.85;
+}
+.promo__dot:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
 }
 
 /* On a phone: the label and title on one line, the message under them, and
    the link as a full-width button. */
 @media (max-width: 640px) {
   .promo {
-    padding: 0.7rem 0.9rem 0.75rem;
+    padding: 0.7rem 0.9rem 1.15rem;
+  }
+  .promo__thumb {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+  .promo__events {
+    flex-basis: 100%;
+    margin: 0;
+    font-size: 0.85rem;
   }
   .promo__inner {
     flex-wrap: wrap;
@@ -141,10 +251,6 @@
     text-align: center;
     font-size: 0.9rem;
   }
-  .promo__close {
-    top: 0.2rem;
-    right: 0.2rem;
-  }
 }
 
 /* The banner clears the fixed bars, so the first section only needs a gap.
@@ -154,4 +260,23 @@ body.has-promo.has-action-bar .first-section,
 body.style-immersive.has-promo.has-action-bar .first-section,
 body.style-immersive.has-promo.has-action-bar .section--splash.first-section {
   margin-top: var(--space-3);
+}
+
+/* An event slide with no picture: the event's icon in the picture's place. */
+.promo__thumb--icon {
+  display: grid;
+  place-items: center;
+  color: var(--primary-color);
+  background: var(--bg-color-light);
+}
+.promo__thumb--icon svg { width: 60%; height: 60%; }
+.promo__when { font-weight: 600; }
+
+/* A slide the owner arranged (Arrange, Frame.jsx): its picture keeps its
+   shape at the width she gave it, unless she set a height too. */
+.promo__slide[data-eotm-frame='free'] .promo__thumb[data-eotm-placed]:not([style*='--ph']) {
+  height: auto;
+}
+.promo__slide[data-eotm-frame='free'] .promo__link[data-eotm-placed] {
+  text-align: center;
 }

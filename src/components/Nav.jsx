@@ -70,10 +70,12 @@ function Nav() {
             <AccountButton />
           </div>
 
-          <h1 className={styles.title} data-eotm-field="siteTitle" data-eotm-text="siteTitle" {...frame.part('title')}>{siteTitle}</h1>
-
-          {/* Signed in: Welcome and her first name, under the title (SignedIn.jsx). */}
-          <Welcome className={styles.welcome} />
+          {/* Signed in: Welcome and her first name beside the title, placed
+              against the title's own edges (SignedIn.jsx, .welcome). */}
+          <div className={styles.titleWrap}>
+            <h1 className={styles.title} data-eotm-field="siteTitle" data-eotm-text="siteTitle" {...frame.part('title')}>{siteTitle}</h1>
+            <Welcome className={styles.welcome} />
+          </div>
 
           {showInlineMenu && (
             <ul className={styles.inlineMenu} {...frame.part('menu')}>

@@ -33,12 +33,14 @@ import { harvest as healcode } from './lib/adapters/healcode.mjs'
 import { harvest as tribeEvents } from './lib/adapters/tribe-events.mjs'
 import { harvest as momence } from './lib/adapters/momence.mjs'
 import { harvest as punchpassIcs } from './lib/adapters/punchpass-ics.mjs'
+import { harvest as offeringtree } from './lib/adapters/offeringtree.mjs'
 
 const ADAPTERS = {
   healcode,
   'tribe-events': tribeEvents,
   momence,
   'punchpass-ics': punchpassIcs,
+  offeringtree,
 }
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')

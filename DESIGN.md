@@ -66,7 +66,8 @@ src/
                        useUiStyle.js — watches the <body> style class (§6 UX styles)
   assets/              Seasonal logos/backgrounds (referenced by CSS themes)
 public/
-  uploads/             CMS-uploaded images (repo-based media); favicon
+  uploads/             Original repo images, kept as a fallback; the logo (index.html) and
+                       connect-portrait (ConnectPage.jsx) still load from here
 marketplace/           SEPARATE package — the online store (not part of the SPA)
 ```
 
@@ -86,7 +87,7 @@ Routing is **dynamic** (`src/App.jsx`): content, not code, defines the pages.
 | `/:slug`  | `DynamicPage` → the console Page with that slug (404 panel if missing) |
 
 Adding a page = a new Page in the editor; it appears in the nav automatically.
-`<ScrollToTop>` resets scroll on every route change.
+`<ScrollToTop>` resets scroll on every route change; with a `#anchor` it waits up to 4 s for an element with that id, or a heading whose `slugify` (`cms/site.js`) matches, and scrolls it clear of the fixed bars.
 
 ## 5. Domain model
 
@@ -116,6 +117,12 @@ the Tina collections had; the file paths below are the Tina copies:
     (`center`/`bottomLeft`/`bottomCenter` — where the text sits on the photo).
   - **`service`** — a bookable offering: `status` (`available`/`coming-soon`), `bookingOptions[]`
     (each with `addOns[]`), plus the shared fields below.
+  - **`eventList`** — "Upcoming events" (`cms/EventList.jsx`, helpers in `cms/events.js`): each
+    `event` document dated today or later, soonest first, as a `.card.event-card` (console class
+    "Event cards"): photo or `icon`, name, When (date and times), Where, `cost`, description, then
+    Book a Spot (`linkUrl`, `linkLabel`) and Home. Fields `title`, `intro`, `count`, `emptyText`,
+    `showHomeButton`, `spacing`. Until the `upcoming` page has one of its own, `DynamicPage` puts one
+    first on that page (`_auto`, not editable).
   - **`embed`** — a generic third-party widget: `source` (offeringtree/canva/kit/teaching-schedule/
     other, a label), `mode` (`url` iframe link, `code` raw snippet, **or `schedule`** — the harvested
     teaching schedule, which needs nothing pasted), `url`/`code`, `height`, `caption`, plus
@@ -163,8 +170,9 @@ is the live preview. `DynamicPage` finds the page by slug (`home` is `/`) and pa
 - **The owner's own section types** (console "Your own types") render through
   `components/cms/CustomSection.jsx` from their fields (`useSchema`), in the plain section style
   until given a design. Photos carry the owner's turn, mirror and fade (`components/cms/photo.js`).
-- **Photos.** New ones upload to the site's photo bucket through the console; existing ones stay in
-  `public/uploads` and are reused by path.
+- **Photos.** Every content image lives in the site's own bucket `eotm-spiritseeds-media` under
+  `pageAssets/`, served from `https://d3qx5ofdyxjv09.cloudfront.net/pageAssets/`; console uploads
+  land there too (`pageAssets/<yyyy-mm>/`). Content no longer references `/uploads/`.
 
 Block-renderer behaviors (`Blocks.jsx`): a `contentSection` dispatches on its `layout`; a `service`
 renders the bookable card; an `embed` renders a third-party widget (see **Live embeds** below).
@@ -486,15 +494,22 @@ each edge and centred on the bar.
   (**verified 2026-11-05 by request:** a wrong password from each answers 401
   `INVALID_EMAIL_OR_PASSWORD`, no longer 403 `INVALID_ORIGIN`).
 - **Announcement banner** (`components/PromoBanner.jsx`, `styles/promo.css`, rendered by
-  `ActionBar.jsx`): one strip under the services strip on every page, in the page flow, from Site
-  settings `promoOn`, `promoEyebrow`, `promoTitle`, `promoText`, `promoLabel`, `promoUrl`,
-  `promoUntil`; the component's defaults (the OfferingTree memberships) show until she saves her own.
-  Hidden when off, after its end date, or once a visitor closes it (remembered per title in
-  `localStorage`). While it shows, `body.has-promo` moves the fixed-bar clearance from the first
+  `ActionBar.jsx`): under the services strip on every page, in the page flow, turning through Site
+  settings `promoSlides` (each a picture and words, or `kind: events`: one slide per `event` document
+  from today on, `count` at most, showing its picture or icon, name and date and linking to its card
+  `/<eventsPage>#event-<slug>`, before the next slide; with no such event, the section headings of
+  its `eventsPage`, each linked as `/<slug>#<slugified heading>`), with
+  `promoTransition` (fade out then in, crossfade, slide, none), `promoFade` and `promoSeconds`, plus
+  `promoOn` and `promoUntil`. Until she saves slides: Memberships, Upcoming events, Book a Massage
+  (text and picture from the first service on `services`) and Connect (`connectTitle`/`connectIntro`).
+  The console fills a slide from a section by copy (`fill` in the schema), so a saved slide does not
+  follow its source. Slides share one grid cell (stable height); transitions are keyframe animations
+  on `.is-on`/`.is-out`, off for the first slide; it pauses on hover or focus and holds under reduced
+  motion. Closing is remembered per set of headings in `localStorage`. While it shows, `body.has-promo` moves the fixed-bar clearance from the first
   section onto the banner. It has a section's width, corners and shadow and no border; its title is set like a card heading
   (`.panel h2`: `--font-subheading`, `--primary-color`, `--outline-shadow`), smaller; its badge is the season's `--primary-color`; the link is the
-  site's own `.btn` (gradient that shifts on hover). It fades up on load, and a white sweep crosses it every
-  8s; the sweep is `::after` at `z-index: 0` under `.promo__inner` at `z-index: 1` (at `-1` WebKit
+  site's own `.btn`. It fades up on load, and a white sweep crosses it every
+  8s; the sweep is `::after` at `z-index: 0` under `.promo__stage` at `z-index: 1` (at `-1` WebKit
   painted it under the banner's own background, where it never showed). Reduced motion drops both.
 - **Slideshow** (`slideshow` block, `cms/Slideshow.jsx`, `styles/slideshow.css`): the block's
   `media` photos and videos (a photos field with `video: true`; a video item carries

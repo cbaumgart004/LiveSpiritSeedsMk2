@@ -13,11 +13,14 @@ import { frameOf } from './Frame'
 
 const NO_FRAME = { part: (name, style) => ({ 'data-eotm-part': name, ...(style ? { style } : {}) }) }
 
-function classNameOf(schema, name) {
-  if (!name) return ''
+function classNameOf(schema, name, depth = 0) {
+  if (!name || depth > 4) return ''
   const site = (schema?.classes ?? []).find((c) => c.name === name)
   if (site) return /^\.[\w-]+$/.test(site.selector.trim()) ? site.selector.trim().slice(1) : ''
-  return (schema?.custom?.classes ?? []).some((c) => c.name === name) ? `c-${name}` : ''
+  const own = (schema?.custom?.classes ?? []).find((c) => c.name === name)
+  if (!own) return ''
+  const base = own.base && own.base !== name ? classNameOf(schema, own.base, depth + 1) : ''
+  return base ? `${base} c-${name}` : `c-${name}`
 }
 
 function Element({ el, frame, schema }) {

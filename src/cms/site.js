@@ -136,6 +136,14 @@ export function navLinks(pages) {
     .sort((a, b) => a.order - b.order)
 }
 
+// A section's anchor: its title in lower case, dashes between words, as the
+// console links one (schema.js slugify), the banner links its events and
+// ScrollToTop finds them.
+export function slugify(text) {
+  return String(text || '').normalize('NFKD').replace(/[̀-ͯ]/g, '').toLowerCase().trim()
+    .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
+}
+
 // Map a page slug to its route ('home' is the index).
 export function hrefForSlug(slug) {
   return slug === 'home' ? '/' : `/${slug}`
