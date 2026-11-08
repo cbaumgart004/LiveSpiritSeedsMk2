@@ -20,6 +20,7 @@ import TaglineArt from '../TaglineArt'
 import CustomSection from './CustomSection'
 import NextUp from './NextUp'
 import EventList from './EventList'
+import { SocialIcon } from '../SocialIcons'
 import Slideshow from './Slideshow'
 import Testimonials from './Testimonials'
 import { PLACEHOLDER_MEDIA } from './placeholderMedia'
@@ -134,10 +135,12 @@ function Media({ block, name = 'image', alt, width, side, frame }) {
 //    service's status (disabled "Coming Soon" if it's coming-soon or missing).
 //  - Plain button: uses its own manual status (coming-soon renders disabled).
 // The button's own text and icon; the text can be typed on the page in the editor.
+// An email button (a mailto: link) with no icon of its own shows an envelope.
 function ButtonFace({ btn, text }) {
   return (
     <>
-      {btn.icon?.src && <img className="btn-icon" src={srcOf(btn.icon)} alt="" />}
+      {btn.icon?.src ? <img className="btn-icon" src={srcOf(btn.icon)} alt="" />
+        : /^mailto:/i.test(btn.url || '') && <span className="btn-icon btn-icon--svg"><SocialIcon name="mail" /></span>}
       <span data-eotm-text="label" data-eotm-in={btn._id}>{text}</span>
     </>
   )
