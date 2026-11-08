@@ -77,7 +77,7 @@ export default function Slideshow({ block, className, marks, frame }) {
 
   // Written straight to the element each frame rather than through React
   // state, so scrolling never re-renders the show. Inside the frame the picture
-  // moves slower than the page (--shift, -3 to 3, read by slideshow.css); with
+  // stays whole (--shift is still set, but nothing reads it now); with
   // "over" the frame holds still at the middle of the screen, and so does the
   // picture in it.
   useEffect(() => {
