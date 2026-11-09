@@ -134,11 +134,11 @@ function Slide({ slide, on, out, saved }) {
     <div className={`promo__slide${on ? ' is-on' : ''}${out ? ' is-out' : ''}`} aria-hidden={!on} inert={on ? undefined : ''}
       {...marks} {...rootMarks} style={rootStyle}>
       {event ? (
-        // An event: the badge and title on one line, the picture beside the words under them.
+        // An event: the picture the full height of the banner, then its title, then its dates and button.
         <div className="promo__inner promo__inner--event" {...frame.wrap}>
+          {thumb}
           <div className="promo__head" {...frame.wrap}>{eyebrow}{title}</div>
-          <div className="promo__body" {...frame.wrap}>
-            {thumb}
+          <div className="promo__side" {...frame.wrap}>
             <p className="promo__text promo__when" {...field('date')} {...frame.part('text')}><time title={slide.fullWhen}>{slide.when}</time></p>
             {button}
           </div>

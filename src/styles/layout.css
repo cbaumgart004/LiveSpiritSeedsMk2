@@ -467,6 +467,10 @@ body.has-action-bar .first-section {
 @media (max-width: 640px) {
   body:not([data-phone-padding='comfortable']):not([data-phone-padding='roomy']) .section {
     padding: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+  body:not([data-phone-padding='comfortable']):not([data-phone-padding='roomy']) .section:not(.first-section) {
+    margin-top: 0.5rem;
   }
   body[data-phone-padding='comfortable'] .section {
     padding: 1rem 1.25rem;
