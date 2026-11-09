@@ -121,7 +121,10 @@ the Tina collections had; the file paths below are the Tina copies:
     `event` document dated today or later, soonest first, as a `.card.event-card` (console class
     "Event cards"): photo or `icon`, name, When (date and times), Where, `cost`, description, then
     Book a Spot (`linkUrl`, `linkLabel`) and Home. Fields `title`, `intro`, `count`, `emptyText`,
-    `showHomeButton`, `spacing`. Until the `upcoming` page has one of its own, `DynamicPage` puts one
+    `showHomeButton`, `cardLayout`, `phonePicture`, `spacing`. On a computer the cards sit side by
+    side at the width of a card on any other page, picture across the top and shown whole
+    (`cardLayout: row` is the older wide row with a small square picture); on a phone the picture
+    is the card's width (`phonePicture: small` for a 5rem one). Until the `upcoming` page has one of its own, `DynamicPage` puts one
     first on that page (`_auto`, not editable). **One event, several days:** an event's `repeat` is
     `none`, `custom` (its `date` plus `moreDates`) or a regular pattern from its `date` (`weekly`,
     `biweekly`, `monthlyDate`, `monthlyWeekday`, to `repeatUntil` or with no end, less `skipDates`),
