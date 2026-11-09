@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
-// "Upcoming events" section: each Event document dated today or later as a
-// card (class .event-card, styleable in the console as "Event cards"): its
-// photo or icon, name, When (date and times), Where, cost and description,
+// "Upcoming events" section: each Event document dated today or later as its
+// own band laid out exactly like a service on the Services page, the picture on
+// one side and a panel on the other (class .event-card, styleable in the console
+// as "Event cards"), stacked on a phone. It shows its photo or icon, name, When (date and times), Where, cost and description,
 // then Book a Spot (the event's link) and Home. Each card carries the id
 // /upcoming#event-<slug>, which the banner's event slides link to.
 //
@@ -32,19 +33,19 @@ const external = (url) => !url.startsWith('/') && !url.startsWith('#')
 
 const REPEAT_DATES = 4
 
-function EventCard({ doc, showHome }) {
+function EventCard({ doc, showHome, side }) {
   const e = doc.data
   // A regular pattern shows its next few dates and says the rest in words.
   const all = doc.dates?.length ? doc.dates : [e]
   const dates = doc.repeats ? all.slice(0, REPEAT_DATES) : all
   const url = e.linkUrl || ''
   return (
-    <article className="card event-card" id={eventAnchor(doc)}
+    <section className={`section section--split events__event${side === 'right' ? ' section--reverse' : ''}`} id={eventAnchor(doc)}
       {...(doc.id && !doc.id.startsWith('bundled:') ? { 'data-eotm-edit': `event:${doc.id}`, 'data-eotm-label': e.title } : {})}>
-      <div className={`event-card__icon${srcOf(e.image) ? ' has-photo' : ''}`}>
-        {srcOf(e.image) ? <img src={srcOf(e.image)} alt={altOf(e.image)} style={imageStyle(e.image)} loading="lazy" /> : <EventIcon name={e.icon} />}
+      <div className="media">
+        {srcOf(e.image) ? <img src={srcOf(e.image)} alt={altOf(e.image)} style={imageStyle(e.image)} loading="lazy" /> : <div className="event-card__icon"><EventIcon name={e.icon} /></div>}
       </div>
-      <div className="event-card__body">
+      <div className="panel event-card">
         <h3>{e.title}</h3>
         <dl className="event-card__facts">
           <div><dt>When</dt><dd>{dates.map((o, i) => (
@@ -59,7 +60,7 @@ function EventCard({ doc, showHome }) {
           {showHome && <a className="btn" href="/">Home</a>}
         </div>
       </div>
-    </article>
+    </section>
   )
 }
 
@@ -70,22 +71,23 @@ export default function EventList({ block, className, marks, frame }) {
   const shown = count > 0 ? events.slice(0, count) : events
   const title = block.title ?? 'Upcoming Events'
   return (
-    <section className={`${className} events`} {...marks}
-      data-cards={block.cardLayout === 'row' ? 'row' : 'grid'} data-phone-picture={block.phonePicture === 'small' ? 'small' : 'full'}>
-      {(title || block.intro) && (
-        <div className="events__head" {...frame?.part('title')}>
-          {title && <h2 data-eotm-text="title">{title}</h2>}
-          {block.intro && <p data-eotm-text="intro">{block.intro}</p>}
+    <div className="events" {...marks} data-phone-picture={block.phonePicture === 'small' ? 'small' : 'full'}>
+      <section className={className}>
+        {(title || block.intro) && (
+          <div className="events__head" {...frame?.part('title')}>
+            {title && <h2 data-eotm-text="title">{title}</h2>}
+            {block.intro && <p data-eotm-text="intro">{block.intro}</p>}
+          </div>
+        )}
+        {ready && !shown.length && <p className="events__empty panel">{block.emptyText || 'New events are on their way. Check back soon.'}</p>}
+        <Elements data={block} frame={frame} />
+      </section>
+      {ready && shown.length > 0 && (
+        <div className="events__list" {...frame?.part('cards')}>
+          {shown.map((d, i) => <EventCard key={d.id || d.slug} doc={d} showHome={block.showHomeButton !== false}
+            side={block.imageSide === 'left' || block.imageSide === 'right' ? block.imageSide : i % 2 ? 'right' : 'left'} />)}
         </div>
       )}
-      {ready && (shown.length ? (
-        <div className="events__list" {...frame?.part('cards')}>
-          {shown.map((d) => <EventCard key={d.id || d.slug} doc={d} showHome={block.showHomeButton !== false} />)}
-        </div>
-      ) : (
-        <p className="events__empty panel">{block.emptyText || 'New events are on their way. Check back soon.'}</p>
-      ))}
-      <Elements data={block} frame={frame} />
-    </section>
+    </div>
   )
 }
