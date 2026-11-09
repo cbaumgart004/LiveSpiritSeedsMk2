@@ -30,9 +30,13 @@ export function EventIcon({ name }) {
 
 const external = (url) => !url.startsWith('/') && !url.startsWith('#')
 
+const REPEAT_DATES = 4
+
 function EventCard({ doc, showHome }) {
   const e = doc.data
-  const dates = doc.dates?.length ? doc.dates : [e]
+  // A regular pattern shows its next few dates and says the rest in words.
+  const all = doc.dates?.length ? doc.dates : [e]
+  const dates = doc.repeats ? all.slice(0, REPEAT_DATES) : all
   const url = e.linkUrl || ''
   return (
     <article className="card event-card" id={eventAnchor(doc)}
@@ -44,7 +48,8 @@ function EventCard({ doc, showHome }) {
         <h3>{e.title}</h3>
         <dl className="event-card__facts">
           <div><dt>When</dt><dd>{dates.map((o, i) => (
-            <span key={o.date + i} className="event-card__date">{formatDay(o.date)}{timeText(o) && <><br />{timeText(o)}</>}</span>))}</dd></div>
+            <span key={o.date + i} className="event-card__date">{formatDay(o.date)}{timeText(o) && <><br />{timeText(o)}</>}</span>))}
+            {doc.repeats && <span className="event-card__date event-card__repeats">{doc.repeats}</span>}</dd></div>
           {e.location && <div><dt>Where</dt><dd>{e.location}</dd></div>}
           {e.cost && <div><dt>Cost</dt><dd>{e.cost}</dd></div>}
         </dl>

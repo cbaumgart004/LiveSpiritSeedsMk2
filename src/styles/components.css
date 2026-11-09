@@ -918,6 +918,7 @@ dialog.modal input,
 .event-card__facts dd { margin: 0; }
 .event-card__date { display: block; }
 .event-card__date + .event-card__date { margin-top: 0.4rem; }
+.event-card__repeats { font-style: italic; opacity: 0.85; }
 .event-card__buttons { justify-content: flex-start; }
 @media (max-width: 640px) {
   .event-card { grid-template-columns: 1fr; text-align: left; }
