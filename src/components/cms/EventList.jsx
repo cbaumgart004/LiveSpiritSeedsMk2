@@ -46,7 +46,7 @@ function EventCard({ doc, showHome, side }) {
         {srcOf(e.image) ? <img src={srcOf(e.image)} alt={altOf(e.image)} style={imageStyle(e.image)} loading="lazy" /> : <div className="event-card__icon"><EventIcon name={e.icon} /></div>}
       </div>
       <div className="panel event-card">
-        <h3>{e.title}</h3>
+        <h2>{e.title}</h2>
         <dl className="event-card__facts">
           <div><dt>When</dt><dd>{dates.map((o, i) => (
             <span key={o.date + i} className="event-card__date">{formatDay(o.date)}{timeText(o) && <><br />{timeText(o)}</>}</span>))}
