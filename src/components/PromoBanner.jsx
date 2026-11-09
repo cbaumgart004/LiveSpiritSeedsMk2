@@ -33,7 +33,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useDocuments, useSettings, hrefForSlug, slugify } from '../cms/site'
 import { upcomingEvents, formatDay, timeText, eventAnchor } from '../cms/events'
 import { EventIcon } from './cms/EventList'
-import { frameOf } from './cms/Frame'
+import { frameOf, ScaleBox } from './cms/Frame'
 import '../styles/promo.css'
 
 const CONNECT_INTRO = 'Welcome to a journey of healing and transformation! Subscribe to our newsletter for insights on trauma-informed yoga, neuroscience-based massage practices, and holistic wellness tips. Join our community today!'
@@ -107,11 +107,11 @@ function canvasOf(slide, saved) {
     // Its tag and button are the Banner slide's (Site settings), not the
     // Event's: the console's Edit opens them there (data-eotm-from).
     const slideRow = saved && slide._id
-    return { frame: frameOf(doc?.data, 'banner'), marks: own ? { 'data-eotm-edit': `event:${doc.id}`, 'data-eotm-frame-key': 'banner', 'data-eotm-label': slide.title } : {}, text: own ? {} : null,
+    return { frame: frameOf(doc?.data, 'banner'), marks: own ? { 'data-eotm-edit': `event:${doc.id}`, 'data-eotm-frame-key': 'banner', 'data-eotm-label': slide.title, 'data-eotm-scales': '' } : {}, text: own ? {} : null,
       from: own && slideRow ? (field) => ({ 'data-eotm-from': 'settings:settings', 'data-eotm-from-item': slide._id, 'data-eotm-field': field }) : null }
   }
   const own = saved && slide._id
-  return { frame: frameOf(slide), marks: own ? { 'data-eotm-edit': 'settings:settings', 'data-eotm-item': slide._id, 'data-eotm-label': slide.title } : {}, text: own ? { 'data-eotm-in': slide._id } : null, from: null }
+  return { frame: frameOf(slide), marks: own ? { 'data-eotm-edit': 'settings:settings', 'data-eotm-item': slide._id, 'data-eotm-label': slide.title, 'data-eotm-scales': '' } : {}, text: own ? { 'data-eotm-in': slide._id } : null, from: null }
 }
 
 function Slide({ slide, on, out, saved }) {
@@ -125,6 +125,7 @@ function Slide({ slide, on, out, saved }) {
   const event = slide.kind === 'event'
   const slideField = (name) => (event ? (from ? from(name) : {}) : field(name))
   return (
+    <ScaleBox on={frame.scale}>
     <div className={`promo__slide${on ? ' is-on' : ''}${out ? ' is-out' : ''}`} aria-hidden={!on} inert={on ? undefined : ''}
       {...marks} {...rootMarks} style={rootStyle}>
       <div className="promo__inner" {...frame.wrap}>
@@ -146,6 +147,7 @@ function Slide({ slide, on, out, saved }) {
         {url && <a className="btn promo__link" href={url} {...newTab(url)} {...slideField(event ? 'eventLabel' : 'label')} {...frame.part('button')}>{slide.label || 'Learn more'}</a>}
       </div>
     </div>
+    </ScaleBox>
   )
 }
 
