@@ -404,7 +404,7 @@
   left: 0;
   z-index: 40; /* under the nav (50) and its menu overlay */
   box-sizing: border-box;
-  width: 100%;
+  width: calc(100% - var(--eotm-pane, 0px)); /* the console's docked editor, beside it */
   /* Its own height decides --action-bar-height (measured in ActionBar.jsx),
      never the reverse, or a phone-sized value would stick after a resize. */
   min-height: 2.75rem;
@@ -474,7 +474,7 @@
   position: fixed;
   top: calc(var(--navbar-height) + var(--action-bar-height));
   left: 0;
-  right: 0;
+  right: var(--eotm-pane, 0px);
   z-index: 39; /* under the action bar (40) */
   box-sizing: border-box;
   height: var(--services-strip-height);

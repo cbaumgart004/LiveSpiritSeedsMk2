@@ -154,7 +154,7 @@ is the live preview. `DynamicPage` finds the page by slug (`home` is `/`) and pa
 - **Arranging, classes and elements** (console 1.7.0+). Every part of every section type is
   marked by name through `components/cms/Frame.jsx` (`frameOf`),
   so the console's Arrange can make a section Free and place its parts, on a desktop and separately
-  on a phone (`_layout`, `phoneParts`; the console's SCHEMA.md, "Free sections"); `styles/frame.css` draws it. The
+  on a phone (`_layout`, `phoneParts`; the console's SCHEMA.md, "Free sections"); `styles/frame.css` draws it. Scale smoothly (`phone: "scale"`, the default for a new arrangement) zooms the desktop arrangement whole below 1280px through `ScaleBox`; only sections in `Blocks.jsx` have one and carry `data-eotm-scales`. The
   header and the buttons under the menu bar are arranged regions of Site settings
   (`_layout_header`, `_layout_actionBar`, `data-eotm-frame-key`). `components/cms/ClassStyles.jsx`
   applies the owner's Classes (the schema's `classes`: Buttons `.btn`, section headings, body text,
@@ -166,7 +166,14 @@ is the live preview. `DynamicPage` finds the page by slug (`home` is `/`) and pa
   row with `data-eotm-in`). The header names `headerImage` and the action bar `actionButtons` with
   `data-eotm-field`. The console turns these into an Edit button and drag handles; from console
   1.2.3 one click on marked text types it in place and opens that field in the pane, and a click
-  anywhere else in a marked part opens it at its `data-eotm-field`.
+  anywhere else in a marked part opens it at its `data-eotm-field`. A part whose words live in a
+  different document from the one keeping its place adds `data-eotm-from="<type>:<key>"` and
+  `data-eotm-from-item` (console 1.34.0): Arrange still picks it in its place's document, which is
+  the one Arrange writes, and Edit opens the source.
+- **Room for the editor.** Docked right, the console narrows the page by its own width and sets
+  `--eotm-pane` on `<html>` (console 1.34.0), so it never covers a section. The fixed bars
+  (`.navbar`, `.menuOverlay`, `.action-bar`, `.services-strip`) and the full-width slideshow subtract
+  `--eotm-pane`; a new fixed or `100vw` element must too, or it runs under the pane.
 - **The owner's own section types** (console "Your own types") render through
   `components/cms/CustomSection.jsx` from their fields (`useSchema`), in the plain section style
   until given a design. Photos carry the owner's turn, mirror and fade (`components/cms/photo.js`).
@@ -186,13 +193,13 @@ console, rendered as-is; the Tina files hold Markdown, converted by `src/cms/mar
 **Unified buttons.** Every block shares one `buttons[]` list. A button is a plain link with a manual
 `status` (`active`/`coming-soon` — coming-soon renders non-clickable, prefixed "Coming Soon - "),
 **or** it names a `service` on the page and inherits *that* service's availability/link (the same
-`Heading → {status, slug, bookUrl}` map used by booking add-ons; typed name validated on save).
+`Heading → {status, slug, bookUrl}` map used by booking add-ons).
 `service` blocks additionally carry their own `status` (coming-soon shows a badge and disables
 booking) and `bookingOptions[]`; each **booking option** (session) can list `addOns[]`, so every
 session gets its own "Book w/ &lt;add-on&gt;" button derived from the referenced service's status
 (owner-editable in the editor; no code flag). Every block has a `showHomeButton` toggle (default on).
-New pages/blocks start from `ui.defaultItem` presets rather than a blank form. Reusable setup +
-gotchas, including the block-model design patterns: [TinaCMS Vite playbook](./docs/tinacms-vite-playbook.md) (§8).
+New sections start from the schema's defaults and presets (the console's `newBlock`), not a blank
+form. The block-model patterns from before ADR 0003: [TinaCMS Vite playbook](./docs/tinacms-vite-playbook.md) (§8).
 
 **Live embeds (source consolidation).** The `embed` block (`EmbedBlock` in `Blocks.jsx`) is the one
 place to drop any external tool's copy-paste widget so the site stays live off that source instead of
@@ -201,7 +208,7 @@ hand you a snippet. Two modes: **`url`** renders a themed `<iframe>` (radius/sha
 reads as part of the site under every UI style) — simplest, best for Canva "smart embed" links and
 OfferingTree share URLs; **`code`** renders `RawEmbed`, which sets the snippet as innerHTML **and
 re-executes its `<script>` tags** (a script inserted via innerHTML does not run per spec — this is
-required for Kit's JS form embeds). Empty blocks show an the editor hint instead of breaking. The
+required for Kit's JS form embeds). Empty blocks show an editor hint instead of breaking. The
 "Practice With Me" page (`content/pages/practice-with-me.json`) is built from these. OfferingTree has
 no public REST API; embed widgets, Zapier, and Google-Calendar sync are the integration surfaces.
 
@@ -213,8 +220,8 @@ nothing secret in a static build. Kit's field names (`email_address`, `fields[fi
 wire contract; everything else (heading, intro, button label, thank-you, fine print) is CMS copy.
 Success swaps the form for the thank-you; a non-200, a `status` other than `success`, or a network
 failure surfaces a visible error — a silent failure would cost a subscriber with nobody noticing.
-Only the **form ID** lives in content (`newsletterFormId`), so pointing at a different Kit form is an
-the editor change.
+Only the **form ID** lives in content (`newsletterFormId`), so pointing at a different Kit form is a
+change in the editor.
 
 > **Why not Kit's own embed?** Same reason as the schedule: Kit's JS embed brings Kit's stylesheet
 > and can only match **one** season, but the season is owner-switchable at runtime (§6), so a
@@ -502,6 +509,9 @@ each edge and centred on the bar.
   `promoTransition` (fade out then in, crossfade, slide, none), `promoFade` and `promoSeconds`, plus
   `promoOn` and `promoUntil`. Until she saves slides: Memberships, Upcoming events, Book a Massage
   (text and picture from the first service on `services`) and Connect (`connectTitle`/`connectIntro`).
+  Every part of a slide names its field (`data-eotm-field`). On an event slide the picture, name and
+  date open the Event; the tag and button are the Banner slide's, so they carry `data-eotm-from` and
+  open it in Site settings. The event button's text is that slide's `eventLabel` (blank: Details).
   The console fills a slide from a section by copy (`fill` in the schema), so a saved slide does not
   follow its source. Slides share one grid cell (stable height); transitions are keyframe animations
   on `.is-on`/`.is-out`, off for the first slide; it pauses on hover or focus and holds under reduced
@@ -548,7 +558,8 @@ each edge and centred on the bar.
   deliberately *not* a Tina collection, so nothing in the editor can be overwritten by the nightly run.
 - **Two styling systems coexist:** global CSS + CSS Modules. Match the component you're editing.
 - **CSS load order is load-bearing** — see §6 before reorganizing style imports.
-- No tests, no TypeScript, no state management library. Keep it simple.
+- No TypeScript and no state management library; the only tests are the Tina-to-console conversion
+  (`npm test`). Keep it simple.
 - `assetsInlineLimit: 0` in the build — assets are always emitted as files, never inlined.
 - **AI training is reserved, search is not.** The `.ai-notice` line under every page (`App.jsx`),
   the `tdm-reservation` and `noai` meta in `index.html`, and `public/.well-known/tdmrep.json` are

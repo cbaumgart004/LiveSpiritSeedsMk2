@@ -91,7 +91,7 @@ function expand(slides, pages, events) {
       _id: s._id, _key: `${s._id || 'events'}:${d.id || d.slug}`, kind: 'event', eyebrow: s.eyebrow,
       title: d.data.title, when: [formatDay(d.next.date, { weekday: 'short', month: 'short' }), d.next.startTime].filter(Boolean).join(' · '),
       fullWhen: [formatDay(d.next.date), timeText(d.next)].filter(Boolean).join(', '),
-      image: d.data.image, icon: d.data.icon, label: 'Details', url: `${base}#${eventAnchor(d)}`, doc: d,
+      image: d.data.image, icon: d.data.icon, label: s.eventLabel || 'Details', url: `${base}#${eventAnchor(d)}`, doc: d,
     }))
   })
 }
@@ -104,38 +104,46 @@ function canvasOf(slide, saved) {
   const doc = slide.doc
   if (slide.kind === 'event') {
     const own = doc?.id && !String(doc.id).startsWith('bundled:')
-    return { frame: frameOf(doc?.data, 'banner'), marks: own ? { 'data-eotm-edit': `event:${doc.id}`, 'data-eotm-frame-key': 'banner', 'data-eotm-label': slide.title } : {}, text: own ? {} : null }
+    // Its tag and button are the Banner slide's (Site settings), not the
+    // Event's: the console's Edit opens them there (data-eotm-from).
+    const slideRow = saved && slide._id
+    return { frame: frameOf(doc?.data, 'banner'), marks: own ? { 'data-eotm-edit': `event:${doc.id}`, 'data-eotm-frame-key': 'banner', 'data-eotm-label': slide.title } : {}, text: own ? {} : null,
+      from: own && slideRow ? (field) => ({ 'data-eotm-from': 'settings:settings', 'data-eotm-from-item': slide._id, 'data-eotm-field': field }) : null }
   }
   const own = saved && slide._id
-  return { frame: frameOf(slide), marks: own ? { 'data-eotm-edit': 'settings:settings', 'data-eotm-item': slide._id, 'data-eotm-label': slide.title } : {}, text: own ? { 'data-eotm-in': slide._id } : null }
+  return { frame: frameOf(slide), marks: own ? { 'data-eotm-edit': 'settings:settings', 'data-eotm-item': slide._id, 'data-eotm-label': slide.title } : {}, text: own ? { 'data-eotm-in': slide._id } : null, from: null }
 }
 
 function Slide({ slide, on, out, saved }) {
   const url = slide.url || ''
   const links = slide.links || []
-  const { frame, marks, text } = canvasOf(slide, saved)
+  const { frame, marks, text, from } = canvasOf(slide, saved)
   const { style: rootStyle, ...rootMarks } = frame.root
   const typed = (field) => (text ? { 'data-eotm-text': field, ...text } : {})
+  // Every part names the field it shows, so a click in the console opens it.
+  const field = (name) => (text ? { 'data-eotm-field': name } : {})
+  const event = slide.kind === 'event'
+  const slideField = (name) => (event ? (from ? from(name) : {}) : field(name))
   return (
     <div className={`promo__slide${on ? ' is-on' : ''}${out ? ' is-out' : ''}`} aria-hidden={!on} inert={on ? undefined : ''}
       {...marks} {...rootMarks} style={rootStyle}>
       <div className="promo__inner" {...frame.wrap}>
-        {slide.image?.src ? <img className="promo__thumb" src={slide.image.src} alt={slide.image.alt || ''} loading="lazy" {...frame.part('thumb')} />
-          : slide.kind === 'event' && <span className="promo__thumb promo__thumb--icon" {...frame.part('thumb')}><EventIcon name={slide.icon} /></span>}
-        {slide.eyebrow && <span className="promo__eyebrow" {...frame.part('eyebrow')}>{slide.eyebrow}</span>}
+        {slide.image?.src ? <img className="promo__thumb" src={slide.image.src} alt={slide.image.alt || ''} loading="lazy" {...field('image')} {...frame.part('thumb')} />
+          : event && <span className="promo__thumb promo__thumb--icon" {...field('icon')} {...frame.part('thumb')}><EventIcon name={slide.icon} /></span>}
+        {slide.eyebrow && <span className="promo__eyebrow" {...(event ? slideField('eyebrow') : typed('eyebrow'))} {...frame.part('eyebrow')}>{slide.eyebrow}</span>}
         <div className="promo__copy" {...frame.wrap}>
           <p className="promo__title" {...typed('title')} {...frame.part('title')}>{slide.title}</p>
-          {slide.kind === 'event' ? (
-            <p className="promo__text promo__when" {...frame.part('text')}><time title={slide.fullWhen}>{slide.when}</time></p>
+          {event ? (
+            <p className="promo__text promo__when" {...field('date')} {...frame.part('text')}><time title={slide.fullWhen}>{slide.when}</time></p>
           ) : slide.kind === 'events' ? (
             links.length > 0 && (
-              <ul className="promo__events" {...frame.part('text')}>
+              <ul className="promo__events" {...field('eventsPage')} {...frame.part('text')}>
                 {links.map((l) => <li key={l.key}><a href={l.href} {...newTab(l.href)}>{l.title}</a></li>)}
               </ul>
             )
           ) : slide.text && <p className="promo__text" {...typed('text')} {...frame.part('text')}>{slide.text}</p>}
         </div>
-        {url && <a className="btn promo__link" href={url} {...newTab(url)} {...frame.part('button')}>{slide.label || 'Learn more'}</a>}
+        {url && <a className="btn promo__link" href={url} {...newTab(url)} {...slideField(event ? 'eventLabel' : 'label')} {...frame.part('button')}>{slide.label || 'Learn more'}</a>}
       </div>
     </div>
   )

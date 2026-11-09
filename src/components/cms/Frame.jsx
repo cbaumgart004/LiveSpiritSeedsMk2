@@ -17,8 +17,9 @@
 // x and w are % of the section's width; y, h and height are % of it too (CSS
 // container units), so a Free section keeps its proportions at every width.
 // Below 820px it stacks, its parts ordered by y then x (styles/Frame.css), or,
-// with `phone: 'scale'`, keeps the desktop arrangement: ScaleBox draws it at its
-// desktop width and zooms it down whole, text included; or, with `phone:
+// with `phone: 'scale'` ("Scale smoothly", the console's default for a new
+// arrangement), keeps the desktop arrangement: below desktop width ScaleBox
+// draws it at its desktop width and zooms it down whole, text included; or, with `phone:
 // 'free'`, takes the phone's own arrangement (phoneParts, phoneHeight), made in
 // the console's Arrange on a phone. The page's code order
 // is unchanged, so a screen reader reads the content in order.
@@ -83,25 +84,33 @@ export function frameOf(data, key) {
 // the page's own maximum, not a measured one).
 export const DESIGN_WIDTH = 1200
 const PHONE = '(max-width: 819.98px)'
+const BELOW_DESKTOP = '(max-width: 1279.98px)'
 
-// A Free section with `phone: 'scale'`: on a phone, drawn at its desktop width
-// and zoomed to fit, so the arrangement and its text shrink together. CSS zoom,
-// unlike transform, also shrinks the space the section takes on the page.
-// Elsewhere it renders its children untouched.
-export function ScaleBox({ on, span = 12, children }) {
+// A Free section with `phone: 'scale'`: on a tablet or phone, drawn at its
+// desktop width and zoomed to fit, so the arrangement and its text shrink
+// together. CSS zoom, unlike transform, also shrinks the space the section
+// takes on the page. On a desktop its children render at their own size. A
+// tablet keeps the block's column share (--span on .page-block); a phone is one column.
+export function ScaleBox({ on, children }) {
   const ref = useRef(null)
   const [zoom, setZoom] = useState(null)
-  const width = Math.round((DESIGN_WIDTH * span) / 12)
+  const [width, setWidth] = useState(DESIGN_WIDTH)
   useEffect(() => {
     if (!on || !ref.current) return undefined
-    const mq = matchMedia(PHONE)
-    const fit = () => setZoom(mq.matches ? Math.min(1, ref.current.clientWidth / width) : null)
+    const mq = matchMedia(BELOW_DESKTOP)
+    const fit = () => {
+      if (!mq.matches) return setZoom(null)
+      const span = matchMedia(PHONE).matches ? 12 : Number(getComputedStyle(ref.current).getPropertyValue('--span')) || 12
+      const w = Math.round((DESIGN_WIDTH * span) / 12)
+      setWidth(w)
+      setZoom(Math.min(1, ref.current.clientWidth / w))
+    }
     const ro = new ResizeObserver(fit)
     ro.observe(ref.current)
     mq.addEventListener('change', fit)
     fit()
     return () => { ro.disconnect(); mq.removeEventListener('change', fit) }
-  }, [on, width])
+  }, [on])
   // A section that never scales gets no wrappers at all.
   if (!on) return children
   return (
