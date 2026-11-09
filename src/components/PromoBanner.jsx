@@ -124,28 +124,42 @@ function Slide({ slide, on, out, saved }) {
   const field = (name) => (text ? { 'data-eotm-field': name } : {})
   const event = slide.kind === 'event'
   const slideField = (name) => (event ? (from ? from(name) : {}) : field(name))
+  const thumb = slide.image?.src ? <img className="promo__thumb" src={slide.image.src} alt={slide.image.alt || ''} loading="lazy" {...field('image')} {...frame.part('thumb')} />
+    : event && <span className="promo__thumb promo__thumb--icon" {...field('icon')} {...frame.part('thumb')}><EventIcon name={slide.icon} /></span>
+  const eyebrow = slide.eyebrow && <span className="promo__eyebrow" {...(event ? slideField('eyebrow') : typed('eyebrow'))} {...frame.part('eyebrow')}>{slide.eyebrow}</span>
+  const title = <p className="promo__title" {...typed('title')} {...frame.part('title')}>{slide.title}</p>
+  const button = url && <a className="btn promo__link" href={url} {...newTab(url)} {...slideField(event ? 'eventLabel' : 'label')} {...frame.part('button')}>{slide.label || 'Learn more'}</a>
   return (
     <ScaleBox on={frame.scale}>
     <div className={`promo__slide${on ? ' is-on' : ''}${out ? ' is-out' : ''}`} aria-hidden={!on} inert={on ? undefined : ''}
       {...marks} {...rootMarks} style={rootStyle}>
-      <div className="promo__inner" {...frame.wrap}>
-        {slide.image?.src ? <img className="promo__thumb" src={slide.image.src} alt={slide.image.alt || ''} loading="lazy" {...field('image')} {...frame.part('thumb')} />
-          : event && <span className="promo__thumb promo__thumb--icon" {...field('icon')} {...frame.part('thumb')}><EventIcon name={slide.icon} /></span>}
-        {slide.eyebrow && <span className="promo__eyebrow" {...(event ? slideField('eyebrow') : typed('eyebrow'))} {...frame.part('eyebrow')}>{slide.eyebrow}</span>}
-        <div className="promo__copy" {...frame.wrap}>
-          <p className="promo__title" {...typed('title')} {...frame.part('title')}>{slide.title}</p>
-          {event ? (
+      {event ? (
+        // An event: the badge and title on one line, the picture beside the words under them.
+        <div className="promo__inner promo__inner--event" {...frame.wrap}>
+          <div className="promo__head" {...frame.wrap}>{eyebrow}{title}</div>
+          <div className="promo__body" {...frame.wrap}>
+            {thumb}
             <p className="promo__text promo__when" {...field('date')} {...frame.part('text')}><time title={slide.fullWhen}>{slide.when}</time></p>
-          ) : slide.kind === 'events' ? (
-            links.length > 0 && (
-              <ul className="promo__events" {...field('eventsPage')} {...frame.part('text')}>
-                {links.map((l) => <li key={l.key}><a href={l.href} {...newTab(l.href)}>{l.title}</a></li>)}
-              </ul>
-            )
-          ) : slide.text && <p className="promo__text" {...typed('text')} {...frame.part('text')}>{slide.text}</p>}
+            {button}
+          </div>
         </div>
-        {url && <a className="btn promo__link" href={url} {...newTab(url)} {...slideField(event ? 'eventLabel' : 'label')} {...frame.part('button')}>{slide.label || 'Learn more'}</a>}
-      </div>
+      ) : (
+        <div className="promo__inner" {...frame.wrap}>
+          {thumb}
+          {eyebrow}
+          <div className="promo__copy" {...frame.wrap}>
+            {title}
+            {slide.kind === 'events' ? (
+              links.length > 0 && (
+                <ul className="promo__events" {...field('eventsPage')} {...frame.part('text')}>
+                  {links.map((l) => <li key={l.key}><a href={l.href} {...newTab(l.href)}>{l.title}</a></li>)}
+                </ul>
+              )
+            ) : slide.text && <p className="promo__text" {...typed('text')} {...frame.part('text')}>{slide.text}</p>}
+          </div>
+          {button}
+        </div>
+      )}
     </div>
     </ScaleBox>
   )

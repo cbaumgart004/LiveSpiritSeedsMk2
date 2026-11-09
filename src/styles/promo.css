@@ -285,3 +285,46 @@ body.style-immersive.has-promo.has-action-bar .section--splash.first-section {
 .promo__slide[data-eotm-frame='free'] .promo__link[data-eotm-placed] {
   text-align: center;
 }
+
+/* An event slide (PromoBanner.jsx): the badge and title on one line, then the
+   picture, larger than on other slides, beside the words. A part the owner
+   placed in Arrange keeps her size. These follow the phone rules above so they
+   replace them. */
+.promo__inner--event {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.5rem;
+}
+.promo__head,
+.promo__body {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+.promo__head > .promo__title,
+.promo__body > .promo__text {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+}
+.promo__body > .promo__thumb:not([data-eotm-placed]) {
+  width: 5.5rem;
+  height: 5.5rem;
+}
+@media (max-width: 640px) {
+  .promo__head:not([data-eotm-scaled] *),
+  .promo__body:not([data-eotm-scaled] *) {
+    gap: 0.4rem 0.6rem;
+  }
+  .promo__body:not([data-eotm-scaled] *) {
+    flex-wrap: wrap;
+  }
+  .promo__body > .promo__thumb:not([data-eotm-placed]):not([data-eotm-scaled] *) {
+    width: 4.5rem;
+    height: 4.5rem;
+  }
+  .promo__body > .promo__text:not([data-eotm-scaled] *) {
+    flex: 1 1 0;
+  }
+}
