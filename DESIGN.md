@@ -154,7 +154,7 @@ is the live preview. `DynamicPage` finds the page by slug (`home` is `/`) and pa
 - **Arranging, classes and elements** (console 1.7.0+). Every part of every section type is
   marked by name through `components/cms/Frame.jsx` (`frameOf`),
   so the console's Arrange can make a section Free and place its parts, on a desktop and separately
-  on a phone (`_layout`, `phoneParts`; the console's SCHEMA.md, "Free sections"); `styles/frame.css` draws it. The
+  on a phone (`_layout`, `phoneParts`; the console's SCHEMA.md, "Free sections"); `styles/frame.css` draws it. Scale smoothly (`phone: "scale"`, the default for a new arrangement) zooms the desktop arrangement whole below 1280px through `ScaleBox`; only sections in `Blocks.jsx` have one and carry `data-eotm-scales`. The
   header and the buttons under the menu bar are arranged regions of Site settings
   (`_layout_header`, `_layout_actionBar`, `data-eotm-frame-key`). `components/cms/ClassStyles.jsx`
   applies the owner's Classes (the schema's `classes`: Buttons `.btn`, section headings, body text,
