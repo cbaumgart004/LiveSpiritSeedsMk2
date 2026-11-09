@@ -88,7 +88,7 @@ function expand(slides, pages, events) {
     if (!coming.length) return [{ ...s, links: sectionLinks(s, pages) }]
     const base = hrefForSlug(eventsSlug(s))
     return coming.slice(0, Math.max(1, Number(s.count) || 3)).map((d) => ({
-      _id: s._id, _key: `${s._id || 'events'}:${d.id || d.slug}`, kind: 'event', eyebrow: s.eyebrow,
+      _id: s._id, _key: `${s._id || 'events'}:${d.id || d.slug}`, kind: 'event', layout: s.layout, eyebrow: s.eyebrow,
       title: d.data.title, when: [formatDay(d.next.date, { weekday: 'short', month: 'short' }), d.next.startTime].filter(Boolean).join(' · '),
       fullWhen: [formatDay(d.next.date), timeText(d.next)].filter(Boolean).join(', '),
       image: d.data.image, icon: d.data.icon, label: s.eventLabel || 'Details', url: `${base}#${eventAnchor(d)}`, doc: d,
@@ -128,18 +128,19 @@ function Slide({ slide, on, out, saved }) {
     : event && <span className="promo__thumb promo__thumb--icon" {...field('icon')} {...frame.part('thumb')}><EventIcon name={slide.icon} /></span>
   const eyebrow = slide.eyebrow && <span className="promo__eyebrow" {...(event ? slideField('eyebrow') : typed('eyebrow'))} {...frame.part('eyebrow')}>{slide.eyebrow}</span>
   const title = <p className="promo__title" {...typed('title')} {...frame.part('title')}>{slide.title}</p>
+  const when = event && <p className="promo__text promo__when" {...field('date')} {...frame.part('text')}><time title={slide.fullWhen}>{slide.when}</time></p>
   const button = url && <a className="btn promo__link" href={url} {...newTab(url)} {...slideField(event ? 'eventLabel' : 'label')} {...frame.part('button')}>{slide.label || 'Learn more'}</a>
   return (
     <ScaleBox on={frame.scale}>
     <div className={`promo__slide${on ? ' is-on' : ''}${out ? ' is-out' : ''}`} aria-hidden={!on} inert={on ? undefined : ''}
       {...marks} {...rootMarks} style={rootStyle}>
-      {event ? (
+      {event && slide.layout !== 'standard' ? (
         // An event: the picture the full height of the banner, then its title, then its dates and button.
         <div className="promo__inner promo__inner--event" {...frame.wrap}>
           {thumb}
           <div className="promo__head" {...frame.wrap}>{eyebrow}{title}</div>
           <div className="promo__side" {...frame.wrap}>
-            <p className="promo__text promo__when" {...field('date')} {...frame.part('text')}><time title={slide.fullWhen}>{slide.when}</time></p>
+            {when}
             {button}
           </div>
         </div>
@@ -149,7 +150,7 @@ function Slide({ slide, on, out, saved }) {
           {eyebrow}
           <div className="promo__copy" {...frame.wrap}>
             {title}
-            {slide.kind === 'events' ? (
+            {event ? when : slide.kind === 'events' ? (
               links.length > 0 && (
                 <ul className="promo__events" {...field('eventsPage')} {...frame.part('text')}>
                   {links.map((l) => <li key={l.key}><a href={l.href} {...newTab(l.href)}>{l.title}</a></li>)}
@@ -174,6 +175,14 @@ export default function PromoBanner() {
     [saved, settings, pages, events])
   const transition = TRANSITIONS.includes(settings.promoTransition) ? settings.promoTransition : 'fade'
   const fade = Math.min(4, Math.max(0.3, Number(settings.promoFade) || 1.5))
+  // The banner's sizes (Site settings: promoPicture, promoPadding); blank, the stylesheet's.
+  const setting = (v, lo, hi) => (v == null || v === '' || !Number.isFinite(Number(v)) ? null : Math.min(hi, Math.max(lo, Number(v))))
+  const picture = setting(settings.promoPicture, 64, 240)
+  const padding = setting(settings.promoPadding, 0, 30)
+  const sizes = {
+    ...(picture != null ? { '--promo-thumb': `${picture}px`, '--promo-thumb-phone': `${Math.round(picture * 0.87)}px` } : {}),
+    ...(padding != null ? { '--promo-py': `${padding}px` } : {}),
+  }
   const seconds = Math.min(30, Math.max(4, Number(settings.promoSeconds) || 8))
 
   const [cur, setCur] = useState(0)
@@ -223,7 +232,7 @@ export default function PromoBanner() {
 
   return (
     <aside ref={box} className="promo" aria-label="Announcement" aria-roledescription="carousel"
-      data-transition={transition} data-moved={prev != null ? '' : undefined} style={{ '--promo-fade': `${fade}s` }}
+      data-transition={transition} data-moved={prev != null ? '' : undefined} style={{ '--promo-fade': `${fade}s`, ...sizes }}
       onMouseEnter={() => setPaused(true)} onMouseLeave={leave} onFocus={() => setPaused(true)} onBlur={leave}
       onTouchStart={(e) => { box.current.swipeX = e.touches[0].clientX }} onTouchEnd={swipe}
       data-eotm-edit="settings:settings" data-eotm-label="announcement banner" data-eotm-field="promoSlides">

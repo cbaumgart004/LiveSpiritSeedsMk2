@@ -307,8 +307,8 @@ body.style-immersive.has-promo.has-action-bar .section--splash.first-section {
 }
 .promo__inner--event > .promo__thumb:not([data-eotm-placed]) {
   grid-area: thumb;
-  width: 7.5rem;
-  height: 7.5rem;
+  width: var(--promo-thumb, 7.5rem);
+  height: var(--promo-thumb, 7.5rem);
   border-radius: 0;
   box-shadow: none;
 }
@@ -336,8 +336,8 @@ body.style-immersive.has-promo.has-action-bar .section--splash.first-section {
     gap: 0.25rem 0.6rem;
   }
   .promo__inner--event > .promo__thumb:not([data-eotm-placed]):not([data-eotm-scaled] *) {
-    width: 6.5rem;
-    height: 6.5rem;
+    width: var(--promo-thumb-phone, 6.5rem);
+    height: var(--promo-thumb-phone, 6.5rem);
   }
   .promo__head > .promo__title:not([data-eotm-placed]):not([data-eotm-scaled] *) { font-size: 1.05rem; }
   .promo__side:not([data-eotm-scaled] *) {
