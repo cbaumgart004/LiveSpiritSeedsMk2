@@ -103,6 +103,11 @@
   z-index: 1;
   display: grid;
 }
+/* A slide set to Scale smoothly sits in a ScaleBox, which takes its place in the stage. */
+.promo__stage > .eotm-scalebox {
+  grid-area: 1 / 1;
+  min-width: 0;
+}
 .promo__slide {
   grid-area: 1 / 1;
   min-width: 0;
@@ -218,34 +223,34 @@ html.eotm-arranging .promo__dots {
   .promo {
     padding: 0.7rem 0.9rem 1.15rem;
   }
-  .promo__thumb {
+  .promo__thumb:not([data-eotm-scaled] *) {
     width: 2.75rem;
     height: 2.75rem;
   }
-  .promo__events {
+  .promo__events:not([data-eotm-scaled] *) {
     flex-basis: 100%;
     margin: 0;
     font-size: 0.85rem;
   }
-  .promo__inner {
+  .promo__inner:not([data-eotm-scaled] *) {
     flex-wrap: wrap;
     gap: 0.4rem 0.6rem;
   }
-  .promo__copy {
+  .promo__copy:not([data-eotm-scaled] *) {
     display: contents;
   }
-  .promo__title {
+  .promo__title:not([data-eotm-scaled] *) {
     flex: 1;
     padding-right: 1.6rem;
     font-size: 1.6rem;
   }
-  .promo__text {
+  .promo__text:not([data-eotm-scaled] *) {
     flex-basis: 100%;
     margin: 0;
     font-size: 0.85rem;
     line-height: 1.4;
   }
-  .promo__link {
+  .promo__link:not([data-eotm-scaled] *) {
     flex-basis: 100%;
     padding: 0.45rem 1.5rem;
     text-align: center;
