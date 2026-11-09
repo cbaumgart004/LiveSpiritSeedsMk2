@@ -1,5 +1,7 @@
 # Live Spirit Seeds Mk2 — Design & Orientation
 
+> **Rule: everything is reachable in the editor, no exceptions.** Every element and setting on these sites, at any time, can be read and edited through the Edge of the Map console, including anything drawn only by CSS. A look with no field or class in `console/schema/sites/<site>.json` is a defect. Full text: `CLAUDE.md`, Editor rules.
+
 A token-efficient map of this repo. Read this first; open source only for the file(s) you're about to edit.
 
 ## 1. What it is
@@ -526,7 +528,7 @@ each edge and centred on the bar.
   motion. Closing is remembered per set of headings in `localStorage`. While it shows, `body.has-promo` moves the fixed-bar clearance from the first
   section onto the banner. It has a section's width, corners and shadow and no border; its title is set like a card heading
   (`.panel h2`: `--font-subheading`, `--primary-color`, `--outline-shadow`), smaller; its badge is the season's `--primary-color`; the link is the
-  site's own `.btn`. It fades up on load, and a white sweep crosses it every
+  site's own `.btn`. An event slide's picture fills the banner's height against its left edge, with the badge and title, then the dates and button, beside it (`layout` on the events slide; `standard` is the small picture in line). `promoPicture` and `promoPadding` set its sizes; the classes Banner titles, Banner badges, Banner dates and Backgrounds (`image: true`, opened from Arrange's Layers) style it. It fades up on load, and a white sweep crosses it every
   8s; the sweep is `::after` at `z-index: 0` under `.promo__stage` at `z-index: 1` (at `-1` WebKit
   painted it under the banner's own background, where it never showed). Reduced motion drops both.
 - **Slideshow** (`slideshow` block, `cms/Slideshow.jsx`, `styles/slideshow.css`): the block's

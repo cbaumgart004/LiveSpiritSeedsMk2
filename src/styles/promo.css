@@ -11,9 +11,11 @@
   box-sizing: border-box;
   overflow: hidden;
   isolation: isolate;
-  margin: calc(var(--navbar-height) + var(--action-bar-height, 0px) + var(--services-strip-height) + 0.5rem) auto 0;
+  --promo-py: 0.5rem;
+  --promo-px: 1.25rem;
+  margin: calc(var(--navbar-height) + var(--action-bar-height, 0px) + var(--services-strip-height) + 0.25rem) auto 0;
   width: 100%;
-  padding: 0.85rem 3rem 1.2rem 1.25rem;
+  padding: var(--promo-py) var(--promo-px);
   color: var(--text-outline-color);
   text-shadow: 0 0 10px rgb(255 255 255 / 0.7);
   background: var(--section-bg-image, none) center / cover, var(--bg-color-light, #fff);
@@ -53,8 +55,8 @@
 }
 .promo__eyebrow {
   flex: none;
-  padding: 0.2rem 0.6rem;
-  font-size: 0.75rem;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -71,7 +73,7 @@
 .promo__title {
   margin: 0;
   font-family: var(--font-subheading);
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 700;
   line-height: 1.1;
   color: var(--primary-color);
@@ -80,14 +82,15 @@
 .promo__text {
   margin: 0.2rem 0 0;
   font-family: var(--font-body);
-  font-size: 0.95rem;
-  line-height: 1.45;
+  font-size: 0.875rem;
+  line-height: 1.35;
   color: var(--text-outline-color);
 }
 .promo__link {
   flex: none;
   box-sizing: border-box;
-  padding: 0.55rem 1.5rem;
+  padding: 0.4rem 1.1rem;
+  font-size: 0.85rem;
   font-weight: 700;
   text-shadow: none;
 }
@@ -110,6 +113,7 @@
 }
 .promo__slide {
   grid-area: 1 / 1;
+  align-self: center;
   min-width: 0;
   visibility: hidden;
 }
@@ -221,7 +225,8 @@ html.eotm-arranging .promo__dots {
    the link as a full-width button. */
 @media (max-width: 640px) {
   .promo {
-    padding: 0.7rem 0.9rem 1.15rem;
+    --promo-py: 0.4rem;
+    --promo-px: 0.75rem;
   }
   .promo__thumb:not([data-eotm-scaled] *) {
     width: 2.75rem;
@@ -241,14 +246,13 @@ html.eotm-arranging .promo__dots {
   }
   .promo__title:not([data-eotm-scaled] *) {
     flex: 1;
-    padding-right: 1.6rem;
-    font-size: 1.6rem;
+    font-size: 1.2rem;
   }
   .promo__text:not([data-eotm-scaled] *) {
     flex-basis: 100%;
     margin: 0;
-    font-size: 0.85rem;
-    line-height: 1.4;
+    font-size: 0.8rem;
+    line-height: 1.3;
   }
   .promo__link:not([data-eotm-scaled] *) {
     flex-basis: 100%;
@@ -264,7 +268,7 @@ body.has-promo.has-action-bar .section.first-section,
 body.has-promo.has-action-bar .first-section,
 body.style-immersive.has-promo.has-action-bar .first-section,
 body.style-immersive.has-promo.has-action-bar .section--splash.first-section {
-  margin-top: var(--space-3);
+  margin-top: var(--space-1);
 }
 
 /* An event slide with no picture: the event's icon in the picture's place. */
@@ -284,4 +288,75 @@ body.style-immersive.has-promo.has-action-bar .section--splash.first-section {
 }
 .promo__slide[data-eotm-frame='free'] .promo__link[data-eotm-placed] {
   text-align: center;
+}
+
+/* An event slide (PromoBanner.jsx): the picture fills the banner's full height
+   against its left edge (the negative margins undo .promo's padding), so the
+   picture's height is the banner's height and no row is spent on anything else.
+   Beside it the badge and title run together in 1-2 lines, then the dates and
+   button: a third column on a computer, a row under the title on a phone. A part
+   the owner placed in Arrange keeps her size. These follow the phone rules above
+   so they replace them. */
+.promo__inner--event {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas: 'thumb head side';
+  align-items: center;
+  gap: 0 var(--space-2);
+  margin: calc(-1 * var(--promo-py)) 0 calc(-1 * var(--promo-py)) calc(-1 * var(--promo-px));
+}
+.promo__inner--event > .promo__thumb:not([data-eotm-placed]) {
+  grid-area: thumb;
+  width: var(--promo-thumb, 7.5rem);
+  height: var(--promo-thumb, 7.5rem);
+  border-radius: 0;
+  box-shadow: none;
+}
+.promo__head { grid-area: head; min-width: 0; }
+.promo__head > .promo__eyebrow:not([data-eotm-placed]) {
+  display: inline-block;
+  margin-right: 0.5rem;
+  vertical-align: 0.2em;
+}
+.promo__head > .promo__title:not([data-eotm-placed]) { display: inline; font-size: 1.35rem; }
+.promo__side {
+  grid-area: side;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+  max-width: 16rem;
+}
+.promo__side > .promo__text { margin: 0; text-align: right; }
+@media (max-width: 640px) {
+  .promo__inner--event:not([data-eotm-scaled] *) {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas: 'thumb head' 'thumb side';
+    align-content: center;
+    gap: 0.25rem 0.6rem;
+  }
+  .promo__inner--event > .promo__thumb:not([data-eotm-placed]):not([data-eotm-scaled] *) {
+    width: var(--promo-thumb-phone, 6.5rem);
+    height: var(--promo-thumb-phone, 6.5rem);
+  }
+  .promo__head > .promo__title:not([data-eotm-placed]):not([data-eotm-scaled] *) { font-size: 1.05rem; }
+  .promo__side:not([data-eotm-scaled] *) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.25rem 0.5rem;
+    max-width: none;
+  }
+  .promo__side > .promo__text:not([data-eotm-scaled] *) {
+    flex: 0 1 auto;
+    font-size: 0.75rem;
+    text-align: left;
+  }
+  body .promo .promo__side > .promo__link:not([data-eotm-placed]) {
+    flex: none;
+    margin-inline: 0;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+  }
 }
