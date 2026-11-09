@@ -41,7 +41,7 @@ function EventCard({ doc, showHome }) {
   return (
     <article className="card event-card" id={eventAnchor(doc)}
       {...(doc.id && !doc.id.startsWith('bundled:') ? { 'data-eotm-edit': `event:${doc.id}`, 'data-eotm-label': e.title } : {})}>
-      <div className="event-card__icon">
+      <div className={`event-card__icon${srcOf(e.image) ? ' has-photo' : ''}`}>
         {srcOf(e.image) ? <img src={srcOf(e.image)} alt={altOf(e.image)} style={imageStyle(e.image)} loading="lazy" /> : <EventIcon name={e.icon} />}
       </div>
       <div className="event-card__body">
@@ -70,7 +70,8 @@ export default function EventList({ block, className, marks, frame }) {
   const shown = count > 0 ? events.slice(0, count) : events
   const title = block.title ?? 'Upcoming Events'
   return (
-    <section className={`${className} events`} {...marks}>
+    <section className={`${className} events`} {...marks}
+      data-cards={block.cardLayout === 'row' ? 'row' : 'grid'} data-phone-picture={block.phonePicture === 'small' ? 'small' : 'full'}>
       {(title || block.intro) && (
         <div className="events__head" {...frame?.part('title')}>
           {title && <h2 data-eotm-text="title">{title}</h2>}
