@@ -775,8 +775,10 @@ export default function Blocks({ blocks, doc, layout = null, placeholder = null 
   const ordered = layout ? layout.map((l) => byId.get(l.key)).filter(Boolean).concat((blocks || []).filter((b) => !b._id)) : blocks || []
   const list = placeholder ? [...ordered.slice(0, 1), placeholder, ...ordered.slice(1)] : ordered
   const spanOf = new Map((layout ?? []).map((l) => [l.key, l.span]))
-  const cell = (block, el) => (block === placeholder ? (
-    <div key="placeholder" className="page-block" style={{ '--span': 12 }}>{el}</div>
+  // A section with no _id (the automatic events list) has no Page layout entry;
+  // bare in the grid it would take one column of 12, so it is full width too.
+  const cell = (block, el) => (block === placeholder || (layout && !block._id) ? (
+    <div key={block === placeholder ? 'placeholder' : `auto-${block._type}`} className="page-block" style={{ '--span': 12 }}>{el}</div>
   ) : layout && block._id ? (
     <div key={block._id} className="page-block" style={{ '--span': spanOf.get(block._id) ?? 12 }}
       data-eotm-block={block._id} data-eotm-label={block.title || block._type} data-eotm-span={spanOf.get(block._id) ?? 12}
