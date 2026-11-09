@@ -122,7 +122,12 @@ the Tina collections had; the file paths below are the Tina copies:
     "Event cards"): photo or `icon`, name, When (date and times), Where, `cost`, description, then
     Book a Spot (`linkUrl`, `linkLabel`) and Home. Fields `title`, `intro`, `count`, `emptyText`,
     `showHomeButton`, `spacing`. Until the `upcoming` page has one of its own, `DynamicPage` puts one
-    first on that page (`_auto`, not editable).
+    first on that page (`_auto`, not editable). **One event, several days:** an event's `repeat` is
+    `none`, `custom` (its `date` plus `moreDates`) or a regular pattern from its `date` (`weekly`,
+    `biweekly`, `monthlyDate`, `monthlyWeekday`, to `repeatUntil` or with no end, less `skipDates`),
+    worked out in `cms/recurrence.js`. It is one card and one banner slide; past dates are not
+    drawn, a regular pattern lists its next four and says the rest in words ("Every Saturday until
+    December 12"), and the banner shows the next date.
   - **`embed`** — a generic third-party widget: `source` (offeringtree/canva/kit/teaching-schedule/
     other, a label), `mode` (`url` iframe link, `code` raw snippet, **or `schedule`** — the harvested
     teaching schedule, which needs nothing pasted), `url`/`code`, `height`, `caption`, plus
