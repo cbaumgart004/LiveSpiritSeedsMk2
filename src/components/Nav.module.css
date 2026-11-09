@@ -3,7 +3,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  width: calc(100% - var(--eotm-pane, 0px)); /* the console's docked editor, beside it */
   height: var(--navbar-height);
   z-index: 50;
   background-image: var(--navbar-background);
@@ -244,7 +244,7 @@
 .menuOverlay {
   position: fixed;
   top: calc(var(--navbar-height) + 0.5rem);
-  right: 2rem;
+  right: calc(2rem + var(--eotm-pane, 0px));
   background: var(--bg-color);
   border-radius: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);

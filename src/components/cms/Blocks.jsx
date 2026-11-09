@@ -43,6 +43,7 @@ function editable(doc, block, extraStyle) {
   const width = Number(block.width)
   const style = width > 0 && width < 100 ? { ...framed, maxWidth: `${width}%`, marginInline: 'auto' } : framed
   return {
+    'data-eotm-scales': '', // Blocks wraps it in ScaleBox, so the console offers Scale smoothly
     ...rootMarks,
     'data-eotm-edit': `page:${doc}`,
     'data-eotm-item': block._id,

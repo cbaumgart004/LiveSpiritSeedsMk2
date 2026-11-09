@@ -18,10 +18,10 @@ main:has(.slideshow-stage) {
 .slideshow {
   position: relative;
   overflow: hidden;
-  width: 100vw;
+  width: calc(100vw - var(--eotm-pane, 0px)); /* full width beside the console's docked editor */
   max-width: none;
   max-height: calc(100svh - 8rem);
-  margin-inline: calc(50% - 50vw);
+  margin-inline: calc(50% - 50vw + var(--eotm-pane, 0px) / 2);
   background: transparent;
   touch-action: pan-y;
 }
