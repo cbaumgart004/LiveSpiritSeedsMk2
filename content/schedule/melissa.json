@@ -1,23 +1,23 @@
 {
   "_generated": "DO NOT EDIT BY HAND. Rebuilt daily by scripts/harvest-schedule.mjs.",
   "teacher": "Melissa Carey",
-  "generatedAt": "2026-11-15T16:18:05.682Z",
-  "rangeStart": "2026-11-15",
+  "generatedAt": "2026-11-16T19:31:45.680Z",
+  "rangeStart": "2026-11-16",
   "weeks": 4,
   "sources": [
     {
       "id": "soultree",
       "label": "Soul Tree Yoga",
       "status": "ok",
-      "classes": 9,
-      "scanned": 157
+      "classes": 8,
+      "scanned": 155
     },
     {
       "id": "mesa",
       "label": "MESA",
-      "status": "stale",
-      "detail": "Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON",
-      "classes": 1
+      "status": "ok",
+      "classes": 1,
+      "scanned": 2
     },
     {
       "id": "allpurpose",
@@ -31,13 +31,13 @@
       "label": "CURA Yoga Center",
       "status": "ok",
       "classes": 1,
-      "scanned": 248
+      "scanned": 247
     },
     {
       "id": "prenatal",
       "label": "Community Roots Midwife Collective",
       "status": "ok",
-      "classes": 3,
+      "classes": 4,
       "scanned": 10
     }
   ],
@@ -69,34 +69,6 @@
     }
   ],
   "sessions": [
-    {
-      "id": "soultree:3944048",
-      "date": "2026-11-15",
-      "startTime": "6:00 PM",
-      "endTime": "7:15 PM",
-      "timezone": "MST",
-      "name": "Yin & Restore with Sound Healing",
-      "type": "Classes",
-      "level": "",
-      "staff": "Melissa Carey",
-      "studio": "Soul Tree Yoga",
-      "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
-      "sortKey": "2026-11-15T1080"
-    },
-    {
-      "id": "soultree:3944096",
-      "date": "2026-11-16",
-      "startTime": "12:00 PM",
-      "endTime": "1:00 PM",
-      "timezone": "MST",
-      "name": "Lunchtime Accessible Yoga",
-      "type": "Classes",
-      "level": "",
-      "staff": "Melissa Carey",
-      "studio": "Soul Tree Yoga",
-      "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
-      "sortKey": "2026-11-16T0720"
-    },
     {
       "id": "mesa:14783",
       "date": "2026-11-16",
@@ -130,7 +102,7 @@
       "sortKey": "2026-11-18T1140"
     },
     {
-      "id": "soultree:3944592",
+      "id": "soultree:19824928",
       "date": "2026-11-21",
       "startTime": "9:45 AM",
       "endTime": "11:15 AM",
@@ -160,7 +132,7 @@
       "sortKey": "2026-11-22T0660"
     },
     {
-      "id": "soultree:4073680",
+      "id": "soultree:19825040",
       "date": "2026-11-22",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -174,7 +146,7 @@
       "sortKey": "2026-11-22T1080"
     },
     {
-      "id": "soultree:4073728",
+      "id": "soultree:19828672",
       "date": "2026-11-23",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -204,7 +176,7 @@
       "sortKey": "2026-11-29T0660"
     },
     {
-      "id": "soultree:4197424",
+      "id": "soultree:19829168",
       "date": "2026-11-29",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -218,7 +190,7 @@
       "sortKey": "2026-11-29T1080"
     },
     {
-      "id": "soultree:4197488",
+      "id": "soultree:20199912",
       "date": "2026-11-30",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -264,7 +236,7 @@
       "sortKey": "2026-12-06T0660"
     },
     {
-      "id": "soultree:818208",
+      "id": "soultree:20200520",
       "date": "2026-12-06",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -278,7 +250,7 @@
       "sortKey": "2026-12-06T1080"
     },
     {
-      "id": "soultree:818272",
+      "id": "soultree:19830568",
       "date": "2026-12-07",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -308,7 +280,7 @@
       "sortKey": "2026-12-09T1140"
     },
     {
-      "id": "cura:258c96cb-1738-4187-9c06-bad2692132db",
+      "id": "cura:e04451f5-9deb-454d-894f-8f41beea15a1",
       "date": "2026-12-12",
       "startTime": "2:00 PM",
       "endTime": "3:30 PM",
@@ -322,6 +294,36 @@
       "bookUrl": "https://app.punchpass.com/org/5744/classes/20964266",
       "cost": "",
       "sortKey": "2026-12-12T0840"
+    },
+    {
+      "id": "prenatal:75ed6e50-e652-4c85-9d8b-62ed85d4b8e2_1797184800",
+      "date": "2026-12-13",
+      "startTime": "11:00 AM",
+      "endTime": "12:00 PM",
+      "timezone": "MST",
+      "name": "Prenatal Yoga Class with Community Roots Midwife Collective",
+      "type": "",
+      "level": "",
+      "staff": "Melissa Carey",
+      "studio": "Community Roots Midwife Collective",
+      "studioUrl": "https://spiritseedswellnessmelissacarey.offeringtree.com/schedule",
+      "bookUrl": "https://spiritseedswellnessmelissacarey.offeringtree.com/offerings/book?offering=dce1d1ab-739c-45ce-b658-2b42013469cc",
+      "cost": "",
+      "sortKey": "2026-12-13T0660"
+    },
+    {
+      "id": "soultree:19831160",
+      "date": "2026-12-13",
+      "startTime": "6:00 PM",
+      "endTime": "7:15 PM",
+      "timezone": "MST",
+      "name": "Yin & Restore with Sound Healing",
+      "type": "Classes",
+      "level": "",
+      "staff": "Melissa Carey",
+      "studio": "Soul Tree Yoga",
+      "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
+      "sortKey": "2026-12-13T1080"
     }
   ]
 }
