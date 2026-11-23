@@ -1,8 +1,8 @@
 {
   "_generated": "DO NOT EDIT BY HAND. Rebuilt daily by scripts/harvest-schedule.mjs.",
   "teacher": "Melissa Carey",
-  "generatedAt": "2026-11-22T17:06:00.751Z",
-  "rangeStart": "2026-11-22",
+  "generatedAt": "2026-11-23T21:16:14.238Z",
+  "rangeStart": "2026-11-23",
   "weeks": 4,
   "sources": [
     {
@@ -10,7 +10,7 @@
       "label": "Soul Tree Yoga",
       "status": "ok",
       "classes": 8,
-      "scanned": 158
+      "scanned": 160
     },
     {
       "id": "mesa",
@@ -31,7 +31,7 @@
       "label": "CURA Yoga Center",
       "status": "ok",
       "classes": 1,
-      "scanned": 247
+      "scanned": 246
     },
     {
       "id": "prenatal",
@@ -70,50 +70,6 @@
   ],
   "sessions": [
     {
-      "id": "prenatal:75ed6e50-e652-4c85-9d8b-62ed85d4b8e2_1795370400",
-      "date": "2026-11-22",
-      "startTime": "11:00 AM",
-      "endTime": "12:00 PM",
-      "timezone": "MST",
-      "name": "Prenatal Yoga Class with Community Roots Midwife Collective",
-      "type": "",
-      "level": "",
-      "staff": "Melissa Carey",
-      "studio": "Community Roots Midwife Collective",
-      "studioUrl": "https://spiritseedswellnessmelissacarey.offeringtree.com/schedule",
-      "bookUrl": "https://spiritseedswellnessmelissacarey.offeringtree.com/offerings/book?offering=dce1d1ab-739c-45ce-b658-2b42013469cc",
-      "cost": "",
-      "sortKey": "2026-11-22T0660"
-    },
-    {
-      "id": "soultree:16823088",
-      "date": "2026-11-22",
-      "startTime": "6:00 PM",
-      "endTime": "7:15 PM",
-      "timezone": "MST",
-      "name": "Yin & Restore with Sound Healing",
-      "type": "Classes",
-      "level": "",
-      "staff": "Melissa Carey",
-      "studio": "Soul Tree Yoga",
-      "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
-      "sortKey": "2026-11-22T1080"
-    },
-    {
-      "id": "soultree:16823136",
-      "date": "2026-11-23",
-      "startTime": "12:00 PM",
-      "endTime": "1:00 PM",
-      "timezone": "MST",
-      "name": "Lunchtime Accessible Yoga",
-      "type": "Classes",
-      "level": "",
-      "staff": "Melissa Carey",
-      "studio": "Soul Tree Yoga",
-      "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
-      "sortKey": "2026-11-23T0720"
-    },
-    {
       "id": "prenatal:75ed6e50-e652-4c85-9d8b-62ed85d4b8e2_1795975200",
       "date": "2026-11-29",
       "startTime": "11:00 AM",
@@ -130,7 +86,7 @@
       "sortKey": "2026-11-29T0660"
     },
     {
-      "id": "soultree:16896472",
+      "id": "soultree:6808816",
       "date": "2026-11-29",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -144,7 +100,7 @@
       "sortKey": "2026-11-29T1080"
     },
     {
-      "id": "soultree:16896536",
+      "id": "soultree:39897504",
       "date": "2026-11-30",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -190,7 +146,7 @@
       "sortKey": "2026-12-06T0660"
     },
     {
-      "id": "soultree:23510376",
+      "id": "soultree:39898128",
       "date": "2026-12-06",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -204,7 +160,7 @@
       "sortKey": "2026-12-06T1080"
     },
     {
-      "id": "soultree:23510440",
+      "id": "soultree:8294664",
       "date": "2026-12-07",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -234,7 +190,7 @@
       "sortKey": "2026-12-09T1140"
     },
     {
-      "id": "cura:5e6064a9-485d-47e7-b325-4771b5c931ac",
+      "id": "cura:9b9f7352-6931-4659-9b30-034e1c39b95b",
       "date": "2026-12-12",
       "startTime": "2:00 PM",
       "endTime": "3:30 PM",
@@ -266,7 +222,7 @@
       "sortKey": "2026-12-13T0660"
     },
     {
-      "id": "soultree:23244768",
+      "id": "soultree:8295272",
       "date": "2026-12-13",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -280,7 +236,7 @@
       "sortKey": "2026-12-13T1080"
     },
     {
-      "id": "soultree:23244832",
+      "id": "soultree:6869704",
       "date": "2026-12-14",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -292,6 +248,50 @@
       "studio": "Soul Tree Yoga",
       "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
       "sortKey": "2026-12-14T0720"
+    },
+    {
+      "id": "prenatal:75ed6e50-e652-4c85-9d8b-62ed85d4b8e2_1797789600",
+      "date": "2026-12-20",
+      "startTime": "11:00 AM",
+      "endTime": "12:00 PM",
+      "timezone": "MST",
+      "name": "Prenatal Yoga Class with Community Roots Midwife Collective",
+      "type": "",
+      "level": "",
+      "staff": "Melissa Carey",
+      "studio": "Community Roots Midwife Collective",
+      "studioUrl": "https://spiritseedswellnessmelissacarey.offeringtree.com/schedule",
+      "bookUrl": "https://spiritseedswellnessmelissacarey.offeringtree.com/offerings/book?offering=dce1d1ab-739c-45ce-b658-2b42013469cc",
+      "cost": "",
+      "sortKey": "2026-12-20T0660"
+    },
+    {
+      "id": "soultree:6870328",
+      "date": "2026-12-20",
+      "startTime": "5:30 PM",
+      "endTime": "7:30 PM",
+      "timezone": "MST",
+      "name": "An Evening of Yoga Nidra and Sitar",
+      "type": "Workshop",
+      "level": "",
+      "staff": "Melissa Carey",
+      "studio": "Soul Tree Yoga",
+      "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
+      "sortKey": "2026-12-20T1050"
+    },
+    {
+      "id": "soultree:6870344",
+      "date": "2026-12-20",
+      "startTime": "6:00 PM",
+      "endTime": "7:15 PM",
+      "timezone": "MST",
+      "name": "Yin & Restore with Sound Healing",
+      "type": "Classes",
+      "level": "",
+      "staff": "Melissa Carey",
+      "studio": "Soul Tree Yoga",
+      "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
+      "sortKey": "2026-12-20T1080"
     }
   ]
 }
