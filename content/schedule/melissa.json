@@ -1,15 +1,15 @@
 {
   "_generated": "DO NOT EDIT BY HAND. Rebuilt daily by scripts/harvest-schedule.mjs.",
   "teacher": "Melissa Carey",
-  "generatedAt": "2026-11-23T21:16:14.238Z",
-  "rangeStart": "2026-11-23",
+  "generatedAt": "2026-11-24T20:07:11.582Z",
+  "rangeStart": "2026-11-24",
   "weeks": 4,
   "sources": [
     {
       "id": "soultree",
       "label": "Soul Tree Yoga",
       "status": "ok",
-      "classes": 8,
+      "classes": 9,
       "scanned": 160
     },
     {
@@ -86,7 +86,7 @@
       "sortKey": "2026-11-29T0660"
     },
     {
-      "id": "soultree:6808816",
+      "id": "soultree:1227976",
       "date": "2026-11-29",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -100,7 +100,7 @@
       "sortKey": "2026-11-29T1080"
     },
     {
-      "id": "soultree:39897504",
+      "id": "soultree:1228040",
       "date": "2026-11-30",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -146,7 +146,7 @@
       "sortKey": "2026-12-06T0660"
     },
     {
-      "id": "soultree:39898128",
+      "id": "soultree:347904",
       "date": "2026-12-06",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -160,7 +160,7 @@
       "sortKey": "2026-12-06T1080"
     },
     {
-      "id": "soultree:8294664",
+      "id": "soultree:347968",
       "date": "2026-12-07",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -190,7 +190,7 @@
       "sortKey": "2026-12-09T1140"
     },
     {
-      "id": "cura:9b9f7352-6931-4659-9b30-034e1c39b95b",
+      "id": "cura:96bb670e-f834-4ab1-a754-490810c19019",
       "date": "2026-12-12",
       "startTime": "2:00 PM",
       "endTime": "3:30 PM",
@@ -222,7 +222,7 @@
       "sortKey": "2026-12-13T0660"
     },
     {
-      "id": "soultree:8295272",
+      "id": "soultree:356552",
       "date": "2026-12-13",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -236,7 +236,7 @@
       "sortKey": "2026-12-13T1080"
     },
     {
-      "id": "soultree:6869704",
+      "id": "soultree:356616",
       "date": "2026-12-14",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -266,7 +266,7 @@
       "sortKey": "2026-12-20T0660"
     },
     {
-      "id": "soultree:6870328",
+      "id": "soultree:339472",
       "date": "2026-12-20",
       "startTime": "5:30 PM",
       "endTime": "7:30 PM",
@@ -280,7 +280,7 @@
       "sortKey": "2026-12-20T1050"
     },
     {
-      "id": "soultree:6870344",
+      "id": "soultree:339488",
       "date": "2026-12-20",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -292,6 +292,20 @@
       "studio": "Soul Tree Yoga",
       "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
       "sortKey": "2026-12-20T1080"
+    },
+    {
+      "id": "soultree:339552",
+      "date": "2026-12-21",
+      "startTime": "12:00 PM",
+      "endTime": "1:00 PM",
+      "timezone": "MST",
+      "name": "Lunchtime Accessible Yoga",
+      "type": "Classes",
+      "level": "",
+      "staff": "Melissa Carey",
+      "studio": "Soul Tree Yoga",
+      "studioUrl": "https://soultreecolorado.com/classes/yogaschedules/",
+      "sortKey": "2026-12-21T0720"
     }
   ]
 }
