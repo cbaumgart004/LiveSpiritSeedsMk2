@@ -1,8 +1,8 @@
 {
   "_generated": "DO NOT EDIT BY HAND. Rebuilt daily by scripts/harvest-schedule.mjs.",
   "teacher": "Melissa Carey",
-  "generatedAt": "2026-11-25T19:11:40.360Z",
-  "rangeStart": "2026-11-25",
+  "generatedAt": "2026-11-26T18:58:00.937Z",
+  "rangeStart": "2026-11-26",
   "weeks": 4,
   "sources": [
     {
@@ -10,7 +10,7 @@
       "label": "Soul Tree Yoga",
       "status": "ok",
       "classes": 9,
-      "scanned": 160
+      "scanned": 164
     },
     {
       "id": "mesa",
@@ -31,7 +31,7 @@
       "label": "CURA Yoga Center",
       "status": "ok",
       "classes": 1,
-      "scanned": 250
+      "scanned": 248
     },
     {
       "id": "prenatal",
@@ -86,7 +86,7 @@
       "sortKey": "2026-11-29T0660"
     },
     {
-      "id": "soultree:7233528",
+      "id": "soultree:4091192",
       "date": "2026-11-29",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -100,7 +100,7 @@
       "sortKey": "2026-11-29T1080"
     },
     {
-      "id": "soultree:7233592",
+      "id": "soultree:4091256",
       "date": "2026-11-30",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -146,7 +146,7 @@
       "sortKey": "2026-12-06T0660"
     },
     {
-      "id": "soultree:12830360",
+      "id": "soultree:19464224",
       "date": "2026-12-06",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -160,7 +160,7 @@
       "sortKey": "2026-12-06T1080"
     },
     {
-      "id": "soultree:12830424",
+      "id": "soultree:19464288",
       "date": "2026-12-07",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -190,7 +190,7 @@
       "sortKey": "2026-12-09T1140"
     },
     {
-      "id": "cura:b05822f2-3db7-44ec-bb36-6b6b0abc5f0e",
+      "id": "cura:944c00ff-d8d1-41ff-8f67-aceeb562f930",
       "date": "2026-12-12",
       "startTime": "2:00 PM",
       "endTime": "3:30 PM",
@@ -222,7 +222,7 @@
       "sortKey": "2026-12-13T0660"
     },
     {
-      "id": "soultree:12697520",
+      "id": "soultree:5191432",
       "date": "2026-12-13",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -236,7 +236,7 @@
       "sortKey": "2026-12-13T1080"
     },
     {
-      "id": "soultree:12697584",
+      "id": "soultree:5191496",
       "date": "2026-12-14",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
@@ -266,7 +266,7 @@
       "sortKey": "2026-12-20T0660"
     },
     {
-      "id": "soultree:1660640",
+      "id": "soultree:5248992",
       "date": "2026-12-20",
       "startTime": "5:30 PM",
       "endTime": "7:30 PM",
@@ -280,7 +280,7 @@
       "sortKey": "2026-12-20T1050"
     },
     {
-      "id": "soultree:1660656",
+      "id": "soultree:5249008",
       "date": "2026-12-20",
       "startTime": "6:00 PM",
       "endTime": "7:15 PM",
@@ -294,7 +294,7 @@
       "sortKey": "2026-12-20T1080"
     },
     {
-      "id": "soultree:1660720",
+      "id": "soultree:5249072",
       "date": "2026-12-21",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
